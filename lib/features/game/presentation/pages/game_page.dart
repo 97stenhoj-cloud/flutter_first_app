@@ -6,6 +6,7 @@ import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/utils/unlock_manager.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/supabase_service.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class GamePage extends StatefulWidget {
   final int playerCount;
@@ -107,6 +108,7 @@ class _GamePageState extends State<GamePage> {
     }
 
     if (unlockManager.shouldShowAd()) {
+      final l10n = AppLocalizations.of(context)!;
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -115,7 +117,7 @@ class _GamePageState extends State<GamePage> {
             borderRadius: BorderRadius.circular(20),
           ),
           title: Text(
-            'Advertisement',
+            l10n.advertisement,
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.bold,
               fontSize: 22,
@@ -126,7 +128,7 @@ class _GamePageState extends State<GamePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Watch a short ad to continue, or go ad-free with premium!',
+                l10n.watchAdMessage,
                 style: GoogleFonts.poppins(fontSize: 15),
                 textAlign: TextAlign.center,
               ),
@@ -159,7 +161,7 @@ class _GamePageState extends State<GamePage> {
                   minimumSize: const Size(double.infinity, 50),
                 ),
                 child: Text(
-                  _isAdLoaded ? 'Watch Ad' : 'Ad Loading... Continue',
+                  _isAdLoaded ? l10n.watchAd : 'Ad Loading... Continue',
                   style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                 ),
               ),
@@ -175,7 +177,7 @@ class _GamePageState extends State<GamePage> {
                   minimumSize: const Size(double.infinity, 50),
                 ),
                 child: Text(
-                  'Go Ad-Free - 59 DKK/month',
+                  l10n.goAdFree,
                   style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                 ),
               ),
@@ -187,7 +189,8 @@ class _GamePageState extends State<GamePage> {
   }
 
   void _showAdFreePurchaseDialog() {
-    final availableBundles = ['Couple', 'Friends', 'Family'];
+    final l10n = AppLocalizations.of(context)!; 
+    final availableBundles = [l10n.couple, l10n.friends, l10n.family];
     String? selectedBundle;
 
     showDialog(
@@ -199,7 +202,7 @@ class _GamePageState extends State<GamePage> {
               borderRadius: BorderRadius.circular(20),
             ),
             title: Text(
-              'Remove Ads Forever',
+              l10n.removeAdsForever,
               style: GoogleFonts.poppins(
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
@@ -210,7 +213,7 @@ class _GamePageState extends State<GamePage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Choose 1 bundle to unlock and remove all ads',
+                  l10n.chooseOneBundle,
                   style: GoogleFonts.poppins(fontSize: 15),
                   textAlign: TextAlign.center,
                 ),
@@ -262,7 +265,7 @@ class _GamePageState extends State<GamePage> {
                                     ),
                                   ),
                                   Text(
-                                    '4 premium categories',
+                                    l10n.premiumCategories,
                                     style: GoogleFonts.poppins(
                                       fontSize: 12,
                                       color: Colors.grey[600],
@@ -293,7 +296,7 @@ class _GamePageState extends State<GamePage> {
                           const Icon(Icons.check_circle, color: Colors.green, size: 20),
                           const SizedBox(width: 8),
                           Text(
-                            'No Ads Forever',
+                            l10n.noAdsForever,
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.bold,
                               color: Colors.green[700],
@@ -315,7 +318,7 @@ class _GamePageState extends State<GamePage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Demo: Unlocks will reset on app restart',
+                  l10n.demoNote,
                   style: GoogleFonts.poppins(
                     fontSize: 11,
                     color: Colors.grey,
@@ -329,7 +332,7 @@ class _GamePageState extends State<GamePage> {
               TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: Text(
-                  'Cancel',
+                  l10n.cancel,
                   style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                 ),
               ),
@@ -358,7 +361,7 @@ class _GamePageState extends State<GamePage> {
                   disabledBackgroundColor: Colors.grey[300],
                 ),
                 child: Text(
-                  'Subscribe',
+                  l10n.subscribe,
                   style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                 ),
               ),
@@ -379,13 +382,14 @@ class _GamePageState extends State<GamePage> {
       debugPrint('   Game Mode: ${widget.gameMode}');
       debugPrint('   Category: ${widget.category}');
       
-      // FIXED: Now passing both gameMode and category
       final fetchedQuestions = await supabaseService.getQuestions(
         widget.gameMode,
         widget.category
       );
       
       debugPrint('Received ${fetchedQuestions.length} questions');
+      
+      if (!mounted) return;
       
       setState(() {
         availableQuestions = List.from(fetchedQuestions);
@@ -395,14 +399,18 @@ class _GamePageState extends State<GamePage> {
       if (availableQuestions.isNotEmpty) {
         _showNextQuestion();
       } else {
-        setState(() {
-          currentQuestion = 'No questions found for ${widget.category} in ${widget.gameMode} mode';
-          isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            currentQuestion = 'No questions found for ${widget.category} in ${widget.gameMode} mode';
+            isLoading = false;
+          });
+        }
       }
     } catch (e, stackTrace) {
       debugPrint('Error in _loadQuestions: $e');
       debugPrint('Stack trace: $stackTrace');
+      
+      if (!mounted) return;
       
       setState(() {
         currentQuestion = 'Error loading questions. Please check your connection.';
@@ -476,6 +484,7 @@ class _GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final backgroundColor = ThemeHelper.getGameBackgroundColor(widget.gameMode, widget.isDarkMode);
 
     return Scaffold(
@@ -560,7 +569,7 @@ class _GamePageState extends State<GamePage> {
                                       size: 20,
                                     ),
                                     Text(
-                                      'Previous',
+                                      l10n.previous,
                                       style: GoogleFonts.poppins(
                                         color: usedQuestions.isEmpty 
                                             ? Colors.white30 
@@ -574,7 +583,7 @@ class _GamePageState extends State<GamePage> {
                             ),
                             
                             Text(
-                              'Swipe or tap arrows',
+                              l10n.swipeOrTap,
                               style: GoogleFonts.poppins(
                                 color: Colors.white70,
                                 fontSize: 16,
@@ -595,7 +604,7 @@ class _GamePageState extends State<GamePage> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      'Next',
+                                      l10n.next,
                                       style: GoogleFonts.poppins(
                                         color: availableQuestions.isEmpty 
                                             ? Colors.white30 

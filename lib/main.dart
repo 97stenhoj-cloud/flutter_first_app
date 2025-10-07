@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'features/game/presentation/pages/video_intro_page.dart';
+import 'features/game/presentation/pages/main_menu_page.dart';  // Changed from video_intro_page
 import 'l10n/app_localizations.dart';
 import 'core/utils/language_manager.dart';
-import 'core/utils/theme_notifier.dart';  // Add this
+import 'core/utils/theme_notifier.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -78,7 +78,7 @@ class _TalkingGameAppState extends State<TalkingGameApp> {
           useMaterial3: true,
           brightness: themeNotifier.isDarkMode ? Brightness.dark : Brightness.light,
         ),
-        home: const VideoIntroPage(),
+        home: const MainMenuPage(),  // Changed from VideoIntroPage
       ),
     );
   }

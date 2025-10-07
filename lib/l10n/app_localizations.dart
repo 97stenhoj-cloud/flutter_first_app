@@ -334,11 +334,47 @@ abstract class AppLocalizations {
   /// **'No Ads Forever'**
   String get noAdsForever;
 
-  /// No description provided for @premiumActivated.
+  /// No description provided for @premiumActivatedMessage.
   ///
   /// In en, this message translates to:
   /// **'Premium activated! Ads removed. {bundle} bundle unlocked.'**
-  String premiumActivated(Object bundle);
+  String premiumActivatedMessage(Object bundle);
+
+  /// No description provided for @adNotReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ad not ready. Continuing without ad.'**
+  String get adNotReady;
+
+  /// No description provided for @adLoadingContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Ad Loading... Continue'**
+  String get adLoadingContinue;
+
+  /// No description provided for @pricePerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'59 DKK/month'**
+  String get pricePerMonth;
+
+  /// No description provided for @noQuestionsFoundMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions found for {category} in {mode} mode'**
+  String noQuestionsFoundMessage(Object category, Object mode);
+
+  /// No description provided for @errorLoadingQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading questions. Please check your connection.'**
+  String get errorLoadingQuestions;
+
+  /// No description provided for @failedToLoadQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load questions: {error}'**
+  String failedToLoadQuestions(Object error);
 }
 
 class _AppLocalizationsDelegate
