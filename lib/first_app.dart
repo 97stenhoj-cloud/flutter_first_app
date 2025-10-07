@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:video_player/video_player.dart';
 import 'dart:async';
 import 'dart:math';
 import 'dart:convert';
@@ -9,110 +11,336 @@ void main() {
   runApp(const TalkingGameApp());
 }
 
-class TalkingGameApp extends StatelessWidget {
+class TalkingGameApp extends StatefulWidget {
   const TalkingGameApp({super.key});
+
+  @override
+  State<TalkingGameApp> createState() => _TalkingGameAppState();
+}
+
+class _TalkingGameAppState extends State<TalkingGameApp> {
+  bool isDarkMode = true;
+
+  void toggleTheme() {
+    setState(() {
+      isDarkMode = !isDarkMode;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Talking Game',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.indigo,
+          brightness: isDarkMode ? Brightness.dark : Brightness.light,
+        ),
+        textTheme: GoogleFonts.poppinsTextTheme(
+          isDarkMode ? ThemeData.dark().textTheme : ThemeData.light().textTheme,
+        ),
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const MainMenuPage(),
-      },
+      home: MainMenuPage(
+        isDarkMode: isDarkMode, 
+        onThemeToggle: toggleTheme,
+      ),
     );
   }
 }
 
-class MainMenuPage extends StatelessWidget {
-  const MainMenuPage({super.key});
+class MainMenuPage extends StatefulWidget {
+  final bool isDarkMode;
+  final VoidCallback onThemeToggle;
+  
+  const MainMenuPage({
+    super.key, 
+    required this.isDarkMode, 
+    required this.onThemeToggle,
+  });
+
+  @override
+  State<MainMenuPage> createState() => _MainMenuPageState();
+}
+
+class _MainMenuPageState extends State<MainMenuPage> {
+  VideoPlayerController? _videoController;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeVideo();
+  }
+
+  void _initializeVideo() async {
+    try {
+      _videoController = VideoPlayerController.asset('assets/images/parrots.mp4');
+      await _videoController!.initialize();
+      _videoController!.setLooping(true);
+      _videoController!.setVolume(0.0);
+      _videoController!.play();
+      setState(() {});
+    } catch (e) {
+      debugPrint('Error loading video: $e');
+    }
+  }
+
+  @override
+  void dispose() {
+    _videoController?.dispose();
+    super.dispose();
+  }
+
+  // Get theme-appropriate colors
+  List<Color> get gradientColors {
+    if (widget.isDarkMode) {
+      return [
+        const Color(0xFF1a1a2e),
+        const Color(0xFF16213e),
+        const Color(0xFF0f3460),
+      ];
+    } else {
+      return [
+        const Color(0xFF74b9ff),
+        const Color(0xFF0984e3),
+        const Color(0xFF6c5ce7),
+      ];
+    }
+  }
+
+  Color get textColor => widget.isDarkMode ? Colors.white : Colors.white;
+  Color get buttonBackgroundColor => widget.isDarkMode 
+      ? Colors.white.withValues(alpha: 0.9) 
+      : Colors.white.withValues(alpha: 0.95);
+  Color get buttonTextColor => widget.isDarkMode ? Colors.black : Colors.black;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Talking Game'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // App Title
-            const Text(
-              '🎙️ Talking Game',
-              style: TextStyle(
-                fontSize: 36,
-                fontWeight: FontWeight.bold,
+      body: Stack(
+        children: [
+          // Gradient background
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: gradientColors,
+                stops: const [0.0, 0.5, 1.0],
               ),
             ),
-            const SizedBox(height: 50),
-            
-            // Start Button
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const PlayerSelectionPage()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(200, 60),
-              ),
-              child: const Text(
-                'Start',
-                style: TextStyle(fontSize: 20),
+          ),
+          
+          // Main content
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  // App bar with theme toggle
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    width: double.infinity,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const SizedBox(width: 48), // Spacer for centering
+                        Text(
+                          'Talking Game',
+                          style: GoogleFonts.poppins(
+                            color: textColor,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        // Theme toggle button
+                        IconButton(
+                          onPressed: widget.onThemeToggle,
+                          icon: Icon(
+                            widget.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                            color: textColor,
+                            size: 28,
+                          ),
+                          tooltip: widget.isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+                        ),
+                      ],
+                    ),
+                  ),
+                  
+                  // Main content
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        // App Title
+                        Text(
+                          '🎙️ Talking Game',
+                          style: GoogleFonts.poppins(
+                            fontSize: 36,
+                            fontWeight: FontWeight.bold,
+                            color: textColor,
+                            shadows: [
+                              Shadow(
+                                offset: const Offset(0, 0),
+                                blurRadius: 20,
+                                color: textColor.withValues(alpha: 0.5),
+                              ),
+                              const Shadow(
+                                offset: Offset(2, 2),
+                                blurRadius: 4,
+                                color: Colors.black45,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 50),
+                        
+                        // Start Button
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => PlayerSelectionPage(isDarkMode: widget.isDarkMode)),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(200, 60),
+                            backgroundColor: buttonBackgroundColor,
+                            foregroundColor: buttonTextColor,
+                          ),
+                          child: Text(
+                            'Start',
+                            style: GoogleFonts.poppins(
+                              fontSize: 20, 
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        
+                        // Rules Button
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => RulesPage(isDarkMode: widget.isDarkMode)),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(200, 60),
+                            backgroundColor: buttonBackgroundColor,
+                            foregroundColor: buttonTextColor,
+                          ),
+                          child: Text(
+                            'Rules',
+                            style: GoogleFonts.poppins(
+                              fontSize: 20, 
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        
+                        // Credits Button
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CreditsPage(isDarkMode: widget.isDarkMode)),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(200, 60),
+                            backgroundColor: buttonBackgroundColor,
+                            foregroundColor: buttonTextColor,
+                          ),
+                          child: Text(
+                            'Credits',
+                            style: GoogleFonts.poppins(
+                              fontSize: 20, 
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        
+                        const SizedBox(height: 40),
+                        
+                        // Small video in the middle-bottom
+                        if (_videoController != null && _videoController!.value.isInitialized)
+                          Container(
+                            width: 200,
+                            height: 150,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.3),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: VideoPlayer(_videoController!),
+                            ),
+                          )
+                        else
+                          // Placeholder while video loads or if it fails
+                          Container(
+                            width: 200,
+                            height: 150,
+                            decoration: BoxDecoration(
+                              color: widget.isDarkMode 
+                                  ? Colors.white.withValues(alpha: 0.2)
+                                  : Colors.white.withValues(alpha: 0.3),
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(
+                                color: widget.isDarkMode 
+                                    ? Colors.white.withValues(alpha: 0.5)
+                                    : Colors.white.withValues(alpha: 0.7),
+                                width: 2,
+                              ),
+                            ),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.video_library,
+                                    color: textColor,
+                                    size: 40,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Loading Video...',
+                                    style: GoogleFonts.poppins(
+                                      color: textColor,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 30),
+                ],
               ),
             ),
-            const SizedBox(height: 20),
-            
-            // Rules Button
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const RulesPage()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(200, 60),
-              ),
-              child: const Text(
-                'Rules',
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-            const SizedBox(height: 20),
-            
-            // Credits Button
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const CreditsPage()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(200, 60),
-              ),
-              child: const Text(
-                'Credits',
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
 
 class PlayerSelectionPage extends StatefulWidget {
-  const PlayerSelectionPage({super.key});
+  final bool isDarkMode;
+  
+  const PlayerSelectionPage({super.key, required this.isDarkMode});
 
   @override
   State<PlayerSelectionPage> createState() => _PlayerSelectionPageState();
@@ -121,83 +349,146 @@ class PlayerSelectionPage extends StatefulWidget {
 class _PlayerSelectionPageState extends State<PlayerSelectionPage> {
   int selectedPlayers = 2;
 
+  List<Color> get gradientColors {
+    if (widget.isDarkMode) {
+      return [const Color(0xFF2c3e50), const Color(0xFF34495e)];
+    } else {
+      return [const Color(0xFF667eea), const Color(0xFF764ba2)];
+    }
+  }
+
+  Color get textColor => widget.isDarkMode ? Colors.white : Colors.white;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Select Players'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'How many players?',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 40),
-            
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Text(
-                '$selectedPlayers Players',
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            ),
-            const SizedBox(height: 30),
-            
-            SizedBox(
-              height: 150,
-              child: CupertinoPicker(
-                itemExtent: 50,
-                onSelectedItemChanged: (int value) {
-                  setState(() {
-                    selectedPlayers = value + 2;
-                  });
-                },
-                children: List.generate(9, (index) {
-                  return Center(
-                    child: Text(
-                      '${index + 2}',
-                      style: const TextStyle(fontSize: 24),
-                    ),
-                  );
-                }),
-              ),
-            ),
-            const SizedBox(height: 40),
-            
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GameModeSelectionPage(playerCount: selectedPlayers),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: gradientColors,
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: <Widget>[
+                // Back button
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: Icon(Icons.arrow_back, color: textColor, size: 28),
                   ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(200, 60),
-              ),
-              child: const Text(
-                'Continue',
-                style: TextStyle(fontSize: 20),
-              ),
+                ),
+                
+                // Main content centered
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'How many players?',
+                        style: GoogleFonts.poppins(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: textColor,
+                          shadows: [
+                            Shadow(
+                              offset: const Offset(0, 0),
+                              blurRadius: 10,
+                              color: textColor.withValues(alpha: 0.5),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.3),
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          '$selectedPlayers Players',
+                          style: GoogleFonts.poppins(
+                            fontSize: 36,
+                            fontWeight: FontWeight.bold,
+                            color: textColor,
+                            shadows: [
+                              Shadow(
+                                offset: const Offset(0, 0),
+                                blurRadius: 10,
+                                color: textColor.withValues(alpha: 0.5),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      
+                      SizedBox(
+                        height: 150,
+                        child: CupertinoPicker(
+                          itemExtent: 50,
+                          onSelectedItemChanged: (int value) {
+                            setState(() {
+                              selectedPlayers = value + 2;
+                            });
+                          },
+                          children: List.generate(9, (index) {
+                            return Center(
+                              child: Text(
+                                '${index + 2}',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 24,
+                                  color: textColor,
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => GameModeSelectionPage(
+                                playerCount: selectedPlayers,
+                                isDarkMode: widget.isDarkMode,
+                              ),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(200, 60),
+                          backgroundColor: Colors.white.withValues(alpha: 0.9),
+                          foregroundColor: Colors.black,
+                        ),
+                        child: Text(
+                          'Continue',
+                          style: GoogleFonts.poppins(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -206,263 +497,145 @@ class _PlayerSelectionPageState extends State<PlayerSelectionPage> {
 
 class GameModeSelectionPage extends StatelessWidget {
   final int playerCount;
+  final bool isDarkMode;
   
-  const GameModeSelectionPage({super.key, required this.playerCount});
+  const GameModeSelectionPage({
+    super.key, 
+    required this.playerCount,
+    required this.isDarkMode,
+  });
+
+  List<Color> get gradientColors {
+    if (isDarkMode) {
+      return [const Color(0xFF2c3e50), const Color(0xFF34495e)];
+    } else {
+      return [const Color(0xFF667eea), const Color(0xFF764ba2)];
+    }
+  }
+
+  Color get textColor => isDarkMode ? Colors.white : Colors.white;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Choose Game Mode'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Choose your game mode',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: gradientColors,
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                // Back button
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: Icon(Icons.arrow_back, color: textColor, size: 28),
+                  ),
+                ),
+                
+                // Main content centered
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Choose your game mode',
+                        style: GoogleFonts.poppins(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: textColor,
+                          shadows: [
+                            Shadow(
+                              offset: const Offset(0, 0),
+                              blurRadius: 10,
+                              color: textColor.withValues(alpha: 0.5),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 50),
+                      
+                      // Cosy Mode
+                      ElevatedButton.icon(
+                        onPressed: () => _selectMode(context, 'cosy'),
+                        icon: const Text('☕', style: TextStyle(fontSize: 24)),
+                        label: Text('Cosy', style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w600)),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(250, 80),
+                          backgroundColor: isDarkMode 
+                              ? const Color(0xFF8D6E63) // Softer brown for dark mode
+                              : const Color(0xFFBCAAA4), // Lighter brown for light mode
+                          foregroundColor: Colors.white,
+                          elevation: 8,
+                          shadowColor: isDarkMode 
+                              ? Colors.black.withValues(alpha: 0.3)
+                              : Colors.brown.withValues(alpha: 0.3),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      
+                      // Sexy Mode
+                      ElevatedButton.icon(
+                        onPressed: () => _selectMode(context, 'sexy'),
+                        icon: const Text('💋', style: TextStyle(fontSize: 24)),
+                        label: Text('Sexy', style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w600)),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(250, 80),
+                          backgroundColor: isDarkMode 
+                              ? const Color(0xFFAD1457) // Softer pink for dark mode
+                              : const Color(0xFFF8BBD9), // Lighter pink for light mode
+                          foregroundColor: Colors.white,
+                          elevation: 8,
+                          shadowColor: isDarkMode 
+                              ? Colors.black.withValues(alpha: 0.3)
+                              : Colors.pink.withValues(alpha: 0.3),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      
+                      // Fun Mode
+                      ElevatedButton.icon(
+                        onPressed: () => _selectMode(context, 'fun'),
+                        icon: const Text('🎉', style: TextStyle(fontSize: 24)),
+                        label: Text('Fun', style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w600)),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(250, 80),
+                          backgroundColor: isDarkMode 
+                              ? const Color(0xFFFF8F00) // Softer orange for dark mode
+                              : const Color(0xFFFFE0B2), // Lighter orange for light mode
+                          foregroundColor: isDarkMode ? Colors.white : Colors.black87,
+                          elevation: 8,
+                          shadowColor: isDarkMode 
+                              ? Colors.black.withValues(alpha: 0.3)
+                              : Colors.orange.withValues(alpha: 0.3),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 50),
-            
-            // Cosy Mode
-            ElevatedButton.icon(
-              onPressed: () => _selectMode(context, 'cosy'),
-              icon: const Text('☕', style: TextStyle(fontSize: 24)),
-              label: const Text('Cosy', style: TextStyle(fontSize: 24)),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(250, 80),
-                backgroundColor: Colors.brown.shade300,
-                foregroundColor: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 20),
-            
-            // Sexy Mode
-            ElevatedButton.icon(
-              onPressed: () => _selectMode(context, 'sexy'),
-              icon: const Text('💋', style: TextStyle(fontSize: 24)),
-              label: const Text('Sexy', style: TextStyle(fontSize: 24)),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(250, 80),
-                backgroundColor: Colors.pink.shade400,
-                foregroundColor: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 20),
-            
-            // Fun Mode
-            ElevatedButton.icon(
-              onPressed: () => _selectMode(context, 'fun'),
-              icon: const Text('🎉', style: TextStyle(fontSize: 24)),
-              label: const Text('Fun', style: TextStyle(fontSize: 24)),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(250, 80),
-                backgroundColor: Colors.orange.shade400,
-                foregroundColor: Colors.white,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
 
   void _selectMode(BuildContext context, String mode) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Timer'),
-          content: const Text('Do you want a timer on questions to increase intensity?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                // Go directly to game without timer
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GamePage(
-                      playerCount: playerCount,
-                      gameMode: mode,
-                      hasTimer: false,
-                      timerMinutes: 0,
-                      timerSeconds: 0,
-                    ),
-                  ),
-                );
-              },
-              child: const Text('No'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                // Go to timer selection
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TimerSelectionPage(
-                      playerCount: playerCount,
-                      gameMode: mode,
-                    ),
-                  ),
-                );
-              },
-              child: const Text('Yes'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
-
-class TimerSelectionPage extends StatefulWidget {
-  final int playerCount;
-  final String gameMode;
-  
-  const TimerSelectionPage({
-    super.key,
-    required this.playerCount,
-    required this.gameMode,
-  });
-
-  @override
-  State<TimerSelectionPage> createState() => _TimerSelectionPageState();
-}
-
-class _TimerSelectionPageState extends State<TimerSelectionPage> {
-  int selectedMinutes = 1;
-  int selectedSeconds = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Set Timer'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Set question timer',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 40),
-            
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Text(
-                '${selectedMinutes}m ${selectedSeconds}s',
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            ),
-            const SizedBox(height: 30),
-            
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // Minutes picker
-                Column(
-                  children: [
-                    const Text('Minutes', style: TextStyle(fontSize: 18)),
-                    SizedBox(
-                      height: 150,
-                      width: 100,
-                      child: CupertinoPicker(
-                        itemExtent: 40,
-                        onSelectedItemChanged: (int value) {
-                          setState(() {
-                            selectedMinutes = value;
-                          });
-                        },
-                        children: List.generate(6, (index) { // 0-5 minutes
-                          return Center(
-                            child: Text(
-                              '$index',
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                          );
-                        }),
-                      ),
-                    ),
-                  ],
-                ),
-                
-                // Seconds picker
-                Column(
-                  children: [
-                    const Text('Seconds', style: TextStyle(fontSize: 18)),
-                    SizedBox(
-                      height: 150,
-                      width: 100,
-                      child: CupertinoPicker(
-                        itemExtent: 40,
-                        onSelectedItemChanged: (int value) {
-                          setState(() {
-                            selectedSeconds = value * 15; // 0, 15, 30, 45
-                          });
-                        },
-                        children: List.generate(4, (index) {
-                          return Center(
-                            child: Text(
-                              '${index * 15}',
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                          );
-                        }),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 40),
-            
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GamePage(
-                      playerCount: widget.playerCount,
-                      gameMode: widget.gameMode,
-                      hasTimer: true,
-                      timerMinutes: selectedMinutes,
-                      timerSeconds: selectedSeconds,
-                    ),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(200, 60),
-              ),
-              child: const Text(
-                'Start Game',
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-          ],
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GamePage(
+          playerCount: playerCount,
+          gameMode: mode,
+          isDarkMode: isDarkMode,
         ),
       ),
     );
@@ -472,17 +645,13 @@ class _TimerSelectionPageState extends State<TimerSelectionPage> {
 class GamePage extends StatefulWidget {
   final int playerCount;
   final String gameMode;
-  final bool hasTimer;
-  final int timerMinutes;
-  final int timerSeconds;
+  final bool isDarkMode;
   
   const GamePage({
     super.key,
     required this.playerCount,
     required this.gameMode,
-    required this.hasTimer,
-    required this.timerMinutes,
-    required this.timerSeconds,
+    required this.isDarkMode,
   });
 
   @override
@@ -492,6 +661,7 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> {
   Map<String, List<String>> questions = {};
   List<String> availableQuestions = [];
+  List<String> usedQuestions = [];
   String currentQuestion = '';
   Timer? timer;
   int remainingSeconds = 0;
@@ -521,7 +691,6 @@ class _GamePageState extends State<GamePage> {
       }
     } catch (e) {
       debugPrint('Error loading questions: $e');
-      // Fallback to hardcoded questions if JSON fails
       setState(() {
         questions = {
           'cosy': ['What is your favorite childhood memory?', 'If you could have dinner with anyone, who would it be?', 'What makes you feel most comfortable and relaxed?'],
@@ -551,75 +720,43 @@ class _GamePageState extends State<GamePage> {
     final questionIndex = random.nextInt(availableQuestions.length);
     
     setState(() {
+      if (currentQuestion.isNotEmpty) {
+        usedQuestions.add(currentQuestion);
+      }
+      
       currentQuestion = availableQuestions[questionIndex];
       availableQuestions.removeAt(questionIndex);
     });
-
-    if (widget.hasTimer) {
-      _startTimer();
-    }
   }
 
-  void _startTimer() {
-    timer?.cancel();
-    remainingSeconds = (widget.timerMinutes * 60) + widget.timerSeconds;
-    
-    timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-      setState(() {
-        if (remainingSeconds > 0) {
-          remainingSeconds--;
-        } else {
-          timer.cancel();
-          _showNextQuestion();
-        }
-      });
+  void _showPreviousQuestion() {
+    if (usedQuestions.isEmpty) {
+      return;
+    }
+
+    setState(() {
+      if (currentQuestion.isNotEmpty) {
+        availableQuestions.add(currentQuestion);
+      }
+      
+      currentQuestion = usedQuestions.removeLast();
     });
   }
 
-  void _showGameEndDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('No More Questions!'),
-          content: const Text('You want to choose another category?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MainMenuPage()),
-                  (route) => false,
-                );
-              },
-              child: const Text('No - Go Home'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GameModeSelectionPage(
-                      playerCount: widget.playerCount,
-                    ),
-                  ),
-                );
-              },
-              child: const Text('Yes - Choose Category'),
-            ),
-          ],
-        );
-      },
-    );
+  void _onSwipe(DragEndDetails details) {
+    const double sensitivity = 100.0;
+    
+    if (details.primaryVelocity! > sensitivity) {
+      _showNextQuestion();
+    } else if (details.primaryVelocity! < -sensitivity) {
+      _showPreviousQuestion();
+    }
   }
 
-  String _formatTime(int seconds) {
-    int minutes = seconds ~/ 60;
-    int remainingSeconds = seconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+  // MODIFIED: This method now automatically returns to main menu
+  void _showGameEndDialog() {
+    // Automatically return to main menu when category is completed
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   @override
@@ -627,13 +764,19 @@ class _GamePageState extends State<GamePage> {
     Color backgroundColor;
     switch (widget.gameMode) {
       case 'cosy':
-        backgroundColor = Colors.brown.shade400;
+        backgroundColor = widget.isDarkMode 
+            ? const Color(0xFF6D4C41) // Warmer brown for dark mode
+            : const Color(0xFFD7CCC8); // Lighter brown for light mode
         break;
       case 'sexy':
-        backgroundColor = Colors.pink.shade500;
+        backgroundColor = widget.isDarkMode 
+            ? const Color(0xFFC2185B) // Deeper pink for dark mode
+            : const Color(0xFFF8BBD9); // Softer pink for light mode
         break;
       case 'fun':
-        backgroundColor = Colors.orange.shade500;
+        backgroundColor = widget.isDarkMode 
+            ? const Color(0xFFFF8F00) // Vibrant orange for dark mode
+            : const Color(0xFFFFE0B2); // Peach for light mode
         break;
       default:
         backgroundColor = Theme.of(context).colorScheme.primary;
@@ -643,36 +786,13 @@ class _GamePageState extends State<GamePage> {
       backgroundColor: backgroundColor,
       body: SafeArea(
         child: GestureDetector(
-          onTap: () {
-            if (!isLoading) {
-              timer?.cancel();
-              _showNextQuestion();
-            }
-          },
+          onHorizontalDragEnd: _onSwipe,
           child: Container(
             width: double.infinity,
             height: double.infinity,
             padding: const EdgeInsets.all(24),
             child: Column(
               children: [
-                // Timer display (if enabled)
-                if (widget.hasTimer)
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: Text(
-                      _formatTime(remainingSeconds),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                
                 // Question display
                 Expanded(
                   child: Center(
@@ -682,23 +802,148 @@ class _GamePageState extends State<GamePage> {
                           )
                         : Text(
                             currentQuestion,
-                            style: const TextStyle(
+                            style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontSize: 32,
                               fontWeight: FontWeight.bold,
+                              shadows: [
+                                const Shadow(
+                                  offset: Offset(0, 0),
+                                  blurRadius: 15,
+                                  color: Colors.white,
+                                ),
+                                const Shadow(
+                                  offset: Offset(2, 2),
+                                  blurRadius: 8,
+                                  color: Colors.black45,
+                                ),
+                              ],
                             ),
                             textAlign: TextAlign.center,
                           ),
                   ),
                 ),
                 
-                // Instruction
+                // Home button in center
                 if (!isLoading)
-                  const Text(
-                    'Tap anywhere for next question',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 16,
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        // Navigate to a fresh app instance
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => const TalkingGameApp()),
+                          (route) => false,
+                        );
+                      },
+                      backgroundColor: Colors.white.withValues(alpha: 0.3),
+                      foregroundColor: Colors.white,
+                      child: const Icon(Icons.home, size: 28),
+                    ),
+                  ),
+                
+                // Swipe instructions at bottom - fixed to bottom
+                if (!isLoading)
+                  Container(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Left arrow and instruction - now clickable
+                            GestureDetector(
+                              onTap: usedQuestions.isEmpty ? null : () {
+                                _showPreviousQuestion();
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: usedQuestions.isEmpty 
+                                      ? Colors.transparent 
+                                      : Colors.white.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_back_ios,
+                                      color: usedQuestions.isEmpty 
+                                          ? Colors.white30 
+                                          : Colors.white70,
+                                      size: 20,
+                                    ),
+                                    Text(
+                                      'Previous',
+                                      style: GoogleFonts.poppins(
+                                        color: usedQuestions.isEmpty 
+                                            ? Colors.white30 
+                                            : Colors.white70,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            
+                            // Center instruction
+                            Text(
+                              'Swipe or tap arrows',
+                              style: GoogleFonts.poppins(
+                                color: Colors.white70,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            
+                            // Right arrow and instruction - now clickable
+                            GestureDetector(
+                              onTap: availableQuestions.isEmpty ? null : () {
+                                _showNextQuestion();
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: availableQuestions.isEmpty 
+                                      ? Colors.transparent 
+                                      : Colors.white.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Next',
+                                      style: GoogleFonts.poppins(
+                                        color: availableQuestions.isEmpty 
+                                            ? Colors.white30 
+                                            : Colors.white70,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: availableQuestions.isEmpty 
+                                          ? Colors.white30 
+                                          : Colors.white70,
+                                      size: 20,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          '${usedQuestions.length + 1} of ${usedQuestions.length + availableQuestions.length + 1}',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white60,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
               ],
@@ -706,139 +951,153 @@ class _GamePageState extends State<GamePage> {
           ),
         ),
       ),
-      // Home button in bottom right corner
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Show confirmation dialog before going home
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Exit Game'),
-                content: const Text('Are you sure you want to exit the game and go home?'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close dialog
-                    },
-                    child: const Text('Cancel'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      timer?.cancel(); // Stop timer
-                      Navigator.of(context).pop(); // Close dialog
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MainMenuPage()),
-                        (route) => false,
-                      );
-                    },
-                    child: const Text('Exit'),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-        backgroundColor: Colors.white.withValues(alpha: 0.2),
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.home),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
 
 class RulesPage extends StatelessWidget {
-  const RulesPage({super.key});
+  final bool isDarkMode;
+  
+  const RulesPage({super.key, required this.isDarkMode});
+
+  List<Color> get gradientColors {
+    if (isDarkMode) {
+      return [const Color(0xFF2c3e50), const Color(0xFF34495e)];
+    } else {
+      return [const Color(0xFF667eea), const Color(0xFF764ba2)];
+    }
+  }
+
+  Color get textColor => isDarkMode ? Colors.white : Colors.white;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Rules'),
-        centerTitle: true,
-      ),
-      body: const Padding(
-        padding: EdgeInsets.all(24.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'How to Play',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 24),
-              
-              Text(
-                'Setup:',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                '• Choose the number of players (2-10)\n'
-                '• Select your preferred game mode:\n'
-                '  ☕ Cosy - Warm, comfortable conversations\n'
-                '  💋 Sexy - Intimate and romantic questions\n'
-                '  🎉 Fun - Light-hearted and entertaining\n'
-                '• Decide if you want a timer for added intensity',
-                style: TextStyle(fontSize: 16, height: 1.5),
-              ),
-              SizedBox(height: 24),
-              
-              Text(
-                'Playing:',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                '• Questions will appear full screen\n'
-                '• Take turns reading and answering questions\n'
-                '• Tap anywhere on the screen for the next question\n'
-                '• If timer is enabled, it will count down at the top\n'
-                '• Questions are randomly selected and never repeat',
-                style: TextStyle(fontSize: 16, height: 1.5),
-              ),
-              SizedBox(height: 24),
-              
-              Text(
-                'Game End:',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                '• When all questions in a category are used up, you can:\n'
-                '  - Choose a different category to continue\n'
-                '  - Return to the main menu to start over\n\n'
-                'Remember: The goal is to have meaningful conversations and connect with each other!',
-                style: TextStyle(fontSize: 16, height: 1.5),
-              ),
-              SizedBox(height: 32),
-              
-              Center(
-                child: Text(
-                  '🎙️ Enjoy your conversations! 🎙️',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: gradientColors,
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Back button
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: Icon(Icons.arrow_back, color: textColor),
                   ),
-                ),
+                  const SizedBox(height: 20),
+                  
+                  Text(
+                    'How to Play',
+                    style: GoogleFonts.poppins(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                      shadows: [
+                        Shadow(
+                          offset: const Offset(0, 0),
+                          blurRadius: 10,
+                          color: textColor.withValues(alpha: 0.5),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  
+                  Text(
+                    'Setup:',
+                    style: GoogleFonts.poppins(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '• Choose the number of players (2-10)\n'
+                    '• Select your preferred game mode:\n'
+                    '  ☕ Cosy - Warm, comfortable conversations\n'
+                    '  💋 Sexy - Intimate and romantic questions\n'
+                    '  🎉 Fun - Light-hearted and entertaining',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16, 
+                      height: 1.5,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  
+                  Text(
+                    'Playing:',
+                    style: GoogleFonts.poppins(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '• Questions will appear full screen\n'
+                    '• Take turns reading and answering questions\n'
+                    '• Swipe right for next question, left for previous\n'
+                    '• Questions are randomly selected and never repeat',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16, 
+                      height: 1.5,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  
+                  Text(
+                    'Game End:',
+                    style: GoogleFonts.poppins(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '• When all questions in a category are used up, you will automatically return to the main menu\n'
+                    '• You can then start a new game with the same or different settings\n\n'
+                    'Remember: The goal is to have meaningful conversations and connect with each other!',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16, 
+                      height: 1.5,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  
+                  Center(
+                    child: Text(
+                      '🎙️ Enjoy your conversations! 🎙️',
+                      style: GoogleFonts.poppins(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: textColor,
+                        shadows: [
+                          Shadow(
+                            offset: const Offset(0, 0),
+                            blurRadius: 10,
+                            color: textColor.withValues(alpha: 0.5),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -847,65 +1106,108 @@ class RulesPage extends StatelessWidget {
 }
 
 class CreditsPage extends StatelessWidget {
-  const CreditsPage({super.key});
+  final bool isDarkMode;
+  
+  const CreditsPage({super.key, required this.isDarkMode});
+
+  List<Color> get gradientColors {
+    if (isDarkMode) {
+      return [const Color(0xFF2c3e50), const Color(0xFF34495e)];
+    } else {
+      return [const Color(0xFF667eea), const Color(0xFF764ba2)];
+    }
+  }
+
+  Color get textColor => isDarkMode ? Colors.white : Colors.white;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Credits'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Heart decoration
-            const Text(
-              '💕',
-              style: TextStyle(fontSize: 60),
-            ),
-            const SizedBox(height: 30),
-            
-            // Main message
-            const Text(
-              'Made for my beautiful wife',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w300,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: gradientColors,
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Back button
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(Icons.arrow_back, color: textColor),
+                ),
               ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            
-            Text(
-              'Otilia Stenhøj',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
+              
+              // Main content
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Heart decoration
+                      const Text(
+                        '💕',
+                        style: TextStyle(fontSize: 60),
+                      ),
+                      const SizedBox(height: 30),
+                      
+                      // Main message
+                      Text(
+                        'Made for my beautiful wife',
+                        style: GoogleFonts.poppins(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w300,
+                          color: textColor,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      
+                      Text(
+                        'Otilia Stenhøj',
+                        style: GoogleFonts.poppins(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: textColor,
+                          shadows: [
+                            Shadow(
+                              offset: const Offset(0, 0),
+                              blurRadius: 15,
+                              color: textColor.withValues(alpha: 0.5),
+                            ),
+                          ],
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 40),
+                      
+                      // Additional decoration
+                      const Text(
+                        '🎙️ ❤️ 🎙️',
+                        style: TextStyle(fontSize: 30),
+                      ),
+                      const SizedBox(height: 20),
+                      
+                      Text(
+                        'With love and conversations',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontStyle: FontStyle.italic,
+                          color: textColor,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 40),
-            
-            // Additional decoration
-            const Text(
-              '🎙️ ❤️ 🎙️',
-              style: TextStyle(fontSize: 30),
-            ),
-            const SizedBox(height: 20),
-            
-            const Text(
-              'With love and conversations',
-              style: TextStyle(
-                fontSize: 16,
-                fontStyle: FontStyle.italic,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
