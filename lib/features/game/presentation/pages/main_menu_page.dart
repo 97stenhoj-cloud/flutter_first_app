@@ -96,207 +96,203 @@ class _MainMenuPageState extends State<MainMenuPage> {
         : [const Color(0xFFF8BBD9), const Color(0xFFF48FB1)];
 
     return Scaffold(
-      body: Stack(
-        children: [
-          // Gradient background
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: ThemeHelper.getMainMenuGradient(isDarkMode),
-                stops: const [0.0, 0.5, 1.0],
-              ),
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: ThemeHelper.getMainMenuGradient(isDarkMode),
+            stops: const [0.0, 0.5, 1.0],
           ),
-          
-          // Main content with scroll
-          SafeArea(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
-                    ),
-                    child: IntrinsicHeight(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: AppConstants.defaultPadding),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppConstants.defaultPadding),
+            child: Column(
+              children: [
+                // App bar with account and theme toggle
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Account icon (left)
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProfilePage(isDarkMode: isDarkMode),
+                            ),
+                          ).then((_) {
+                            setState(() {});
+                          });
+                        },
+                        icon: Icon(
+                          Icons.account_circle,
+                          color: ThemeHelper.getTextColor(isDarkMode),
+                          size: 28,
+                        ),
+                        tooltip: 'Profile',
+                      ),
+                      // App title (center)
+                      Text(
+                        l10n.appTitle,
+                        style: GoogleFonts.poppins(
+                          color: ThemeHelper.getTextColor(isDarkMode),
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      // Theme toggle (right)
+                      IconButton(
+                        onPressed: () {
+                          themeNotifier.toggleTheme();
+                          setState(() {});
+                        },
+                        icon: Icon(
+                          isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                          color: ThemeHelper.getTextColor(isDarkMode),
+                          size: 28,
+                        ),
+                        tooltip: isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+                      ),
+                    ],
+                  ),
+                ),
+                
+                // Main content
+                Expanded(
+                  child: Column(
+                    children: [
+                      // Logo at top
+                      const SizedBox(height: 20),
+                      Image.network(
+                        'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/AppIcon/AppIcon.png',
+                        width: 200,
+                        height: 200,
+                        fit: BoxFit.contain,
+                        cacheWidth: 200,
+                        cacheHeight: 200,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return SizedBox(
+                            width: 200,
+                            height: 200,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                    : null,
+                                color: ThemeHelper.getTextColor(isDarkMode),
+                                strokeWidth: 2,
+                              ),
+                            ),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          debugPrint('Error loading logo: $error');
+                          return Icon(
+                            Icons.chat_bubble, 
+                            size: 100, 
+                            color: ThemeHelper.getTextColor(isDarkMode),
+                          );
+                        },
+                      ),
+                      
+                      // Negative space to overlap with logo's transparent area
+                      Transform.translate(
+                        offset: const Offset(0, -40),  // Move up 40px to overlap
                         child: Column(
                           children: [
-                            // App bar with account and theme toggle
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              width: double.infinity,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  // Account icon (left)
-                                  IconButton(
+                            // Title and buttons centered
+                            Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  // App Title
+                                  Text(
+                                    l10n.appTitle,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 36,
+                                      fontWeight: FontWeight.bold,
+                                      color: ThemeHelper.getTextColor(isDarkMode),
+                                      shadows: [
+                                        Shadow(
+                                          offset: const Offset(0, 0),
+                                          blurRadius: 20,
+                                          color: ThemeHelper.getTextColor(isDarkMode).withValues(alpha: 0.5),
+                                        ),
+                                        const Shadow(
+                                          offset: Offset(2, 2),
+                                          blurRadius: 4,
+                                          color: Colors.black45,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 40),
+                                  
+                                  // Start Button
+                                  _buildLayeredButton(
+                                    text: l10n.start,
                                     onPressed: () {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => ProfilePage(isDarkMode: isDarkMode),
+                                          builder: (context) => GameModeSelectionPage(
+                                            playerCount: 2,
+                                            isDarkMode: isDarkMode,
+                                          ),
                                         ),
-                                      ).then((_) {
-                                        setState(() {});
-                                      });
+                                      );
                                     },
-                                    icon: Icon(
-                                      Icons.account_circle,
-                                      color: ThemeHelper.getTextColor(isDarkMode),
-                                      size: 28,
-                                    ),
-                                    tooltip: 'Profile',
+                                    colors: buttonColors,
                                   ),
-                                  // App title (center)
-                                  Text(
-                                    l10n.appTitle,
-                                    style: GoogleFonts.poppins(
-                                      color: ThemeHelper.getTextColor(isDarkMode),
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  // Theme toggle (right)
-                                  IconButton(
+                                  const SizedBox(height: 20),
+                                  
+                                  // Settings Button
+                                  _buildLayeredButton(
+                                    text: l10n.settings,
                                     onPressed: () {
-                                      themeNotifier.toggleTheme();
-                                      setState(() {});
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => SettingsMainPage(isDarkMode: isDarkMode),
+                                        ),
+                                      );
                                     },
-                                    icon: Icon(
-                                      isDarkMode ? Icons.light_mode : Icons.dark_mode,
-                                      color: ThemeHelper.getTextColor(isDarkMode),
-                                      size: 28,
-                                    ),
-                                    tooltip: isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+                                    colors: buttonColors,
+                                  ),
+                                  const SizedBox(height: 20),
+                                  
+                                  // How to Play Button
+                                  _buildLayeredButton(
+                                    text: l10n.howToPlay,
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => RulesPage(isDarkMode: isDarkMode),
+                                        ),
+                                      );
+                                    },
+                                    colors: buttonColors,
                                   ),
                                 ],
-                              ),
-                            ),
-                            
-                            // Main content - centered vertically
-                            Expanded(
-                              child: Center(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    // Logo above title (5x bigger - 250x250)
-                                    Image.network(
-                                      'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/AppIcon/AppIcon.png',
-                                      width: 250,
-                                      height: 250,
-                                      fit: BoxFit.contain,
-                                      loadingBuilder: (context, child, loadingProgress) {
-                                        if (loadingProgress == null) return child;
-                                        return SizedBox(
-                                          width: 250,
-                                          height: 250,
-                                          child: Center(
-                                            child: CircularProgressIndicator(
-                                              value: loadingProgress.expectedTotalBytes != null
-                                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                                  : null,
-                                              color: ThemeHelper.getTextColor(isDarkMode),
-                                              strokeWidth: 3,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      errorBuilder: (context, error, stackTrace) {
-                                        return Icon(
-                                          Icons.chat_bubble, 
-                                          size: 250, 
-                                          color: ThemeHelper.getTextColor(isDarkMode),
-                                        );
-                                      },
-                                    ),
-                                    const SizedBox(height: 20),
-                                    
-                                    // App Title below logo
-                                    Text(
-                                      l10n.appTitle,
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 36,
-                                        fontWeight: FontWeight.bold,
-                                        color: ThemeHelper.getTextColor(isDarkMode),
-                                        shadows: [
-                                          Shadow(
-                                            offset: const Offset(0, 0),
-                                            blurRadius: 20,
-                                            color: ThemeHelper.getTextColor(isDarkMode).withValues(alpha: 0.5),
-                                          ),
-                                          const Shadow(
-                                            offset: Offset(2, 2),
-                                            blurRadius: 4,
-                                            color: Colors.black45,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 50),
-                                    
-                                    // Start Button
-                                    _buildLayeredButton(
-                                      text: l10n.start,
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => GameModeSelectionPage(
-                                              playerCount: 2,
-                                              isDarkMode: isDarkMode,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      colors: buttonColors,
-                                    ),
-                                    const SizedBox(height: 20),
-                                    
-                                    // Settings Button
-                                    _buildLayeredButton(
-                                      text: l10n.settings,
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => SettingsMainPage(isDarkMode: isDarkMode),
-                                          ),
-                                        );
-                                      },
-                                      colors: buttonColors,
-                                    ),
-                                    const SizedBox(height: 20),
-                                    
-                                    // How to Play Button
-                                    _buildLayeredButton(
-                                      text: l10n.howToPlay,
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => RulesPage(isDarkMode: isDarkMode),
-                                          ),
-                                        );
-                                      },
-                                      colors: buttonColors,
-                                    ),
-                                  ],
-                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                );
-              },
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

@@ -132,7 +132,30 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noAdsForever => 'Sin Anuncios Para Siempre';
 
   @override
-  String premiumActivated(Object bundle) {
-    return '¡Premium activado! Anuncios eliminados. Paquete $bundle desbloqueado.';
+  String premiumActivatedMessage(Object bundle) {
+    return 'Premium activated! Ads removed. $bundle bundle unlocked.';
+  }
+
+  @override
+  String get adNotReady => 'Ad not ready. Continuing without ad.';
+
+  @override
+  String get adLoadingContinue => 'Ad Loading... Continue';
+
+  @override
+  String get pricePerMonth => '59 DKK/month';
+
+  @override
+  String noQuestionsFoundMessage(Object category, Object mode) {
+    return 'No questions found for $category in $mode mode';
+  }
+
+  @override
+  String get errorLoadingQuestions =>
+      'Error loading questions. Please check your connection.';
+
+  @override
+  String failedToLoadQuestions(Object error) {
+    return 'Failed to load questions: $error';
   }
 }
