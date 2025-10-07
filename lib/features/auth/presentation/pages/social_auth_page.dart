@@ -4,6 +4,7 @@ import 'dart:io' show Platform;
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/utils/unlock_manager.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class SocialAuthPage extends StatefulWidget {
   final bool isDarkMode;
@@ -15,6 +16,7 @@ class SocialAuthPage extends StatefulWidget {
 }
 
 class _SocialAuthPageState extends State<SocialAuthPage> {
+
   final authService = AuthService();
   final unlockManager = UnlockManager();
   
@@ -22,6 +24,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
   String? _errorMessage;
 
   Future<void> _handleGoogleSignIn() async {
+    final l10n = AppLocalizations.of(context)!;
     setState(() {
       _isLoading = true;
       _errorMessage = null;
@@ -36,7 +39,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
       }
     } catch (e) {
       setState(() {
-        _errorMessage = 'Google Sign In failed. Please try again.';
+        _errorMessage = l10n.googleSignInFailed;
       });
     } finally {
       if (mounted) {
@@ -48,6 +51,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
   }
 
   Future<void> _handleAppleSignIn() async {
+      final l10n = AppLocalizations.of(context)!;
     setState(() {
       _isLoading = true;
       _errorMessage = null;
@@ -62,7 +66,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
       }
     } catch (e) {
       setState(() {
-        _errorMessage = 'Apple Sign In failed. Please try again.';
+        _errorMessage = l10n.appleSignInFailed;
       });
     } finally {
       if (mounted) {
@@ -73,7 +77,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
     }
   }
 
-  Widget _buildSocialButton({
+  Widget _buildSocialButton({    
     required String text,
     required VoidCallback onPressed,
     required Color backgroundColor,
@@ -110,6 +114,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -157,7 +162,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                         
                         // Title
                         Text(
-                          'Welcome to Connect!',
+                          l10n.welcomeToConnect,
                           style: GoogleFonts.poppins(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
@@ -168,7 +173,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                         const SizedBox(height: 12),
                         
                         Text(
-                          'Sign in to sync your subscriptions and unlock premium content',
+                          l10n.signInToSync,
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             color: Colors.white70,
@@ -181,7 +186,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                         // Apple Sign In (iOS/macOS only)
                         if (Platform.isIOS || Platform.isMacOS) ...[
                           _buildSocialButton(
-                            text: 'Continue with Apple',
+                            text: l10n.continueWithApple,
                             onPressed: _handleAppleSignIn,
                             backgroundColor: Colors.black,
                             textColor: Colors.white,
@@ -192,7 +197,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                         
                         // Google Sign In
                         _buildSocialButton(
-                          text: 'Continue with Google',
+                          text: l10n.continueWithGoogle,
                           onPressed: _handleGoogleSignIn,
                           backgroundColor: Colors.white,
                           textColor: Colors.black87,
@@ -226,7 +231,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                         TextButton(
                           onPressed: () => Navigator.pop(context),
                           child: Text(
-                            'Skip for now',
+                            l10n.skipForNow,
                             style: GoogleFonts.poppins(
                               color: Colors.white70,
                               fontSize: 14,
@@ -238,7 +243,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                         
                         // Terms
                         Text(
-                          'By continuing, you agree to our Terms of Service and Privacy Policy',
+                          l10n.byContining,
                           style: GoogleFonts.poppins(
                             fontSize: 12,
                             color: Colors.white60,

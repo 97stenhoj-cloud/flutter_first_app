@@ -5,6 +5,7 @@ import '../../../../core/utils/unlock_manager.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/supabase_service.dart';
 import 'game_page.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class CategorySelectionPage extends StatefulWidget {
   final int playerCount;
@@ -23,6 +24,7 @@ class CategorySelectionPage extends StatefulWidget {
 }
 
 class _CategorySelectionPageState extends State<CategorySelectionPage> {
+  
   final unlockManager = UnlockManager();
   final supabaseService = SupabaseService();
   
@@ -52,6 +54,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -80,7 +83,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
                     const SizedBox(width: 16),
                     Expanded(
                       child: Text(
-                        'Choose a Category',
+                        l10n.chooseCategory,
                         style: GoogleFonts.poppins(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -103,7 +106,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
                       : categories.isEmpty
                           ? Center(
                               child: Text(
-                                'No categories found',
+                                l10n.noCategoriesFound,
                                 style: GoogleFonts.poppins(
                                   fontSize: 18,
                                   color: ThemeHelper.getTextColor(widget.isDarkMode),
@@ -248,6 +251,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
   }
 
   void _showSubscriptionDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -259,7 +263,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Choose Your Subscription',
+              l10n.chooseSubscription,
               style: GoogleFonts.poppins(
                 fontWeight: FontWeight.bold,
                 fontSize: 24,
@@ -268,7 +272,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Unlock premium categories and get access to exclusive question packs',
+              l10n.subscriptionDescription,
               style: GoogleFonts.poppins(
                 fontSize: 14,
                 color: Colors.grey[600],

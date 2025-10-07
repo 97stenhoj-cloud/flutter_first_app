@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/utils/unlock_manager.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class AuthPage extends StatefulWidget {
   final bool isDarkMode;
@@ -72,6 +73,7 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -111,7 +113,7 @@ class _AuthPageState extends State<AuthPage> {
                       children: [
                         // Title
                         Text(
-                          _isLogin ? 'Welcome Back!' : 'Create Account',
+                          _isLogin ? l10n.welcomeBack : l10n.createAccount,
                           style: GoogleFonts.poppins(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
@@ -143,7 +145,7 @@ class _AuthPageState extends State<AuthPage> {
                                 color: Colors.black,
                               ),
                               decoration: InputDecoration(
-                                labelText: 'Display Name',
+                                labelText: l10n.displayName,
                                 labelStyle: GoogleFonts.poppins(
                                   color: Colors.grey[600],
                                   fontSize: 16,
@@ -186,7 +188,7 @@ class _AuthPageState extends State<AuthPage> {
                               color: Colors.black,
                             ),
                             decoration: InputDecoration(
-                              labelText: 'Email',
+                              labelText: l10n.email,
                               labelStyle: GoogleFonts.poppins(
                                 color: Colors.grey[600],
                                 fontSize: 16,
@@ -293,7 +295,7 @@ class _AuthPageState extends State<AuthPage> {
                                   ),
                                 )
                               : Text(
-                                  _isLogin ? 'Sign In' : 'Sign Up',
+                                  _isLogin ? l10n.signIn : l10n.signUp,
                                   style: GoogleFonts.poppins(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
@@ -313,8 +315,8 @@ class _AuthPageState extends State<AuthPage> {
                           },
                           child: Text(
                             _isLogin
-                                ? "Don't have an account? Sign Up"
-                                : 'Already have an account? Sign In',
+                                ? l10n.dontHaveAccount
+                                : l10n.alreadyHaveAccount,
                             style: GoogleFonts.poppins(
                               color: ThemeHelper.getTextColor(widget.isDarkMode),
                               fontSize: 14,
@@ -327,7 +329,7 @@ class _AuthPageState extends State<AuthPage> {
                         TextButton(
                           onPressed: () => Navigator.pop(context),
                           child: Text(
-                            'Skip for now',
+                            l10n.skipForNow,
                             style: GoogleFonts.poppins(
                               color: Colors.white70,
                               fontSize: 14,
