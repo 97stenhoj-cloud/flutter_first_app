@@ -1,5 +1,5 @@
-name: flutter_first_app
-description: "A new Flutter project."
+name: connect
+description: Connect - A conversation game app
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -30,10 +30,23 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
+  google_mobile_ads: ^6.0.0
+  google_fonts: ^6.1.0
+    # Add these NEW dependencies
+  supabase_flutter: ^2.5.0
+  shared_preferences: ^2.2.0
+    # Add these for social auth
+  google_sign_in: ^6.2.1
+  sign_in_with_apple: ^6.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  video_player: ^2.8.1  # Add this line
+  chewie: ^1.7.5
 
 dev_dependencies:
   flutter_test:
@@ -52,8 +65,10 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   uses-material-design: true
+  generate: true
   assets:
     - assets/data/
+    - assets/images/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
