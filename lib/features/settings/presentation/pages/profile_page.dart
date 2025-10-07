@@ -5,6 +5,7 @@ import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/utils/unlock_manager.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class ProfilePage extends StatefulWidget {
   final bool isDarkMode;
@@ -33,6 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _handleSignOut() async {
+    final l10n = AppLocalizations.of(context)!;
     final navigator = Navigator.of(context);
     final messenger = ScaffoldMessenger.of(context);
     
@@ -44,11 +46,11 @@ class _ProfilePageState extends State<ProfilePage> {
           borderRadius: BorderRadius.circular(20),
         ),
         title: Text(
-          'Sign Out',
+          l10n.signOut,
           style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
         ),
         content: Text(
-          'Are you sure you want to sign out?',
+          l10n.signOutConfirm,
           style: GoogleFonts.poppins(),
         ),
         actions: [
@@ -66,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
               foregroundColor: Colors.white,
             ),
             child: Text(
-              'Sign Out',
+              l10n.signOut,
               style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
             ),
           ),
@@ -83,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
       messenger.showSnackBar(
         SnackBar(
           content: Text(
-            'Signed out successfully',
+            l10n.signedOutSuccess,
             style: GoogleFonts.poppins(),
           ),
           backgroundColor: Colors.green,
@@ -93,11 +95,12 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   String _formatDate(String dateString) {
+    final l10n = AppLocalizations.of(context)!;
     try {
       final date = DateTime.parse(dateString);
       return '${date.day}/${date.month}/${date.year}';
     } catch (e) {
-      return 'Unknown';
+      return l10n.unknown;
     }
   }
 
@@ -200,6 +203,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isLoggedIn = authService.isLoggedIn;
     final user = authService.currentUser;
 
@@ -230,7 +234,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const SizedBox(width: 16),
                     Text(
-                      'Profile',
+                      l10n.profile,
                       style: GoogleFonts.poppins(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -298,7 +302,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           const Icon(Icons.star, size: 18, color: Colors.white),
                                           const SizedBox(width: 6),
                                           Text(
-                                            'Premium Member',
+                                            l10n.premiumMember,
                                             style: GoogleFonts.poppins(
                                               fontSize: 14,
                                               fontWeight: FontWeight.bold,
@@ -316,7 +320,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       child: Text(
-                                        'Free Account',
+                                        l10n.freeAccount,
                                         style: GoogleFonts.poppins(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,
@@ -332,7 +336,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             
                             // Account Info
                             Text(
-                              'Account Information',
+                              l10n.accountInformation,
                               style: GoogleFonts.poppins(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -343,8 +347,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             
                             _buildInfoCard(
                               icon: Icons.email,
-                              title: 'Email',
-                              value: user?.email ?? 'Not available',
+                              title: l10n.email,
+                              value: user?.email ?? l10n.notAvailable,
                               iconColor: Colors.blue,
                             ),
                             
@@ -352,10 +356,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             
                             _buildInfoCard(
                               icon: Icons.calendar_today,
-                              title: 'Member Since',
+                              title: l10n.memberSince,
                               value: user != null
                                   ? _formatDate(user.createdAt)
-                                  : 'Unknown',
+                                  : l10n.unknown,
                               iconColor: Colors.green,
                             ),
                             
@@ -364,7 +368,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             // Subscription Info
                             if (unlockManager.isPremium) ...[
                               Text(
-                                'Active Subscriptions',
+                                l10n.activeSubscriptions,
                                 style: GoogleFonts.poppins(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -424,7 +428,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               onPressed: _handleSignOut,
                               icon: const Icon(Icons.logout),
                               label: Text(
-                                'Sign Out',
+                                l10n.signOut,
                                 style: GoogleFonts.poppins(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
@@ -469,7 +473,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               const SizedBox(height: 32),
                               Text(
-                                'Not Signed In',
+                                l10n.notSignedIn,
                                 style: GoogleFonts.poppins(
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
@@ -500,7 +504,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 },
                                 icon: const Icon(Icons.login),
                                 label: Text(
-                                  'Sign In / Sign Up',
+                                  l10n.signInSignUp,
                                   style: GoogleFonts.poppins(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
