@@ -54,7 +54,6 @@ class _AuthPageState extends State<AuthPage> {
         );
       }
 
-      // Initialize unlock manager with user data
       await unlockManager.initialize();
 
       if (mounted) {
@@ -74,6 +73,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -86,7 +86,6 @@ class _AuthPageState extends State<AuthPage> {
         child: SafeArea(
           child: Column(
             children: [
-              // Back button
               Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
@@ -102,7 +101,6 @@ class _AuthPageState extends State<AuthPage> {
                 ),
               ),
               
-              // Scrollable content
               Expanded(
                 child: Center(
                   child: SingleChildScrollView(
@@ -111,149 +109,78 @@ class _AuthPageState extends State<AuthPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Title
                         Text(
                           _isLogin ? l10n.welcomeBack : l10n.createAccount,
                           style: GoogleFonts.poppins(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
-                            color: ThemeHelper.getTextColor(widget.isDarkMode),
+                            color: Colors.white,
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        
                         const SizedBox(height: 40),
                         
-                        // Name field (only for signup)
                         if (!_isLogin) ...[
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.1),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: TextField(
-                              controller: _nameController,
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                color: Colors.black,
+                          TextField(
+                            controller: _nameController,
+                            style: GoogleFonts.poppins(color: Colors.white),
+                            decoration: InputDecoration(
+                              labelText: l10n.displayName,
+                              labelStyle: GoogleFonts.poppins(color: Colors.white70),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(color: Colors.white54),
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              decoration: InputDecoration(
-                                labelText: l10n.displayName,
-                                labelStyle: GoogleFonts.poppins(
-                                  color: Colors.grey[600],
-                                  fontSize: 16,
-                                ),
-                                floatingLabelBehavior: FloatingLabelBehavior.never,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide.none,
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 20,
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(color: Colors.white),
+                                borderRadius: BorderRadius.circular(12),
                               ),
+                              prefixIcon: const Icon(Icons.person, color: Colors.white70),
                             ),
                           ),
                           const SizedBox(height: 16),
                         ],
                         
-                        // Email field
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.1),
-                                blurRadius: 10,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: TextField(
-                            controller: _emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              color: Colors.black,
+                        TextField(
+                          controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          style: GoogleFonts.poppins(color: Colors.white),
+                          decoration: InputDecoration(
+                            labelText: l10n.email,
+                            labelStyle: GoogleFonts.poppins(color: Colors.white70),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white54),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            decoration: InputDecoration(
-                              labelText: l10n.email,
-                              labelStyle: GoogleFonts.poppins(
-                                color: Colors.grey[600],
-                                fontSize: 16,
-                              ),
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 20,
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(12),
                             ),
+                            prefixIcon: const Icon(Icons.email, color: Colors.white70),
                           ),
                         ),
-                        
                         const SizedBox(height: 16),
                         
-                        // Password field
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.1),
-                                blurRadius: 10,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: TextField(
-                            controller: _passwordController,
-                            obscureText: true,
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              color: Colors.black,
+                        TextField(
+                          controller: _passwordController,
+                          obscureText: true,
+                          style: GoogleFonts.poppins(color: Colors.white),
+                          decoration: InputDecoration(
+                            labelText: l10n.password,
+                            labelStyle: GoogleFonts.poppins(color: Colors.white70),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white54),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            decoration: InputDecoration(
-                              labelText: 'Password',
-                              labelStyle: GoogleFonts.poppins(
-                                color: Colors.grey[600],
-                                fontSize: 16,
-                              ),
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 20,
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(12),
                             ),
+                            prefixIcon: const Icon(Icons.lock, color: Colors.white70),
                           ),
                         ),
-                        
                         const SizedBox(height: 24),
                         
-                        // Error message
                         if (_errorMessage != null)
                           Container(
                             padding: const EdgeInsets.all(12),
@@ -273,27 +200,18 @@ class _AuthPageState extends State<AuthPage> {
                             ),
                           ),
                         
-                        // Submit button
                         ElevatedButton(
                           onPressed: _isLoading ? null : _handleAuth,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFAD1457),
                             foregroundColor: Colors.white,
-                            minimumSize: const Size(double.infinity, 60),
+                            minimumSize: const Size(double.infinity, 56),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            elevation: 4,
                           ),
                           child: _isLoading
-                              ? const SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2.5,
-                                  ),
-                                )
+                              ? const CircularProgressIndicator(color: Colors.white)
                               : Text(
                                   _isLogin ? l10n.signIn : l10n.signUp,
                                   style: GoogleFonts.poppins(
@@ -302,10 +220,8 @@ class _AuthPageState extends State<AuthPage> {
                                   ),
                                 ),
                         ),
-                        
                         const SizedBox(height: 16),
                         
-                        // Toggle login/signup
                         TextButton(
                           onPressed: () {
                             setState(() {
@@ -314,24 +230,22 @@ class _AuthPageState extends State<AuthPage> {
                             });
                           },
                           child: Text(
-                            _isLogin
-                                ? l10n.dontHaveAccount
-                                : l10n.alreadyHaveAccount,
+                            _isLogin ? l10n.dontHaveAccount : l10n.alreadyHaveAccount,
                             style: GoogleFonts.poppins(
-                              color: ThemeHelper.getTextColor(widget.isDarkMode),
+                              color: Colors.white70,
                               fontSize: 14,
-                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
                         
-                        // Skip for now button
+                        const SizedBox(height: 24),
+                        
                         TextButton(
                           onPressed: () => Navigator.pop(context),
                           child: Text(
                             l10n.skipForNow,
                             style: GoogleFonts.poppins(
-                              color: Colors.white70,
+                              color: Colors.white60,
                               fontSize: 14,
                             ),
                           ),

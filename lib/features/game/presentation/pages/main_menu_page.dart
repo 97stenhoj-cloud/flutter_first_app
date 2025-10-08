@@ -56,8 +56,8 @@ class _MainMenuPageState extends State<MainMenuPage> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color.fromRGBO(245, 100, 105, 1),
-                Color.fromRGBO(220, 75, 85, 1),
+                const Color.fromRGBO(245, 100, 105, 1),
+                const Color.fromRGBO(220, 75, 85, 1),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -91,10 +91,10 @@ class _MainMenuPageState extends State<MainMenuPage> {
     final themeNotifier = ThemeProvider.of(context);
     final isDarkMode = themeNotifier.isDarkMode;
     
-    List<Color> buttonColors = isDarkMode
-        ? [const Color(0xFFAD1457), const Color(0xFF880E4F)]
-        : [const Color(0xFFF8BBD9), const Color(0xFFF48FB1)];
-
+    final List<Color> buttonColors = isDarkMode
+        ? [const Color(0xFF2c3e50), const Color(0xFF34495e)]
+        : [const Color(0xFF667eea), const Color(0xFF764ba2)];
+    
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -102,64 +102,47 @@ class _MainMenuPageState extends State<MainMenuPage> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: ThemeHelper.getMainMenuGradient(isDarkMode),
-            stops: const [0.0, 0.5, 1.0],
           ),
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppConstants.defaultPadding),
+            padding: const EdgeInsets.all(AppConstants.defaultPadding),
             child: Column(
               children: [
-                // App bar with account and theme toggle
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  width: double.infinity,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Account icon (left)
-                      IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProfilePage(isDarkMode: isDarkMode),
-                            ),
-                          ).then((_) {
-                            setState(() {});
-                          });
-                        },
-                        icon: Icon(
-                          Icons.account_circle,
-                          color: ThemeHelper.getTextColor(isDarkMode),
-                          size: 28,
-                        ),
-                        tooltip: 'Profile',
+                // Top bar with profile and theme toggle
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Profile button
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfilePage(isDarkMode: isDarkMode),
+                          ),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.person,
+                        color: ThemeHelper.getTextColor(isDarkMode),
+                        size: 28,
                       ),
-                      // App title (center)
-                      Text(
-                        l10n.appTitle,
-                        style: GoogleFonts.poppins(
-                          color: ThemeHelper.getTextColor(isDarkMode),
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      tooltip: l10n.profile,
+                    ),
+                    // Theme toggle button
+                    IconButton(
+                      onPressed: () {
+                        themeNotifier.toggleTheme();
+                      },
+                      icon: Icon(
+                        isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                        color: ThemeHelper.getTextColor(isDarkMode),
+                        size: 28,
                       ),
-                      // Theme toggle (right)
-                      IconButton(
-                        onPressed: () {
-                          themeNotifier.toggleTheme();
-                          setState(() {});
-                        },
-                        icon: Icon(
-                          isDarkMode ? Icons.light_mode : Icons.dark_mode,
-                          color: ThemeHelper.getTextColor(isDarkMode),
-                          size: 28,
-                        ),
-                        tooltip: isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
-                      ),
-                    ],
-                  ),
+                      tooltip: isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+                    ),
+                  ],
                 ),
                 
                 // Main content
@@ -203,10 +186,9 @@ class _MainMenuPageState extends State<MainMenuPage> {
                       
                       // Negative space to overlap with logo's transparent area
                       Transform.translate(
-                        offset: const Offset(0, -40),  // Move up 40px to overlap
+                        offset: const Offset(0, -40),
                         child: Column(
                           children: [
-                            // Title and buttons centered
                             Center(
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -221,18 +203,13 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                       shadows: [
                                         Shadow(
                                           offset: const Offset(0, 0),
-                                          blurRadius: 20,
+                                          blurRadius: 10,
                                           color: ThemeHelper.getTextColor(isDarkMode).withValues(alpha: 0.5),
-                                        ),
-                                        const Shadow(
-                                          offset: Offset(2, 2),
-                                          blurRadius: 4,
-                                          color: Colors.black45,
                                         ),
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(height: 40),
+                                  const SizedBox(height: 60),
                                   
                                   // Start Button
                                   _buildLayeredButton(
@@ -241,10 +218,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => GameModeSelectionPage(
-                                            playerCount: 2,
-                                            isDarkMode: isDarkMode,
-                                          ),
+                                          builder: (context) => GameModeSelectionPage(isDarkMode: isDarkMode),
                                         ),
                                       );
                                     },

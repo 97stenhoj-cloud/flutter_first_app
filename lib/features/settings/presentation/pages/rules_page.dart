@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../l10n/app_localizations.dart';
+
 class RulesPage extends StatelessWidget {
   final bool isDarkMode;
   
@@ -11,6 +12,7 @@ class RulesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -27,7 +29,6 @@ class RulesPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Back button
                   IconButton(
                     onPressed: () => Navigator.pop(context),
                     icon: Icon(
@@ -40,7 +41,7 @@ class RulesPage extends StatelessWidget {
                   
                   Center(
                     child: Text(
-                      'How to Play',
+                      l10n.howToPlay,
                       style: GoogleFonts.poppins(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
@@ -82,15 +83,18 @@ class RulesPage extends StatelessWidget {
                     content: l10n.premiumFeaturesDesc,
                   ),
                   
-                  const SizedBox(height: 32),
-                  
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.3),
+                        width: 1,
+                      ),
                     ),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           l10n.proTips,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../auth/presentation/pages/social_auth_page.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/utils/unlock_manager.dart';
-import '../../../../l10n/app_localizations.dart';
 
 class ProfilePage extends StatefulWidget {
   final bool isDarkMode;
@@ -57,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
           TextButton(
             onPressed: () => Navigator.pop(context, false),
             child: Text(
-              'Cancel',
+              l10n.cancel,
               style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
             ),
           ),
@@ -95,12 +95,11 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   String _formatDate(String dateString) {
-    final l10n = AppLocalizations.of(context)!;
     try {
       final date = DateTime.parse(dateString);
       return '${date.day}/${date.month}/${date.year}';
     } catch (e) {
-      return l10n.unknown;
+      return AppLocalizations.of(context)!.unknown;
     }
   }
 
@@ -165,6 +164,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildSubscriptionCard(String bundleName) {
+    final l10n = AppLocalizations.of(context)!;
     final Map<String, Color> bundleColors = {
       'Couple': const Color(0xFFAD1457),
       'Friends': const Color(0xFFFF8F00),
@@ -189,7 +189,7 @@ class _ProfilePageState extends State<ProfilePage> {
           const Icon(Icons.check_circle, color: Colors.white, size: 20),
           const SizedBox(width: 8),
           Text(
-            '$bundleName Bundle',
+            l10n.bundle(bundleName),
             style: GoogleFonts.poppins(
               fontSize: 14,
               fontWeight: FontWeight.w600,
@@ -399,7 +399,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                         ),
                                         const SizedBox(width: 12),
                                         Text(
-                                          '${unlockManager.unlockedBundleCount} Bundle${unlockManager.unlockedBundleCount != 1 ? "s" : ""} Unlocked',
+                                          l10n.bundlesUnlocked(
+                                            unlockManager.unlockedBundleCount,
+                                            unlockManager.unlockedBundleCount != 1 ? "s" : "",
+                                          ),
                                           style: GoogleFonts.poppins(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600,
@@ -482,7 +485,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               const SizedBox(height: 12),
                               Text(
-                                'Sign in to sync your subscriptions across devices and unlock premium content',
+                                l10n.signInToSync,
                                 style: GoogleFonts.poppins(
                                   fontSize: 16,
                                   color: Colors.white70,

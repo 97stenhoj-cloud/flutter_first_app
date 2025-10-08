@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/constants/app_constants.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'category_selection_page.dart';
 
 class GameModeSelectionPage extends StatelessWidget {
-  final int playerCount;
   final bool isDarkMode;
   
   const GameModeSelectionPage({
-    super.key, 
-    required this.playerCount,
+    super.key,
     required this.isDarkMode,
   });
 
@@ -26,7 +25,6 @@ class GameModeSelectionPage extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        // Outermost layer
         Container(
           width: AppConstants.largButtonWidth,
           height: AppConstants.largButtonHeight,
@@ -39,7 +37,6 @@ class GameModeSelectionPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
           ),
         ),
-        // Middle layer
         Container(
           width: AppConstants.largButtonWidth - 8,
           height: AppConstants.largButtonHeight - 8,
@@ -55,7 +52,6 @@ class GameModeSelectionPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
           ),
         ),
-        // Innermost layer (button)
         Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -65,16 +61,8 @@ class GameModeSelectionPage extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(4),
           ),
-          child: ElevatedButton.icon(
+          child: ElevatedButton(
             onPressed: onPressed,
-            icon: Text(emoji, style: const TextStyle(fontSize: 24)),
-            label: Text(
-              text,
-              style: GoogleFonts.poppins(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
             style: ElevatedButton.styleFrom(
               minimumSize: Size(
                 AppConstants.largButtonWidth - 16,
@@ -83,7 +71,23 @@ class GameModeSelectionPage extends StatelessWidget {
               backgroundColor: Colors.transparent,
               shadowColor: Colors.transparent,
               foregroundColor: Colors.white,
-              elevation: 0,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  emoji,
+                  style: const TextStyle(fontSize: 48),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  text,
+                  style: GoogleFonts.poppins(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -93,6 +97,8 @@ class GameModeSelectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -103,94 +109,71 @@ class GameModeSelectionPage extends StatelessWidget {
           ),
         ),
         child: SafeArea(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraints.maxHeight,
-                  ),
-                  child: IntrinsicHeight(
-                    child: Padding(
-                      padding: const EdgeInsets.all(AppConstants.defaultPadding),
-                      child: Column(
-                        children: [
-                          // Back button
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: IconButton(
-                              onPressed: () => Navigator.pop(context),
-                              icon: Icon(
-                                Icons.arrow_back, 
-                                color: ThemeHelper.getTextColor(isDarkMode), 
-                                size: 28
-                              ),
-                            ),
-                          ),
-                          
-                          // Main content - centered vertically
-                          Expanded(
-                            child: Center(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'Choose your game mode',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold,
-                                      color: ThemeHelper.getTextColor(isDarkMode),
-                                      shadows: [
-                                        Shadow(
-                                          offset: const Offset(0, 0),
-                                          blurRadius: 10,
-                                          color: ThemeHelper.getTextColor(isDarkMode).withValues(alpha: 0.5),
-                                        ),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  const SizedBox(height: 50),
-                                  
-                                  // Family Mode
-                                  _buildLayeredGameModeButton(
-                                    text: 'Family',
-                                    emoji: '☕',
-                                    onPressed: () => _selectMode(context, AppConstants.familyMode),
-                                    gameMode: 'family',
-                                    isDarkMode: isDarkMode,
-                                  ),
-                                  const SizedBox(height: 20),
-                                  
-                                  // Couple Mode
-                                  _buildLayeredGameModeButton(
-                                    text: 'Couple',
-                                    emoji: '💋',
-                                    onPressed: () => _selectMode(context, AppConstants.coupleMode),
-                                    gameMode: 'couple',
-                                    isDarkMode: isDarkMode,
-                                  ),
-                                  const SizedBox(height: 20),
-                                  
-                                  // Friends Mode
-                                  _buildLayeredGameModeButton(
-                                    text: 'Friends',
-                                    emoji: '🎉',
-                                    onPressed: () => _selectMode(context, AppConstants.friendsMode),
-                                    gameMode: 'friends',
-                                    isDarkMode: isDarkMode,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+          child: Padding(
+            padding: const EdgeInsets.all(AppConstants.defaultPadding),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: ThemeHelper.getTextColor(isDarkMode),
+                        size: 28,
                       ),
+                    ),
+                    const SizedBox(height: 20),
+                    Expanded(
+                      child: Text(
+                        l10n.chooseGameMode,
+                        style: GoogleFonts.poppins(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: ThemeHelper.getTextColor(isDarkMode),
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                
+                Expanded(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildLayeredGameModeButton(
+                          text: l10n.family,
+                          emoji: '👨‍👩‍👧‍👦',
+                          onPressed: () => _selectMode(context, AppConstants.familyMode),
+                          gameMode: 'family',
+                          isDarkMode: isDarkMode,
+                        ),
+                        const SizedBox(height: 20),
+                        
+                        _buildLayeredGameModeButton(
+                          text: l10n.couple,
+                          emoji: '💋',
+                          onPressed: () => _selectMode(context, AppConstants.coupleMode),
+                          gameMode: 'couple',
+                          isDarkMode: isDarkMode,
+                        ),
+                        const SizedBox(height: 20),
+                        
+                        _buildLayeredGameModeButton(
+                          text: l10n.friends,
+                          emoji: '🎉',
+                          onPressed: () => _selectMode(context, AppConstants.friendsMode),
+                          gameMode: 'friends',
+                          isDarkMode: isDarkMode,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              );
-            },
+              ],
+            ),
           ),
         ),
       ),
@@ -202,7 +185,6 @@ class GameModeSelectionPage extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => CategorySelectionPage(
-          playerCount: playerCount,
           gameMode: mode,
           isDarkMode: isDarkMode,
         ),
