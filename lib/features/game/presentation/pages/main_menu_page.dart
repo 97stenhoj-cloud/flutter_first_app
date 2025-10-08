@@ -18,72 +18,63 @@ class MainMenuPage extends StatefulWidget {
 
 class _MainMenuPageState extends State<MainMenuPage> {
   Widget _buildLayeredButton({
-    required String text,
-    required VoidCallback onPressed,
-    required List<Color> colors,
-  }) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        // Outermost layer
-        Container(
-          width: AppConstants.buttonWidth,
-          height: AppConstants.buttonHeight,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [colors[0], colors[1]],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+  required String text,
+  required VoidCallback onPressed,
+  required List<Color> colors,
+}) {
+  return Stack(
+    alignment: Alignment.center,
+    children: [
+      // Outermost layer
+      Container(
+        width: AppConstants.buttonWidth,
+        height: AppConstants.buttonHeight,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [colors[0], colors[1]],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
+      // Middle layer
+      Container(
+        width: AppConstants.buttonWidth - 8,
+        height: AppConstants.buttonHeight - 8,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [colors[0].withValues(alpha: 0.85), colors[1].withValues(alpha: 0.85)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
+      // Innermost layer (button) - REMOVED the hardcoded gradient Container
+      ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          minimumSize: const Size(AppConstants.buttonWidth - 16, AppConstants.buttonHeight - 16),
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          foregroundColor: Colors.white,
+          padding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(4),
           ),
         ),
-        // Middle layer
-        Container(
-          width: AppConstants.buttonWidth - 8,
-          height: AppConstants.buttonHeight - 8,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [colors[0].withValues(alpha: 0.85), colors[1].withValues(alpha: 0.85)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(4),
+        child: Text(
+          text,
+          style: GoogleFonts.poppins(
+            fontSize: 20, 
+            fontWeight: FontWeight.bold,
           ),
         ),
-        // Innermost layer (button)
-        Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                const Color.fromRGBO(245, 100, 105, 1),
-                const Color.fromRGBO(220, 75, 85, 1),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: ElevatedButton(
-            onPressed: onPressed,
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(AppConstants.buttonWidth - 16, AppConstants.buttonHeight - 16),
-              backgroundColor: Colors.transparent,
-              shadowColor: Colors.transparent,
-              foregroundColor: Colors.white,
-            ),
-            child: Text(
-              text,
-              style: GoogleFonts.poppins(
-                fontSize: 20, 
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
 
   @override
   Widget build(BuildContext context) {

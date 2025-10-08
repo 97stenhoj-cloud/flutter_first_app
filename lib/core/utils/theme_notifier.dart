@@ -28,6 +28,7 @@ class ThemeProvider extends InheritedWidget {
 
   @override
   bool updateShouldNotify(ThemeProvider oldWidget) {
-    return themeNotifier != oldWidget.themeNotifier;
+    // FIX: Compare the isDarkMode value, not just the object reference
+    return themeNotifier.isDarkMode != oldWidget.themeNotifier.isDarkMode;
   }
 }
