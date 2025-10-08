@@ -16,7 +16,6 @@ class SocialAuthPage extends StatefulWidget {
 }
 
 class _SocialAuthPageState extends State<SocialAuthPage> {
-
   final authService = AuthService();
   final unlockManager = UnlockManager();
   
@@ -51,7 +50,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
   }
 
   Future<void> _handleAppleSignIn() async {
-      final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context)!;
     setState(() {
       _isLoading = true;
       _errorMessage = null;
@@ -115,6 +114,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -127,7 +127,6 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
         child: SafeArea(
           child: Column(
             children: [
-              // Back button
               Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
@@ -143,7 +142,6 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                 ),
               ),
               
-              // Content
               Expanded(
                 child: Center(
                   child: SingleChildScrollView(
@@ -152,7 +150,6 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // App Icon
                         const Icon(
                           Icons.chat_bubble,
                           size: 80,
@@ -160,7 +157,6 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                         ),
                         const SizedBox(height: 24),
                         
-                        // Title
                         Text(
                           l10n.welcomeToConnect,
                           style: GoogleFonts.poppins(
@@ -183,7 +179,6 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                         
                         const SizedBox(height: 48),
                         
-                        // Apple Sign In (iOS/macOS only)
                         if (Platform.isIOS || Platform.isMacOS) ...[
                           _buildSocialButton(
                             text: l10n.continueWithApple,
@@ -195,7 +190,6 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                           const SizedBox(height: 16),
                         ],
                         
-                        // Google Sign In
                         _buildSocialButton(
                           text: l10n.continueWithGoogle,
                           onPressed: _handleGoogleSignIn,
@@ -206,7 +200,6 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                         
                         const SizedBox(height: 24),
                         
-                        // Error message
                         if (_errorMessage != null)
                           Container(
                             padding: const EdgeInsets.all(12),
@@ -227,7 +220,6 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                         
                         const SizedBox(height: 24),
                         
-                        // Skip button
                         TextButton(
                           onPressed: () => Navigator.pop(context),
                           child: Text(
@@ -241,7 +233,6 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                         
                         const SizedBox(height: 40),
                         
-                        // Terms
                         Text(
                           l10n.byContining,
                           style: GoogleFonts.poppins(

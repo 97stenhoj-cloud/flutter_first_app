@@ -18,7 +18,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get settings => 'Indstillinger';
 
   @override
-  String get howToPlay => 'Sådan Spiller Du';
+  String get howToPlay => 'Sådan spiller du';
 
   @override
   String get chooseGameMode => 'Vælg din spiltilstand';
@@ -33,10 +33,10 @@ class AppLocalizationsDa extends AppLocalizations {
   String get friends => 'Venner';
 
   @override
-  String get chooseCategory => 'Vælg en Kategori';
+  String get chooseCategory => 'Vælg en kategori';
 
   @override
-  String get locked => 'Låst Kategori';
+  String get locked => 'Låst kategori';
 
   @override
   String get lockedMessage =>
@@ -46,23 +46,23 @@ class AppLocalizationsDa extends AppLocalizations {
   String get ok => 'OK';
 
   @override
-  String get mayBeLater => 'Måske Senere';
+  String get mayBeLater => 'Måske senere';
 
   @override
-  String get chooseSubscription => 'Vælg Dit Abonnement';
+  String get chooseSubscription => 'Vælg dit abonnement';
 
   @override
   String get subscriptionDescription =>
       'Lås premium kategorier op og få adgang til eksklusive spørgsmålspakker';
 
   @override
-  String get chooseBundleOne => 'Vælg 1 kategoribundt';
+  String get chooseBundleOne => 'Vælg 1 kategoripakke';
 
   @override
-  String get chooseBundleTwo => 'Vælg 2 kategoribundter';
+  String get chooseBundleTwo => 'Vælg 2 kategoripakker';
 
   @override
-  String get chooseBundleThree => 'Alle 3 kategoribundter';
+  String get chooseBundleThree => 'Alle 3 kategoripakker';
 
   @override
   String get perMonth => '/måned';
@@ -71,14 +71,14 @@ class AppLocalizationsDa extends AppLocalizations {
   String get bestValue => 'BEDSTE VÆRDI';
 
   @override
-  String get unlockAllBundles => 'Lås Alle Bundter Op';
+  String get unlockAllBundles => 'Lås alle pakker op';
 
   @override
-  String get selectYourBundle => 'Vælg Dit Bundt';
+  String get selectYourBundle => 'Vælg din pakke';
 
   @override
   String selectBundles(Object count, Object plural) {
-    return 'Vælg $count Bundt$plural';
+    return 'Vælg $count pakke$plural';
   }
 
   @override
@@ -96,7 +96,7 @@ class AppLocalizationsDa extends AppLocalizations {
   }
 
   @override
-  String get demoNote => 'Demo: Oplåsninger nulstilles ved genstart af app';
+  String get demoNote => 'Demo: Oplåsninger nulstilles ved genstart af appen';
 
   @override
   String get swipeOrTap => 'Swipe eller tryk på pile';
@@ -108,243 +108,245 @@ class AppLocalizationsDa extends AppLocalizations {
   String get next => 'Næste';
 
   @override
-  String get advertisement => 'Annonce';
+  String get advertisement => 'Reklame';
 
   @override
   String get watchAdMessage =>
-      'Se en kort annonce for at fortsætte, eller bliv reklamefri med premium!';
+      'Se en kort reklame for at fortsætte, eller gå reklamefri med premium!';
 
   @override
-  String get watchAd => 'Se Annonce';
+  String get watchAd => 'Se reklame';
 
   @override
-  String get goAdFree => 'Bliv Reklamefri - 59 DKK/måned';
+  String get goAdFree => 'Gå reklamefri - 59 DKK/måned';
 
   @override
-  String get removeAdsForever => 'Fjern Annoncer For Evigt';
+  String get removeAdsForever => 'Fjern reklamer for evigt';
 
   @override
   String get chooseOneBundle =>
-      'Vælg 1 bundt for at låse op og fjerne alle annoncer';
+      'Vælg 1 pakke for at låse op og fjerne alle reklamer';
 
   @override
-  String get noAdsForever => 'Ingen Annoncer For Evigt';
+  String get noAdsForever => 'Ingen reklamer nogensinde';
 
   @override
   String premiumActivated(Object bundle) {
-    return 'Premium aktiveret! Annoncer fjernet. $bundle bundt låst op.';
+    return 'Premium aktiveret! Reklamer fjernet. $bundle pakke låst op.';
   }
 
   @override
-  String get adNotReady => 'Ad not ready. Continuing without ad.';
+  String get adNotReady => 'Reklame ikke klar. Fortsætter uden reklame.';
 
   @override
-  String get adLoadingContinue => 'Ad Loading... Continue';
+  String get adLoadingContinue => 'Reklame indlæser... Fortsæt';
 
   @override
-  String get pricePerMonth => '59 DKK/month';
+  String get pricePerMonth => '59 DKK/måned';
 
   @override
   String noQuestionsFoundMessage(Object category, Object mode) {
-    return 'No questions found for $category in $mode mode';
+    return 'Ingen spørgsmål fundet for $category i $mode tilstand';
   }
 
   @override
   String get errorLoadingQuestions =>
-      'Error loading questions. Please check your connection.';
+      'Fejl ved indlæsning af spørgsmål. Tjek venligst din forbindelse.';
 
   @override
   String failedToLoadQuestions(Object error) {
-    return 'Failed to load questions: $error';
+    return 'Kunne ikke indlæse spørgsmål: $error';
   }
 
   @override
-  String get madeForWife => 'Made for my beautiful wife';
+  String get madeForWife => 'Lavet til min smukke kone';
 
   @override
   String get otiLia => 'Otilia Stenhøj';
 
   @override
-  String get withLoveAndConversations => 'With love and conversations';
+  String get withLoveAndConversations => 'Med kærlighed og samtaler';
 
   @override
-  String get howManyPlayers => 'How many players?';
+  String get howManyPlayers => 'Hvor mange spillere?';
 
   @override
-  String get players => 'Players';
+  String get players => 'Spillere';
 
   @override
-  String get continueButton => 'Continue';
+  String get continueButton => 'Fortsæt';
 
   @override
-  String get language => 'Language';
+  String get language => 'Sprog';
 
   @override
   String languageChanged(Object language) {
-    return 'Language changed to $language';
+    return 'Sprog ændret til $language';
   }
 
   @override
-  String get profile => 'Profile';
+  String get profile => 'Profil';
 
   @override
-  String get signOut => 'Sign Out';
+  String get signOut => 'Log ud';
 
   @override
-  String get notSignedIn => 'Not Signed In';
+  String get notSignedIn => 'Ikke logget ind';
 
   @override
-  String get signInSignUp => 'Sign In / Sign Up';
+  String get signInSignUp => 'Log ind / Tilmeld';
 
   @override
   String get signInToSync =>
-      'Sign in to sync your subscriptions across devices and unlock premium content';
+      'Log ind for at synkronisere dine abonnementer på tværs af enheder og låse premium indhold op';
 
   @override
-  String get signOutConfirm => 'Are you sure you want to sign out?';
+  String get signOutConfirm => 'Er du sikker på, at du vil logge ud?';
 
   @override
-  String get signedOutSuccess => 'Signed out successfully';
+  String get signedOutSuccess => 'Logget ud med succes';
 
   @override
-  String get accountInformation => 'Account Information';
+  String get accountInformation => 'Kontooplysninger';
 
   @override
-  String get email => 'Email';
+  String get email => 'E-mail';
 
   @override
-  String get memberSince => 'Member Since';
+  String get memberSince => 'Medlem siden';
 
   @override
-  String get notAvailable => 'Not available';
+  String get notAvailable => 'Ikke tilgængelig';
 
   @override
-  String get unknown => 'Unknown';
+  String get unknown => 'Ukendt';
 
   @override
-  String get activeSubscriptions => 'Active Subscriptions';
+  String get activeSubscriptions => 'Aktive abonnementer';
 
   @override
   String bundlesUnlocked(Object count, Object plural) {
-    return '$count Bundle$plural Unlocked';
+    return '$count pakke$plural låst op';
   }
 
   @override
   String bundle(Object name) {
-    return '$name Bundle';
+    return '$name pakke';
   }
 
   @override
-  String get premiumMember => 'Premium Member';
+  String get premiumMember => 'Premium medlem';
 
   @override
-  String get freeAccount => 'Free Account';
+  String get freeAccount => 'Gratis konto';
 
   @override
-  String get welcomeToConnect => 'Welcome to Connect!';
+  String get welcomeToConnect => 'Velkommen til Connect!';
 
   @override
-  String get continueWithApple => 'Continue with Apple';
+  String get continueWithApple => 'Fortsæt med Apple';
 
   @override
-  String get continueWithGoogle => 'Continue with Google';
+  String get continueWithGoogle => 'Fortsæt med Google';
 
   @override
-  String get skipForNow => 'Skip for now';
+  String get skipForNow => 'Spring over for nu';
 
   @override
   String get byContining =>
-      'By continuing, you agree to our Terms of Service and Privacy Policy';
+      'Ved at fortsætte accepterer du vores servicevilkår og privatlivspolitik';
 
   @override
-  String get googleSignInFailed => 'Google Sign In failed. Please try again.';
+  String get googleSignInFailed =>
+      'Google login mislykkedes. Prøv venligst igen.';
 
   @override
-  String get appleSignInFailed => 'Apple Sign In failed. Please try again.';
+  String get appleSignInFailed =>
+      'Apple login mislykkedes. Prøv venligst igen.';
 
   @override
-  String get noCategoriesFound => 'No categories found';
+  String get noCategoriesFound => 'Ingen kategorier fundet';
 
   @override
   String selectBundlePlural(Object plural) {
-    return 'Select the category bundle$plural you want to unlock';
+    return 'Vælg de kategoripakke$plural du vil låse op';
   }
 
   @override
   String get getAccessAllBundles =>
-      'Get access to all premium categories in all 3 bundles!';
+      'Få adgang til alle premium kategorier i alle 3 pakker!';
 
   @override
   String subscriptionActivatedFull(Object bundles) {
-    return 'Subscription activated! $bundles unlocked.';
+    return 'Abonnement aktiveret! $bundles låst op.';
   }
 
   @override
-  String get aboutCredits => 'About / Credits';
+  String get aboutCredits => 'Om / Credits';
 
   @override
-  String get welcomeBack => 'Welcome Back!';
+  String get welcomeBack => 'Velkommen tilbage!';
 
   @override
-  String get createAccount => 'Create Account';
+  String get createAccount => 'Opret konto';
 
   @override
-  String get displayName => 'Display Name';
+  String get displayName => 'Visningsnavn';
 
   @override
-  String get password => 'Password';
+  String get password => 'Adgangskode';
 
   @override
-  String get signIn => 'Sign In';
+  String get signIn => 'Log ind';
 
   @override
-  String get signUp => 'Sign Up';
+  String get signUp => 'Tilmeld';
 
   @override
-  String get dontHaveAccount => 'Don\'t have an account? Sign Up';
+  String get dontHaveAccount => 'Har du ikke en konto? Tilmeld';
 
   @override
-  String get alreadyHaveAccount => 'Already have an account? Sign In';
+  String get alreadyHaveAccount => 'Har du allerede en konto? Log ind';
 
   @override
-  String get chooseYourMode => '1. Choose Your Mode';
+  String get chooseYourMode => '1. Vælg din tilstand';
 
   @override
   String get chooseYourModeDesc =>
-      'Select from three conversation styles:\n\n• Family - Warm, wholesome conversations perfect for all ages\n• Couple - Intimate and romantic questions to deepen your connection\n• Friends - Fun and entertaining topics for your squad';
+      'Vælg mellem tre samtalestile:\n\n• Familie - Varme, hjertelige samtaler perfekt til alle aldre\n• Par - Intime og romantiske spørgsmål for at fordybe jeres forbindelse\n• Venner - Sjove og underholdende emner til jer og vennerne';
 
   @override
-  String get pickCategory => '2. Pick a Category';
+  String get pickCategory => '2. Vælg en kategori';
 
   @override
   String get pickCategoryDesc =>
-      'Each mode has multiple categories with unique question packs. Free categories are unlocked, while premium categories require a subscription.';
+      'Hver tilstand har flere kategorier med unikke spørgsmålspakker. Gratis kategorier er låst op, mens premium kategorier kræver et abonnement.';
 
   @override
-  String get startTalking => '3. Start Talking';
+  String get startTalking => '3. Begynd at snakke';
 
   @override
   String get startTalkingDesc =>
-      'Questions appear full screen. Take turns reading and answering them honestly. There are no wrong answers - the goal is meaningful conversation!';
+      'Spørgsmål vises på fuld skærm. Skiftes til at læse og svare på dem ærligt. Der er ingen forkerte svar - målet er meningsfuld samtale!';
 
   @override
-  String get navigateQuestions => '4. Navigate Questions';
+  String get navigateQuestions => '4. Naviger spørgsmål';
 
   @override
   String get navigateQuestionsDesc =>
-      '• Swipe right or tap \"Next\" for the next question\n• Swipe left or tap \"Previous\" to revisit questions\n• Tap the home button to return to the main menu anytime';
+      '• Swipe til højre eller tryk på \"Næste\" for næste spørgsmål\n• Swipe til venstre eller tryk på \"Forrige\" for at gense spørgsmål\n• Tryk på hjem-knappen for at vende tilbage til hovedmenuen når som helst';
 
   @override
-  String get premiumFeatures => '5. Premium Features';
+  String get premiumFeatures => '5. Premium funktioner';
 
   @override
   String get premiumFeaturesDesc =>
-      'Unlock exclusive question categories with a subscription:\n\n• 1 Bundle (4 categories) - 59 DKK/month\n• 2 Bundles (8 categories) - 109 DKK/month\n• 3 Bundles (12 categories) - 149 DKK/month';
+      'Lås eksklusive spørgsmålskategorier op med et abonnement:\n\n• 1 pakke (4 kategorier) - 59 DKK/måned\n• 2 pakker (8 kategorier) - 109 DKK/måned\n• 3 pakker (12 kategorier) - 149 DKK/måned';
 
   @override
-  String get proTips => 'Pro Tips';
+  String get proTips => 'Pro tips';
 
   @override
   String get proTipsDesc =>
-      '• Create a comfortable, distraction-free environment\n• Listen actively and be present\n• Share honestly and encourage others to do the same\n• Respect boundaries - skip questions if needed\n• Have fun and enjoy connecting!';
+      '• Skab et komfortabelt, distraktionsfrit miljø\n• Lyt aktivt og vær tilstede\n• Del ærligt og opfordr andre til at gøre det samme\n• Respekter grænser - spring spørgsmål over hvis nødvendigt\n• Hav det sjovt og nyd at forbinde!';
 }

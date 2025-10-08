@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import '../../../../l10n/app_localizations.dart';
 
 class CreditsPage extends StatelessWidget {
   final bool isDarkMode;
@@ -19,6 +19,8 @@ class CreditsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -55,7 +57,7 @@ class CreditsPage extends StatelessWidget {
                       
                       // Main message
                       Text(
-                        'Made for my beautiful wife',
+                        l10n.madeForWife,
                         style: GoogleFonts.poppins(
                           fontSize: 24,
                           fontWeight: FontWeight.w300,
@@ -66,7 +68,7 @@ class CreditsPage extends StatelessWidget {
                       const SizedBox(height: 16),
                       
                       Text(
-                        'Otilia Stenhøj',
+                        l10n.otiLia,
                         style: GoogleFonts.poppins(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
@@ -91,7 +93,7 @@ class CreditsPage extends StatelessWidget {
                       const SizedBox(height: 20),
                       
                       Text(
-                        'With love and conversations',
+                        l10n.withLoveAndConversations,
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontStyle: FontStyle.italic,

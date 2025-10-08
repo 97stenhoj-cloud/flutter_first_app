@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/utils/language_manager.dart';
 import '../../../../core/constants/app_constants.dart';
@@ -18,6 +19,8 @@ class _LanguagePageState extends State<LanguagePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -45,7 +48,7 @@ class _LanguagePageState extends State<LanguagePage> {
                     ),
                     const SizedBox(width: 16),
                     Text(
-                      'Language',
+                      l10n.language,
                       style: GoogleFonts.poppins(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -90,6 +93,8 @@ class _LanguagePageState extends State<LanguagePage> {
     required String code,
     required bool isSelected,
   }) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -110,7 +115,7 @@ class _LanguagePageState extends State<LanguagePage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  'Language changed to $name',
+                  l10n.languageChanged(name),
                   style: GoogleFonts.poppins(),
                 ),
                 duration: const Duration(seconds: 2),

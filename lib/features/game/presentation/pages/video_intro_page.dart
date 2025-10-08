@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'main_menu_page.dart';
+import './main_menu_page.dart';
 
 class VideoIntroPage extends StatefulWidget {
   const VideoIntroPage({super.key});
@@ -88,22 +88,22 @@ class _VideoIntroPageState extends State<VideoIntroPage> {
                 ),
               )
             else if (_hasError)
-              Center(
+              const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.error_outline,
                       color: Colors.white,
                       size: 48,
                     ),
-                    const SizedBox(height: 16),
-                    const Text(
+                    SizedBox(height: 16),
+                    Text(
                       'Failed to load video',
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
-                    const SizedBox(height: 8),
-                    const Text(
+                    SizedBox(height: 8),
+                    Text(
                       'Redirecting...',
                       style: TextStyle(color: Colors.white70, fontSize: 14),
                     ),

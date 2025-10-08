@@ -9,14 +9,12 @@ import '../../../../core/services/supabase_service.dart';
 import '../../../../l10n/app_localizations.dart';
 
 class GamePage extends StatefulWidget {
-  final int playerCount;
   final String gameMode;
   final String category;
   final bool isDarkMode;
   
   const GamePage({
     super.key,
-    required this.playerCount,
     required this.gameMode,
     required this.category,
     required this.isDarkMode,
@@ -109,6 +107,7 @@ class _GamePageState extends State<GamePage> {
 
     if (unlockManager.shouldShowAd()) {
       final l10n = AppLocalizations.of(context)!;
+      
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -147,7 +146,7 @@ class _GamePageState extends State<GamePage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          'Ad not ready. Continuing without ad.',
+                          l10n.adNotReady,
                           style: GoogleFonts.poppins(),
                         ),
                         duration: const Duration(seconds: 2),
@@ -161,7 +160,7 @@ class _GamePageState extends State<GamePage> {
                   minimumSize: const Size(double.infinity, 50),
                 ),
                 child: Text(
-                  _isAdLoaded ? l10n.watchAd : 'Ad Loading... Continue',
+                  _isAdLoaded ? l10n.watchAd : l10n.adLoadingContinue,
                   style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                 ),
               ),
@@ -189,8 +188,7 @@ class _GamePageState extends State<GamePage> {
   }
 
   void _showAdFreePurchaseDialog() {
-    final l10n = AppLocalizations.of(context)!; 
-    final availableBundles = [l10n.couple, l10n.friends, l10n.family];
+    final l10n = AppLocalizations.of(context)!;
     String? selectedBundle;
 
     showDialog(
@@ -214,43 +212,62 @@ class _GamePageState extends State<GamePage> {
               children: [
                 Text(
                   l10n.chooseOneBundle,
-                  style: GoogleFonts.poppins(fontSize: 15),
+                  style: GoogleFonts.poppins(fontSize: 14),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
-                ...availableBundles.map((bundle) {
-                  final isSelected = selectedBundle == bundle;
+                ...[
+                  {'name': 'Couple', 'color': const Color(0xFFAD1457)},
+                  {'name': 'Friends', 'color': const Color(0xFFFF8F00)},
+                  {'name': 'Family', 'color': const Color(0xFF8D6E63)},
+                ].map((bundle) {
+                  final isSelected = selectedBundle == bundle['name'];
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.only(bottom: 8),
                     child: InkWell(
                       onTap: () {
                         setDialogState(() {
-                          selectedBundle = bundle;
+                          selectedBundle = bundle['name'] as String;
                         });
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: isSelected 
-                              ? const Color(0xFFAD1457).withValues(alpha: 0.2)
-                              : Colors.grey[200],
+                          color: isSelected
+                              ? (bundle['color'] as Color).withValues(alpha: 0.2)
+                              : Colors.grey.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: isSelected 
-                                ? const Color(0xFFAD1457)
-                                : Colors.grey[400]!,
-                            width: 2,
+                            color: isSelected
+                                ? (bundle['color'] as Color)
+                                : Colors.grey,
+                            width: isSelected ? 2 : 1,
                           ),
-                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
                           children: [
-                            Icon(
-                              isSelected 
-                                  ? Icons.radio_button_checked 
-                                  : Icons.radio_button_unchecked,
-                              color: isSelected 
-                                  ? const Color(0xFFAD1457)
-                                  : Colors.grey[600],
+                            Container(
+                              width: 24,
+                              height: 24,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: isSelected
+                                      ? (bundle['color'] as Color)
+                                      : Colors.grey,
+                                  width: 2,
+                                ),
+                                color: isSelected
+                                    ? (bundle['color'] as Color)
+                                    : Colors.transparent,
+                              ),
+                              child: isSelected
+                                  ? const Icon(
+                                      Icons.check,
+                                      size: 16,
+                                      color: Colors.white,
+                                    )
+                                  : null,
                             ),
                             const SizedBox(width: 12),
                             Expanded(
@@ -258,18 +275,12 @@ class _GamePageState extends State<GamePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    bundle,
-                                    style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                    ),
+                                    l10n.bundle(bundle['name'] as String),
+                                    style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                                   ),
                                   Text(
                                     l10n.premiumCategories,
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 12,
-                                      color: Colors.grey[600],
-                                    ),
+                                    style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
                                   ),
                                 ],
                               ),
@@ -284,9 +295,12 @@ class _GamePageState extends State<GamePage> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.green[50],
+                    color: Colors.green.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.green[300]!),
+                    border: Border.all(
+                      color: Colors.green.withValues(alpha: 0.3),
+                      width: 1,
+                    ),
                   ),
                   child: Column(
                     children: [
@@ -306,7 +320,7 @@ class _GamePageState extends State<GamePage> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '59 DKK/month',
+                        l10n.pricePerMonth,
                         style: GoogleFonts.poppins(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -346,7 +360,7 @@ class _GamePageState extends State<GamePage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              'Premium activated! Ads removed. $selectedBundle bundle unlocked.',
+                              l10n.premiumActivated(selectedBundle!),
                               style: GoogleFonts.poppins(),
                             ),
                             backgroundColor: Colors.green,
@@ -373,55 +387,43 @@ class _GamePageState extends State<GamePage> {
   }
 
   Future<void> _loadQuestions() async {
-    setState(() {
-      isLoading = true;
-    });
-
     try {
-      debugPrint('Loading questions for:');
-      debugPrint('   Game Mode: ${widget.gameMode}');
-      debugPrint('   Category: ${widget.category}');
-      
-      final fetchedQuestions = await supabaseService.getQuestions(
+      final questions = await supabaseService.getQuestions(
         widget.gameMode,
-        widget.category
+        widget.category,
       );
-      
-      debugPrint('Received ${fetchedQuestions.length} questions');
-      
-      if (!mounted) return;
-      
+
+      if (questions.isEmpty && mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        setState(() {
+          currentQuestion = l10n.noQuestionsFoundMessage(widget.category, widget.gameMode);
+          isLoading = false;
+        });
+        return;
+      }
+
       setState(() {
-        availableQuestions = List.from(fetchedQuestions);
+        availableQuestions = questions;
         isLoading = false;
       });
-      
+
       if (availableQuestions.isNotEmpty) {
         _showNextQuestion();
-      } else {
-        if (mounted) {
-          setState(() {
-            currentQuestion = 'No questions found for ${widget.category} in ${widget.gameMode} mode';
-            isLoading = false;
-          });
-        }
       }
-    } catch (e, stackTrace) {
-      debugPrint('Error in _loadQuestions: $e');
-      debugPrint('Stack trace: $stackTrace');
-      
-      if (!mounted) return;
-      
-      setState(() {
-        currentQuestion = 'Error loading questions. Please check your connection.';
-        isLoading = false;
-      });
+    } catch (e) {
+      debugPrint('Error loading questions: $e');
       
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        setState(() {
+          currentQuestion = l10n.errorLoadingQuestions;
+          isLoading = false;
+        });
+        
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Failed to load questions: $e',
+              l10n.failedToLoadQuestions(e.toString()),
               style: GoogleFonts.poppins(),
             ),
             backgroundColor: Colors.red,
@@ -472,9 +474,9 @@ class _GamePageState extends State<GamePage> {
     const double sensitivity = 100.0;
     
     if (details.primaryVelocity! > sensitivity) {
-      _showNextQuestion();
-    } else if (details.primaryVelocity! < -sensitivity) {
       _showPreviousQuestion();
+    } else if (details.primaryVelocity! < -sensitivity) {
+      _showNextQuestion();
     }
   }
 
@@ -498,144 +500,97 @@ class _GamePageState extends State<GamePage> {
             padding: const EdgeInsets.all(AppConstants.defaultPadding),
             child: Column(
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(
+                        Icons.home,
+                        color: ThemeHelper.getTextColor(widget.isDarkMode),
+                        size: 32,
+                      ),
+                    ),
+                    Text(
+                      widget.category,
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: ThemeHelper.getTextColor(widget.isDarkMode),
+                      ),
+                    ),
+                    const SizedBox(width: 48),
+                  ],
+                ),
+                
                 Expanded(
                   child: Center(
                     child: isLoading 
-                        ? const CircularProgressIndicator(
-                            color: Colors.white,
+                        ? CircularProgressIndicator(
+                            color: ThemeHelper.getTextColor(widget.isDarkMode),
                           )
-                        : Text(
-                            currentQuestion,
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                              shadows: [
-                                const Shadow(
-                                  offset: Offset(0, 0),
-                                  blurRadius: 15,
-                                  color: Colors.white,
-                                ),
-                                const Shadow(
-                                  offset: Offset(2, 2),
-                                  blurRadius: 8,
-                                  color: Colors.black45,
-                                ),
-                              ],
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: Text(
+                              currentQuestion,
+                              style: GoogleFonts.poppins(
+                                fontSize: 28,
+                                fontWeight: FontWeight.w600,
+                                color: ThemeHelper.getTextColor(widget.isDarkMode),
+                                height: 1.4,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                            textAlign: TextAlign.center,
                           ),
                   ),
                 ),
                 
-                if (!isLoading)
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        Navigator.of(context).popUntil((route) => route.isFirst);
-                      },
-                      backgroundColor: Colors.white.withValues(alpha: 0.3),
-                      foregroundColor: Colors.white,
-                      child: const Icon(Icons.home, size: 28),
+                if (!isLoading) ...[
+                  Text(
+                    l10n.swipeOrTap,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: ThemeHelper.getTextColor(widget.isDarkMode).withValues(alpha: 0.7),
                     ),
                   ),
-                
-                if (!isLoading)
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: usedQuestions.isEmpty ? null : _showPreviousQuestion,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: usedQuestions.isEmpty 
-                                      ? Colors.transparent 
-                                      : Colors.white.withValues(alpha: 0.1),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.arrow_back_ios,
-                                      color: usedQuestions.isEmpty 
-                                          ? Colors.white30 
-                                          : Colors.white70,
-                                      size: 20,
-                                    ),
-                                    Text(
-                                      l10n.previous,
-                                      style: GoogleFonts.poppins(
-                                        color: usedQuestions.isEmpty 
-                                            ? Colors.white30 
-                                            : Colors.white70,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            
-                            Text(
-                              l10n.swipeOrTap,
-                              style: GoogleFonts.poppins(
-                                color: Colors.white70,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            
-                            GestureDetector(
-                              onTap: availableQuestions.isEmpty ? null : _showNextQuestion,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: availableQuestions.isEmpty 
-                                      ? Colors.transparent 
-                                      : Colors.white.withValues(alpha: 0.1),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      l10n.next,
-                                      style: GoogleFonts.poppins(
-                                        color: availableQuestions.isEmpty 
-                                            ? Colors.white30 
-                                            : Colors.white70,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: availableQuestions.isEmpty 
-                                          ? Colors.white30 
-                                          : Colors.white70,
-                                      size: 20,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: usedQuestions.isEmpty ? null : _showPreviousQuestion,
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          color: usedQuestions.isEmpty 
+                              ? Colors.grey 
+                              : ThemeHelper.getTextColor(widget.isDarkMode),
+                          size: 32,
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          '${usedQuestions.length + 1} of ${usedQuestions.length + availableQuestions.length + 1}',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white60,
-                            fontSize: 12,
-                          ),
+                      ),
+                      const SizedBox(width: 40),
+                      Text(
+                        '${usedQuestions.length + 1}/${usedQuestions.length + availableQuestions.length + 1}',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: ThemeHelper.getTextColor(widget.isDarkMode),
                         ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(width: 40),
+                      IconButton(
+                        onPressed: availableQuestions.isEmpty ? null : _showNextQuestion,
+                        icon: Icon(
+                          Icons.arrow_forward_ios,
+                          color: availableQuestions.isEmpty 
+                              ? Colors.grey 
+                              : ThemeHelper.getTextColor(widget.isDarkMode),
+                          size: 32,
+                        ),
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: 24),
+                ],
               ],
             ),
           ),

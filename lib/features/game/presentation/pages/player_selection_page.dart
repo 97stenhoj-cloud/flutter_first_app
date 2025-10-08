@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'game_mode_selection_page.dart';
-
 
 class PlayerSelectionPage extends StatefulWidget {
   final bool isDarkMode;
@@ -28,6 +28,8 @@ class _PlayerSelectionPageState extends State<PlayerSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -57,7 +59,7 @@ class _PlayerSelectionPageState extends State<PlayerSelectionPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'How many players?',
+                        l10n.howManyPlayers,
                         style: GoogleFonts.poppins(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
@@ -84,7 +86,7 @@ class _PlayerSelectionPageState extends State<PlayerSelectionPage> {
                           ),
                         ),
                         child: Text(
-                          '$selectedPlayers Players',
+                          '$selectedPlayers ${l10n.players}',
                           style: GoogleFonts.poppins(
                             fontSize: 36,
                             fontWeight: FontWeight.bold,
@@ -131,7 +133,6 @@ class _PlayerSelectionPageState extends State<PlayerSelectionPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => GameModeSelectionPage(
-                                playerCount: selectedPlayers,
                                 isDarkMode: widget.isDarkMode,
                               ),
                             ),
@@ -143,7 +144,7 @@ class _PlayerSelectionPageState extends State<PlayerSelectionPage> {
                           foregroundColor: Colors.black,
                         ),
                         child: Text(
-                          'Continue',
+                          l10n.continueButton,
                           style: GoogleFonts.poppins(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,

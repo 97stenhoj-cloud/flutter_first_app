@@ -8,13 +8,11 @@ import 'game_page.dart';
 import '../../../../l10n/app_localizations.dart';
 
 class CategorySelectionPage extends StatefulWidget {
-  final int playerCount;
   final String gameMode;
   final bool isDarkMode;
   
   const CategorySelectionPage({
     super.key,
-    required this.playerCount,
     required this.gameMode,
     required this.isDarkMode,
   });
@@ -24,7 +22,6 @@ class CategorySelectionPage extends StatefulWidget {
 }
 
 class _CategorySelectionPageState extends State<CategorySelectionPage> {
-  
   final unlockManager = UnlockManager();
   final supabaseService = SupabaseService();
   
@@ -52,92 +49,6 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: ThemeHelper.getSecondaryGradient(widget.isDarkMode),
-          ),
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(AppConstants.defaultPadding),
-            child: Column(
-              children: [
-                // Header with back button
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: ThemeHelper.getTextColor(widget.isDarkMode),
-                        size: 28,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Text(
-                        l10n.chooseCategory,
-                        style: GoogleFonts.poppins(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: ThemeHelper.getTextColor(widget.isDarkMode),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                
-                // Category list
-                Expanded(
-                  child: isLoading
-                      ? Center(
-                          child: CircularProgressIndicator(
-                            color: ThemeHelper.getTextColor(widget.isDarkMode),
-                          ),
-                        )
-                      : categories.isEmpty
-                          ? Center(
-                              child: Text(
-                                l10n.noCategoriesFound,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 18,
-                                  color: ThemeHelper.getTextColor(widget.isDarkMode),
-                                ),
-                              ),
-                            )
-                          : ListView.builder(
-                              itemCount: categories.length,
-                              itemBuilder: (context, index) {
-                                final categoryName = categories[index];
-                                final isLocked = _isCategoryLocked(categoryName);
-                                
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 16),
-                                  child: _buildCategoryButton(
-                                    context,
-                                    categoryName: categoryName,
-                                    isLocked: isLocked,
-                                  ),
-                                );
-                              },
-                            ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   bool _isCategoryLocked(String categoryName) {
     // Get the locked categories for this game mode from AppConstants
     final gameModeCategories = AppConstants.gameCategories[widget.gameMode];
@@ -149,109 +60,237 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
       orElse: () => {'name': categoryName, 'locked': false},
     );
     
-    final isLocked = (categoryData['locked'] as bool) && 
-                     !unlockManager.isBundleUnlocked(widget.gameMode);
+    // Category is locked if it's marked as locked AND the bundle is not unlocked
+    final isMarkedAsLocked = categoryData['locked'] as bool;
+    final isBundleUnlocked = unlockManager.isBundleUnlocked(widget.gameMode);
     
-    return isLocked;
+    return isMarkedAsLocked && !isBundleUnlocked;
   }
 
-  Widget _buildCategoryButton(
-    BuildContext context, {
-    required String categoryName,
-    required bool isLocked,
-  }) {
-    List<Color> gradientColors;
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     
-    if (isLocked) {
-      gradientColors = [
-        Colors.grey.shade600,
-        Colors.grey.shade700,
-      ];
-    } else {
-      switch (widget.gameMode) {
-        case 'Couple':
-          gradientColors = widget.isDarkMode
-              ? [const Color(0xFFAD1457), const Color(0xFF880E4F)]
-              : [const Color(0xFFF8BBD9), const Color(0xFFF48FB1)];
-          break;
-        case 'Friends':
-          gradientColors = widget.isDarkMode
-              ? [const Color(0xFFFF8F00), const Color(0xFFFF6F00)]
-              : [const Color(0xFFFFE0B2), const Color(0xFFFFCC80)];
-          break;
-        case 'Family':
-          gradientColors = widget.isDarkMode
-              ? [const Color(0xFF8D6E63), const Color(0xFF6D4C41)]
-              : [const Color(0xFFBCAAA4), const Color(0xFFA1887F)];
-          break;
-        default:
-          gradientColors = [
-            const Color.fromRGBO(245, 100, 105, 1),
-            const Color.fromRGBO(220, 75, 85, 1),
-          ];
-      }
-    }
-    
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: gradientColors,
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: ThemeHelper.getGameModeGradient(widget.gameMode, widget.isDarkMode),
+          ),
         ),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: isLocked
-              ? () {
-                  _showSubscriptionDialog(context);
-                }
-              : () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GamePage(
-                        playerCount: widget.playerCount,
-                        gameMode: widget.gameMode,
-                        category: categoryName,
-                        isDarkMode: widget.isDarkMode,
-                      ),
-                    ),
-                  );
-                },
-          borderRadius: BorderRadius.circular(12),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: Row(
+        child: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(AppConstants.defaultPadding),
+                child: Row(
               children: [
-                Expanded(
-                  child: Text(
-                    categoryName,
-                    style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: ThemeHelper.getTextColor(widget.isDarkMode),
+                    size: 28,
                   ),
                 ),
-                if (isLocked)
-                  const Icon(
-                    Icons.lock,
-                    color: Colors.white70,
-                    size: 24,
+                const SizedBox(width: 8), // Reduced from 16 to 8
+                Expanded(
+                  child: Text(
+                    l10n.chooseCategory,
+                    style: GoogleFonts.poppins(
+                      fontSize: 22, // Reduced from 24 to 22
+                      fontWeight: FontWeight.bold,
+                      color: ThemeHelper.getTextColor(widget.isDarkMode),
+                    ),
+                    overflow: TextOverflow.ellipsis, // Add this
+                    maxLines: 1, // Add this
                   ),
+                ),
               ],
-            ),
+            ),  
+              ),
+              
+              Expanded(
+                child: isLoading
+                    ? const Center(child: CircularProgressIndicator(color: Colors.white))
+                    : categories.isEmpty
+                        ? Center(
+                            child: Text(
+                              l10n.noCategoriesFound,
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                          )
+                        : GridView.builder(
+                            padding: const EdgeInsets.all(AppConstants.defaultPadding),
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 1,
+                              crossAxisSpacing: 16,
+                              mainAxisSpacing: 16,
+                            ),
+                            itemCount: categories.length,
+                            itemBuilder: (context, index) {
+                              final category = categories[index];
+                              final isLocked = _isCategoryLocked(category);
+                              
+                              return GestureDetector(
+                                onTap: () {
+                                  if (isLocked) {
+                                    _showLockedDialog(context);
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => GamePage(
+                                          gameMode: widget.gameMode,
+                                          category: category,
+                                          isDarkMode: widget.isDarkMode,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: isLocked
+                                          ? [Colors.grey[400]!, Colors.grey[600]!]
+                                          : [
+                                              Colors.white.withValues(alpha: 0.2),
+                                              Colors.white.withValues(alpha: 0.1),
+                                            ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                      color: Colors.white.withValues(alpha: 0.3),
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      Center(
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            if (isLocked)
+                                              const Icon(
+                                                Icons.lock,
+                                                size: 40,
+                                                color: Colors.white70,
+                                              )
+                                            else
+                                              const Icon(
+                                                Icons.category,
+                                                size: 40,
+                                                color: Colors.white,
+                                              ),
+                                            const SizedBox(height: 12),
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                                              child: Text(
+                                                category,
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      if (isLocked)
+                                        Positioned(
+                                          top: 8,
+                                          right: 8,
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 8,
+                                              vertical: 4,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: Colors.red,
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
+                                            child: Text(
+                                              l10n.locked,
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
+  void _showLockedDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Text(
+          l10n.locked,
+          style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+        ),
+        content: Text(
+          l10n.lockedMessage,
+          style: GoogleFonts.poppins(),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              l10n.mayBeLater,
+              style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _showSubscriptionDialog(context);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFAD1457),
+              foregroundColor: Colors.white,
+            ),
+            child: Text(
+              l10n.subscribe,
+              style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showSubscriptionDialog(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -281,42 +320,39 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
             ),
             const SizedBox(height: 24),
             
-            // 1 Bundle
             _buildSubscriptionOption(
               context: context,
               bundleCount: 1,
               price: '59 DKK',
-              description: 'Choose 1 category bundle',
+              description: l10n.chooseBundleOne,
               color: const Color(0xFFAD1457),
             ),
             const SizedBox(height: 12),
             
-            // 2 Bundles
             _buildSubscriptionOption(
               context: context,
               bundleCount: 2,
               price: '109 DKK',
-              description: 'Choose 2 category bundles',
+              description: l10n.chooseBundleTwo,
               color: const Color(0xFFFF8F00),
               popular: true,
             ),
             const SizedBox(height: 12),
             
-            // 3 Bundles (All)
             _buildSubscriptionOption(
               context: context,
               bundleCount: 3,
               price: '149 DKK',
-              description: 'All 3 category bundles',
+              description: l10n.chooseBundleThree,
               color: const Color(0xFF8D6E63),
-              badge: 'BEST VALUE',
+              badge: l10n.bestValue,
             ),
             
             const SizedBox(height: 20),
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text(
-                'Maybe Later',
+                l10n.mayBeLater,
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w600,
                   color: Colors.grey,
@@ -379,7 +415,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            '$price/month',
+                            '$price${AppLocalizations.of(context)!.perMonth}',
                             style: GoogleFonts.poppins(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -425,6 +461,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
   }
 
   void _showBundleSelection(BuildContext context, int bundleCount, String price) {
+    final l10n = AppLocalizations.of(context)!;
     final availableBundles = ['Couple', 'Friends', 'Family'];
     final selectedBundles = <String>[];
 
@@ -438,8 +475,8 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
             ),
             title: Text(
               bundleCount == 3 
-                  ? 'Unlock All Bundles'
-                  : 'Select ${bundleCount == 1 ? "Your" : "$bundleCount"} Bundle${bundleCount > 1 ? "s" : ""}',
+                  ? l10n.unlockAllBundles
+                  : l10n.selectBundles(bundleCount, bundleCount > 1 ? "s" : ""),
               style: GoogleFonts.poppins(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -451,7 +488,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
               children: [
                 if (bundleCount < 3) ...[
                   Text(
-                    'Select the category bundle${bundleCount > 1 ? "s" : ""} you want to unlock',
+                    l10n.selectBundlePlural(bundleCount > 1 ? "s" : ""),
                     style: GoogleFonts.poppins(fontSize: 14),
                     textAlign: TextAlign.center,
                   ),
@@ -466,7 +503,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
                           style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                         ),
                         subtitle: Text(
-                          '4 premium categories',
+                          l10n.premiumCategories,
                           style: GoogleFonts.poppins(fontSize: 12),
                         ),
                         value: isSelected,
@@ -487,7 +524,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
                   }),
                 ] else ...[
                   Text(
-                    'Get access to all premium categories in all 3 bundles!',
+                    l10n.getAccessAllBundles,
                     style: GoogleFonts.poppins(fontSize: 14),
                     textAlign: TextAlign.center,
                   ),
@@ -500,7 +537,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
                           const Icon(Icons.check_circle, color: Colors.green, size: 20),
                           const SizedBox(width: 12),
                           Text(
-                            '$bundle Bundle',
+                            l10n.bundle(bundle),
                             style: GoogleFonts.poppins(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
@@ -521,7 +558,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
                   ),
                 ),
                 Text(
-                  'per month',
+                  l10n.perMonth,
                   style: GoogleFonts.poppins(
                     fontSize: 14,
                     color: Colors.grey,
@@ -529,7 +566,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Demo: Unlocks will reset on app restart',
+                  l10n.demoNote,
                   style: GoogleFonts.poppins(
                     fontSize: 11,
                     color: Colors.grey,
@@ -543,7 +580,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
               TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: Text(
-                  'Cancel',
+                  l10n.cancel,
                   style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                 ),
               ),
@@ -561,7 +598,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              'Subscription activated! ${bundlesToUnlock.join(", ")} unlocked.',
+                              l10n.subscriptionActivatedFull(bundlesToUnlock.join(", ")),
                               style: GoogleFonts.poppins(),
                             ),
                             backgroundColor: Colors.green,
@@ -576,7 +613,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
                   disabledBackgroundColor: Colors.grey[300],
                 ),
                 child: Text(
-                  'Subscribe',
+                  l10n.subscribe,
                   style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                 ),
               ),
