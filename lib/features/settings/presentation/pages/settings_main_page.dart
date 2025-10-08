@@ -5,6 +5,7 @@ import '../../../../core/constants/app_constants.dart';
 import 'profile_page.dart';
 import 'language_page.dart';
 import 'credits_page.dart';
+import 'package:connect/l10n/app_localizations.dart';
 
 class SettingsMainPage extends StatelessWidget {
   final bool isDarkMode;
@@ -13,6 +14,7 @@ class SettingsMainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -40,7 +42,7 @@ class SettingsMainPage extends StatelessWidget {
                     ),
                     const SizedBox(width: 16),
                     Text(
-                      'Settings',
+                      l10n.settings,
                       style: GoogleFonts.poppins(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -60,7 +62,7 @@ class SettingsMainPage extends StatelessWidget {
                       _buildSettingsButton(
                         context,
                         icon: Icons.person,
-                        title: 'Profile',
+                        title: l10n.profile,
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -74,7 +76,7 @@ class SettingsMainPage extends StatelessWidget {
                       _buildSettingsButton(
                         context,
                         icon: Icons.language,
-                        title: 'Language',
+                        title: l10n.language,
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -88,7 +90,7 @@ class SettingsMainPage extends StatelessWidget {
                       _buildSettingsButton(
                         context,
                         icon: Icons.info_outline,
-                        title: 'About / Credits',
+                        title: l10n.aboutCredits,
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(

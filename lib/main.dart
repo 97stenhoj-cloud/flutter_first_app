@@ -78,7 +78,7 @@ class _TalkingGameAppState extends State<TalkingGameApp> {
           useMaterial3: true,
           brightness: themeNotifier.isDarkMode ? Brightness.dark : Brightness.light,
         ),
-        home: const MainMenuPage(),  // Changed from VideoIntroPage
+        home: MainMenuPage(),  // Changed from VideoIntroPage
       ),
     );
   }
