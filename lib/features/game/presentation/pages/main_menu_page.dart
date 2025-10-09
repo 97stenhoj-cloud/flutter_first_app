@@ -1,3 +1,5 @@
+// lib/features/game/presentation/pages/main_menu_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -18,63 +20,85 @@ class MainMenuPage extends StatefulWidget {
 
 class _MainMenuPageState extends State<MainMenuPage> {
   Widget _buildLayeredButton({
-  required String text,
-  required VoidCallback onPressed,
-  required List<Color> colors,
-}) {
-  return Stack(
-    alignment: Alignment.center,
-    children: [
-      // Outermost layer
-      Container(
-        width: AppConstants.buttonWidth,
-        height: AppConstants.buttonHeight,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [colors[0], colors[1]],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(4),
-        ),
-      ),
-      // Middle layer
-      Container(
-        width: AppConstants.buttonWidth - 8,
-        height: AppConstants.buttonHeight - 8,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [colors[0].withValues(alpha: 0.85), colors[1].withValues(alpha: 0.85)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(4),
-        ),
-      ),
-      // Innermost layer (button) - REMOVED the hardcoded gradient Container
-      ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          minimumSize: const Size(AppConstants.buttonWidth - 16, AppConstants.buttonHeight - 16),
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          foregroundColor: Colors.white,
-          padding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
+    required String text,
+    required VoidCallback onPressed,
+    required List<Color> colors,
+    required bool isPrimary,
+    required bool isDarkMode,
+  }) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // Outermost layer
+        Container(
+          width: AppConstants.buttonWidth,
+          height: AppConstants.buttonHeight,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [colors[0], colors[1]],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: isDarkMode 
+                    ? const Color.fromRGBO(0, 0, 0, 0.4)
+                    : const Color.fromRGBO(100, 80, 60, 0.15),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
         ),
-        child: Text(
-          text,
-          style: GoogleFonts.poppins(
-            fontSize: 20, 
-            fontWeight: FontWeight.bold,
+        // Middle layer
+        Container(
+          width: AppConstants.buttonWidth - 8,
+          height: AppConstants.buttonHeight - 8,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [colors[0].withValues(alpha: 0.85), colors[1].withValues(alpha: 0.85)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: BorderRadius.circular(20),
           ),
         ),
-      ),
-    ],
-  );
-}
+        // Innermost layer (button)
+        Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+          child: InkWell(
+            onTap: onPressed,
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              width: AppConstants.buttonWidth - 16,
+              height: AppConstants.buttonHeight - 16,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: colors,
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                text,
+                style: GoogleFonts.poppins(
+                  fontSize: isPrimary ? 18 : 16,
+                  fontWeight: isPrimary ? FontWeight.bold : FontWeight.w600,
+                  color: isPrimary 
+                      ? Colors.white
+                      : ThemeHelper.getSecondaryButtonTextColor(isDarkMode),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,16 +106,16 @@ class _MainMenuPageState extends State<MainMenuPage> {
     final themeNotifier = ThemeProvider.of(context);
     final isDarkMode = themeNotifier.isDarkMode;
     
-    final List<Color> buttonColors = isDarkMode
-        ? [const Color(0xFF2c3e50), const Color(0xFF34495e)]
-        : [const Color(0xFF667eea), const Color(0xFF764ba2)];
+    // Get the new theme colors
+    final primaryGradient = ThemeHelper.getPrimaryButtonGradient(isDarkMode);
+    final secondaryGradient = ThemeHelper.getSecondaryButtonGradient(isDarkMode);
     
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            begin: const Alignment(-1, -1), // 135 degrees
+            end: const Alignment(1, 1),      // 135 degrees
             colors: ThemeHelper.getMainMenuGradient(isDarkMode),
           ),
         ),
@@ -105,33 +129,45 @@ class _MainMenuPageState extends State<MainMenuPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // Profile button
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProfilePage(isDarkMode: isDarkMode),
-                          ),
-                        );
-                      },
-                      icon: Icon(
-                        Icons.person,
-                        color: ThemeHelper.getTextColor(isDarkMode),
-                        size: 28,
+                    Container(
+                      decoration: BoxDecoration(
+                        color: ThemeHelper.getCardColor(isDarkMode).withValues(alpha: 0.7),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      tooltip: l10n.profile,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProfilePage(isDarkMode: isDarkMode),
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.person,
+                          color: ThemeHelper.getBodyTextColor(isDarkMode),
+                          size: 24,
+                        ),
+                        tooltip: l10n.profile,
+                      ),
                     ),
                     // Theme toggle button
-                    IconButton(
-                      onPressed: () {
-                        themeNotifier.toggleTheme();
-                      },
-                      icon: Icon(
-                        isDarkMode ? Icons.light_mode : Icons.dark_mode,
-                        color: ThemeHelper.getTextColor(isDarkMode),
-                        size: 28,
+                    Container(
+                      decoration: BoxDecoration(
+                        color: ThemeHelper.getCardColor(isDarkMode).withValues(alpha: 0.7),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      tooltip: isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+                      child: IconButton(
+                        onPressed: () {
+                          themeNotifier.toggleTheme();
+                        },
+                        icon: Icon(
+                          isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                          color: ThemeHelper.getBodyTextColor(isDarkMode),
+                          size: 24,
+                        ),
+                        tooltip: isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+                      ),
                     ),
                   ],
                 ),
@@ -140,7 +176,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                 Expanded(
                   child: Column(
                     children: [
-                      // Logo at top
+                      // Logo at top - keeping your Supabase logo
                       const SizedBox(height: 20),
                       Image.network(
                         'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/AppIcon/AppIcon.png',
@@ -159,7 +195,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                 value: loadingProgress.expectedTotalBytes != null
                                     ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                                     : null,
-                                color: ThemeHelper.getTextColor(isDarkMode),
+                                color: ThemeHelper.getHeadingTextColor(isDarkMode),
                                 strokeWidth: 2,
                               ),
                             ),
@@ -170,7 +206,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                           return Icon(
                             Icons.chat_bubble, 
                             size: 100, 
-                            color: ThemeHelper.getTextColor(isDarkMode),
+                            color: ThemeHelper.getHeadingTextColor(isDarkMode),
                           );
                         },
                       ),
@@ -190,19 +226,19 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                     style: GoogleFonts.poppins(
                                       fontSize: 36,
                                       fontWeight: FontWeight.bold,
-                                      color: ThemeHelper.getTextColor(isDarkMode),
+                                      color: ThemeHelper.getHeadingTextColor(isDarkMode),
                                       shadows: [
                                         Shadow(
                                           offset: const Offset(0, 0),
                                           blurRadius: 10,
-                                          color: ThemeHelper.getTextColor(isDarkMode).withValues(alpha: 0.5),
+                                          color: ThemeHelper.getHeadingTextColor(isDarkMode).withValues(alpha: 0.3),
                                         ),
                                       ],
                                     ),
                                   ),
                                   const SizedBox(height: 60),
                                   
-                                  // Start Button
+                                  // START Button - PRIMARY (Rose to Peachy Coral)
                                   _buildLayeredButton(
                                     text: l10n.start,
                                     onPressed: () {
@@ -213,11 +249,13 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                         ),
                                       );
                                     },
-                                    colors: buttonColors,
+                                    colors: primaryGradient.colors,
+                                    isPrimary: true,
+                                    isDarkMode: isDarkMode,
                                   ),
                                   const SizedBox(height: 20),
                                   
-                                  // Settings Button
+                                  // SETTINGS Button - SECONDARY (Beige to Clay)
                                   _buildLayeredButton(
                                     text: l10n.settings,
                                     onPressed: () {
@@ -228,11 +266,13 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                         ),
                                       );
                                     },
-                                    colors: buttonColors,
+                                    colors: secondaryGradient.colors,
+                                    isPrimary: false,
+                                    isDarkMode: isDarkMode,
                                   ),
                                   const SizedBox(height: 20),
                                   
-                                  // How to Play Button
+                                  // HOW TO PLAY Button - SECONDARY (Beige to Clay)
                                   _buildLayeredButton(
                                     text: l10n.howToPlay,
                                     onPressed: () {
@@ -243,7 +283,9 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                         ),
                                       );
                                     },
-                                    colors: buttonColors,
+                                    colors: secondaryGradient.colors,
+                                    isPrimary: false,
+                                    isDarkMode: isDarkMode,
                                   ),
                                 ],
                               ),

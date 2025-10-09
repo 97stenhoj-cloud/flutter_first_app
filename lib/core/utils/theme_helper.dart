@@ -2,48 +2,190 @@
 import 'package:flutter/material.dart';
 
 class ThemeHelper {
+  // ============================================================================
+  // SPACING CONSTANTS
+  // ============================================================================
+  static const double space4 = 4.0;
+  static const double space8 = 8.0;
+  static const double space12 = 12.0;
+  static const double space16 = 16.0;
+  static const double space20 = 20.0;
+  static const double space24 = 24.0;
+  static const double space32 = 32.0;
+  static const double space40 = 40.0;
+  static const double space48 = 48.0;
+  
+  // ============================================================================
+  // BORDER RADIUS
+  // ============================================================================
+  static const double buttonRadius = 20.0;
+  static const double cardRadius = 16.0;
+  static const double inputRadius = 12.0;
+  
+  // ============================================================================
+  // MAIN BACKGROUND GRADIENT - YOUR SPECIFIC COLORS
+  // ============================================================================
   static List<Color> getMainMenuGradient(bool isDarkMode) {
     if (isDarkMode) {
+      // Dark mode: deeper versions of your gradient
       return [
-        const Color.fromARGB(255, 26, 26, 46),
-        const Color.fromRGBO(22, 33, 62, 1),
-        const Color.fromRGBO(15, 52, 96, 1),
+        const Color(0xFF8A6A64), // darker version of #e8d6d0
+        const Color(0xFF6B5A72), // darker version of #cfc3d8
+        const Color(0xFF8B7A4F), // darker version of #f0d6a6
       ];
     } else {
+      // Light mode: your exact colors
       return [
-        const Color.fromRGBO(80, 150, 220, 1),  // Deeper blue
-        const Color.fromRGBO(5, 100, 180, 1),    // Richer blue
-        const Color.fromRGBO(85, 70, 200, 1),    // Deeper purple
+        const Color(0xFFE8D6D0), // #e8d6d0
+        const Color(0xFFB995D3), // #b995d3
+        const Color(0xFFF0D6A6), // #f0d6a6
       ];
     }
   }
+  
+  static LinearGradient getBackgroundGradient(bool isDarkMode) {
+    return LinearGradient(
+      begin: Alignment(-1, -1), // 135 degrees
+      end: Alignment(1, 1),     // 135 degrees
+      colors: getMainMenuGradient(isDarkMode),
+    );
+  }
+  
+  static BoxDecoration getBackgroundDecoration(bool isDarkMode) {
+    return BoxDecoration(
+      gradient: getBackgroundGradient(isDarkMode),
+    );
+  }
 
-  static List<Color> getSecondaryGradient(bool isDarkMode) {
+  // ============================================================================
+  // PRIMARY BUTTON GRADIENT - ROSE TO PEACHY CORAL
+  // ============================================================================
+  static LinearGradient getPrimaryButtonGradient(bool isDarkMode) {
     if (isDarkMode) {
-      return [const Color(0xFF2c3e50), const Color(0xFF34495e)];
+      // Dark mode: slightly deeper but still vibrant
+      return const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color(0xFFE57A8C), // deeper rose
+          Color(0xFFE39867), // deeper peachy coral
+        ],
+      );
     } else {
-      return [const Color(0xFF5568D3), const Color(0xFF6B4BA2)]; // Deeper purples
+      // Light mode: rose to peachy coral
+      return const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color(0xFFF28B9C), // soft rose (top)
+          Color(0xFFF5A877), // peachy coral (bottom)
+        ],
+      );
     }
   }
-
+  
+  // ============================================================================
+  // SECONDARY BUTTON GRADIENT - BEIGE TO CLAY
+  // ============================================================================
+  static LinearGradient getSecondaryButtonGradient(bool isDarkMode) {
+    if (isDarkMode) {
+      // Dark mode: darker clay tones
+      return const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color(0xFF4A413A), // dark clay
+          Color(0xFF3D342D), // darker clay
+        ],
+      );
+    } else {
+      // Light mode: beige to clay
+      return const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color(0xFFE6DDD4), // light beige top
+          Color(0xFFD0C0B2), // warm clay bottom
+        ],
+      );
+    }
+  }
+  
+  // ============================================================================
+  // TEXT COLORS
+  // ============================================================================
+  static Color getHeadingTextColor(bool isDarkMode) {
+    return isDarkMode 
+        ? const Color(0xFFF3E3CC) // warm beige for dark mode
+        : const Color(0xFF4A3A33); // warm brown for light mode
+  }
+  
+  static Color getBodyTextColor(bool isDarkMode) {
+    return isDarkMode 
+        ? const Color(0xFFE6DDD4) // light beige for dark mode
+        : const Color(0xFF5A4A42); // general text
+  }
+  
+  static Color getMutedTextColor(bool isDarkMode) {
+    return isDarkMode 
+        ? const Color(0xFFB5A598) // muted beige for dark mode
+        : const Color(0xFFA39083); // smaller info
+  }
+  
+  // Primary button always uses white text
+  static Color getPrimaryButtonTextColor(bool isDarkMode) {
+    return Colors.white;
+  }
+  
+  // Secondary button text color
+  static Color getSecondaryButtonTextColor(bool isDarkMode) {
+    return isDarkMode 
+        ? const Color(0xFFE6DDD4) // light beige for dark mode
+        : const Color(0xFF4B3A30); // warm brown for light mode
+  }
+  
+  // ============================================================================
+  // LEGACY METHODS (keeping these for compatibility with your existing code)
+  // ============================================================================
+  static List<Color> getSecondaryGradient(bool isDarkMode) {
+    return getSecondaryButtonGradient(isDarkMode).colors;
+  }
+  
+  static Color getTextColor(bool isDarkMode) {
+    return getPrimaryButtonTextColor(isDarkMode);
+  }
+  
+  static Color getButtonTextColor(bool isDarkMode) {
+    return getPrimaryButtonTextColor(isDarkMode);
+  }
+  
+  static Color getButtonBackgroundColor(bool isDarkMode) {
+    return getPrimaryButtonGradient(isDarkMode).colors.first.withValues(alpha: 0.95);
+  }
+  
+  // ============================================================================
+  // GAME MODE COLORS - Using variations of the new theme
+  // ============================================================================
   static Color getGameBackgroundColor(String gameMode, bool isDarkMode) {
     String normalizedMode = gameMode.toLowerCase();
     
     switch (normalizedMode) {
       case 'family':
         return isDarkMode 
-            ? const Color.fromRGBO(109, 76, 65, 1) 
-            : const Color.fromRGBO(160, 130, 110, 1); // Much richer brown
+          ? const Color(0xFF7B5D47) // rich mocha brown
+          : const Color(0xFFD7B299); // creamy cappuccino
       case 'couple':
         return isDarkMode 
-            ? const Color.fromRGBO(194, 24, 91, 1) 
-            : const Color.fromRGBO(220, 80, 140, 1); // Vibrant pink
+            ? const Color(0xFF8A6A64) // dark version of pink
+            : const Color(0xFFE8D6D0); // pink from gradient
       case 'friends':
         return isDarkMode 
-            ? const Color.fromRGBO(255, 143, 0, 1) 
-            : const Color.fromRGBO(230, 130, 40, 1); // Rich orange
+            ? const Color(0xFF6B5A72) // dark version of lavender
+            : const Color(0xFFCFC3D8); // lavender from gradient
       default:
-        return isDarkMode ? Colors.grey[800]! : Colors.grey[600]!;
+        return isDarkMode 
+            ? const Color(0xFF3A3230) 
+            : const Color(0xFFF8F4F0);
     }
   }
 
@@ -52,31 +194,113 @@ class ThemeHelper {
     
     switch (normalizedMode) {
       case 'couple':
+        // Rose theme for couple
         return isDarkMode
-            ? [const Color(0xFFAD1457), const Color(0xFF880E4F)]
-            : [const Color(0xFFD81B60), const Color(0xFFC2185B)]; // Vibrant pink instead of pale
+            ? [const Color(0xFFE57A8C), const Color(0xFFE39867)]
+            : [const Color(0xFFF28B9C), const Color(0xFFF5A877)];
       case 'friends':
+        // Lavender theme for friends
         return isDarkMode
-            ? [const Color(0xFFFF8F00), const Color(0xFFFF6F00)]
-            : [const Color(0xFFFF9800), const Color(0xFFF57C00)]; // Rich orange instead of pale
+            ? [const Color(0xFF6B5A72), const Color(0xFF7A6A82)]
+            : [const Color(0xFFCFC3D8), const Color(0xFFE0D3E8)];
       case 'family':
+        // Peach/beige theme for family
         return isDarkMode
-            ? [const Color(0xFF8D6E63), const Color(0xFF6D4C41)]
-            : [const Color(0xFF8D6E63), const Color(0xFF795548)]; // Richer brown instead of pale
+      ? [const Color(0xFF7B5D47), const Color(0xFF8D6E52)] // rich mocha brown
+      : [const Color(0xFFD7B299), const Color(0xFFE8CCBA)]; // creamy cappuccino
       default:
-        return isDarkMode
-            ? [const Color(0xFF424242), const Color(0xFF212121)]
-            : [const Color(0xFF757575), const Color(0xFF616161)];
+        return getSecondaryButtonGradient(isDarkMode).colors;
     }
   }
-
-  static Color getTextColor(bool isDarkMode) => Colors.white;
   
-  static Color getButtonBackgroundColor(bool isDarkMode) {
+  // ============================================================================
+  // CARD AND SURFACE COLORS
+  // ============================================================================
+  static Color getCardColor(bool isDarkMode) {
     return isDarkMode 
-        ? Colors.white.withValues(alpha: 0.9) 
-        : Colors.white.withValues(alpha: 0.95);
+        ? const Color(0xFF443A35) // dark card
+        : const Color(0xFFFBF7F3); // light card
   }
   
-  static Color getButtonTextColor(bool isDarkMode) => Colors.black;
+  static Color getSurfaceColor(bool isDarkMode) {
+    return isDarkMode 
+        ? const Color(0xFF2F2825) // dark surface
+        : const Color(0xFFFEFCFA); // light surface
+  }
+  
+  static Color getDividerColor(bool isDarkMode) {
+    return isDarkMode 
+        ? const Color(0xFF4A413A) // dark divider
+        : const Color(0xFFE6DDD4); // light divider
+  }
+  
+  // ============================================================================
+  // BOX DECORATIONS
+  // ============================================================================
+  static BoxDecoration getCardDecoration(bool isDarkMode) {
+    return BoxDecoration(
+      color: getCardColor(isDarkMode),
+      borderRadius: BorderRadius.circular(cardRadius),
+      boxShadow: [
+        BoxShadow(
+          color: isDarkMode 
+              ? const Color.fromRGBO(0, 0, 0, 0.3)
+              : const Color.fromRGBO(100, 80, 60, 0.15),
+          blurRadius: isDarkMode ? 12 : 8,
+          offset: const Offset(0, 4),
+        ),
+      ],
+    );
+  }
+  
+  static BoxDecoration getPrimaryButtonDecoration(bool isDarkMode) {
+    return BoxDecoration(
+      gradient: getPrimaryButtonGradient(isDarkMode),
+      borderRadius: BorderRadius.circular(buttonRadius),
+      boxShadow: [
+        BoxShadow(
+          color: isDarkMode 
+              ? const Color.fromRGBO(0, 0, 0, 0.4)
+              : const Color.fromRGBO(100, 80, 60, 0.15),
+          blurRadius: 8,
+          offset: const Offset(0, 4),
+        ),
+      ],
+    );
+  }
+  
+  static BoxDecoration getSecondaryButtonDecoration(bool isDarkMode) {
+    return BoxDecoration(
+      gradient: getSecondaryButtonGradient(isDarkMode),
+      borderRadius: BorderRadius.circular(buttonRadius),
+      boxShadow: isDarkMode ? [] : [], // No shadow for secondary buttons
+    );
+  }
+  
+  // ============================================================================
+  // SEMANTIC COLORS
+  // ============================================================================
+  static Color getSuccessColor(bool isDarkMode) {
+    return isDarkMode 
+        ? const Color(0xFF8BC48A) // lighter green for dark mode
+        : const Color(0xFF6BAA6A); // soft green
+  }
+  
+  static Color getWarningColor(bool isDarkMode) {
+    return isDarkMode 
+        ? const Color(0xFFF5B055) // lighter amber for dark mode
+        : const Color(0xFFE09A47); // warm amber
+  }
+  
+  static Color getErrorColor(bool isDarkMode) {
+    return isDarkMode 
+        ? const Color(0xFFEF8A7C) // lighter red for dark mode
+        : const Color(0xFFD46B5D); // muted red
+  }
+  
+  static Color getInfoColor(bool isDarkMode) {
+    return isDarkMode 
+        ? const Color(0xFF9AB8D5) // lighter blue for dark mode
+        : const Color(0xFF7A9BB8); // dusty blue
+  }
 }
