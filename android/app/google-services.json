@@ -12,7 +12,20 @@
           "package_name": "com.stenhoej.connect"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "712131109538-ldnhi0pkq624dv3b0shk35duh4dfm9au.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stenhoej.connect",
+            "certificate_hash": "0d0d688ace75829d0bf4cce149a138a5e9f7b132"
+          }
+        },
+        {
+          "client_id": "712131109538-n7aqt4uvp7cjf3bn1fojaqhe3os79p3a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDnHszpkG7UC9tsis-gmcPfH4z0fz5TRVU"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "712131109538-dq3ve458ajm1i4dj32mrthjbc9a4qgtr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
