@@ -1,5 +1,7 @@
 // lib/core/utils/theme_helper.dart
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../constants/app_constants.dart';
 
 class ThemeHelper {
   // ============================================================================
@@ -145,6 +147,123 @@ class ThemeHelper {
   }
   
   // ============================================================================
+  // REUSABLE LAYERED BUTTON WIDGET
+  // ============================================================================
+  static Widget buildLayeredButton({
+    required String text,
+    required VoidCallback onPressed,
+    required bool isPrimary,
+    required bool isDarkMode,
+    double? width,
+    double? height,
+    IconData? icon,
+  }) {
+    final colors = isPrimary 
+        ? getPrimaryButtonGradient(isDarkMode).colors
+        : getSecondaryButtonGradient(isDarkMode).colors;
+    
+    final buttonWidth = width ?? AppConstants.buttonWidth;
+    final buttonHeight = height ?? AppConstants.buttonHeight;
+    
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // Outermost layer
+        Container(
+          width: buttonWidth,
+          height: buttonHeight,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [colors[0], colors[1]],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: isDarkMode 
+                    ? const Color.fromRGBO(0, 0, 0, 0.4)
+                    : const Color.fromRGBO(100, 80, 60, 0.15),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+        ),
+        // Middle layer
+        Container(
+          width: buttonWidth - 8,
+          height: buttonHeight - 8,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [colors[0].withValues(alpha: 0.85), colors[1].withValues(alpha: 0.85)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+        // Innermost layer (button)
+        Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+          child: InkWell(
+            onTap: onPressed,
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              width: buttonWidth - 16,
+              height: buttonHeight - 16,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: colors,
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: icon != null
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          icon,
+                          size: 24,
+                          color: isPrimary 
+                              ? Colors.white
+                              : getSecondaryButtonTextColor(isDarkMode),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          text,
+                          style: GoogleFonts.poppins(
+                            fontSize: isPrimary ? 18 : 16,
+                            fontWeight: isPrimary ? FontWeight.bold : FontWeight.w600,
+                            color: isPrimary 
+                                ? Colors.white
+                                : getSecondaryButtonTextColor(isDarkMode),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Text(
+                      text,
+                      style: GoogleFonts.poppins(
+                        fontSize: isPrimary ? 18 : 16,
+                        fontWeight: isPrimary ? FontWeight.bold : FontWeight.w600,
+                        color: isPrimary 
+                            ? Colors.white
+                            : getSecondaryButtonTextColor(isDarkMode),
+                      ),
+                    ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  
+  // ============================================================================
   // LEGACY METHODS (keeping these for compatibility with your existing code)
   // ============================================================================
   static List<Color> getSecondaryGradient(bool isDarkMode) {
@@ -162,6 +281,12 @@ class ThemeHelper {
   static Color getButtonBackgroundColor(bool isDarkMode) {
     return getPrimaryButtonGradient(isDarkMode).colors.first.withValues(alpha: 0.95);
   }
+  
+  static Color getCardColor(bool isDarkMode) {
+    return isDarkMode
+        ? const Color(0xFF4B3A30) // warm brown for light mode
+        : const Color(0xFFE6DDD4); // light beige for dark mode
+}
   
   // ============================================================================
   // GAME MODE COLORS - Using variations of the new theme
@@ -201,56 +326,31 @@ class ThemeHelper {
       case 'friends':
         // Lavender theme for friends
         return isDarkMode
-            ? [const Color(0xFF6B5A72), const Color(0xFF7A6A82)]
-            : [const Color(0xFFCFC3D8), const Color(0xFFE0D3E8)];
+            ? [const Color(0xFF9276AB), const Color(0xFF7A6A9C)]
+            : [const Color(0xFFB995D3), const Color(0xFFA384C2)];
       case 'family':
-        // Peach/beige theme for family
+        // Gold theme for family
         return isDarkMode
-      ? [const Color(0xFF7B5D47), const Color(0xFF8D6E52)] // rich mocha brown
-      : [const Color(0xFFD7B299), const Color(0xFFE8CCBA)]; // creamy cappuccino
+            ? [const Color(0xFFD4A066), const Color(0xFFBF8F4F)]
+            : [const Color(0xFFF0D6A6), const Color(0xFFE3C590)];
       default:
-        return getSecondaryButtonGradient(isDarkMode).colors;
+        return getMainMenuGradient(isDarkMode);
     }
   }
   
   // ============================================================================
-  // CARD AND SURFACE COLORS
+  // BUTTON SHADOW
   // ============================================================================
-  static Color getCardColor(bool isDarkMode) {
-    return isDarkMode 
-        ? const Color(0xFF443A35) // dark card
-        : const Color(0xFFFBF7F3); // light card
-  }
-  
-  static Color getSurfaceColor(bool isDarkMode) {
-    return isDarkMode 
-        ? const Color(0xFF2F2825) // dark surface
-        : const Color(0xFFFEFCFA); // light surface
-  }
-  
-  static Color getDividerColor(bool isDarkMode) {
-    return isDarkMode 
-        ? const Color(0xFF4A413A) // dark divider
-        : const Color(0xFFE6DDD4); // light divider
-  }
-  
-  // ============================================================================
-  // BOX DECORATIONS
-  // ============================================================================
-  static BoxDecoration getCardDecoration(bool isDarkMode) {
-    return BoxDecoration(
-      color: getCardColor(isDarkMode),
-      borderRadius: BorderRadius.circular(cardRadius),
-      boxShadow: [
-        BoxShadow(
-          color: isDarkMode 
-              ? const Color.fromRGBO(0, 0, 0, 0.3)
-              : const Color.fromRGBO(100, 80, 60, 0.15),
-          blurRadius: isDarkMode ? 12 : 8,
-          offset: const Offset(0, 4),
-        ),
-      ],
-    );
+  static List<BoxShadow> getButtonShadow(bool isDarkMode) {
+    return [
+      BoxShadow(
+        color: isDarkMode 
+            ? const Color.fromRGBO(0, 0, 0, 0.3)
+            : const Color.fromRGBO(100, 80, 60, 0.15),
+        blurRadius: isDarkMode ? 12 : 8,
+        offset: const Offset(0, 4),
+      ),
+    ];
   }
   
   static BoxDecoration getPrimaryButtonDecoration(bool isDarkMode) {

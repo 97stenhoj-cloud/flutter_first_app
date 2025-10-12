@@ -1,3 +1,4 @@
+// lib/features/settings/presentation/pages/rules_page.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/theme_helper.dart';
@@ -15,13 +16,7 @@ class RulesPage extends StatelessWidget {
     
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: ThemeHelper.getSecondaryGradient(isDarkMode),
-          ),
-        ),
+        decoration: ThemeHelper.getBackgroundDecoration(isDarkMode), // Use main background
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(AppConstants.defaultPadding),
@@ -33,7 +28,7 @@ class RulesPage extends StatelessWidget {
                     onPressed: () => Navigator.pop(context),
                     icon: Icon(
                       Icons.arrow_back, 
-                      color: ThemeHelper.getTextColor(isDarkMode),
+                      color: ThemeHelper.getHeadingTextColor(isDarkMode),
                       size: 28,
                     ),
                   ),
@@ -45,18 +40,18 @@ class RulesPage extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: ThemeHelper.getTextColor(isDarkMode),
+                        color: ThemeHelper.getHeadingTextColor(isDarkMode),
                         shadows: [
                           Shadow(
                             offset: const Offset(0, 0),
                             blurRadius: 10,
-                            color: ThemeHelper.getTextColor(isDarkMode).withValues(alpha: 0.5),
+                            color: ThemeHelper.getHeadingTextColor(isDarkMode).withValues(alpha: 0.3),
                           ),
                         ],
                       ),
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 40),
                   
                   _buildSection(
                     title: l10n.chooseYourMode,
