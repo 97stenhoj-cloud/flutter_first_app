@@ -149,92 +149,96 @@ class ThemeHelper {
   // ============================================================================
   // REUSABLE LAYERED BUTTON WIDGET
   // ============================================================================
-  static Widget buildLayeredButton({
-    required String text,
-    required VoidCallback onPressed,
-    required bool isPrimary,
-    required bool isDarkMode,
-    double? width,
-    double? height,
-    IconData? icon,
-  }) {
-    final colors = isPrimary 
-        ? getPrimaryButtonGradient(isDarkMode).colors
-        : getSecondaryButtonGradient(isDarkMode).colors;
-    
-    final buttonWidth = width ?? AppConstants.buttonWidth;
-    final buttonHeight = height ?? AppConstants.buttonHeight;
-    
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        // Outermost layer
-        Container(
-          width: buttonWidth,
-          height: buttonHeight,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [colors[0], colors[1]],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: isDarkMode 
-                    ? const Color.fromRGBO(0, 0, 0, 0.4)
-                    : const Color.fromRGBO(100, 80, 60, 0.15),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
+  // Replace the buildLayeredButton method in your theme_helper.dart with this:
+
+static Widget buildLayeredButton({
+  required String text,
+  required VoidCallback onPressed,
+  required bool isPrimary,
+  required bool isDarkMode,
+  double? width,
+  double? height,
+  IconData? icon,
+}) {
+  final colors = isPrimary 
+      ? getPrimaryButtonGradient(isDarkMode).colors
+      : getSecondaryButtonGradient(isDarkMode).colors;
+  
+  final buttonWidth = width ?? AppConstants.buttonWidth;
+  final buttonHeight = height ?? AppConstants.buttonHeight;
+  
+  return Stack(
+    alignment: Alignment.center,
+    children: [
+      // Outermost layer
+      Container(
+        width: buttonWidth,
+        height: buttonHeight,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [colors[0], colors[1]],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
-        ),
-        // Middle layer
-        Container(
-          width: buttonWidth - 8,
-          height: buttonHeight - 8,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [colors[0].withValues(alpha: 0.85), colors[1].withValues(alpha: 0.85)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-            borderRadius: BorderRadius.circular(20),
-          ),
-        ),
-        // Innermost layer (button)
-        Material(
-          color: Colors.transparent,
           borderRadius: BorderRadius.circular(20),
-          child: InkWell(
-            onTap: onPressed,
-            borderRadius: BorderRadius.circular(20),
-            child: Container(
-              width: buttonWidth - 16,
-              height: buttonHeight - 16,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: colors,
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-                borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: isDarkMode 
+                  ? const Color.fromRGBO(0, 0, 0, 0.4)
+                  : const Color.fromRGBO(100, 80, 60, 0.15),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+      ),
+      // Middle layer
+      Container(
+        width: buttonWidth - 8,
+        height: buttonHeight - 8,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [colors[0].withValues(alpha: 0.85), colors[1].withValues(alpha: 0.85)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+      // Innermost layer (button)
+      Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(20),
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            width: buttonWidth - 16,
+            height: buttonHeight - 16,
+            padding: const EdgeInsets.symmetric(horizontal: 16), // Add padding
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: colors,
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
-              child: icon != null
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          icon,
-                          size: 24,
-                          color: isPrimary 
-                              ? Colors.white
-                              : getSecondaryButtonTextColor(isDarkMode),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: icon != null
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        icon,
+                        size: 24,
+                        color: isPrimary 
+                            ? Colors.white
+                            : getSecondaryButtonTextColor(isDarkMode),
+                      ),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
                           text,
                           style: GoogleFonts.poppins(
                             fontSize: isPrimary ? 18 : 16,
@@ -243,10 +247,13 @@ class ThemeHelper {
                                 ? Colors.white
                                 : getSecondaryButtonTextColor(isDarkMode),
                           ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ],
-                    )
-                  : Text(
+                      ),
+                    ],
+                  )
+                : Center(
+                    child: Text(
                       text,
                       style: GoogleFonts.poppins(
                         fontSize: isPrimary ? 18 : 16,
@@ -255,13 +262,16 @@ class ThemeHelper {
                             ? Colors.white
                             : getSecondaryButtonTextColor(isDarkMode),
                       ),
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
                     ),
-            ),
+                  ),
           ),
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
   
   // ============================================================================
   // LEGACY METHODS (keeping these for compatibility with your existing code)

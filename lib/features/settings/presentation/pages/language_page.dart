@@ -23,57 +23,59 @@ class _LanguagePageState extends State<LanguagePage> {
     final l10n = AppLocalizations.of(context)!;
     
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(AppConstants.defaultPadding),
-          child: Column(
-            children: [
-              // Header
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                      size: 28,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Text(
-                    l10n.language,
-                    style: GoogleFonts.poppins(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 40),
-              
-              // Language list
-              Expanded(
-                child: ListView.builder(
-                  itemCount: LanguageManager.supportedLanguages.length,
-                  itemBuilder: (context, index) {
-                    final language = LanguageManager.supportedLanguages[index];
-                    final isSelected = languageManager.currentLocale.languageCode == language['code'];
-                    
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: _buildLanguageButton(
-                        flag: language['flag']!,
-                        name: language['name']!,
-                        code: language['code']!,
-                        isSelected: isSelected,
+      body: Container(
+        decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode), // Fixed: Add proper background
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(AppConstants.defaultPadding),
+            child: Column(
+              children: [
+                // Header
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                        size: 28,
                       ),
-                    );
-                  },
+                    ),
+                    const SizedBox(width: 16),
+                    Text(
+                      l10n.language,
+                      style: GoogleFonts.poppins(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                const SizedBox(height: 40),
+                
+                // Language list
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: LanguageManager.supportedLanguages.length,
+                    itemBuilder: (context, index) {
+                      final language = LanguageManager.supportedLanguages[index];
+                      final isSelected = languageManager.currentLocale.languageCode == language['code'];
+                      
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: _buildLanguageButton(
+                          flag: language['flag']!,
+                          name: language['name']!,
+                          code: language['code']!,
+                          isSelected: isSelected,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -104,7 +106,15 @@ class _LanguagePageState extends State<LanguagePage> {
               end: Alignment.bottomCenter,
             ),
             borderRadius: BorderRadius.circular(20),
-            boxShadow: ThemeHelper.getButtonShadow(widget.isDarkMode),
+            boxShadow: [
+              BoxShadow(
+                color: widget.isDarkMode 
+                    ? const Color.fromRGBO(0, 0, 0, 0.4)
+                    : const Color.fromRGBO(100, 80, 60, 0.15),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
         ),
         // Middle layer
@@ -146,32 +156,25 @@ class _LanguagePageState extends State<LanguagePage> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     flag,
                     style: const TextStyle(fontSize: 28),
                   ),
                   const SizedBox(width: 12),
-                  Text(
-                    name,
-                    style: GoogleFonts.poppins(
-                      fontSize: isSelected ? 18 : 16,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                      color: isSelected 
-                          ? Colors.white
-                          : ThemeHelper.getSecondaryButtonTextColor(widget.isDarkMode),
+                  Expanded(
+                    child: Text(
+                      name,
+                      style: GoogleFonts.poppins(
+                        fontSize: isSelected ? 18 : 16,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                        color: isSelected 
+                            ? Colors.white
+                            : ThemeHelper.getSecondaryButtonTextColor(widget.isDarkMode),
+                      ),
                     ),
                   ),
-                  if (isSelected) ...[
-                    const Spacer(),
-                    const Icon(
-                      Icons.check_circle,
-                      color: Colors.white,
-                      size: 22,
-                    ),
-                  ],
-                ],
+                                 ],
               ),
             ),
           ),
