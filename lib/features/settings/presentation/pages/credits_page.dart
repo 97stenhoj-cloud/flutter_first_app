@@ -1,21 +1,13 @@
+// lib/features/settings/presentation/pages/credits_page.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../core/utils/theme_helper.dart';
 
 class CreditsPage extends StatelessWidget {
   final bool isDarkMode;
   
   const CreditsPage({super.key, required this.isDarkMode});
-
-  List<Color> get gradientColors {
-    if (isDarkMode) {
-      return [const Color(0xFF2c3e50), const Color(0xFF34495e)];
-    } else {
-      return [const Color(0xFF667eea), const Color(0xFF764ba2)];
-    }
-  }
-
-  Color get textColor => isDarkMode ? Colors.white : Colors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -23,22 +15,23 @@ class CreditsPage extends StatelessWidget {
     
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: gradientColors,
-          ),
-        ),
+        decoration: ThemeHelper.getBackgroundDecoration(isDarkMode), // Use main background
         child: SafeArea(
           child: Column(
             children: [
               // Back button
               Align(
                 alignment: Alignment.topLeft,
-                child: IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: Icon(Icons.arrow_back, color: textColor),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: Icon(
+                      Icons.arrow_back, 
+                      color: ThemeHelper.getHeadingTextColor(isDarkMode),
+                      size: 28,
+                    ),
+                  ),
                 ),
               ),
               
@@ -61,7 +54,7 @@ class CreditsPage extends StatelessWidget {
                         style: GoogleFonts.poppins(
                           fontSize: 24,
                           fontWeight: FontWeight.w300,
-                          color: textColor,
+                          color: ThemeHelper.getHeadingTextColor(isDarkMode),
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -72,12 +65,12 @@ class CreditsPage extends StatelessWidget {
                         style: GoogleFonts.poppins(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
-                          color: textColor,
+                          color: ThemeHelper.getHeadingTextColor(isDarkMode),
                           shadows: [
                             Shadow(
                               offset: const Offset(0, 0),
                               blurRadius: 15,
-                              color: textColor.withValues(alpha: 0.5),
+                              color: ThemeHelper.getHeadingTextColor(isDarkMode).withValues(alpha: 0.5),
                             ),
                           ],
                         ),
@@ -97,7 +90,7 @@ class CreditsPage extends StatelessWidget {
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontStyle: FontStyle.italic,
-                          color: textColor,
+                          color: ThemeHelper.getBodyTextColor(isDarkMode),
                         ),
                         textAlign: TextAlign.center,
                       ),

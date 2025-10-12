@@ -12,7 +12,7 @@ class AuthService {
   final SupabaseClient _supabase = Supabase.instance.client;
   
   // Your Google Web Client ID
-  static const String _googleWebClientId = '712131109538-ldnhi0pkq624dv3b0shk35duh4dfm9au.apps.googleusercontent.com';
+  static const String _googleWebClientId = '712131109538-n7aqt4uvp7cjf3bn1fojaqhe3os79p3a.apps.googleusercontent.com';
 
   // Get current user
   User? get currentUser => _supabase.auth.currentUser;

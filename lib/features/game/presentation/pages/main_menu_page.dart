@@ -1,5 +1,4 @@
 // lib/features/game/presentation/pages/main_menu_page.dart
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -10,6 +9,7 @@ import '../../../settings/presentation/pages/settings_main_page.dart';
 import '../../../settings/presentation/pages/rules_page.dart';
 import '../../../settings/presentation/pages/profile_page.dart';
 import 'game_mode_selection_page.dart';
+import 'package:connect/core/utils/page_transitions.dart';
 
 class MainMenuPage extends StatefulWidget {
   const MainMenuPage({super.key});
@@ -19,106 +19,15 @@ class MainMenuPage extends StatefulWidget {
 }
 
 class _MainMenuPageState extends State<MainMenuPage> {
-  Widget _buildLayeredButton({
-    required String text,
-    required VoidCallback onPressed,
-    required List<Color> colors,
-    required bool isPrimary,
-    required bool isDarkMode,
-  }) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        // Outermost layer
-        Container(
-          width: AppConstants.buttonWidth,
-          height: AppConstants.buttonHeight,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [colors[0], colors[1]],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: isDarkMode 
-                    ? const Color.fromRGBO(0, 0, 0, 0.4)
-                    : const Color.fromRGBO(100, 80, 60, 0.15),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-        ),
-        // Middle layer
-        Container(
-          width: AppConstants.buttonWidth - 8,
-          height: AppConstants.buttonHeight - 8,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [colors[0].withValues(alpha: 0.85), colors[1].withValues(alpha: 0.85)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-            borderRadius: BorderRadius.circular(20),
-          ),
-        ),
-        // Innermost layer (button)
-        Material(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-          child: InkWell(
-            onTap: onPressed,
-            borderRadius: BorderRadius.circular(20),
-            child: Container(
-              width: AppConstants.buttonWidth - 16,
-              height: AppConstants.buttonHeight - 16,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: colors,
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                text,
-                style: GoogleFonts.poppins(
-                  fontSize: isPrimary ? 18 : 16,
-                  fontWeight: isPrimary ? FontWeight.bold : FontWeight.w600,
-                  color: isPrimary 
-                      ? Colors.white
-                      : ThemeHelper.getSecondaryButtonTextColor(isDarkMode),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final themeNotifier = ThemeProvider.of(context);
     final isDarkMode = themeNotifier.isDarkMode;
     
-    // Get the new theme colors
-    final primaryGradient = ThemeHelper.getPrimaryButtonGradient(isDarkMode);
-    final secondaryGradient = ThemeHelper.getSecondaryButtonGradient(isDarkMode);
-    
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: const Alignment(-1, -1), // 135 degrees
-            end: const Alignment(1, 1),      // 135 degrees
-            colors: ThemeHelper.getMainMenuGradient(isDarkMode),
-          ),
-        ),
+        decoration: ThemeHelper.getBackgroundDecoration(isDarkMode),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(AppConstants.defaultPadding),
@@ -138,7 +47,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
+                            SlidePageRoute(
                               builder: (context) => ProfilePage(isDarkMode: isDarkMode),
                             ),
                           );
@@ -176,7 +85,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                 Expanded(
                   child: Column(
                     children: [
-                      // Logo at top - keeping your Supabase logo
+                      // Logo from Supabase storage
                       const SizedBox(height: 20),
                       Image.network(
                         'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/AppIcon/AppIcon.png',
@@ -239,51 +148,49 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                   const SizedBox(height: 60),
                                   
                                   // START Button - PRIMARY (Rose to Peachy Coral)
-                                  _buildLayeredButton(
+                                  ThemeHelper.buildLayeredButton(
                                     text: l10n.start,
                                     onPressed: () {
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(
-                                          builder: (context) => GameModeSelectionPage(isDarkMode: isDarkMode),
-                                        ),
+                                        SlidePageRoute(
+    builder: (context) => GameModeSelectionPage(isDarkMode: isDarkMode),
+  ),
+
                                       );
                                     },
-                                    colors: primaryGradient.colors,
                                     isPrimary: true,
                                     isDarkMode: isDarkMode,
                                   ),
                                   const SizedBox(height: 20),
                                   
                                   // SETTINGS Button - SECONDARY (Beige to Clay)
-                                  _buildLayeredButton(
+                                  ThemeHelper.buildLayeredButton(
                                     text: l10n.settings,
                                     onPressed: () {
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(
-                                          builder: (context) => SettingsMainPage(isDarkMode: isDarkMode),
-                                        ),
+                                        SlidePageRoute(
+    builder: (context) => SettingsMainPage(isDarkMode: isDarkMode),
+  ),
                                       );
                                     },
-                                    colors: secondaryGradient.colors,
                                     isPrimary: false,
                                     isDarkMode: isDarkMode,
                                   ),
                                   const SizedBox(height: 20),
                                   
                                   // HOW TO PLAY Button - SECONDARY (Beige to Clay)
-                                  _buildLayeredButton(
+                                  ThemeHelper.buildLayeredButton(
                                     text: l10n.howToPlay,
                                     onPressed: () {
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(
-                                          builder: (context) => RulesPage(isDarkMode: isDarkMode),
-                                        ),
+                                        SlidePageRoute(
+    builder: (context) => RulesPage(isDarkMode: isDarkMode),
+  ),
                                       );
                                     },
-                                    colors: secondaryGradient.colors,
                                     isPrimary: false,
                                     isDarkMode: isDarkMode,
                                   ),

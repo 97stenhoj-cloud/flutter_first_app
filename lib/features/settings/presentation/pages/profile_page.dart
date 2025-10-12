@@ -1,11 +1,11 @@
+// lib/features/settings/presentation/pages/profile_page.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../auth/presentation/pages/social_auth_page.dart';
-import '../../../../l10n/app_localizations.dart';
 import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/utils/unlock_manager.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class ProfilePage extends StatefulWidget {
   final bool isDarkMode;
@@ -19,90 +19,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final authService = AuthService();
   final unlockManager = UnlockManager();
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeData();
-  }
-
-  Future<void> _initializeData() async {
-    if (authService.isLoggedIn) {
-      await unlockManager.initialize();
-      if (mounted) setState(() {});
-    }
-  }
-
-  Future<void> _handleSignOut() async {
-    final l10n = AppLocalizations.of(context)!;
-    final navigator = Navigator.of(context);
-    final messenger = ScaffoldMessenger.of(context);
-    
-    // Show confirmation dialog
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        title: Text(
-          l10n.signOut,
-          style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
-        ),
-        content: Text(
-          l10n.signOutConfirm,
-          style: GoogleFonts.poppins(),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(
-              l10n.cancel,
-              style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFAD1457),
-              foregroundColor: Colors.white,
-            ),
-            child: Text(
-              l10n.signOut,
-              style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-            ),
-          ),
-        ],
-      ),
-    );
-
-    if (confirm == true) {
-      await authService.signOut();
-      unlockManager.lockAllBundles();
-      
-      navigator.pop();
-      
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(
-            l10n.signedOutSuccess,
-            style: GoogleFonts.poppins(),
-          ),
-          backgroundColor: Colors.green,
-        ),
-      );
-    }
-  }
-
-  String _formatDate(String dateString) {
-    try {
-      final date = DateTime.parse(dateString);
-      return '${date.day}/${date.month}/${date.year}';
-    } catch (e) {
-      return AppLocalizations.of(context)!.unknown;
-    }
-  }
-
+  
   Widget _buildInfoCard({
     required IconData icon,
     required String title,
@@ -110,13 +27,13 @@ class _ProfilePageState extends State<ProfilePage> {
     Color? iconColor,
   }) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(16),
+        color: Colors.white.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.white.withValues(alpha: 0.3),
-          width: 1,
+          color: Colors.white.withValues(alpha: 0.2),
         ),
       ),
       child: Row(
@@ -142,7 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   title,
                   style: GoogleFonts.poppins(
                     fontSize: 13,
-                    color: Colors.white70,
+                    color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -151,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   value,
                   style: GoogleFonts.poppins(
                     fontSize: 16,
-                    color: Colors.white,
+                    color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -164,7 +81,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildSubscriptionCard(String bundleName) {
-    final l10n = AppLocalizations.of(context)!;
     final Map<String, Color> bundleColors = {
       'Couple': const Color(0xFFAD1457),
       'Friends': const Color(0xFFFF8F00),
@@ -189,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
           const Icon(Icons.check_circle, color: Colors.white, size: 20),
           const SizedBox(width: 8),
           Text(
-            l10n.bundle(bundleName),
+            bundleName,
             style: GoogleFonts.poppins(
               fontSize: 14,
               fontWeight: FontWeight.w600,
@@ -204,31 +120,25 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isLoggedIn = authService.isLoggedIn;
     final user = authService.currentUser;
+    final isSignedIn = user != null;
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: ThemeHelper.getSecondaryGradient(widget.isDarkMode),
-          ),
-        ),
+        decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode),
         child: SafeArea(
-          child: Column(
-            children: [
-              // Header
-              Padding(
-                padding: const EdgeInsets.all(AppConstants.defaultPadding),
-                child: Row(
+          child: Padding(
+            padding: const EdgeInsets.all(AppConstants.defaultPadding),
+            child: Column(
+              children: [
+                // Header
+                Row(
                   children: [
                     IconButton(
                       onPressed: () => Navigator.pop(context),
                       icon: Icon(
                         Icons.arrow_back,
-                        color: ThemeHelper.getTextColor(widget.isDarkMode),
+                        color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
                         size: 28,
                       ),
                     ),
@@ -238,222 +148,149 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: GoogleFonts.poppins(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: ThemeHelper.getTextColor(widget.isDarkMode),
+                        color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
                       ),
                     ),
                   ],
                 ),
-              ),
+                const SizedBox(height: 40),
 
-              // Content
-              Expanded(
-                child: isLoggedIn
-                    ? SingleChildScrollView(
-                        padding: const EdgeInsets.all(AppConstants.defaultPadding),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            // Profile Header
-                            Container(
-                              padding: const EdgeInsets.all(24),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.15),
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: Colors.white.withValues(alpha: 0.3),
-                                  width: 1,
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  // Avatar
-                                  Container(
-                                    width: 80,
-                                    height: 80,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFAD1457),
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: Colors.white,
-                                        width: 3,
-                                      ),
+                // Content
+                Expanded(
+                  child: isSignedIn
+                      ? SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // User Avatar
+                              Center(
+                                child: Container(
+                                  width: 100,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      colors: ThemeHelper.getPrimaryButtonGradient(widget.isDarkMode).colors,
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
                                     ),
-                                    child: const Icon(
-                                      Icons.person,
-                                      size: 40,
-                                      color: Colors.white,
+                                    boxShadow: ThemeHelper.getButtonShadow(widget.isDarkMode),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      user.email![0].toUpperCase(),
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
-                                  const SizedBox(height: 16),
-                                  
-                                  // Premium Badge
-                                  if (unlockManager.isPremium)
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+
+                              // User Info
+                              _buildInfoCard(
+                                icon: Icons.email,
+                                title: 'Email',
+                                value: user.email!,
+                                iconColor: const Color(0xFF4285F4),
+                              ),
+                              _buildInfoCard(
+                                icon: Icons.person,
+                                title: 'User ID',
+                                value: '${user.id.substring(0, 8)}...',
+                                iconColor: const Color(0xFF34A853),
+                              ),
+
+                              const SizedBox(height: 32),
+
+                              // Subscription Status
+                              Text(
+                                'Subscription',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+
+                              // Active Bundles
+                              Wrap(
+                                spacing: 12,
+                                runSpacing: 12,
+                                children: [
+                                  if (unlockManager.isBundleUnlocked('couple'))
+                                    _buildSubscriptionCard('Couple'),
+                                  if (unlockManager.isBundleUnlocked('friends'))
+                                    _buildSubscriptionCard('Friends'),
+                                  if (unlockManager.isBundleUnlocked('family'))
+                                    _buildSubscriptionCard('Family'),
+                                  // Check if no bundles are unlocked
+                                  if (!unlockManager.isBundleUnlocked('couple') && 
+                                      !unlockManager.isBundleUnlocked('friends') && 
+                                      !unlockManager.isBundleUnlocked('family'))
                                     Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                      padding: const EdgeInsets.all(16),
                                       decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [Colors.amber.shade400, Colors.amber.shade600],
-                                        ),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          const Icon(Icons.star, size: 18, color: Colors.white),
-                                          const SizedBox(width: 6),
-                                          Text(
-                                            l10n.premiumMember,
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  else
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white.withValues(alpha: 0.2),
-                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.grey.withValues(alpha: 0.3),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
                                       child: Text(
-                                        l10n.freeAccount,
+                                        'No active subscription',
                                         style: GoogleFonts.poppins(
                                           fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
+                                          color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
                                         ),
                                       ),
                                     ),
                                 ],
                               ),
-                            ),
-                            
-                            const SizedBox(height: 24),
-                            
-                            // Account Info
-                            Text(
-                              l10n.accountInformation,
-                              style: GoogleFonts.poppins(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            
-                            _buildInfoCard(
-                              icon: Icons.email,
-                              title: l10n.email,
-                              value: user?.email ?? l10n.notAvailable,
-                              iconColor: Colors.blue,
-                            ),
-                            
-                            const SizedBox(height: 12),
-                            
-                            _buildInfoCard(
-                              icon: Icons.calendar_today,
-                              title: l10n.memberSince,
-                              value: user != null
-                                  ? _formatDate(user.createdAt)
-                                  : l10n.unknown,
-                              iconColor: Colors.green,
-                            ),
-                            
-                            const SizedBox(height: 24),
-                            
-                            // Subscription Info
-                            if (unlockManager.isPremium) ...[
-                              Text(
-                                l10n.activeSubscriptions,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              
-                              Container(
-                                padding: const EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withValues(alpha: 0.15),
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
-                                    color: Colors.white.withValues(alpha: 0.3),
-                                    width: 1,
-                                  ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.workspace_premium,
-                                          color: Colors.amber,
-                                          size: 24,
+
+                              const SizedBox(height: 40),
+
+                              // Sign Out Button
+                              ThemeHelper.buildLayeredButton(
+                                text: l10n.signOut,
+                                icon: Icons.logout,
+                                onPressed: () async {
+                                  final confirmed = await showDialog<bool>(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: Text(l10n.signOut),
+                                      content: const Text('Are you sure you want to sign out?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(context, false),
+                                          child: Text(l10n.cancel),
                                         ),
-                                        const SizedBox(width: 12),
-                                        Text(
-                                          l10n.bundlesUnlocked(
-                                            unlockManager.unlockedBundleCount,
-                                            unlockManager.unlockedBundleCount != 1 ? "s" : "",
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(context, true),
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: Colors.red,
                                           ),
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white,
-                                          ),
+                                          child: Text(l10n.signOut),
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 16),
-                                    Wrap(
-                                      spacing: 8,
-                                      runSpacing: 8,
-                                      children: unlockManager.unlockedBundles
-                                          .map((bundle) => _buildSubscriptionCard(bundle))
-                                          .toList(),
-                                    ),
-                                  ],
-                                ),
+                                  );
+
+                                  if (confirmed == true) {
+                                    await authService.signOut();
+                                    setState(() {});
+                                  }
+                                },
+                                isPrimary: false,
+                                isDarkMode: widget.isDarkMode,
                               ),
                               
-                              const SizedBox(height: 24),
+                              const SizedBox(height: 40),
                             ],
-                            
-                            // Sign Out Button
-                            ElevatedButton.icon(
-                              onPressed: _handleSignOut,
-                              icon: const Icon(Icons.logout),
-                              label: Text(
-                                l10n.signOut,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red.shade400,
-                                foregroundColor: Colors.white,
-                                minimumSize: const Size(double.infinity, 56),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                            ),
-                            
-                            const SizedBox(height: 40),
-                          ],
-                        ),
-                      )
-                    : Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(AppConstants.defaultPadding),
+                          ),
+                        )
+                      : Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -468,66 +305,52 @@ class _ProfilePageState extends State<ProfilePage> {
                                     width: 2,
                                   ),
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.person_outline,
                                   size: 60,
-                                  color: Colors.white,
+                                  color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
                                 ),
                               ),
                               const SizedBox(height: 32),
                               Text(
                                 l10n.notSignedIn,
                                 style: GoogleFonts.poppins(
-                                  fontSize: 28,
+                                  fontSize: 24,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                  color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
                                 ),
                               ),
-                              const SizedBox(height: 12),
-                              Text(
-                                l10n.signInToSync,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 16,
-                                  color: Colors.white70,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 32),
-                              ElevatedButton.icon(
-                                onPressed: () {
-                                  Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SocialAuthPage(isDarkMode: widget.isDarkMode),
-                                  ),
-                                ).then((_) {
-                                  setState(() {});
-                                  _initializeData();
-                                });
-                                },
-                                icon: const Icon(Icons.login),
-                                label: Text(
-                                  l10n.signInSignUp,
+                              const SizedBox(height: 16),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 40),
+                                child: Text(
+                                  'Sign in to sync your subscriptions across devices',
                                   style: GoogleFonts.poppins(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                    color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
                                   ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFAD1457),
-                                  foregroundColor: Colors.white,
-                                  minimumSize: const Size(double.infinity, 56),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
+                              ),
+                              const SizedBox(height: 40),
+                              
+                              // Sign In Button
+                              ThemeHelper.buildLayeredButton(
+                                text: l10n.signInSignUp,
+                                icon: Icons.login,
+                                onPressed: () async {
+                                  await authService.signInWithGoogle();
+                                  setState(() {});
+                                },
+                                isPrimary: true,
+                                isDarkMode: widget.isDarkMode,
                               ),
                             ],
                           ),
                         ),
-                      ),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
