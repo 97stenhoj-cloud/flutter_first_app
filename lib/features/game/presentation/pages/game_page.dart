@@ -1,18 +1,21 @@
+// Optimized with flutter_card_swiper package
+// lib/features/game/presentation/pages/game_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'dart:math';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import '../../../../core/utils/theme_helper.dart';
-import '../../../../core/utils/unlock_manager.dart';
 import '../../../../core/constants/app_constants.dart';
-import '../../../../core/services/supabase_service.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../core/utils/unlock_manager.dart';
+import '../../../../core/services/supabase_service.dart';
 
 class GamePage extends StatefulWidget {
   final String gameMode;
   final String category;
   final bool isDarkMode;
-  
+
   const GamePage({
     super.key,
     required this.gameMode,
@@ -27,11 +30,13 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> {
   final supabaseService = SupabaseService();
   final unlockManager = UnlockManager();
-  
-  List<String> availableQuestions = [];
-  List<String> usedQuestions = [];
-  String currentQuestion = '';
+  final CardSwiperController controller = CardSwiperController();
+
+  List<String> allQuestions = [];
+  List<String> displayedQuestions = [];
+  int currentIndex = 0;
   bool isLoading = true;
+  String? logoUrl;
   
   InterstitialAd? _interstitialAd;
   bool _isAdLoaded = false;
@@ -41,10 +46,12 @@ class _GamePageState extends State<GamePage> {
     super.initState();
     _loadQuestions();
     _loadAd();
+    _loadLogo();
   }
 
   @override
   void dispose() {
+    controller.dispose();
     _interstitialAd?.dispose();
     super.dispose();
   }
@@ -63,35 +70,27 @@ class _GamePageState extends State<GamePage> {
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
           debugPrint('Ad loaded successfully');
-          setState(() {
-            _interstitialAd = ad;
-            _isAdLoaded = true;
-          });
+          _interstitialAd = ad;
+          _isAdLoaded = true;
           
           _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
             onAdDismissedFullScreenContent: (ad) {
               debugPrint('Ad dismissed');
               ad.dispose();
-              setState(() {
-                _isAdLoaded = false;
-              });
+              _isAdLoaded = false;
               _loadAd();
             },
             onAdFailedToShowFullScreenContent: (ad, error) {
               debugPrint('Ad failed to show: $error');
               ad.dispose();
-              setState(() {
-                _isAdLoaded = false;
-              });
+              _isAdLoaded = false;
               _loadAd();
             },
           );
         },
         onAdFailedToLoad: (error) {
           debugPrint('Ad failed to load: $error');
-          setState(() {
-            _isAdLoaded = false;
-          });
+          _isAdLoaded = false;
           Future.delayed(const Duration(seconds: 5), () {
             if (mounted) _loadAd();
           });
@@ -100,12 +99,21 @@ class _GamePageState extends State<GamePage> {
     );
   }
 
+  void _loadLogo() {
+    // Your logo from Supabase storage
+    setState(() {
+      logoUrl = 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/AppIcon/AppIcon.png';
+    });
+  }
+
   void _showAdOrPurchaseOption() {
     if (unlockManager.isPremium) {
       return;
     }
 
     if (unlockManager.shouldShowAd()) {
+      if (!mounted) return;
+      
       final l10n = AppLocalizations.of(context)!;
       
       showDialog(
@@ -188,6 +196,8 @@ class _GamePageState extends State<GamePage> {
   }
 
   void _showAdFreePurchaseDialog() {
+    if (!mounted) return;
+    
     final l10n = AppLocalizations.of(context)!;
     String? selectedBundle;
 
@@ -212,62 +222,48 @@ class _GamePageState extends State<GamePage> {
               children: [
                 Text(
                   l10n.chooseOneBundle,
-                  style: GoogleFonts.poppins(fontSize: 14),
+                  style: GoogleFonts.poppins(fontSize: 15),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
                 ...[
-                  {'name': 'Couple', 'color': const Color(0xFFAD1457)},
-                  {'name': 'Friends', 'color': const Color(0xFFFF8F00)},
-                  {'name': 'Family', 'color': const Color(0xFF8D6E63)},
+                  {'name': l10n.family, 'key': 'family'},
+                  {'name': l10n.couple, 'key': 'couple'},
+                  {'name': l10n.friends, 'key': 'friends'},
                 ].map((bundle) {
-                  final isSelected = selectedBundle == bundle['name'];
+                  final isSelected = selectedBundle == bundle['key'];
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(bottom: 8.0),
                     child: InkWell(
                       onTap: () {
                         setDialogState(() {
-                          selectedBundle = bundle['name'] as String;
+                          selectedBundle = bundle['key'];
                         });
                       },
+                      borderRadius: BorderRadius.circular(8),
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: isSelected
-                              ? (bundle['color'] as Color).withValues(alpha: 0.2)
-                              : Colors.grey.withValues(alpha: 0.1),
+                          color: isSelected 
+                              ? const Color(0xFFAD1457).withValues(alpha: 0.1)
+                              : Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: isSelected
-                                ? (bundle['color'] as Color)
-                                : Colors.grey,
-                            width: isSelected ? 2 : 1,
+                            color: isSelected 
+                                ? const Color(0xFFAD1457)
+                                : Colors.grey.shade300,
+                            width: 2,
                           ),
                         ),
                         child: Row(
                           children: [
-                            Container(
-                              width: 24,
-                              height: 24,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: isSelected
-                                      ? (bundle['color'] as Color)
-                                      : Colors.grey,
-                                  width: 2,
-                                ),
-                                color: isSelected
-                                    ? (bundle['color'] as Color)
-                                    : Colors.transparent,
-                              ),
-                              child: isSelected
-                                  ? const Icon(
-                                      Icons.check,
-                                      size: 16,
-                                      color: Colors.white,
-                                    )
-                                  : null,
+                            Icon(
+                              isSelected 
+                                  ? Icons.radio_button_checked
+                                  : Icons.radio_button_unchecked,
+                              color: isSelected 
+                                  ? const Color(0xFFAD1457)
+                                  : Colors.grey,
                             ),
                             const SizedBox(width: 12),
                             Expanded(
@@ -275,12 +271,18 @@ class _GamePageState extends State<GamePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    l10n.bundle(bundle['name'] as String),
-                                    style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+                                    bundle['name']!,
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w600,
+                                      color: isSelected ? const Color(0xFFAD1457) : Colors.black87,
+                                    ),
                                   ),
                                   Text(
                                     l10n.premiumCategories,
-                                    style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -291,46 +293,53 @@ class _GamePageState extends State<GamePage> {
                     ),
                   );
                 }),
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.green.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Colors.green.withValues(alpha: 0.3),
-                      width: 1,
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.check_circle, color: Colors.green, size: 20),
-                          const SizedBox(width: 8),
-                          Text(
-                            l10n.noAdsForever,
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green[700],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        l10n.pricePerMonth,
-                        style: GoogleFonts.poppins(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFFAD1457),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey[300],
+                          foregroundColor: Colors.black87,
+                        ),
+                        child: Text(
+                          l10n.cancel,
+                          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: selectedBundle != null
+                            ? () {
+                                unlockManager.unlockBundle(selectedBundle!);
+                                Navigator.pop(context);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      l10n.premiumActivated(selectedBundle!),
+                                      style: GoogleFonts.poppins(),
+                                    ),
+                                    backgroundColor: Colors.green,
+                                  ),
+                                );
+                              }
+                            : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFAD1457),
+                          foregroundColor: Colors.white,
+                        ),
+                        child: Text(
+                          l10n.subscribe,
+                          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 Text(
                   l10n.demoNote,
                   style: GoogleFonts.poppins(
@@ -342,44 +351,6 @@ class _GamePageState extends State<GamePage> {
                 ),
               ],
             ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text(
-                  l10n.cancel,
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-                ),
-              ),
-              ElevatedButton(
-                onPressed: selectedBundle != null
-                    ? () {
-                        unlockManager.unlockBundle(selectedBundle!);
-                        Navigator.pop(context);
-                        setState(() {});
-                        
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              l10n.premiumActivated(selectedBundle!),
-                              style: GoogleFonts.poppins(),
-                            ),
-                            backgroundColor: Colors.green,
-                            duration: const Duration(seconds: 3),
-                          ),
-                        );
-                      }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFAD1457),
-                  foregroundColor: Colors.white,
-                  disabledBackgroundColor: Colors.grey[300],
-                ),
-                child: Text(
-                  l10n.subscribe,
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-                ),
-              ),
-            ],
           );
         },
       ),
@@ -393,30 +364,31 @@ class _GamePageState extends State<GamePage> {
         widget.category,
       );
 
-      if (questions.isEmpty && mounted) {
+      if (!mounted) return;
+
+      if (questions.isEmpty) {
         final l10n = AppLocalizations.of(context)!;
         setState(() {
-          currentQuestion = l10n.noQuestionsFoundMessage(widget.category, widget.gameMode);
+          allQuestions = [l10n.noQuestionsFoundMessage(widget.category, widget.gameMode)];
+          displayedQuestions = List.from(allQuestions);
           isLoading = false;
         });
         return;
       }
 
       setState(() {
-        availableQuestions = questions;
+        allQuestions = questions;
+        displayedQuestions = List.from(allQuestions);
         isLoading = false;
       });
-
-      if (availableQuestions.isNotEmpty) {
-        _showNextQuestion();
-      }
     } catch (e) {
       debugPrint('Error loading questions: $e');
       
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
         setState(() {
-          currentQuestion = l10n.errorLoadingQuestions;
+          allQuestions = [l10n.errorLoadingQuestions];
+          displayedQuestions = List.from(allQuestions);
           isLoading = false;
         });
         
@@ -434,50 +406,47 @@ class _GamePageState extends State<GamePage> {
     }
   }
 
-  void _showNextQuestion() {
-    if (availableQuestions.isEmpty) {
-      _showGameEndDialog();
-      return;
-    }
-
-    final random = Random();
-    final questionIndex = random.nextInt(availableQuestions.length);
+  bool _onSwipe(
+    int previousIndex,
+    int? currentIndex,
+    CardSwiperDirection direction,
+  ) {
+    debugPrint('Swiped: direction=$direction, previous=$previousIndex, current=$currentIndex');
     
-    setState(() {
-      if (currentQuestion.isNotEmpty) {
-        usedQuestions.add(currentQuestion);
-        unlockManager.incrementQuestionCount();
-      }
+    // Swipe RIGHT (left to right) = undo to go back
+    if (direction == CardSwiperDirection.right) {
+      // The CardSwiper will handle the undo animation automatically
+      // We just need to track that we're going backward
+      return true;
+    }
+    
+    // Swipe LEFT (right to left) = go to next question
+    if (direction == CardSwiperDirection.left) {
+      // Track question progress
+      unlockManager.incrementQuestionCount();
       
-      currentQuestion = availableQuestions[questionIndex];
-      availableQuestions.removeAt(questionIndex);
-    });
-
-    _showAdOrPurchaseOption();
+      // Show ad if needed
+      _showAdOrPurchaseOption();
+      
+      // Check if we've reached the end
+      if (currentIndex == null || currentIndex >= displayedQuestions.length - 1) {
+        Future.delayed(const Duration(milliseconds: 300), () {
+          _showGameEndDialog();
+        });
+        return true;
+      }
+    }
+    
+    return true;
   }
 
-  void _showPreviousQuestion() {
-    if (usedQuestions.isEmpty) {
-      return;
-    }
-
-    setState(() {
-      if (currentQuestion.isNotEmpty) {
-        availableQuestions.add(currentQuestion);
-      }
-      
-      currentQuestion = usedQuestions.removeLast();
-    });
-  }
-
-  void _onSwipe(DragEndDetails details) {
-    const double sensitivity = 100.0;
-    
-    if (details.primaryVelocity! > sensitivity) {
-      _showPreviousQuestion();
-    } else if (details.primaryVelocity! < -sensitivity) {
-      _showNextQuestion();
-    }
+  bool _onUndo(
+    int? previousIndex,
+    int currentIndex,
+    CardSwiperDirection direction,
+  ) {
+    debugPrint('Undo: previous $previousIndex, current $currentIndex');
+    return true;
   }
 
   void _showGameEndDialog() {
@@ -486,20 +455,46 @@ class _GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final backgroundColor = ThemeHelper.getGameBackgroundColor(widget.gameMode, widget.isDarkMode);
+    // Get background gradient based on game mode
+    List<Color> backgroundGradient;
+    
+    switch (widget.gameMode.toLowerCase()) {
+      case 'family':
+        backgroundGradient = widget.isDarkMode
+            ? [const Color(0xFF4A3A30), const Color(0xFF3A2A20)]
+            : [const Color(0xFFF5E8E1), const Color(0xFFE8D6D0)];
+        break;
+      case 'couple':
+        backgroundGradient = widget.isDarkMode
+            ? [const Color(0xFF5A3A44), const Color(0xFF4A2A34)]
+            : [const Color(0xFFFCE4EC), const Color(0xFFFAD4DD)];
+        break;
+      case 'friends':
+        backgroundGradient = widget.isDarkMode
+            ? [const Color(0xFF4A3A5A), const Color(0xFF3A2A4A)]
+            : [const Color(0xFFE8DAEF), const Color(0xFFD4C4E8)];
+        break;
+      default:
+        backgroundGradient = [const Color(0xFFF5E8E1), const Color(0xFFE8D6D0)];
+    }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
-      body: SafeArea(
-        child: GestureDetector(
-          onHorizontalDragEnd: _onSwipe,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: backgroundGradient,
+          ),
+        ),
+        child: SafeArea(
           child: Container(
             width: double.infinity,
             height: double.infinity,
             padding: const EdgeInsets.all(AppConstants.defaultPadding),
             child: Column(
               children: [
+                // Header
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -523,76 +518,176 @@ class _GamePageState extends State<GamePage> {
                   ],
                 ),
                 
+                // Card Swiper
                 Expanded(
                   child: Center(
                     child: isLoading 
                         ? CircularProgressIndicator(
                             color: ThemeHelper.getTextColor(widget.isDarkMode),
                           )
-                        : Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            child: Text(
-                              currentQuestion,
-                              style: GoogleFonts.poppins(
-                                fontSize: 28,
-                                fontWeight: FontWeight.w600,
-                                color: ThemeHelper.getTextColor(widget.isDarkMode),
-                                height: 1.4,
-                              ),
-                              textAlign: TextAlign.center,
+                        : CardSwiper(
+                            controller: controller,
+                            cardsCount: displayedQuestions.length,
+                            onSwipe: _onSwipe,
+                            onUndo: _onUndo,
+                            numberOfCardsDisplayed: 2,
+                            backCardOffset: const Offset(0, 15),
+                            padding: const EdgeInsets.all(0),
+                            scale: 0.93,
+                            isLoop: false,
+                            duration: const Duration(milliseconds: 300),
+                            maxAngle: 25,
+                            threshold: 50,
+                            allowedSwipeDirection: AllowedSwipeDirection.only(
+                              left: true,
+                              right: true,
                             ),
+                            cardBuilder: (
+                              context,
+                              index,
+                              horizontalThresholdPercentage,
+                              verticalThresholdPercentage,
+                            ) {
+                              return _buildQuestionCard(
+                                displayedQuestions[index],
+                                isNext: false,
+                              );
+                            },
                           ),
                   ),
                 ),
-                
-                if (!isLoading) ...[
-                  Text(
-                    l10n.swipeOrTap,
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      color: ThemeHelper.getTextColor(widget.isDarkMode).withValues(alpha: 0.7),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: usedQuestions.isEmpty ? null : _showPreviousQuestion,
-                        icon: Icon(
-                          Icons.arrow_back_ios,
-                          color: usedQuestions.isEmpty 
-                              ? Colors.grey 
-                              : ThemeHelper.getTextColor(widget.isDarkMode),
-                          size: 32,
-                        ),
-                      ),
-                      const SizedBox(width: 40),
-                      Text(
-                        '${usedQuestions.length + 1}/${usedQuestions.length + availableQuestions.length + 1}',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: ThemeHelper.getTextColor(widget.isDarkMode),
-                        ),
-                      ),
-                      const SizedBox(width: 40),
-                      IconButton(
-                        onPressed: availableQuestions.isEmpty ? null : _showNextQuestion,
-                        icon: Icon(
-                          Icons.arrow_forward_ios,
-                          color: availableQuestions.isEmpty 
-                              ? Colors.grey 
-                              : ThemeHelper.getTextColor(widget.isDarkMode),
-                          size: 32,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                ],
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuestionCard(String question, {bool isNext = false}) {
+    // Get gradient colors based on game mode
+    List<Color> cardGradient;
+    Color textColor;
+    
+    switch (widget.gameMode.toLowerCase()) {
+      case 'family':
+        cardGradient = widget.isDarkMode
+            ? [const Color(0xFF7B5D47), const Color(0xFF5D4537)]
+            : [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
+        textColor = widget.isDarkMode ? Colors.white : const Color(0xFF4A3A33);
+        break;
+      case 'couple':
+        cardGradient = widget.isDarkMode
+            ? [const Color(0xFF8A6A64), const Color(0xFF6B4A54)]
+            : [const Color(0xFFF28B9C), const Color(0xFFF5A877)];
+        textColor = Colors.white;
+        break;
+      case 'friends':
+        cardGradient = widget.isDarkMode
+            ? [const Color(0xFF6B5A72), const Color(0xFF4B3A52)]
+            : [const Color(0xFFB995D3), const Color(0xFF9B7AB8)];
+        textColor = Colors.white;
+        break;
+      default:
+        cardGradient = [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
+        textColor = const Color(0xFF4A3A33);
+    }
+    
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: MediaQuery.of(context).size.height * 0.6,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: cardGradient,
+        ),
+        borderRadius: BorderRadius.circular(32),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.15),
+            blurRadius: 40,
+            offset: const Offset(0, 15),
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+            spreadRadius: -5,
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(32),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 60),
+          child: Stack(
+            children: [
+              // Logo at top center
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: logoUrl != null
+                      ? Opacity(
+                          opacity: 0.7,
+                          child: Image.network(
+                            logoUrl!,
+                            height: 80,
+                            width: 80,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Text(
+                                'Connect',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: textColor.withValues(alpha: 0.6),
+                                  letterSpacing: 2.0,
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      : Text(
+                          'Connect',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: textColor.withValues(alpha: 0.6),
+                            letterSpacing: 2.0,
+                          ),
+                        ),
+                ),
+              ),
+              
+              // Question text in center
+              Center(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Text(
+                    question,
+                    style: GoogleFonts.poppins(
+                      color: textColor,
+                      fontSize: 32,
+                      fontWeight: FontWeight.w700,
+                      height: 1.5,
+                      letterSpacing: -0.3,
+                      shadows: [
+                        Shadow(
+                          offset: const Offset(0, 2),
+                          blurRadius: 8,
+                          color: Colors.black.withValues(alpha: 0.3),
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

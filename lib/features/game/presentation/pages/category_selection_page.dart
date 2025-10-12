@@ -7,6 +7,7 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/supabase_service.dart';
 import 'game_page.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../custom/presentation/pages/custom_deck_list_page.dart';
 
 class CategorySelectionPage extends StatefulWidget {
   final String gameMode;
@@ -86,9 +87,15 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     
+    // CHECK FOR PERSONAL MODE - Show custom decks instead
+    if (widget.gameMode.toLowerCase() == 'personal') {
+      return CustomDeckListPage(isDarkMode: widget.isDarkMode);
+    }
+    
+    // Regular category selection for other game modes
     return Scaffold(
       body: Container(
-        decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode), // Use main background
+        decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode),
         child: SafeArea(
           child: Column(
             children: [
@@ -123,7 +130,11 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
               
               Expanded(
                 child: isLoading
-                    ? const Center(child: CircularProgressIndicator(color: Colors.white))
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                        ),
+                      )
                     : categories.isEmpty
                         ? Center(
                             child: Text(
@@ -180,14 +191,19 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
                                   child: Stack(
                                     alignment: Alignment.center,
                                     children: [
-                                      Text(
-                                        category,
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
+                                      Padding(
+                                        padding: const EdgeInsets.all(12),
+                                        child: Text(
+                                          category,
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                        textAlign: TextAlign.center,
                                       ),
                                       if (isLocked)
                                         const Positioned(

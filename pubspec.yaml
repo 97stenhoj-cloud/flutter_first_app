@@ -47,6 +47,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   video_player: ^2.8.1  # Add this line
   chewie: ^1.7.5
+  flutter_card_swiper: ^7.0.1
 
 dev_dependencies:
   flutter_test:
