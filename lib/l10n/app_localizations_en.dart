@@ -346,4 +346,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get proTipsDesc =>
       '• Create a comfortable, distraction-free environment\n• Listen actively and be present\n• Share honestly and encourage others to do the same\n• Respect boundaries - skip questions if needed\n• Have fun and enjoy connecting!';
+
+  @override
+  String get personal => 'Personal';
+
+  @override
+  String get personalDesc => 'Create your own custom question decks';
 }

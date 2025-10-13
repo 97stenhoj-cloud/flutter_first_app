@@ -23,9 +23,9 @@ class GameModeSelectionPage extends StatelessWidget {
   }) {
     final colors = ThemeHelper.getGameModeGradient(gameMode, isDarkMode);
     
-    // Bigger button sizes
+    // Adjusted button sizes to fit 4 buttons
     const double buttonWidth = 360;
-    const double buttonHeight = 132.0;
+    const double buttonHeight = 110.0;
     
     return GestureDetector(
       onTap: onPressed,
@@ -80,13 +80,13 @@ class GameModeSelectionPage extends StatelessWidget {
               children: [
                 Text(
                   emoji,
-                  style: const TextStyle(fontSize: 44),
+                  style: const TextStyle(fontSize: 36),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
                 Text(
                   text,
                   style: GoogleFonts.poppins(
-                    fontSize: 22,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -106,7 +106,7 @@ class GameModeSelectionPage extends StatelessWidget {
     
     return Scaffold(
       body: Container(
-        decoration: ThemeHelper.getBackgroundDecoration(isDarkMode), // Use main background
+        decoration: ThemeHelper.getBackgroundDecoration(isDarkMode),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(AppConstants.defaultPadding),
@@ -136,8 +136,8 @@ class GameModeSelectionPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                
-                const SizedBox(height: 60),
+              
+                const SizedBox(height: 30),
                 
                 // Game mode buttons
                 Expanded(
@@ -159,7 +159,7 @@ class GameModeSelectionPage extends StatelessWidget {
                         gameMode: 'couple',
                         isDarkMode: isDarkMode,
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 16),
                       _buildLayeredGameModeButton(
                         text: l10n.friends,
                         emoji: '👥',
@@ -175,7 +175,7 @@ class GameModeSelectionPage extends StatelessWidget {
                         gameMode: 'friends',
                         isDarkMode: isDarkMode,
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 16),
                       _buildLayeredGameModeButton(
                         text: l10n.family,
                         emoji: '👨‍👩‍👧‍👦',
@@ -189,6 +189,23 @@ class GameModeSelectionPage extends StatelessWidget {
                           ),
                         ),
                         gameMode: 'family',
+                        isDarkMode: isDarkMode,
+                      ),
+                      const SizedBox(height: 16),
+                      // ADDED: Personal mode button
+                      _buildLayeredGameModeButton(
+                        text: l10n.personal,
+                        emoji: '📝',
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CategorySelectionPage(
+                              gameMode: 'personal',
+                              isDarkMode: isDarkMode,
+                            ),
+                          ),
+                        ),
+                        gameMode: 'personal',
                         isDarkMode: isDarkMode,
                       ),
                     ],

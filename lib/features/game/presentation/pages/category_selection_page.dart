@@ -33,7 +33,14 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
   @override
   void initState() {
     super.initState();
-    _loadCategories();
+    // FIXED: Only load categories if NOT personal mode
+    if (widget.gameMode.toLowerCase() != 'personal') {
+      _loadCategories();
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   Future<void> _loadCategories() async {
@@ -138,85 +145,43 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
                     : categories.isEmpty
                         ? Center(
                             child: Text(
-                              'No categories found',
+                              l10n.noCategoriesFound,
                               style: GoogleFonts.poppins(
-                                color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
                                 fontSize: 18,
+                                color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
                               ),
                             ),
                           )
-                        : GridView.builder(
+                        : ListView.builder(
                             padding: const EdgeInsets.all(AppConstants.defaultPadding),
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 1,
-                              crossAxisSpacing: 16,
-                              mainAxisSpacing: 16,
-                            ),
                             itemCount: categories.length,
                             itemBuilder: (context, index) {
                               final category = categories[index];
                               final isLocked = _isCategoryLocked(category);
-                              final colors = ThemeHelper.getGameModeGradient(widget.gameMode, widget.isDarkMode);
                               
-                              return GestureDetector(
-                                onTap: () {
-                                  if (isLocked) {
-                                    _showLockedDialog(context);
-                                  } else {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => GamePage(
-                                          gameMode: widget.gameMode,
-                                          category: category,
-                                          isDarkMode: widget.isDarkMode,
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: isLocked
-                                          ? [Colors.grey[400]!, Colors.grey[600]!]
-                                          : colors,
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    borderRadius: BorderRadius.circular(12),
-                                    boxShadow: ThemeHelper.getButtonShadow(widget.isDarkMode),
-                                  ),
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(12),
-                                        child: Text(
-                                          category,
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      if (isLocked)
-                                        const Positioned(
-                                          top: 8,
-                                          right: 8,
-                                          child: Icon(
-                                            Icons.lock,
-                                            color: Colors.white70,
-                                            size: 20,
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 16),
+                                child: ThemeHelper.buildLayeredButton(
+                                  text: category,
+                                  icon: isLocked ? Icons.lock : null,
+                                  onPressed: () {
+                                    if (isLocked) {
+                                      _showLockedDialog(context);
+                                    } else {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => GamePage(
+                                            gameMode: widget.gameMode,
+                                            category: category,
+                                            isDarkMode: widget.isDarkMode,
                                           ),
                                         ),
-                                    ],
-                                  ),
+                                      );
+                                    }
+                                  },
+                                  isPrimary: !isLocked,
+                                  isDarkMode: widget.isDarkMode,
                                 ),
                               );
                             },

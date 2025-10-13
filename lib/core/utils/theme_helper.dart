@@ -317,6 +317,10 @@ static Widget buildLayeredButton({
         return isDarkMode 
             ? const Color(0xFF6B5A72) // dark version of lavender
             : const Color(0xFFCFC3D8); // lavender from gradient
+    case 'personal':  // ADD THIS CASE
+      return isDarkMode
+          ? const Color(0xFF5A6A7B) // dark blue
+          : const Color(0xFFD4E4F8); // light blue
       default:
         return isDarkMode 
             ? const Color(0xFF3A3230) 
@@ -343,6 +347,11 @@ static Widget buildLayeredButton({
         return isDarkMode
             ? [const Color(0xFFD4A066), const Color(0xFFBF8F4F)]
             : [const Color(0xFFF0D6A6), const Color(0xFFE3C590)];
+      case 'personal':  // ADD THIS CASE
+      // Blue theme for personal
+      return isDarkMode
+          ? [const Color(0xFF5A8AA8), const Color(0xFF4A7A98)]
+          : [const Color(0xFF90B5E8), const Color(0xFF7A9AD7)];      
       default:
         return getMainMenuGradient(isDarkMode);
     }

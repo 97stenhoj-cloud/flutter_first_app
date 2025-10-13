@@ -15,12 +15,14 @@ class GamePage extends StatefulWidget {
   final String gameMode;
   final String category;
   final bool isDarkMode;
+  final List<String>? customQuestions;  // ADDED: Support for custom questions
 
   const GamePage({
     super.key,
     required this.gameMode,
     required this.category,
     required this.isDarkMode,
+    this.customQuestions,  // ADDED: Optional custom questions parameter
   });
 
   @override
@@ -100,7 +102,6 @@ class _GamePageState extends State<GamePage> {
   }
 
   void _loadLogo() {
-    // Your logo from Supabase storage
     setState(() {
       logoUrl = 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/AppIcon/AppIcon.png';
     });
@@ -359,6 +360,17 @@ class _GamePageState extends State<GamePage> {
 
   Future<void> _loadQuestions() async {
     try {
+      // FIXED: Check if custom questions are provided first
+      if (widget.customQuestions != null && widget.customQuestions!.isNotEmpty) {
+        setState(() {
+          allQuestions = widget.customQuestions!;
+          displayedQuestions = List.from(allQuestions);
+          isLoading = false;
+        });
+        return;
+      }
+      
+      // Original code for loading from Supabase
       final questions = await supabaseService.getQuestions(
         widget.gameMode,
         widget.category,
@@ -415,17 +427,12 @@ class _GamePageState extends State<GamePage> {
     
     // Swipe RIGHT (left to right) = undo to go back
     if (direction == CardSwiperDirection.right) {
-      // The CardSwiper will handle the undo animation automatically
-      // We just need to track that we're going backward
       return true;
     }
     
     // Swipe LEFT (right to left) = go to next question
     if (direction == CardSwiperDirection.left) {
-      // Track question progress
       unlockManager.incrementQuestionCount();
-      
-      // Show ad if needed
       _showAdOrPurchaseOption();
       
       // Check if we've reached the end
@@ -473,6 +480,11 @@ class _GamePageState extends State<GamePage> {
         backgroundGradient = widget.isDarkMode
             ? [const Color(0xFF4A3A5A), const Color(0xFF3A2A4A)]
             : [const Color(0xFFE8DAEF), const Color(0xFFD4C4E8)];
+        break;
+      case 'personal':
+        backgroundGradient = widget.isDarkMode
+            ? [const Color(0xFF3A4A5A), const Color(0xFF2A3A4A)]
+            : [const Color(0xFFD4E4F8), const Color(0xFFC4D4E8)];
         break;
       default:
         backgroundGradient = [const Color(0xFFF5E8E1), const Color(0xFFE8D6D0)];
@@ -525,35 +537,43 @@ class _GamePageState extends State<GamePage> {
                         ? CircularProgressIndicator(
                             color: ThemeHelper.getTextColor(widget.isDarkMode),
                           )
-                        : CardSwiper(
-                            controller: controller,
-                            cardsCount: displayedQuestions.length,
-                            onSwipe: _onSwipe,
-                            onUndo: _onUndo,
-                            numberOfCardsDisplayed: 2,
-                            backCardOffset: const Offset(0, 15),
-                            padding: const EdgeInsets.all(0),
-                            scale: 0.93,
-                            isLoop: false,
-                            duration: const Duration(milliseconds: 300),
-                            maxAngle: 25,
-                            threshold: 50,
-                            allowedSwipeDirection: AllowedSwipeDirection.only(
-                              left: true,
-                              right: true,
-                            ),
-                            cardBuilder: (
-                              context,
-                              index,
-                              horizontalThresholdPercentage,
-                              verticalThresholdPercentage,
-                            ) {
-                              return _buildQuestionCard(
-                                displayedQuestions[index],
-                                isNext: false,
-                              );
-                            },
-                          ),
+                        : displayedQuestions.isEmpty
+                            ? Text(
+                                'No questions available',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 18,
+                                  color: ThemeHelper.getTextColor(widget.isDarkMode),
+                                ),
+                              )
+                            : CardSwiper(
+                                controller: controller,
+                                cardsCount: displayedQuestions.length,
+                                onSwipe: _onSwipe,
+                                onUndo: _onUndo,
+                                numberOfCardsDisplayed: 2,
+                                backCardOffset: const Offset(0, 15),
+                                padding: const EdgeInsets.all(0),
+                                scale: 0.93,
+                                isLoop: false,
+                                duration: const Duration(milliseconds: 300),
+                                maxAngle: 25,
+                                threshold: 50,
+                                allowedSwipeDirection: AllowedSwipeDirection.only(
+                                  left: true,
+                                  right: true,
+                                ),
+                                cardBuilder: (
+                                  context,
+                                  index,
+                                  horizontalThresholdPercentage,
+                                  verticalThresholdPercentage,
+                                ) {
+                                  return _buildQuestionCard(
+                                    displayedQuestions[index],
+                                    isNext: false,
+                                  );
+                                },
+                              ),
                   ),
                 ),
               ],
@@ -586,6 +606,12 @@ class _GamePageState extends State<GamePage> {
         cardGradient = widget.isDarkMode
             ? [const Color(0xFF6B5A72), const Color(0xFF4B3A52)]
             : [const Color(0xFFB995D3), const Color(0xFF9B7AB8)];
+        textColor = Colors.white;
+        break;
+      case 'personal':
+        cardGradient = widget.isDarkMode
+            ? [const Color(0xFF5A6A7B), const Color(0xFF4A5A6B)]
+            : [const Color(0xFF90B5E8), const Color(0xFF7A9AD7)];
         textColor = Colors.white;
         break;
       default:
