@@ -717,6 +717,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'• Create a comfortable, distraction-free environment\n• Listen actively and be present\n• Share honestly and encourage others to do the same\n• Respect boundaries - skip questions if needed\n• Have fun and enjoy connecting!'**
   String get proTipsDesc;
+
+  /// No description provided for @personal.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal'**
+  String get personal;
+
+  /// No description provided for @personalDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your own custom question decks'**
+  String get personalDesc;
 }
 
 class _AppLocalizationsDelegate

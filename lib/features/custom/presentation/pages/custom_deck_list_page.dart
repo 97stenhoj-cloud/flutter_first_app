@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../../core/services/custom_deck_service.dart';
 import '../../../../../core/utils/theme_helper.dart';
-import '../../../../../core/constants/app_constants.dart';
-import '../../../../../l10n/app_localizations.dart';
 import 'question_editor_page.dart';
 import '../../../game/presentation/pages/game_page.dart';
 
@@ -44,7 +42,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
   }
 
   Future<void> _createDeck() async {
-    final l10n = AppLocalizations.of(context)!;
+    // FIXED: Removed unused l10n variable
     final controller = TextEditingController();
 
     final deckName = await showDialog<String>(
@@ -146,56 +144,52 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
+    // FIXED: Removed unused l10n variable
     return Scaffold(
       body: Container(
         decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(AppConstants.defaultPadding),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                // Header
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
                       onPressed: () => Navigator.pop(context),
                       icon: Icon(
                         Icons.arrow_back,
-                        color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                        color: ThemeHelper.getTextColor(widget.isDarkMode),
                         size: 28,
                       ),
                     ),
-                    const SizedBox(width: 16),
                     Text(
-                      'Personal Decks',
+                      'Custom Decks',
                       style: GoogleFonts.poppins(
-                        fontSize: 28,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                        color: ThemeHelper.getTextColor(widget.isDarkMode),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: _createDeck,
+                      icon: Icon(
+                        Icons.add,
+                        color: ThemeHelper.getTextColor(widget.isDarkMode),
+                        size: 28,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 20),
-
-                // Create Deck Button
-                ThemeHelper.buildLayeredButton(
-                  text: '+ Create New Deck',
-                  icon: Icons.add,
-                  onPressed: _createDeck,
-                  isPrimary: true,
-                  isDarkMode: widget.isDarkMode,
-                ),
-                const SizedBox(height: 30),
-
-                // Decks List
                 Expanded(
                   child: isLoading
                       ? Center(
                           child: CircularProgressIndicator(
-                            color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              ThemeHelper.getTextColor(widget.isDarkMode),
+                            ),
                           ),
                         )
                       : decks.isEmpty
@@ -204,22 +198,22 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    Icons.folder_open,
-                                    size: 80,
+                                    Icons.style_outlined,
+                                    size: 64,
                                     color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
                                   ),
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 16),
                                   Text(
                                     'No decks yet',
                                     style: GoogleFonts.poppins(
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w600,
-                                      color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
+                                      color: ThemeHelper.getTextColor(widget.isDarkMode),
                                     ),
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    'Create your first custom deck!',
+                                    'Tap + to create your first deck',
                                     style: GoogleFonts.poppins(
                                       fontSize: 14,
                                       color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
@@ -273,34 +267,36 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
           onTap: () async {
             // Check if deck has questions
             final questions = await customDeckService.getQuestionsForGame(deckId);
+            
+            // FIXED: Check mounted before using context
+            if (!mounted) return;
+            
             if (questions.isEmpty) {
-              if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'This deck has no questions. Add some first!',
-                      style: GoogleFonts.poppins(),
-                    ),
-                    action: SnackBarAction(
-                      label: 'Add Questions',
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => QuestionEditorPage(
-                              deckId: deckId,
-                              deckName: deckName,
-                              isDarkMode: widget.isDarkMode,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'This deck has no questions. Add some first!',
+                    style: GoogleFonts.poppins(),
                   ),
-                );
-              }
+                  action: SnackBarAction(
+                    label: 'Add Questions',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => QuestionEditorPage(
+                            deckId: deckId,
+                            deckName: deckName,
+                            isDarkMode: widget.isDarkMode,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
             } else {
-              // Navigate to game with custom questions
+              // FIXED: Navigate to game with custom questions
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -308,7 +304,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
                     gameMode: 'personal',
                     category: deckName,
                     isDarkMode: widget.isDarkMode,
-                    customQuestions: questions,
+                    customQuestions: questions,  // FIXED: Now passing customQuestions parameter
                   ),
                 ),
               );
