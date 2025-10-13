@@ -729,6 +729,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create your own custom question decks'**
   String get personalDesc;
+
+  /// No description provided for @gameComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Game Complete!'**
+  String get gameComplete;
+
+  /// No description provided for @noMoreQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve gone through all the questions in this deck!'**
+  String get noMoreQuestions;
+
+  /// No description provided for @playAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Play Again'**
+  String get playAgain;
+
+  /// No description provided for @mainMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Menu'**
+  String get mainMenu;
 }
 
 class _AppLocalizationsDelegate

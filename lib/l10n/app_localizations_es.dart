@@ -356,4 +356,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get personalDesc => 'Create your own custom question decks';
+
+  @override
+  String get gameComplete => 'Game Complete!';
+
+  @override
+  String get noMoreQuestions =>
+      'You\'ve gone through all the questions in this deck!';
+
+  @override
+  String get playAgain => 'Play Again';
+
+  @override
+  String get mainMenu => 'Main Menu';
 }

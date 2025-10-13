@@ -10,19 +10,20 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/utils/unlock_manager.dart';
 import '../../../../core/services/supabase_service.dart';
+import '../../../../core/services/custom_deck_service.dart'; // ADDED: For favorites
 
 class GamePage extends StatefulWidget {
   final String gameMode;
   final String category;
   final bool isDarkMode;
-  final List<String>? customQuestions;  // ADDED: Support for custom questions
+  final List<String>? customQuestions;
 
   const GamePage({
     super.key,
     required this.gameMode,
     required this.category,
     required this.isDarkMode,
-    this.customQuestions,  // ADDED: Optional custom questions parameter
+    this.customQuestions,
   });
 
   @override
@@ -32,13 +33,18 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> {
   final supabaseService = SupabaseService();
   final unlockManager = UnlockManager();
-  final CardSwiperController controller = CardSwiperController();
+  final customDeckService = CustomDeckService(); // ADD THIS LINE
+  CardSwiperController controller = CardSwiperController(); // CHANGED: Not final anymore
 
   List<String> allQuestions = [];
   List<String> displayedQuestions = [];
+  Map<String, bool> favoritedQuestions = {};
   int currentIndex = 0;
   bool isLoading = true;
+  bool isRestarting = false;
+  bool _isShowingEndDialog = false; // ADDED: Prevent multiple dialogs
   String? logoUrl;
+  int _gameKey = 0;
   
   InterstitialAd? _interstitialAd;
   bool _isAdLoaded = false;
@@ -49,6 +55,7 @@ class _GamePageState extends State<GamePage> {
     _loadQuestions();
     _loadAd();
     _loadLogo();
+    _loadFavoritedStates(); // ADDED
   }
 
   @override
@@ -360,13 +367,14 @@ class _GamePageState extends State<GamePage> {
 
   Future<void> _loadQuestions() async {
     try {
-      // FIXED: Check if custom questions are provided first
+      // Check if custom questions are provided first
       if (widget.customQuestions != null && widget.customQuestions!.isNotEmpty) {
         setState(() {
           allQuestions = widget.customQuestions!;
           displayedQuestions = List.from(allQuestions);
           isLoading = false;
         });
+        _loadFavoritedStates(); // ADDED: Load favorited states
         return;
       }
       
@@ -393,6 +401,8 @@ class _GamePageState extends State<GamePage> {
         displayedQuestions = List.from(allQuestions);
         isLoading = false;
       });
+      
+      _loadFavoritedStates(); // ADDED: Load favorited states
     } catch (e) {
       debugPrint('Error loading questions: $e');
       
@@ -418,30 +428,102 @@ class _GamePageState extends State<GamePage> {
     }
   }
 
+  // ADDED: Load favorited state for all questions
+  Future<void> _loadFavoritedStates() async {
+    if (!mounted) return;
+    
+    for (var question in displayedQuestions) {
+      final isFavorited = await customDeckService.isQuestionFavorited(question);
+      if (mounted) {
+        setState(() {
+          favoritedQuestions[question] = isFavorited;
+        });
+      }
+    }
+  }
+
+  // ADDED: Toggle favorite status
+  Future<void> _toggleFavorite(String question) async {
+    try {
+      final currentlyFavorited = favoritedQuestions[question] ?? false;
+      
+      if (currentlyFavorited) {
+        await customDeckService.removeFromFavorites(question);
+        if (mounted) {
+          setState(() {
+            favoritedQuestions[question] = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Removed from Favorites', style: GoogleFonts.poppins()),
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        }
+      } else {
+        final added = await customDeckService.addToFavorites(
+          question,
+          widget.gameMode,
+          widget.category,
+        );
+        
+        if (mounted) {
+          if (added) {
+            setState(() {
+              favoritedQuestions[question] = true;
+            });
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Added to Favorites! ❤️', style: GoogleFonts.poppins()),
+                duration: const Duration(seconds: 2),
+                backgroundColor: Colors.pink,
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Already in Favorites', style: GoogleFonts.poppins()),
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Error toggling favorite: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to update favorites', style: GoogleFonts.poppins()),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   bool _onSwipe(
     int previousIndex,
     int? currentIndex,
     CardSwiperDirection direction,
   ) {
-    debugPrint('Swiped: direction=$direction, previous=$previousIndex, current=$currentIndex');
+    debugPrint('=== SWIPE EVENT ===');
+    debugPrint('Direction: $direction, Previous: $previousIndex, Current: $currentIndex');
+    debugPrint('Total questions: ${displayedQuestions.length}');
     
-    // Swipe RIGHT (left to right) = undo to go back
-    if (direction == CardSwiperDirection.right) {
-      return true;
-    }
+    // ANY swipe direction = go to next question
+    unlockManager.incrementQuestionCount();
+    _showAdOrPurchaseOption();
     
-    // Swipe LEFT (right to left) = go to next question
-    if (direction == CardSwiperDirection.left) {
-      unlockManager.incrementQuestionCount();
-      _showAdOrPurchaseOption();
-      
-      // Check if we've reached the end
-      if (currentIndex == null || currentIndex >= displayedQuestions.length - 1) {
-        Future.delayed(const Duration(milliseconds: 300), () {
+    // Check if we've reached the end (currentIndex becomes null after last card)
+    if (currentIndex == null || previousIndex >= displayedQuestions.length - 1) {
+      debugPrint('Last card swiped - showing end dialog');
+      // Use a delay to ensure the swipe animation completes
+      Future.delayed(const Duration(milliseconds: 400), () {
+        if (mounted) {
           _showGameEndDialog();
-        });
-        return true;
-      }
+        }
+      });
     }
     
     return true;
@@ -457,7 +539,139 @@ class _GamePageState extends State<GamePage> {
   }
 
   void _showGameEndDialog() {
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    if (!mounted || _isShowingEndDialog) return;
+    
+    debugPrint('=== SHOWING GAME END DIALOG ===');
+    
+    _isShowingEndDialog = true; // Prevent multiple dialogs
+    
+    final l10n = AppLocalizations.of(context)!;
+    
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => PopScope(
+        canPop: false,
+        child: AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Column(
+            children: [
+              Icon(
+                Icons.celebration,
+                size: 64,
+                color: const Color(0xFFAD1457),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                l10n.gameComplete,
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          content: Text(
+            l10n.noMoreQuestions,
+            style: GoogleFonts.poppins(fontSize: 16),
+            textAlign: TextAlign.center,
+          ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pop(context); // Close dialog immediately
+                    _restartGame(); // Restart game with loading state
+                  },
+                  icon: const Icon(Icons.replay),
+                  label: Text(
+                    l10n.playAgain,
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFAD1457),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 14,
+                    ),
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                  },
+                  icon: const Icon(Icons.home),
+                  label: Text(
+                    l10n.mainMenu,
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: const Color(0xFFAD1457),
+                    side: const BorderSide(
+                      color: Color(0xFFAD1457),
+                      width: 2,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 14,
+                    ),
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _restartGame() async {
+    if (!mounted) return;
+    
+    debugPrint('=== RESTARTING GAME ===');
+    
+    setState(() {
+      isRestarting = true;
+      _isShowingEndDialog = false; // FIXED: Reset flag on restart
+    });
+    
+    // Dispose old controller and create new one
+    controller.dispose();
+    
+    // Small delay to show loading
+    await Future.delayed(const Duration(milliseconds: 150));
+    
+    if (!mounted) return;
+    
+    setState(() {
+      // Create fresh controller
+      controller = CardSwiperController();
+      
+      // Reset all state
+      displayedQuestions = List.from(allQuestions);
+      currentIndex = 0;
+      _gameKey++;
+      isRestarting = false;
+    });
+    
+    debugPrint('Game restarted: ${displayedQuestions.length} questions available, key: $_gameKey');
   }
 
   @override
@@ -511,7 +725,7 @@ class _GamePageState extends State<GamePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst), // FIXED: Go to main menu
                       icon: Icon(
                         Icons.home,
                         color: ThemeHelper.getTextColor(widget.isDarkMode),
@@ -533,9 +747,25 @@ class _GamePageState extends State<GamePage> {
                 // Card Swiper
                 Expanded(
                   child: Center(
-                    child: isLoading 
-                        ? CircularProgressIndicator(
-                            color: ThemeHelper.getTextColor(widget.isDarkMode),
+                    child: isLoading || isRestarting // FIXED: Show loading during restart too
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (logoUrl != null)
+                                Image.network(
+                                  logoUrl!,
+                                  height: 120,
+                                  width: 120,
+                                  fit: BoxFit.contain,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const SizedBox.shrink();
+                                  },
+                                ),
+                              const SizedBox(height: 24),
+                              CircularProgressIndicator(
+                                color: ThemeHelper.getTextColor(widget.isDarkMode),
+                              ),
+                            ],
                           )
                         : displayedQuestions.isEmpty
                             ? Text(
@@ -546,11 +776,13 @@ class _GamePageState extends State<GamePage> {
                                 ),
                               )
                             : CardSwiper(
+                                key: ValueKey(_gameKey), // FIXED: Force rebuild on restart
                                 controller: controller,
                                 cardsCount: displayedQuestions.length,
                                 onSwipe: _onSwipe,
                                 onUndo: _onUndo,
-                                numberOfCardsDisplayed: 2,
+                                // FIXED: Dynamic numberOfCardsDisplayed based on available questions
+                                numberOfCardsDisplayed: displayedQuestions.length >= 2 ? 2 : 1,
                                 backCardOffset: const Offset(0, 15),
                                 padding: const EdgeInsets.all(0),
                                 scale: 0.93,
@@ -559,8 +791,8 @@ class _GamePageState extends State<GamePage> {
                                 maxAngle: 25,
                                 threshold: 50,
                                 allowedSwipeDirection: AllowedSwipeDirection.only(
-                                  left: true,
-                                  right: true,
+                                  right: true,  // Swipe right to go forward
+                                  left: true,   // Swipe left to go back/undo
                                 ),
                                 cardBuilder: (
                                   context,
@@ -618,6 +850,8 @@ class _GamePageState extends State<GamePage> {
         cardGradient = [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
         textColor = const Color(0xFF4A3A33);
     }
+    
+    final isFavorited = favoritedQuestions[question] ?? false; // ADDED
     
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
@@ -710,6 +944,32 @@ class _GamePageState extends State<GamePage> {
                       ],
                     ),
                     textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              
+              // ADDED: Heart button at bottom center
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () => _toggleFavorite(question),
+                      borderRadius: BorderRadius.circular(30),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        child: Icon(
+                          isFavorited ? Icons.favorite : Icons.favorite_border,
+                          color: isFavorited 
+                              ? Colors.pink 
+                              : textColor.withValues(alpha: 0.7),
+                          size: 32,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),

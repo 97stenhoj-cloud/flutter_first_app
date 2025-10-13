@@ -112,5 +112,9 @@
   "proTips": "Pro Tips",
   "proTipsDesc": "• Create a comfortable, distraction-free environment\n• Listen actively and be present\n• Share honestly and encourage others to do the same\n• Respect boundaries - skip questions if needed\n• Have fun and enjoy connecting!",
   "personal": "Personal",
-  "personalDesc": "Create your own custom question decks"
+  "personalDesc": "Create your own custom question decks",
+  "gameComplete": "Game Complete!",
+  "noMoreQuestions": "You've gone through all the questions in this deck!",
+  "playAgain": "Play Again",
+  "mainMenu": "Main Menu"
 }
