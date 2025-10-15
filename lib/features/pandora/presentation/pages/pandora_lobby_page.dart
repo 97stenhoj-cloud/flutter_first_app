@@ -7,6 +7,7 @@ import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/pandora_service.dart';
 import 'pandora_timer_selection_page.dart';
+import 'pandora_question_submission_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PandoraLobbyPage extends StatefulWidget {
@@ -33,6 +34,7 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
   RealtimeChannel? participantsChannel;
   RealtimeChannel? sessionChannel;
   bool isLoading = true;
+  bool _hasNavigated = false;
   
   Timer? lobbyTimer;
   late DateTime lobbyEndTime;
@@ -53,6 +55,11 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
         return;
       }
       _loadParticipants();
+      
+      // Also check session status as fallback
+      if (!widget.isHost) {
+        _checkSessionStatus();
+      }
     });
   }
 
@@ -109,6 +116,45 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
     }
   }
 
+  Future<void> _checkSessionStatus() async {
+    if (_hasNavigated) return;
+    
+    try {
+      final session = await pandoraService.getSession(widget.sessionId);
+      if (session != null && session['status'] == 'collecting_questions') {
+        debugPrint('🔍 [Lobby Polling] Found collecting_questions status');
+        _handleStatusChange(session);
+      }
+    } catch (e) {
+      debugPrint('❌ [Lobby] Error checking status: $e');
+    }
+  }
+
+  void _handleStatusChange(Map<String, dynamic> session) {
+    if (_hasNavigated) return;
+    
+    final status = session['status'];
+    debugPrint('📡 [Lobby] Handling status: $status');
+    
+    if (status == 'collecting_questions' && mounted && !widget.isHost) {
+      _hasNavigated = true;
+      final timerMinutes = session['timer_minutes'] as int? ?? 5;
+      debugPrint('✅ [Lobby Player] Navigating to question submission with timer: $timerMinutes');
+      
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PandoraQuestionSubmissionPage(
+            sessionId: widget.sessionId,
+            isHost: false,
+            timerMinutes: timerMinutes,
+            isDarkMode: widget.isDarkMode,
+          ),
+        ),
+      );
+    }
+  }
+
   void _subscribeToChanges() {
     debugPrint('🔌 [Lobby] Setting up real-time subscriptions');
     
@@ -125,28 +171,36 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
     sessionChannel = pandoraService.subscribeToSession(
       widget.sessionId,
       (session) {
-        debugPrint('📡 [Lobby] Session status: ${session['status']}');
-        if (session['status'] == 'timer_selection' && mounted) {
+        debugPrint('📡 [Lobby] Real-time session update: ${session['status']}');
+        
+        if (_hasNavigated) return;
+        
+        final status = session['status'];
+        
+        if (status == 'timer_selection' && mounted && widget.isHost) {
           // Navigate to timer selection page (host only)
-          if (widget.isHost) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PandoraTimerSelectionPage(
-                  sessionId: widget.sessionId,
-                  isDarkMode: widget.isDarkMode,
-                ),
+          _hasNavigated = true;
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PandoraTimerSelectionPage(
+                sessionId: widget.sessionId,
+                isDarkMode: widget.isDarkMode,
               ),
-            );
-          }
+            ),
+          );
+        } else if (status == 'collecting_questions' && mounted && !widget.isHost) {
+          // Players navigate to question submission
+          _handleStatusChange(session);
         }
       },
     );
   }
   
   void _proceedToTimerSelection() {
-    if (!widget.isHost) return;
+    if (!widget.isHost || _hasNavigated) return;
     
+    _hasNavigated = true;
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

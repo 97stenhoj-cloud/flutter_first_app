@@ -25,6 +25,7 @@ class _PandoraWaitingPageState extends State<PandoraWaitingPage> {
   final pandoraService = PandoraService();
   RealtimeChannel? sessionChannel;
   int? timerMinutes;
+  bool _hasNavigated = false;
 
   @override
   void initState() {
@@ -42,7 +43,7 @@ class _PandoraWaitingPageState extends State<PandoraWaitingPage> {
   Future<void> _checkCurrentStatus() async {
     try {
       final session = await pandoraService.getSession(widget.sessionId);
-      if (session != null && mounted) {
+      if (session != null && mounted && !_hasNavigated) {
         _handleStatusChange(session);
       }
     } catch (e) {
@@ -55,7 +56,7 @@ class _PandoraWaitingPageState extends State<PandoraWaitingPage> {
       widget.sessionId,
       (session) {
         debugPrint('📡 [Waiting] Status changed: ${session['status']}');
-        if (mounted) {
+        if (mounted && !_hasNavigated) {
           _handleStatusChange(session);
         }
       },
@@ -63,11 +64,16 @@ class _PandoraWaitingPageState extends State<PandoraWaitingPage> {
   }
 
   void _handleStatusChange(Map<String, dynamic> session) {
+    if (_hasNavigated) return;
+    
     final status = session['status'];
+    debugPrint('🔄 [Waiting] Handling status: $status');
     
     if (status == 'collecting_questions') {
-      // Navigate to question submission
+      _hasNavigated = true;
       timerMinutes = session['timer_minutes'] as int?;
+      
+      debugPrint('✅ [Waiting] Navigating to question submission with timer: $timerMinutes');
       
       Navigator.pushReplacement(
         context,
@@ -79,12 +85,6 @@ class _PandoraWaitingPageState extends State<PandoraWaitingPage> {
             isDarkMode: widget.isDarkMode,
           ),
         ),
-      );
-    } else if (status == 'ended') {
-      // Session ended, return to main menu
-      Navigator.of(context).popUntil((route) => route.isFirst);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Session ended by host')),
       );
     }
   }
@@ -100,29 +100,39 @@ class _PandoraWaitingPageState extends State<PandoraWaitingPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Loading animation
-                const CircularProgressIndicator(
-                  color: Color(0xFFFF6B9D),
-                  strokeWidth: 3,
+                // Animated icon
+                TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0.0, end: 1.0),
+                  duration: const Duration(seconds: 2),
+                  builder: (context, value, child) {
+                    return Transform.scale(
+                      scale: 0.8 + (value * 0.2),
+                      child: Icon(
+                        Icons.hourglass_empty,
+                        size: 100,
+                        color: const Color(0xFFFF6B9D).withValues(alpha: value),
+                      ),
+                    );
+                  },
                 ),
                 
                 const SizedBox(height: 40),
                 
-                // Waiting message
+                // Title
                 Text(
-                  '⏳ Waiting for Host',
+                  'Waiting for Host',
                   style: GoogleFonts.poppins(
-                    fontSize: 28,
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
                   ),
-                  textAlign: TextAlign.center,
                 ),
                 
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
                 
+                // Description
                 Text(
-                  'The host is setting up the question timer.\nYou\'ll be redirected automatically.',
+                  'The host will start the question submission phase soon. Get ready to submit your questions!',
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     color: ThemeHelper.getBodyTextColor(widget.isDarkMode),

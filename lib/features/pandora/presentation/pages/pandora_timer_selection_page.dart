@@ -86,8 +86,8 @@ class _PandoraTimerSelectionPageState extends State<PandoraTimerSelectionPage> {
     setState(() => isStarting = true);
 
     try {
-      // Update session status to collecting_questions
-      await pandoraService.startQuestionCollection(widget.sessionId);
+      // Update session status to collecting_questions AND save timer_minutes
+      await pandoraService.startQuestionCollection(widget.sessionId, selectedMinutes);
       
       // Small delay to ensure all clients get the status update
       await Future.delayed(const Duration(milliseconds: 500));

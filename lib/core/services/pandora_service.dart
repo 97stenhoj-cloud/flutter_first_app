@@ -24,6 +24,7 @@ class PandoraService {
             'session_pin': pin,
             'timer_minutes': timerMinutes,
             'status': 'waiting',
+            'current_question_index': 0,
           })
           .select()
           .single();
@@ -126,18 +127,19 @@ class PandoraService {
   }
 
   /// Start question collection phase
-  Future<void> startQuestionCollection(String sessionId) async {
+  Future<void> startQuestionCollection(String sessionId, int timerMinutes) async {
     try {
       await _supabase
           .from('pandora_sessions')
           .update({
             'status': 'collecting_questions',
+            'timer_minutes': timerMinutes,
             'timer_started_at': DateTime.now().toIso8601String(),
             'updated_at': DateTime.now().toIso8601String(),
           })
           .eq('id', sessionId);
 
-      debugPrint('✅ Question collection started');
+      debugPrint('✅ Question collection started with timer: $timerMinutes minutes');
     } catch (e) {
       debugPrint('❌ Error starting question collection: $e');
       rethrow;
@@ -195,6 +197,7 @@ class PandoraService {
           .from('pandora_sessions')
           .update({
             'status': 'playing',
+            'current_question_index': 0,
             'updated_at': DateTime.now().toIso8601String(),
           })
           .eq('id', sessionId);
@@ -202,6 +205,24 @@ class PandoraService {
       debugPrint('✅ Playing phase started');
     } catch (e) {
       debugPrint('❌ Error starting playing phase: $e');
+      rethrow;
+    }
+  }
+
+  /// Update current question index (host only)
+  Future<void> updateQuestionIndex(String sessionId, int index) async {
+    try {
+      await _supabase
+          .from('pandora_sessions')
+          .update({
+            'current_question_index': index,
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .eq('id', sessionId);
+
+      debugPrint('✅ Updated question index to: $index');
+    } catch (e) {
+      debugPrint('❌ Error updating question index: $e');
       rethrow;
     }
   }
@@ -257,9 +278,8 @@ class PandoraService {
             value: sessionId,
           ),
           callback: (payload) {
-            if (payload.newRecord.isNotEmpty) {
-              onSessionUpdate(payload.newRecord);
-            }
+            debugPrint('📡 Session update: ${payload.newRecord}');
+            onSessionUpdate(payload.newRecord);
           },
         )
         .subscribe();
@@ -281,7 +301,10 @@ class PandoraService {
             column: 'session_id',
             value: sessionId,
           ),
-          callback: (payload) => onParticipantsChange(),
+          callback: (payload) {
+            debugPrint('📡 Participants update');
+            onParticipantsChange();
+          },
         )
         .subscribe();
   }
@@ -302,7 +325,10 @@ class PandoraService {
             column: 'session_id',
             value: sessionId,
           ),
-          callback: (payload) => onQuestionsChange(),
+          callback: (payload) {
+            debugPrint('📡 Questions update');
+            onQuestionsChange();
+          },
         )
         .subscribe();
   }
