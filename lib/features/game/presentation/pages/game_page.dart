@@ -1,5 +1,5 @@
-// Optimized with flutter_card_swiper package
 // lib/features/game/presentation/pages/game_page.dart
+// Optimized with flutter_card_swiper package
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,7 +10,6 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/utils/unlock_manager.dart';
 import '../../../../core/services/supabase_service.dart';
-import '../../../../core/services/custom_deck_service.dart'; // ADDED: For favorites
 
 class GamePage extends StatefulWidget {
   final String gameMode;
@@ -33,18 +32,13 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> {
   final supabaseService = SupabaseService();
   final unlockManager = UnlockManager();
-  final customDeckService = CustomDeckService(); // ADD THIS LINE
-  CardSwiperController controller = CardSwiperController(); // CHANGED: Not final anymore
+  final CardSwiperController controller = CardSwiperController();
 
   List<String> allQuestions = [];
   List<String> displayedQuestions = [];
-  Map<String, bool> favoritedQuestions = {};
   int currentIndex = 0;
   bool isLoading = true;
-  bool isRestarting = false;
-  bool _isShowingEndDialog = false; // ADDED: Prevent multiple dialogs
   String? logoUrl;
-  int _gameKey = 0;
   
   InterstitialAd? _interstitialAd;
   bool _isAdLoaded = false;
@@ -55,7 +49,6 @@ class _GamePageState extends State<GamePage> {
     _loadQuestions();
     _loadAd();
     _loadLogo();
-    _loadFavoritedStates(); // ADDED
   }
 
   @override
@@ -112,6 +105,67 @@ class _GamePageState extends State<GamePage> {
     setState(() {
       logoUrl = 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/AppIcon/AppIcon.png';
     });
+  }
+
+  Future<void> _loadQuestions() async {
+    try {
+      // PANDORA/CUSTOM: Check if custom questions are provided first
+      if (widget.customQuestions != null && widget.customQuestions!.isNotEmpty) {
+        debugPrint('✅ Using custom questions (Pandora/Personal mode)');
+        setState(() {
+          allQuestions = widget.customQuestions!;
+          displayedQuestions = List.from(allQuestions);
+          isLoading = false;
+        });
+        return;
+      }
+      
+      // Original code for loading from Supabase
+      final questions = await supabaseService.getQuestions(
+        widget.gameMode,
+        widget.category,
+      );
+
+      if (!mounted) return;
+
+      if (questions.isEmpty) {
+        final l10n = AppLocalizations.of(context)!;
+        setState(() {
+          allQuestions = [l10n.noQuestionsFoundMessage(widget.category, widget.gameMode)];
+          displayedQuestions = List.from(allQuestions);
+          isLoading = false;
+        });
+        return;
+      }
+
+      setState(() {
+        allQuestions = questions;
+        displayedQuestions = List.from(allQuestions);
+        isLoading = false;
+      });
+    } catch (e) {
+      debugPrint('Error loading questions: $e');
+      
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        setState(() {
+          allQuestions = [l10n.errorLoadingQuestions];
+          displayedQuestions = List.from(allQuestions);
+          isLoading = false;
+        });
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              l10n.failedToLoadQuestions(e.toString()),
+              style: GoogleFonts.poppins(),
+            ),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+    }
   }
 
   void _showAdOrPurchaseOption() {
@@ -208,116 +262,65 @@ class _GamePageState extends State<GamePage> {
     
     final l10n = AppLocalizations.of(context)!;
     String? selectedBundle;
-
+    
     showDialog(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setDialogState) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            title: Text(
-              l10n.removeAdsForever,
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
-              textAlign: TextAlign.center,
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  l10n.chooseOneBundle,
-                  style: GoogleFonts.poppins(fontSize: 15),
-                  textAlign: TextAlign.center,
+              title: Text(
+                l10n.removeAdsForever,
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
                 ),
-                const SizedBox(height: 20),
-                ...[
-                  {'name': l10n.family, 'key': 'family'},
-                  {'name': l10n.couple, 'key': 'couple'},
-                  {'name': l10n.friends, 'key': 'friends'},
-                ].map((bundle) {
-                  final isSelected = selectedBundle == bundle['key'];
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: InkWell(
-                      onTap: () {
-                        setDialogState(() {
-                          selectedBundle = bundle['key'];
-                        });
-                      },
-                      borderRadius: BorderRadius.circular(8),
-                      child: Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: isSelected 
-                              ? const Color(0xFFAD1457).withValues(alpha: 0.1)
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: isSelected 
-                                ? const Color(0xFFAD1457)
-                                : Colors.grey.shade300,
-                            width: 2,
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              isSelected 
-                                  ? Icons.radio_button_checked
-                                  : Icons.radio_button_unchecked,
-                              color: isSelected 
-                                  ? const Color(0xFFAD1457)
-                                  : Colors.grey,
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    bundle['name']!,
-                                    style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w600,
-                                      color: isSelected ? const Color(0xFFAD1457) : Colors.black87,
-                                    ),
-                                  ),
-                                  Text(
-                                    l10n.premiumCategories,
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-                const SizedBox(height: 20),
+                textAlign: TextAlign.center,
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    l10n.chooseOneBundle,
+                    style: GoogleFonts.poppins(fontSize: 14),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  _buildBundleOption(
+                    'Couple Bundle',
+                    'couple',
+                    selectedBundle,
+                    (value) => setState(() => selectedBundle = value),
+                  ),
+                  _buildBundleOption(
+                    'Friends Bundle',
+                    'friends',
+                    selectedBundle,
+                    (value) => setState(() => selectedBundle = value),
+                  ),
+                  _buildBundleOption(
+                    'Family Bundle',
+                    'family',
+                    selectedBundle,
+                    (value) => setState(() => selectedBundle = value),
+                  ),
+                ],
+              ),
+              actions: [
                 Row(
                   children: [
                     Expanded(
-                      child: ElevatedButton(
+                      child: TextButton(
                         onPressed: () => Navigator.pop(context),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey[300],
-                          foregroundColor: Colors.black87,
-                        ),
                         child: Text(
                           l10n.cancel,
-                          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+                          style: GoogleFonts.poppins(),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
                     Expanded(
                       child: ElevatedButton(
                         onPressed: selectedBundle != null
@@ -358,148 +361,49 @@ class _GamePageState extends State<GamePage> {
                   textAlign: TextAlign.center,
                 ),
               ],
-            ),
-          );
-        },
-      ),
+            );
+          },
+        );
+      },
     );
   }
 
-  Future<void> _loadQuestions() async {
-    try {
-      // Check if custom questions are provided first
-      if (widget.customQuestions != null && widget.customQuestions!.isNotEmpty) {
-        setState(() {
-          allQuestions = widget.customQuestions!;
-          displayedQuestions = List.from(allQuestions);
-          isLoading = false;
-        });
-        _loadFavoritedStates(); // ADDED: Load favorited states
-        return;
-      }
-      
-      // Original code for loading from Supabase
-      final questions = await supabaseService.getQuestions(
-        widget.gameMode,
-        widget.category,
-      );
-
-      if (!mounted) return;
-
-      if (questions.isEmpty) {
-        final l10n = AppLocalizations.of(context)!;
-        setState(() {
-          allQuestions = [l10n.noQuestionsFoundMessage(widget.category, widget.gameMode)];
-          displayedQuestions = List.from(allQuestions);
-          isLoading = false;
-        });
-        return;
-      }
-
-      setState(() {
-        allQuestions = questions;
-        displayedQuestions = List.from(allQuestions);
-        isLoading = false;
-      });
-      
-      _loadFavoritedStates(); // ADDED: Load favorited states
-    } catch (e) {
-      debugPrint('Error loading questions: $e');
-      
-      if (mounted) {
-        final l10n = AppLocalizations.of(context)!;
-        setState(() {
-          allQuestions = [l10n.errorLoadingQuestions];
-          displayedQuestions = List.from(allQuestions);
-          isLoading = false;
-        });
-        
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              l10n.failedToLoadQuestions(e.toString()),
-              style: GoogleFonts.poppins(),
-            ),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 5),
+  Widget _buildBundleOption(
+    String label,
+    String value,
+    String? selectedValue,
+    Function(String) onSelected,
+  ) {
+    final isSelected = selectedValue == value;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: InkWell(
+        onTap: () => onSelected(value),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFFAD1457) : Colors.grey[200],
+            borderRadius: BorderRadius.circular(8),
           ),
-        );
-      }
-    }
-  }
-
-  // ADDED: Load favorited state for all questions
-  Future<void> _loadFavoritedStates() async {
-    if (!mounted) return;
-    
-    for (var question in displayedQuestions) {
-      final isFavorited = await customDeckService.isQuestionFavorited(question);
-      if (mounted) {
-        setState(() {
-          favoritedQuestions[question] = isFavorited;
-        });
-      }
-    }
-  }
-
-  // ADDED: Toggle favorite status
-  Future<void> _toggleFavorite(String question) async {
-    try {
-      final currentlyFavorited = favoritedQuestions[question] ?? false;
-      
-      if (currentlyFavorited) {
-        await customDeckService.removeFromFavorites(question);
-        if (mounted) {
-          setState(() {
-            favoritedQuestions[question] = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Removed from Favorites', style: GoogleFonts.poppins()),
-              duration: const Duration(seconds: 2),
-            ),
-          );
-        }
-      } else {
-        final added = await customDeckService.addToFavorites(
-          question,
-          widget.gameMode,
-          widget.category,
-        );
-        
-        if (mounted) {
-          if (added) {
-            setState(() {
-              favoritedQuestions[question] = true;
-            });
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Added to Favorites! ❤️', style: GoogleFonts.poppins()),
-                duration: const Duration(seconds: 2),
-                backgroundColor: Colors.pink,
+          child: Row(
+            children: [
+              Icon(
+                isSelected ? Icons.check_circle : Icons.circle_outlined,
+                color: isSelected ? Colors.white : Colors.grey,
               ),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Already in Favorites', style: GoogleFonts.poppins()),
-                duration: const Duration(seconds: 2),
+              const SizedBox(width: 12),
+              Text(
+                label,
+                style: GoogleFonts.poppins(
+                  color: isSelected ? Colors.white : Colors.black,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
               ),
-            );
-          }
-        }
-      }
-    } catch (e) {
-      debugPrint('Error toggling favorite: $e');
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to update favorites', style: GoogleFonts.poppins()),
-            backgroundColor: Colors.red,
+            ],
           ),
-        );
-      }
-    }
+        ),
+      ),
+    );
   }
 
   bool _onSwipe(
@@ -507,23 +411,25 @@ class _GamePageState extends State<GamePage> {
     int? currentIndex,
     CardSwiperDirection direction,
   ) {
-    debugPrint('=== SWIPE EVENT ===');
-    debugPrint('Direction: $direction, Previous: $previousIndex, Current: $currentIndex');
-    debugPrint('Total questions: ${displayedQuestions.length}');
+    debugPrint('Swiped: direction=$direction, previous=$previousIndex, current=$currentIndex');
     
-    // ANY swipe direction = go to next question
-    unlockManager.incrementQuestionCount();
-    _showAdOrPurchaseOption();
+    // Swipe RIGHT (left to right) = undo to go back
+    if (direction == CardSwiperDirection.right) {
+      return true;
+    }
     
-    // Check if we've reached the end (currentIndex becomes null after last card)
-    if (currentIndex == null || previousIndex >= displayedQuestions.length - 1) {
-      debugPrint('Last card swiped - showing end dialog');
-      // Use a delay to ensure the swipe animation completes
-      Future.delayed(const Duration(milliseconds: 400), () {
-        if (mounted) {
+    // Swipe LEFT (right to left) = go to next question
+    if (direction == CardSwiperDirection.left) {
+      unlockManager.incrementQuestionCount();
+      _showAdOrPurchaseOption();
+      
+      // Check if we've reached the end
+      if (currentIndex == null || currentIndex >= displayedQuestions.length - 1) {
+        Future.delayed(const Duration(milliseconds: 300), () {
           _showGameEndDialog();
-        }
-      });
+        });
+        return true;
+      }
     }
     
     return true;
@@ -539,139 +445,7 @@ class _GamePageState extends State<GamePage> {
   }
 
   void _showGameEndDialog() {
-    if (!mounted || _isShowingEndDialog) return;
-    
-    debugPrint('=== SHOWING GAME END DIALOG ===');
-    
-    _isShowingEndDialog = true; // Prevent multiple dialogs
-    
-    final l10n = AppLocalizations.of(context)!;
-    
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => PopScope(
-        canPop: false,
-        child: AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: Column(
-            children: [
-              Icon(
-                Icons.celebration,
-                size: 64,
-                color: const Color(0xFFAD1457),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                l10n.gameComplete,
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          content: Text(
-            l10n.noMoreQuestions,
-            style: GoogleFonts.poppins(fontSize: 16),
-            textAlign: TextAlign.center,
-          ),
-          actionsAlignment: MainAxisAlignment.center,
-          actions: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(context); // Close dialog immediately
-                    _restartGame(); // Restart game with loading state
-                  },
-                  icon: const Icon(Icons.replay),
-                  label: Text(
-                    l10n.playAgain,
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFAD1457),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 14,
-                    ),
-                    minimumSize: const Size(double.infinity, 50),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                OutlinedButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                  },
-                  icon: const Icon(Icons.home),
-                  label: Text(
-                    l10n.mainMenu,
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xFFAD1457),
-                    side: const BorderSide(
-                      color: Color(0xFFAD1457),
-                      width: 2,
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 14,
-                    ),
-                    minimumSize: const Size(double.infinity, 50),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _restartGame() async {
-    if (!mounted) return;
-    
-    debugPrint('=== RESTARTING GAME ===');
-    
-    setState(() {
-      isRestarting = true;
-      _isShowingEndDialog = false; // FIXED: Reset flag on restart
-    });
-    
-    // Dispose old controller and create new one
-    controller.dispose();
-    
-    // Small delay to show loading
-    await Future.delayed(const Duration(milliseconds: 150));
-    
-    if (!mounted) return;
-    
-    setState(() {
-      // Create fresh controller
-      controller = CardSwiperController();
-      
-      // Reset all state
-      displayedQuestions = List.from(allQuestions);
-      currentIndex = 0;
-      _gameKey++;
-      isRestarting = false;
-    });
-    
-    debugPrint('Game restarted: ${displayedQuestions.length} questions available, key: $_gameKey');
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   @override
@@ -700,6 +474,11 @@ class _GamePageState extends State<GamePage> {
             ? [const Color(0xFF3A4A5A), const Color(0xFF2A3A4A)]
             : [const Color(0xFFD4E4F8), const Color(0xFFC4D4E8)];
         break;
+      case 'pandora':
+        backgroundGradient = widget.isDarkMode
+            ? [const Color(0xFF5A2A3A), const Color(0xFF4A1A2A)]
+            : [const Color(0xFFFFE4EC), const Color(0xFFFFD4E4)];
+        break;
       default:
         backgroundGradient = [const Color(0xFFF5E8E1), const Color(0xFFE8D6D0)];
     }
@@ -725,7 +504,7 @@ class _GamePageState extends State<GamePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst), // FIXED: Go to main menu
+                      onPressed: () => Navigator.pop(context),
                       icon: Icon(
                         Icons.home,
                         color: ThemeHelper.getTextColor(widget.isDarkMode),
@@ -747,25 +526,9 @@ class _GamePageState extends State<GamePage> {
                 // Card Swiper
                 Expanded(
                   child: Center(
-                    child: isLoading || isRestarting // FIXED: Show loading during restart too
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (logoUrl != null)
-                                Image.network(
-                                  logoUrl!,
-                                  height: 120,
-                                  width: 120,
-                                  fit: BoxFit.contain,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return const SizedBox.shrink();
-                                  },
-                                ),
-                              const SizedBox(height: 24),
-                              CircularProgressIndicator(
-                                color: ThemeHelper.getTextColor(widget.isDarkMode),
-                              ),
-                            ],
+                    child: isLoading 
+                        ? CircularProgressIndicator(
+                            color: ThemeHelper.getTextColor(widget.isDarkMode),
                           )
                         : displayedQuestions.isEmpty
                             ? Text(
@@ -776,13 +539,11 @@ class _GamePageState extends State<GamePage> {
                                 ),
                               )
                             : CardSwiper(
-                                key: ValueKey(_gameKey), // FIXED: Force rebuild on restart
                                 controller: controller,
                                 cardsCount: displayedQuestions.length,
                                 onSwipe: _onSwipe,
                                 onUndo: _onUndo,
-                                // FIXED: Dynamic numberOfCardsDisplayed based on available questions
-                                numberOfCardsDisplayed: displayedQuestions.length >= 2 ? 2 : 1,
+                                numberOfCardsDisplayed: 2,
                                 backCardOffset: const Offset(0, 15),
                                 padding: const EdgeInsets.all(0),
                                 scale: 0.93,
@@ -791,8 +552,8 @@ class _GamePageState extends State<GamePage> {
                                 maxAngle: 25,
                                 threshold: 50,
                                 allowedSwipeDirection: AllowedSwipeDirection.only(
-                                  right: true,  // Swipe right to go forward
-                                  left: true,   // Swipe left to go back/undo
+                                  left: true,
+                                  right: true,
                                 ),
                                 cardBuilder: (
                                   context,
@@ -820,38 +581,47 @@ class _GamePageState extends State<GamePage> {
     // Get gradient colors based on game mode
     List<Color> cardGradient;
     Color textColor;
+    String? emoji;
     
-    switch (widget.gameMode.toLowerCase()) {
-      case 'family':
-        cardGradient = widget.isDarkMode
-            ? [const Color(0xFF7B5D47), const Color(0xFF5D4537)]
-            : [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
-        textColor = widget.isDarkMode ? Colors.white : const Color(0xFF4A3A33);
-        break;
-      case 'couple':
-        cardGradient = widget.isDarkMode
-            ? [const Color(0xFF8A6A64), const Color(0xFF6B4A54)]
-            : [const Color(0xFFF28B9C), const Color(0xFFF5A877)];
-        textColor = Colors.white;
-        break;
-      case 'friends':
-        cardGradient = widget.isDarkMode
-            ? [const Color(0xFF6B5A72), const Color(0xFF4B3A52)]
-            : [const Color(0xFFB995D3), const Color(0xFF9B7AB8)];
-        textColor = Colors.white;
-        break;
-      case 'personal':
-        cardGradient = widget.isDarkMode
-            ? [const Color(0xFF5A6A7B), const Color(0xFF4A5A6B)]
-            : [const Color(0xFF90B5E8), const Color(0xFF7A9AD7)];
-        textColor = Colors.white;
-        break;
-      default:
-        cardGradient = [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
-        textColor = const Color(0xFF4A3A33);
+    // PANDORA: Special handling for Pandora mode
+    if (widget.gameMode.toLowerCase() == 'pandora') {
+      cardGradient = widget.isDarkMode
+          ? [const Color(0xFFFF6B9D), const Color(0xFFD81B60)]
+          : [const Color(0xFFFF6B9D), const Color(0xFFFF8E53)];
+      textColor = Colors.white;
+      emoji = '🔮';
+    } else {
+      // Existing game mode color logic
+      switch (widget.gameMode.toLowerCase()) {
+        case 'family':
+          cardGradient = widget.isDarkMode
+              ? [const Color(0xFF7B5D47), const Color(0xFF5D4537)]
+              : [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
+          textColor = widget.isDarkMode ? Colors.white : const Color(0xFF4A3A33);
+          break;
+        case 'couple':
+          cardGradient = widget.isDarkMode
+              ? [const Color(0xFF8A6A64), const Color(0xFF6B4A54)]
+              : [const Color(0xFFF28B9C), const Color(0xFFF5A877)];
+          textColor = Colors.white;
+          break;
+        case 'friends':
+          cardGradient = widget.isDarkMode
+              ? [const Color(0xFF6B5A72), const Color(0xFF4B3A52)]
+              : [const Color(0xFFB995D3), const Color(0xFF9B7AB8)];
+          textColor = Colors.white;
+          break;
+        case 'personal':
+          cardGradient = widget.isDarkMode
+              ? [const Color(0xFF5A6A7B), const Color(0xFF4A5A6B)]
+              : [const Color(0xFF90B5E8), const Color(0xFF7A9AD7)];
+          textColor = Colors.white;
+          break;
+        default:
+          cardGradient = [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
+          textColor = const Color(0xFF4A3A33);
+      }
     }
-    
-    final isFavorited = favoritedQuestions[question] ?? false; // ADDED
     
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
@@ -884,93 +654,65 @@ class _GamePageState extends State<GamePage> {
           padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 60),
           child: Stack(
             children: [
-              // Logo at top center
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Center(
-                  child: logoUrl != null
-                      ? Opacity(
-                          opacity: 0.7,
-                          child: Image.network(
+              // Logo at top center (skip for Pandora - show emoji instead)
+              if (emoji == null)
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: logoUrl != null
+                        ? Image.network(
                             logoUrl!,
-                            height: 80,
                             width: 80,
+                            height: 80,
                             fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Text(
-                                'Connect',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: textColor.withValues(alpha: 0.6),
-                                  letterSpacing: 2.0,
-                                ),
+                            cacheWidth: 80,
+                            cacheHeight: 80,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return const SizedBox(
+                                width: 80,
+                                height: 80,
                               );
                             },
-                          ),
-                        )
-                      : Text(
-                          'Connect',
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: textColor.withValues(alpha: 0.6),
-                            letterSpacing: 2.0,
-                          ),
-                        ),
+                            errorBuilder: (context, error, stackTrace) {
+                              return const SizedBox(
+                                width: 80,
+                                height: 80,
+                              );
+                            },
+                          )
+                        : const SizedBox(width: 80, height: 80),
+                  ),
                 ),
-              ),
               
-              // Question text in center
+              // PANDORA: Show emoji if in Pandora mode
+              if (emoji != null)
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: Text(
+                      emoji,
+                      style: const TextStyle(fontSize: 64),
+                    ),
+                  ),
+                ),
+              
+              // Question text centered
               Center(
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Text(
-                    question,
-                    style: GoogleFonts.poppins(
-                      color: textColor,
-                      fontSize: 32,
-                      fontWeight: FontWeight.w700,
-                      height: 1.5,
-                      letterSpacing: -0.3,
-                      shadows: [
-                        Shadow(
-                          offset: const Offset(0, 2),
-                          blurRadius: 8,
-                          color: Colors.black.withValues(alpha: 0.3),
-                        ),
-                      ],
-                    ),
-                    textAlign: TextAlign.center,
+                child: Text(
+                  question,
+                  style: GoogleFonts.poppins(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w600,
+                    color: textColor,
+                    height: 1.4,
+                    letterSpacing: 0.5,
                   ),
-                ),
-              ),
-              
-              // ADDED: Heart button at bottom center
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Center(
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () => _toggleFavorite(question),
-                      borderRadius: BorderRadius.circular(30),
-                      child: Container(
-                        padding: const EdgeInsets.all(12),
-                        child: Icon(
-                          isFavorited ? Icons.favorite : Icons.favorite_border,
-                          color: isFavorited 
-                              ? Colors.pink 
-                              : textColor.withValues(alpha: 0.7),
-                          size: 32,
-                        ),
-                      ),
-                    ),
-                  ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ],

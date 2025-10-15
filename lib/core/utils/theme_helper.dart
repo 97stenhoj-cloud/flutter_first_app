@@ -149,129 +149,127 @@ class ThemeHelper {
   // ============================================================================
   // REUSABLE LAYERED BUTTON WIDGET
   // ============================================================================
-  // Replace the buildLayeredButton method in your theme_helper.dart with this:
-
-static Widget buildLayeredButton({
-  required String text,
-  required VoidCallback onPressed,
-  required bool isPrimary,
-  required bool isDarkMode,
-  double? width,
-  double? height,
-  IconData? icon,
-}) {
-  final colors = isPrimary 
-      ? getPrimaryButtonGradient(isDarkMode).colors
-      : getSecondaryButtonGradient(isDarkMode).colors;
-  
-  final buttonWidth = width ?? AppConstants.buttonWidth;
-  final buttonHeight = height ?? AppConstants.buttonHeight;
-  
-  return Stack(
-    alignment: Alignment.center,
-    children: [
-      // Outermost layer
-      Container(
-        width: buttonWidth,
-        height: buttonHeight,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [colors[0], colors[1]],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: isDarkMode 
-                  ? const Color.fromRGBO(0, 0, 0, 0.4)
-                  : const Color.fromRGBO(100, 80, 60, 0.15),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
+  static Widget buildLayeredButton({
+    required String text,
+    required VoidCallback onPressed,
+    required bool isPrimary,
+    required bool isDarkMode,
+    double? width,
+    double? height,
+    IconData? icon,
+  }) {
+    final colors = isPrimary 
+        ? getPrimaryButtonGradient(isDarkMode).colors
+        : getSecondaryButtonGradient(isDarkMode).colors;
+    
+    final buttonWidth = width ?? AppConstants.buttonWidth;
+    final buttonHeight = height ?? AppConstants.buttonHeight;
+    
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // Outermost layer
+        Container(
+          width: buttonWidth,
+          height: buttonHeight,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [colors[0], colors[1]],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
-          ],
-        ),
-      ),
-      // Middle layer
-      Container(
-        width: buttonWidth - 8,
-        height: buttonHeight - 8,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [colors[0].withValues(alpha: 0.85), colors[1].withValues(alpha: 0.85)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-      // Innermost layer (button)
-      Material(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(20),
-        child: InkWell(
-          onTap: onPressed,
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-            width: buttonWidth - 16,
-            height: buttonHeight - 16,
-            padding: const EdgeInsets.symmetric(horizontal: 16), // Add padding
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: colors,
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: isDarkMode 
+                    ? const Color.fromRGBO(0, 0, 0, 0.4)
+                    : const Color.fromRGBO(100, 80, 60, 0.15),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
               ),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: icon != null
-                ? Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        icon,
-                        size: 24,
-                        color: isPrimary 
-                            ? Colors.white
-                            : getSecondaryButtonTextColor(isDarkMode),
-                      ),
-                      const SizedBox(width: 8),
-                      Flexible(
-                        child: Text(
-                          text,
-                          style: GoogleFonts.poppins(
-                            fontSize: isPrimary ? 18 : 16,
-                            fontWeight: isPrimary ? FontWeight.bold : FontWeight.w600,
-                            color: isPrimary 
-                                ? Colors.white
-                                : getSecondaryButtonTextColor(isDarkMode),
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  )
-                : Center(
-                    child: Text(
-                      text,
-                      style: GoogleFonts.poppins(
-                        fontSize: isPrimary ? 18 : 16,
-                        fontWeight: isPrimary ? FontWeight.bold : FontWeight.w600,
-                        color: isPrimary 
-                            ? Colors.white
-                            : getSecondaryButtonTextColor(isDarkMode),
-                      ),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
+            ],
           ),
         ),
-      ),
-    ],
-  );
-}
+        // Middle layer
+        Container(
+          width: buttonWidth - 8,
+          height: buttonHeight - 8,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [colors[0].withValues(alpha: 0.85), colors[1].withValues(alpha: 0.85)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+        // Innermost layer (button)
+        Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+          child: InkWell(
+            onTap: onPressed,
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              width: buttonWidth - 16,
+              height: buttonHeight - 16,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: colors,
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: icon != null
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          icon,
+                          size: 24,
+                          color: isPrimary 
+                              ? Colors.white
+                              : getSecondaryButtonTextColor(isDarkMode),
+                        ),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            text,
+                            style: GoogleFonts.poppins(
+                              fontSize: isPrimary ? 18 : 16,
+                              fontWeight: isPrimary ? FontWeight.bold : FontWeight.w600,
+                              color: isPrimary 
+                                  ? Colors.white
+                                  : getSecondaryButtonTextColor(isDarkMode),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    )
+                  : Center(
+                      child: Text(
+                        text,
+                        style: GoogleFonts.poppins(
+                          fontSize: isPrimary ? 18 : 16,
+                          fontWeight: isPrimary ? FontWeight.bold : FontWeight.w600,
+                          color: isPrimary 
+                              ? Colors.white
+                              : getSecondaryButtonTextColor(isDarkMode),
+                        ),
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
   
   // ============================================================================
   // LEGACY METHODS (keeping these for compatibility with your existing code)
@@ -294,9 +292,9 @@ static Widget buildLayeredButton({
   
   static Color getCardColor(bool isDarkMode) {
     return isDarkMode
-        ? const Color(0xFF4B3A30) // warm brown for light mode
-        : const Color(0xFFE6DDD4); // light beige for dark mode
-}
+        ? const Color(0xFF4B3A30)
+        : const Color(0xFFE6DDD4);
+  }
   
   // ============================================================================
   // GAME MODE COLORS - Using variations of the new theme
@@ -307,20 +305,24 @@ static Widget buildLayeredButton({
     switch (normalizedMode) {
       case 'family':
         return isDarkMode 
-          ? const Color(0xFF7B5D47) // rich mocha brown
-          : const Color(0xFFD7B299); // creamy cappuccino
+          ? const Color(0xFF7B5D47)
+          : const Color(0xFFD7B299);
       case 'couple':
         return isDarkMode 
-            ? const Color(0xFF8A6A64) // dark version of pink
-            : const Color(0xFFE8D6D0); // pink from gradient
+            ? const Color(0xFF8A6A64)
+            : const Color(0xFFE8D6D0);
       case 'friends':
         return isDarkMode 
-            ? const Color(0xFF6B5A72) // dark version of lavender
-            : const Color(0xFFCFC3D8); // lavender from gradient
-    case 'personal':  // ADD THIS CASE
-      return isDarkMode
-          ? const Color(0xFF5A6A7B) // dark blue
-          : const Color(0xFFD4E4F8); // light blue
+            ? const Color(0xFF6B5A72)
+            : const Color(0xFFCFC3D8);
+      case 'personal':
+        return isDarkMode
+            ? const Color(0xFF5A6A7B)
+            : const Color(0xFFD4E4F8);
+      case 'pandora':
+        return isDarkMode
+            ? const Color(0xFFD81B60)
+            : const Color(0xFFFF6B9D);
       default:
         return isDarkMode 
             ? const Color(0xFF3A3230) 
@@ -333,25 +335,25 @@ static Widget buildLayeredButton({
     
     switch (normalizedMode) {
       case 'couple':
-        // Rose theme for couple
         return isDarkMode
             ? [const Color(0xFFE57A8C), const Color(0xFFE39867)]
             : [const Color(0xFFF28B9C), const Color(0xFFF5A877)];
       case 'friends':
-        // Lavender theme for friends
         return isDarkMode
             ? [const Color(0xFF9276AB), const Color(0xFF7A6A9C)]
             : [const Color(0xFFB995D3), const Color(0xFFA384C2)];
       case 'family':
-        // Gold theme for family
         return isDarkMode
             ? [const Color(0xFFD4A066), const Color(0xFFBF8F4F)]
             : [const Color(0xFFF0D6A6), const Color(0xFFE3C590)];
-      case 'personal':  // ADD THIS CASE
-      // Blue theme for personal
-      return isDarkMode
-          ? [const Color(0xFF5A8AA8), const Color(0xFF4A7A98)]
-          : [const Color(0xFF90B5E8), const Color(0xFF7A9AD7)];      
+      case 'personal':
+        return isDarkMode
+            ? [const Color(0xFF5A8AA8), const Color(0xFF4A7A98)]
+            : [const Color(0xFF90B5E8), const Color(0xFF7A9AD7)];
+      case 'pandora':
+        return isDarkMode
+            ? [const Color(0xFFFF6B9D), const Color(0xFFD81B60)]
+            : [const Color(0xFFFF6B9D), const Color(0xFFFF8E53)];
       default:
         return getMainMenuGradient(isDarkMode);
     }
@@ -392,7 +394,7 @@ static Widget buildLayeredButton({
     return BoxDecoration(
       gradient: getSecondaryButtonGradient(isDarkMode),
       borderRadius: BorderRadius.circular(buttonRadius),
-      boxShadow: isDarkMode ? [] : [], // No shadow for secondary buttons
+      boxShadow: isDarkMode ? [] : [],
     );
   }
   
@@ -401,25 +403,25 @@ static Widget buildLayeredButton({
   // ============================================================================
   static Color getSuccessColor(bool isDarkMode) {
     return isDarkMode 
-        ? const Color(0xFF8BC48A) // lighter green for dark mode
-        : const Color(0xFF6BAA6A); // soft green
+        ? const Color(0xFF8BC48A)
+        : const Color(0xFF6BAA6A);
   }
   
   static Color getWarningColor(bool isDarkMode) {
     return isDarkMode 
-        ? const Color(0xFFF5B055) // lighter amber for dark mode
-        : const Color(0xFFE09A47); // warm amber
+        ? const Color(0xFFF5B055)
+        : const Color(0xFFE09A47);
   }
   
   static Color getErrorColor(bool isDarkMode) {
     return isDarkMode 
-        ? const Color(0xFFEF8A7C) // lighter red for dark mode
-        : const Color(0xFFD46B5D); // muted red
+        ? const Color(0xFFEF8A7C)
+        : const Color(0xFFD46B5D);
   }
   
   static Color getInfoColor(bool isDarkMode) {
     return isDarkMode 
-        ? const Color(0xFF9AB8D5) // lighter blue for dark mode
-        : const Color(0xFF7A9BB8); // dusty blue
+        ? const Color(0xFF9AB8D5)
+        : const Color(0xFF7A9BB8);
   }
 }
