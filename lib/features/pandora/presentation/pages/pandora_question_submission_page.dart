@@ -39,25 +39,49 @@ class _PandoraQuestionSubmissionPageState
   String? targetParticipantId;
   
   Timer? countdownTimer;
+  Timer? pollTimer;
+  Timer? statusPollTimer;
   late DateTime endTime;
   Duration remainingTime = Duration.zero;
   
   RealtimeChannel? questionsChannel;
   RealtimeChannel? sessionChannel;
   bool isSubmitting = false;
+  bool isStartingGame = false;
+  bool hasNavigatedToGame = false;
 
   @override
   void initState() {
     super.initState();
+    endTime = DateTime.now();
     _loadData();
-    _startCountdown();
     _subscribeToChanges();
+    
+    // Poll questions every 2 seconds as backup
+    pollTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+      _loadQuestions();
+    });
+    
+    // Poll session status every 1 second (for players to detect game start)
+    statusPollTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted || hasNavigatedToGame) {
+        timer.cancel();
+        return;
+      }
+      _checkGameStatus();
+    });
   }
 
   @override
   void dispose() {
     questionController.dispose();
     countdownTimer?.cancel();
+    pollTimer?.cancel();
+    statusPollTimer?.cancel();
     questionsChannel?.unsubscribe();
     sessionChannel?.unsubscribe();
     super.dispose();
@@ -65,6 +89,16 @@ class _PandoraQuestionSubmissionPageState
 
   Future<void> _loadData() async {
     try {
+      // Get session to retrieve timer_started_at
+      final session = await pandoraService.getSession(widget.sessionId);
+      
+      if (session == null) {
+        debugPrint('❌ Session not found!');
+        return;
+      }
+      
+      debugPrint('📊 Session data: ${session['timer_started_at']}');
+      
       // Get participants
       final loadedParticipants = await pandoraService.getParticipants(widget.sessionId);
       
@@ -76,29 +110,84 @@ class _PandoraQuestionSubmissionPageState
       );
       
       // Get existing questions
-      final loadedQuestions = await pandoraService.getSessionQuestions(widget.sessionId);
+      await _loadQuestions();
       
       setState(() {
         participants = loadedParticipants;
         myParticipantId = myParticipant['id'];
-        questions = loadedQuestions;
       });
+      
+      // Start countdown with synchronized time from database
+      if (session['timer_started_at'] != null) {
+        try {
+          final timerStartedAtStr = session['timer_started_at'] as String;
+          final timerStartedAt = DateTime.parse(timerStartedAtStr).toUtc();
+          final now = DateTime.now().toUtc();
+          
+          endTime = timerStartedAt.add(Duration(minutes: widget.timerMinutes));
+          
+          debugPrint('⏰ Timer started at: $timerStartedAt');
+          debugPrint('⏰ Current time: $now');
+          debugPrint('⏰ End time: $endTime');
+          debugPrint('⏰ Timer minutes: ${widget.timerMinutes}');
+          
+          _startCountdown();
+        } catch (e) {
+          debugPrint('❌ Error parsing timer: $e');
+        }
+      }
     } catch (e) {
-      debugPrint('Error loading data: $e');
+      debugPrint('❌ Error loading data: $e');
+    }
+  }
+
+  Future<void> _loadQuestions() async {
+    try {
+      final loadedQuestions = await pandoraService.getSessionQuestions(widget.sessionId);
+      if (mounted) {
+        setState(() {
+          questions = loadedQuestions;
+        });
+        debugPrint('📝 Loaded ${questions.length} questions');
+      }
+    } catch (e) {
+      debugPrint('❌ Error loading questions: $e');
+    }
+  }
+
+  Future<void> _checkGameStatus() async {
+    if (hasNavigatedToGame) return;
+    
+    try {
+      final session = await pandoraService.getSession(widget.sessionId);
+      if (session != null && session['status'] == 'playing') {
+        debugPrint('🔍 [Polling] Game started - navigating...');
+        hasNavigatedToGame = true;
+        _navigateToGame();
+      }
+    } catch (e) {
+      debugPrint('❌ Error checking game status: $e');
     }
   }
 
   void _startCountdown() {
-    endTime = DateTime.now().add(Duration(minutes: widget.timerMinutes));
-    
     countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+      
+      final now = DateTime.now().toUtc();
+      final remaining = endTime.difference(now);
+      
       setState(() {
-        remainingTime = endTime.difference(DateTime.now());
+        remainingTime = remaining;
         
-        if (remainingTime.isNegative) {
+        if (remainingTime.isNegative || remainingTime.inSeconds <= 0) {
           remainingTime = Duration.zero;
           timer.cancel();
-          if (widget.isHost) {
+          if (widget.isHost && !isStartingGame) {
+            debugPrint('⏰ Timer expired - starting game automatically');
             _startGame();
           }
         }
@@ -109,13 +198,19 @@ class _PandoraQuestionSubmissionPageState
   void _subscribeToChanges() {
     questionsChannel = pandoraService.subscribeToQuestions(
       widget.sessionId,
-      () => _loadData(),
+      () {
+        debugPrint('📡 Questions changed - reloading');
+        _loadQuestions();
+      },
     );
 
     sessionChannel = pandoraService.subscribeToSession(
       widget.sessionId,
       (session) {
-        if (session['status'] == 'playing' && mounted) {
+        debugPrint('📡 Session status update: ${session['status']}');
+        if (session['status'] == 'playing' && mounted && !hasNavigatedToGame) {
+          debugPrint('📡 [Real-time] Game started - navigating...');
+          hasNavigatedToGame = true;
           _navigateToGame();
         }
       },
@@ -154,6 +249,9 @@ class _PandoraQuestionSubmissionPageState
         targetParticipantId = null;
       });
 
+      // Immediately reload questions
+      await _loadQuestions();
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -174,38 +272,88 @@ class _PandoraQuestionSubmissionPageState
   }
 
   Future<void> _startGame() async {
+    if (isStartingGame || hasNavigatedToGame) return;
+    
+    setState(() => isStartingGame = true);
+    
     try {
+      debugPrint('🎮 Starting game...');
       await pandoraService.startPlaying(widget.sessionId);
-      // Navigation happens through subscription
+      
+      // Give a moment for the status to update
+      await Future.delayed(const Duration(milliseconds: 500));
+      
+      // Navigate immediately
+      if (mounted && !hasNavigatedToGame) {
+        hasNavigatedToGame = true;
+        _navigateToGame();
+      }
     } catch (e) {
-      debugPrint('Error starting game: $e');
+      debugPrint('❌ Error starting game: $e');
+      if (mounted) {
+        setState(() => isStartingGame = false);
+        hasNavigatedToGame = false;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error starting game: $e')),
+        );
+      }
     }
   }
 
   void _navigateToGame() async {
-    final sessionQuestions = await pandoraService.getSessionQuestions(widget.sessionId);
-    final questionTexts = sessionQuestions.map((q) {
-      final targetName = q['target_participant']?['display_name'];
-      final questionText = q['question_text'] as String;
+    if (hasNavigatedToGame && !mounted) return;
+    
+    try {
+      debugPrint('🎮 Navigating to game...');
       
-      if (targetName != null) {
-        return '[$targetName] $questionText';
+      final sessionQuestions = await pandoraService.getSessionQuestions(widget.sessionId);
+      
+      if (sessionQuestions.isEmpty) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('No questions submitted yet!')),
+          );
+          setState(() {
+            isStartingGame = false;
+            hasNavigatedToGame = false;
+          });
+        }
+        return;
       }
-      return questionText;
-    }).toList();
+      
+      final questionTexts = sessionQuestions.map((q) {
+        final targetName = q['target_participant']?['display_name'];
+        final questionText = q['question_text'] as String;
+        
+        if (targetName != null) {
+          return '[$targetName] $questionText';
+        }
+        return questionText;
+      }).toList();
 
-    if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => GamePage(
-            gameMode: 'Pandora',
-            category: 'Live Session',
-            isDarkMode: widget.isDarkMode,
-            customQuestions: questionTexts,
+      debugPrint('🎮 Navigating with ${questionTexts.length} questions');
+
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GamePage(
+              gameMode: 'Pandora',
+              category: 'Live Session',
+              isDarkMode: widget.isDarkMode,
+              customQuestions: questionTexts,
+            ),
           ),
-        ),
-      );
+        );
+      }
+    } catch (e) {
+      debugPrint('❌ Error navigating to game: $e');
+      if (mounted) {
+        setState(() {
+          isStartingGame = false;
+          hasNavigatedToGame = false;
+        });
+      }
     }
   }
 
@@ -271,10 +419,14 @@ class _PandoraQuestionSubmissionPageState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.question_answer, color: Color(0xFFFF6B9D)),
-                      const SizedBox(width: 8),
+                      const Icon(
+                        Icons.question_answer,
+                        color: Color(0xFFFF6B9D),
+                        size: 24,
+                      ),
+                      const SizedBox(width: 12),
                       Text(
-                        '${questions.length} questions submitted',
+                        'Questions submitted: ${questions.length}',
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -287,21 +439,62 @@ class _PandoraQuestionSubmissionPageState
                 
                 const SizedBox(height: 24),
                 
-                // Question input section
+                // Host start game button
+                if (widget.isHost) ...[
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton.icon(
+                      onPressed: isStartingGame || questions.isEmpty ? null : _startGame,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4CAF50),
+                        foregroundColor: Colors.white,
+                        disabledBackgroundColor: Colors.grey,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      icon: isStartingGame
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Icon(Icons.play_arrow),
+                      label: Text(
+                        isStartingGame
+                            ? 'Starting Game...'
+                            : questions.isEmpty
+                                ? 'Waiting for questions...'
+                                : 'Start Game Now',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
+                
+                // Question input card
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: widget.isDarkMode
-                          ? Colors.white.withValues(alpha: 0.05)
-                          : Colors.black.withValues(alpha: 0.02),
+                          ? Colors.white.withValues(alpha: 0.1)
+                          : Colors.white.withValues(alpha: 0.9),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Add Your Question',
+                          'Submit Your Question',
                           style: GoogleFonts.poppins(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -309,18 +502,17 @@ class _PandoraQuestionSubmissionPageState
                           ),
                         ),
                         
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 20),
                         
-                        // Question text field
+                        // Question input
                         TextField(
                           controller: questionController,
-                          maxLines: 3,
+                          maxLines: 4,
                           style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                            color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
                           ),
                           decoration: InputDecoration(
-                            hintText: 'Type your question here...',
+                            hintText: 'Enter your question here...',
                             filled: true,
                             fillColor: widget.isDarkMode
                                 ? Colors.white.withValues(alpha: 0.1)
@@ -332,11 +524,11 @@ class _PandoraQuestionSubmissionPageState
                           ),
                         ),
                         
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 20),
                         
                         // Target selection
                         Text(
-                          'Target',
+                          'Who is this for?',
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -344,34 +536,31 @@ class _PandoraQuestionSubmissionPageState
                           ),
                         ),
                         
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 12),
                         
-                        // Target type buttons
+                        // Target buttons
                         Row(
                           children: [
                             Expanded(
-                              child: _buildTargetButton(
-                                'Everyone',
-                                'all',
-                                Icons.group,
-                              ),
+                              child: _buildTargetButton('Everyone', 'all', Icons.groups),
                             ),
                             const SizedBox(width: 12),
                             Expanded(
-                              child: _buildTargetButton(
-                                'Specific Player',
-                                'specific',
-                                Icons.person,
-                              ),
+                              child: _buildTargetButton('Specific Player', 'specific', Icons.person),
                             ),
                           ],
                         ),
                         
-                        // Player selector (if specific is selected)
                         if (targetType == 'specific') ...[
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 16),
                           DropdownButtonFormField<String>(
-                            initialValue: targetParticipantId,
+                            value: targetParticipantId,
+                            dropdownColor: widget.isDarkMode
+                                ? const Color(0xFF2D2D2D)
+                                : Colors.white,
+                            style: GoogleFonts.poppins(
+                              color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
+                            ),
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: widget.isDarkMode
@@ -455,29 +644,25 @@ class _PandoraQuestionSubmissionPageState
             width: 2,
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
+        child: Column(
           children: [
             Icon(
               icon,
-              color: isSelected ? Colors.white : ThemeHelper.getBodyTextColor(widget.isDarkMode),
-              size: 20,
+              color: isSelected
+                  ? Colors.white
+                  : ThemeHelper.getBodyTextColor(widget.isDarkMode),
             ),
-            const SizedBox(width: 8),
-            Flexible(
-              child: Text(
-                label,
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: isSelected
-                      ? Colors.white
-                      : ThemeHelper.getBodyTextColor(widget.isDarkMode),
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: GoogleFonts.poppins(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: isSelected
+                    ? Colors.white
+                    : ThemeHelper.getBodyTextColor(widget.isDarkMode),
               ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
