@@ -9,12 +9,14 @@ class QuestionEditorPage extends StatefulWidget {
   final String deckId;
   final String deckName;
   final bool isDarkMode;
+  final bool isFavorites; // ADDED
 
   const QuestionEditorPage({
     super.key,
     required this.deckId,
     required this.deckName,
     required this.isDarkMode,
+    this.isFavorites = false, // ADDED
   });
 
   @override
@@ -25,6 +27,10 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
   final customDeckService = CustomDeckService();
   List<Map<String, dynamic>> questions = [];
   bool isLoading = true;
+  bool isShuffled = false; // ADDED: Track shuffle state
+
+  // Minimum questions constant for display purposes only
+  static const int minimumQuestions = 5;
 
   @override
   void initState() {
@@ -38,6 +44,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
       setState(() {
         questions = fetchedQuestions;
         isLoading = false;
+        isShuffled = false; // Reset shuffle state on reload
       });
     } catch (e) {
       debugPrint('Error loading questions: $e');
@@ -45,6 +52,45 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
         isLoading = false;
       });
     }
+  }
+
+  // ADDED: Shuffle questions
+  void _shuffleQuestions() {
+    setState(() {
+      questions.shuffle();
+      isShuffled = true;
+    });
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Questions shuffled!', style: GoogleFonts.poppins()),
+        backgroundColor: Colors.green,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  // ADDED: Reset to original order
+  void _resetOrder() {
+    _loadQuestions(); // Reload from database to get original order
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Order reset to original', style: GoogleFonts.poppins()),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  // ADDED: Reorder questions
+  void _onReorder(int oldIndex, int newIndex) {
+    setState(() {
+      if (newIndex > oldIndex) {
+        newIndex -= 1;
+      }
+      final item = questions.removeAt(oldIndex);
+      questions.insert(newIndex, item);
+    });
   }
 
   Future<void> _addQuestion() async {
@@ -156,6 +202,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
   }
 
   Future<void> _deleteQuestion(String questionId) async {
+    // FIXED: Removed the restriction - allow deletion at any count
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -204,6 +251,9 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
 
   @override
   Widget build(BuildContext context) {
+    final hasEnoughQuestions = questions.length >= minimumQuestions;
+    final questionsNeeded = minimumQuestions - questions.length;
+
     return Scaffold(
       body: Container(
         decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode),
@@ -236,31 +286,183 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
                               color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
                             ),
                           ),
-                          Text(
-                            '${questions.length} question${questions.length != 1 ? 's' : ''}',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
-                            ),
+                          Row(
+                            children: [
+                              Text(
+                                '${questions.length} question${questions.length != 1 ? 's' : ''}',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              if (!hasEnoughQuestions && questions.isNotEmpty)
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.orange.withValues(alpha: 0.2),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: Colors.orange,
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.warning_amber_rounded,
+                                        size: 14,
+                                        color: Colors.orange[800],
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        'Need $questionsNeeded more',
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.orange[800],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              else if (hasEnoughQuestions)
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green.withValues(alpha: 0.2),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: Colors.green,
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.check_circle,
+                                        size: 14,
+                                        color: Colors.green[800],
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        'Ready to play',
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.green[800],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                            ],
                           ),
                         ],
                       ),
                     ),
+                    // ADDED: Shuffle button
+                    if (questions.length > 1)
+                      IconButton(
+                        onPressed: isShuffled ? _resetOrder : _shuffleQuestions,
+                        icon: Icon(
+                          isShuffled ? Icons.refresh : Icons.shuffle,
+                          color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                          size: 24,
+                        ),
+                        tooltip: isShuffled ? 'Reset Order' : 'Shuffle Questions',
+                      ),
                   ],
                 ),
                 const SizedBox(height: 20),
 
-                // Add Question Button
-                ThemeHelper.buildLayeredButton(
-                  text: '+ Add Question',
-                  icon: Icons.add,
-                  onPressed: _addQuestion,
-                  isPrimary: true,
-                  isDarkMode: widget.isDarkMode,
-                ),
-                const SizedBox(height: 30),
+                // Informational banner for minimum requirement
+                if (!hasEnoughQuestions)
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    margin: const EdgeInsets.only(bottom: 16),
+                    decoration: BoxDecoration(
+                      color: widget.isFavorites // ADDED
+                          ? Colors.pink.withValues(alpha: 0.1)
+                          : Colors.blue.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: widget.isFavorites // ADDED
+                            ? Colors.pink.withValues(alpha: 0.3)
+                            : Colors.blue.withValues(alpha: 0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          widget.isFavorites ? Icons.favorite : Icons.info_outline, // ADDED
+                          color: widget.isFavorites ? Colors.pink[700] : Colors.blue[700], // ADDED
+                          size: 24,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            widget.isFavorites // ADDED
+                                ? 'Heart questions during gameplay to add them to your Favorites!'
+                                : 'Add at least $minimumQuestions questions to play this deck',
+                            style: GoogleFonts.poppins(
+                              fontSize: 13,
+                              color: widget.isDarkMode 
+                                  ? (widget.isFavorites ? Colors.pink[200] : Colors.blue[200])
+                                  : (widget.isFavorites ? Colors.pink[900] : Colors.blue[900]),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
-                // Questions List
+                // Add Question Button - HIDDEN for Favorites
+                if (!widget.isFavorites)
+                  ThemeHelper.buildLayeredButton(
+                    text: '+ Add Question',
+                    icon: Icons.add,
+                    onPressed: _addQuestion,
+                    isPrimary: true,
+                    isDarkMode: widget.isDarkMode,
+                  ),
+                if (!widget.isFavorites) const SizedBox(height: 16),
+
+                // ADDED: Reorder instructions
+                if (questions.length > 1)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.drag_handle,
+                          size: 16,
+                          color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Long press and drag to reorder questions',
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                // Questions List - CHANGED to ReorderableListView
                 Expanded(
                   child: isLoading
                       ? Center(
@@ -274,13 +476,13 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    Icons.question_answer,
+                                    widget.isFavorites ? Icons.favorite_border : Icons.question_answer, // ADDED
                                     size: 80,
                                     color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
                                   ),
                                   const SizedBox(height: 20),
                                   Text(
-                                    'No questions yet',
+                                    widget.isFavorites ? 'No favorites yet' : 'No questions yet', // ADDED
                                     style: GoogleFonts.poppins(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w600,
@@ -289,20 +491,25 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    'Add your first question!',
+                                    widget.isFavorites // ADDED
+                                        ? 'Tap the heart ❤️ on question cards during gameplay to save them here!'
+                                        : 'Add at least $minimumQuestions questions to start playing!',
                                     style: GoogleFonts.poppins(
                                       fontSize: 14,
                                       color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
                                     ),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ],
                               ),
                             )
-                          : ListView.builder(
+                          : ReorderableListView.builder(
+                              onReorder: _onReorder,
                               itemCount: questions.length,
                               itemBuilder: (context, index) {
                                 final question = questions[index];
                                 return Padding(
+                                  key: ValueKey(question['id']),
                                   padding: const EdgeInsets.only(bottom: 12),
                                   child: _buildQuestionCard(question, index + 1),
                                 );
@@ -335,6 +542,13 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // ADDED: Drag handle for reordering
+            Icon(
+              Icons.drag_handle,
+              color: widget.isDarkMode ? Colors.white54 : Colors.black45,
+              size: 20,
+            ),
+            const SizedBox(width: 8),
             Container(
               width: 32,
               height: 32,
@@ -364,14 +578,17 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
                 ),
               ),
             ),
-            IconButton(
-              onPressed: () => _editQuestion(questionId, questionText),
-              icon: Icon(
-                Icons.edit,
-                size: 20,
-                color: widget.isDarkMode ? Colors.white70 : Colors.black54,
+            // MODIFIED: Only show edit button for non-Favorites
+            if (!widget.isFavorites)
+              IconButton(
+                onPressed: () => _editQuestion(questionId, questionText),
+                icon: Icon(
+                  Icons.edit,
+                  size: 20,
+                  color: widget.isDarkMode ? Colors.white70 : Colors.black54,
+                ),
               ),
-            ),
+            // Always allow deletion
             IconButton(
               onPressed: () => _deleteQuestion(questionId),
               icon: Icon(
@@ -379,6 +596,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
                 size: 20,
                 color: widget.isDarkMode ? Colors.white70 : Colors.black54,
               ),
+              tooltip: widget.isFavorites ? 'Remove from favorites' : 'Delete question',
             ),
           ],
         ),

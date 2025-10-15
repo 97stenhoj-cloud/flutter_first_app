@@ -1,5 +1,5 @@
-// Optimized with flutter_card_swiper package
 // lib/features/game/presentation/pages/game_page.dart
+// Optimized with flutter_card_swiper package
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,14 +15,14 @@ class GamePage extends StatefulWidget {
   final String gameMode;
   final String category;
   final bool isDarkMode;
-  final List<String>? customQuestions;  // ADDED: Support for custom questions
+  final List<String>? customQuestions;
 
   const GamePage({
     super.key,
     required this.gameMode,
     required this.category,
     required this.isDarkMode,
-    this.customQuestions,  // ADDED: Optional custom questions parameter
+    this.customQuestions,
   });
 
   @override
@@ -105,6 +105,67 @@ class _GamePageState extends State<GamePage> {
     setState(() {
       logoUrl = 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/AppIcon/AppIcon.png';
     });
+  }
+
+  Future<void> _loadQuestions() async {
+    try {
+      // PANDORA/CUSTOM: Check if custom questions are provided first
+      if (widget.customQuestions != null && widget.customQuestions!.isNotEmpty) {
+        debugPrint('✅ Using custom questions (Pandora/Personal mode)');
+        setState(() {
+          allQuestions = widget.customQuestions!;
+          displayedQuestions = List.from(allQuestions);
+          isLoading = false;
+        });
+        return;
+      }
+      
+      // Original code for loading from Supabase
+      final questions = await supabaseService.getQuestions(
+        widget.gameMode,
+        widget.category,
+      );
+
+      if (!mounted) return;
+
+      if (questions.isEmpty) {
+        final l10n = AppLocalizations.of(context)!;
+        setState(() {
+          allQuestions = [l10n.noQuestionsFoundMessage(widget.category, widget.gameMode)];
+          displayedQuestions = List.from(allQuestions);
+          isLoading = false;
+        });
+        return;
+      }
+
+      setState(() {
+        allQuestions = questions;
+        displayedQuestions = List.from(allQuestions);
+        isLoading = false;
+      });
+    } catch (e) {
+      debugPrint('Error loading questions: $e');
+      
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        setState(() {
+          allQuestions = [l10n.errorLoadingQuestions];
+          displayedQuestions = List.from(allQuestions);
+          isLoading = false;
+        });
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              l10n.failedToLoadQuestions(e.toString()),
+              style: GoogleFonts.poppins(),
+            ),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+    }
   }
 
   void _showAdOrPurchaseOption() {
@@ -201,116 +262,65 @@ class _GamePageState extends State<GamePage> {
     
     final l10n = AppLocalizations.of(context)!;
     String? selectedBundle;
-
+    
     showDialog(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setDialogState) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            title: Text(
-              l10n.removeAdsForever,
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
-              textAlign: TextAlign.center,
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  l10n.chooseOneBundle,
-                  style: GoogleFonts.poppins(fontSize: 15),
-                  textAlign: TextAlign.center,
+              title: Text(
+                l10n.removeAdsForever,
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
                 ),
-                const SizedBox(height: 20),
-                ...[
-                  {'name': l10n.family, 'key': 'family'},
-                  {'name': l10n.couple, 'key': 'couple'},
-                  {'name': l10n.friends, 'key': 'friends'},
-                ].map((bundle) {
-                  final isSelected = selectedBundle == bundle['key'];
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: InkWell(
-                      onTap: () {
-                        setDialogState(() {
-                          selectedBundle = bundle['key'];
-                        });
-                      },
-                      borderRadius: BorderRadius.circular(8),
-                      child: Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: isSelected 
-                              ? const Color(0xFFAD1457).withValues(alpha: 0.1)
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: isSelected 
-                                ? const Color(0xFFAD1457)
-                                : Colors.grey.shade300,
-                            width: 2,
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              isSelected 
-                                  ? Icons.radio_button_checked
-                                  : Icons.radio_button_unchecked,
-                              color: isSelected 
-                                  ? const Color(0xFFAD1457)
-                                  : Colors.grey,
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    bundle['name']!,
-                                    style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w600,
-                                      color: isSelected ? const Color(0xFFAD1457) : Colors.black87,
-                                    ),
-                                  ),
-                                  Text(
-                                    l10n.premiumCategories,
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-                const SizedBox(height: 20),
+                textAlign: TextAlign.center,
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    l10n.chooseOneBundle,
+                    style: GoogleFonts.poppins(fontSize: 14),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  _buildBundleOption(
+                    'Couple Bundle',
+                    'couple',
+                    selectedBundle,
+                    (value) => setState(() => selectedBundle = value),
+                  ),
+                  _buildBundleOption(
+                    'Friends Bundle',
+                    'friends',
+                    selectedBundle,
+                    (value) => setState(() => selectedBundle = value),
+                  ),
+                  _buildBundleOption(
+                    'Family Bundle',
+                    'family',
+                    selectedBundle,
+                    (value) => setState(() => selectedBundle = value),
+                  ),
+                ],
+              ),
+              actions: [
                 Row(
                   children: [
                     Expanded(
-                      child: ElevatedButton(
+                      child: TextButton(
                         onPressed: () => Navigator.pop(context),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey[300],
-                          foregroundColor: Colors.black87,
-                        ),
                         child: Text(
                           l10n.cancel,
-                          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+                          style: GoogleFonts.poppins(),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
                     Expanded(
                       child: ElevatedButton(
                         onPressed: selectedBundle != null
@@ -351,71 +361,49 @@ class _GamePageState extends State<GamePage> {
                   textAlign: TextAlign.center,
                 ),
               ],
-            ),
-          );
-        },
-      ),
+            );
+          },
+        );
+      },
     );
   }
 
-  Future<void> _loadQuestions() async {
-    try {
-      // FIXED: Check if custom questions are provided first
-      if (widget.customQuestions != null && widget.customQuestions!.isNotEmpty) {
-        setState(() {
-          allQuestions = widget.customQuestions!;
-          displayedQuestions = List.from(allQuestions);
-          isLoading = false;
-        });
-        return;
-      }
-      
-      // Original code for loading from Supabase
-      final questions = await supabaseService.getQuestions(
-        widget.gameMode,
-        widget.category,
-      );
-
-      if (!mounted) return;
-
-      if (questions.isEmpty) {
-        final l10n = AppLocalizations.of(context)!;
-        setState(() {
-          allQuestions = [l10n.noQuestionsFoundMessage(widget.category, widget.gameMode)];
-          displayedQuestions = List.from(allQuestions);
-          isLoading = false;
-        });
-        return;
-      }
-
-      setState(() {
-        allQuestions = questions;
-        displayedQuestions = List.from(allQuestions);
-        isLoading = false;
-      });
-    } catch (e) {
-      debugPrint('Error loading questions: $e');
-      
-      if (mounted) {
-        final l10n = AppLocalizations.of(context)!;
-        setState(() {
-          allQuestions = [l10n.errorLoadingQuestions];
-          displayedQuestions = List.from(allQuestions);
-          isLoading = false;
-        });
-        
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              l10n.failedToLoadQuestions(e.toString()),
-              style: GoogleFonts.poppins(),
-            ),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 5),
+  Widget _buildBundleOption(
+    String label,
+    String value,
+    String? selectedValue,
+    Function(String) onSelected,
+  ) {
+    final isSelected = selectedValue == value;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: InkWell(
+        onTap: () => onSelected(value),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFFAD1457) : Colors.grey[200],
+            borderRadius: BorderRadius.circular(8),
           ),
-        );
-      }
-    }
+          child: Row(
+            children: [
+              Icon(
+                isSelected ? Icons.check_circle : Icons.circle_outlined,
+                color: isSelected ? Colors.white : Colors.grey,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                label,
+                style: GoogleFonts.poppins(
+                  color: isSelected ? Colors.white : Colors.black,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   bool _onSwipe(
@@ -485,6 +473,11 @@ class _GamePageState extends State<GamePage> {
         backgroundGradient = widget.isDarkMode
             ? [const Color(0xFF3A4A5A), const Color(0xFF2A3A4A)]
             : [const Color(0xFFD4E4F8), const Color(0xFFC4D4E8)];
+        break;
+      case 'pandora':
+        backgroundGradient = widget.isDarkMode
+            ? [const Color(0xFF5A2A3A), const Color(0xFF4A1A2A)]
+            : [const Color(0xFFFFE4EC), const Color(0xFFFFD4E4)];
         break;
       default:
         backgroundGradient = [const Color(0xFFF5E8E1), const Color(0xFFE8D6D0)];
@@ -588,35 +581,46 @@ class _GamePageState extends State<GamePage> {
     // Get gradient colors based on game mode
     List<Color> cardGradient;
     Color textColor;
+    String? emoji;
     
-    switch (widget.gameMode.toLowerCase()) {
-      case 'family':
-        cardGradient = widget.isDarkMode
-            ? [const Color(0xFF7B5D47), const Color(0xFF5D4537)]
-            : [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
-        textColor = widget.isDarkMode ? Colors.white : const Color(0xFF4A3A33);
-        break;
-      case 'couple':
-        cardGradient = widget.isDarkMode
-            ? [const Color(0xFF8A6A64), const Color(0xFF6B4A54)]
-            : [const Color(0xFFF28B9C), const Color(0xFFF5A877)];
-        textColor = Colors.white;
-        break;
-      case 'friends':
-        cardGradient = widget.isDarkMode
-            ? [const Color(0xFF6B5A72), const Color(0xFF4B3A52)]
-            : [const Color(0xFFB995D3), const Color(0xFF9B7AB8)];
-        textColor = Colors.white;
-        break;
-      case 'personal':
-        cardGradient = widget.isDarkMode
-            ? [const Color(0xFF5A6A7B), const Color(0xFF4A5A6B)]
-            : [const Color(0xFF90B5E8), const Color(0xFF7A9AD7)];
-        textColor = Colors.white;
-        break;
-      default:
-        cardGradient = [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
-        textColor = const Color(0xFF4A3A33);
+    // PANDORA: Special handling for Pandora mode
+    if (widget.gameMode.toLowerCase() == 'pandora') {
+      cardGradient = widget.isDarkMode
+          ? [const Color(0xFFFF6B9D), const Color(0xFFD81B60)]
+          : [const Color(0xFFFF6B9D), const Color(0xFFFF8E53)];
+      textColor = Colors.white;
+      emoji = '🔮';
+    } else {
+      // Existing game mode color logic
+      switch (widget.gameMode.toLowerCase()) {
+        case 'family':
+          cardGradient = widget.isDarkMode
+              ? [const Color(0xFF7B5D47), const Color(0xFF5D4537)]
+              : [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
+          textColor = widget.isDarkMode ? Colors.white : const Color(0xFF4A3A33);
+          break;
+        case 'couple':
+          cardGradient = widget.isDarkMode
+              ? [const Color(0xFF8A6A64), const Color(0xFF6B4A54)]
+              : [const Color(0xFFF28B9C), const Color(0xFFF5A877)];
+          textColor = Colors.white;
+          break;
+        case 'friends':
+          cardGradient = widget.isDarkMode
+              ? [const Color(0xFF6B5A72), const Color(0xFF4B3A52)]
+              : [const Color(0xFFB995D3), const Color(0xFF9B7AB8)];
+          textColor = Colors.white;
+          break;
+        case 'personal':
+          cardGradient = widget.isDarkMode
+              ? [const Color(0xFF5A6A7B), const Color(0xFF4A5A6B)]
+              : [const Color(0xFF90B5E8), const Color(0xFF7A9AD7)];
+          textColor = Colors.white;
+          break;
+        default:
+          cardGradient = [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
+          textColor = const Color(0xFF4A3A33);
+      }
     }
     
     return Container(
@@ -650,67 +654,65 @@ class _GamePageState extends State<GamePage> {
           padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 60),
           child: Stack(
             children: [
-              // Logo at top center
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Center(
-                  child: logoUrl != null
-                      ? Opacity(
-                          opacity: 0.7,
-                          child: Image.network(
+              // Logo at top center (skip for Pandora - show emoji instead)
+              if (emoji == null)
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: logoUrl != null
+                        ? Image.network(
                             logoUrl!,
-                            height: 80,
                             width: 80,
+                            height: 80,
                             fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Text(
-                                'Connect',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: textColor.withValues(alpha: 0.6),
-                                  letterSpacing: 2.0,
-                                ),
+                            cacheWidth: 80,
+                            cacheHeight: 80,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return const SizedBox(
+                                width: 80,
+                                height: 80,
                               );
                             },
-                          ),
-                        )
-                      : Text(
-                          'Connect',
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: textColor.withValues(alpha: 0.6),
-                            letterSpacing: 2.0,
-                          ),
-                        ),
-                ),
-              ),
-              
-              // Question text in center
-              Center(
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Text(
-                    question,
-                    style: GoogleFonts.poppins(
-                      color: textColor,
-                      fontSize: 32,
-                      fontWeight: FontWeight.w700,
-                      height: 1.5,
-                      letterSpacing: -0.3,
-                      shadows: [
-                        Shadow(
-                          offset: const Offset(0, 2),
-                          blurRadius: 8,
-                          color: Colors.black.withValues(alpha: 0.3),
-                        ),
-                      ],
-                    ),
-                    textAlign: TextAlign.center,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const SizedBox(
+                                width: 80,
+                                height: 80,
+                              );
+                            },
+                          )
+                        : const SizedBox(width: 80, height: 80),
                   ),
+                ),
+              
+              // PANDORA: Show emoji if in Pandora mode
+              if (emoji != null)
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: Text(
+                      emoji,
+                      style: const TextStyle(fontSize: 64),
+                    ),
+                  ),
+                ),
+              
+              // Question text centered
+              Center(
+                child: Text(
+                  question,
+                  style: GoogleFonts.poppins(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w600,
+                    color: textColor,
+                    height: 1.4,
+                    letterSpacing: 0.5,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ],

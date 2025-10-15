@@ -8,6 +8,7 @@ class AppConstants {
   static const String coupleMode = 'Couple';
   static const String friendsMode = 'Friends';
   static const String familyMode = 'Family';
+  static const String pandoraMode = 'Pandora';
   
   // Asset Paths
   static const String videoAssetPath = 'assets/images/parrots.mp4';

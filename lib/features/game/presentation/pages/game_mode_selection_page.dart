@@ -5,6 +5,7 @@ import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'category_selection_page.dart';
+import '../../../pandora/presentation/pages/pandora_entry_page.dart';
 
 class GameModeSelectionPage extends StatelessWidget {
   final bool isDarkMode;
@@ -23,9 +24,9 @@ class GameModeSelectionPage extends StatelessWidget {
   }) {
     final colors = ThemeHelper.getGameModeGradient(gameMode, isDarkMode);
     
-    // Adjusted button sizes to fit 4 buttons
+    // Adjusted button sizes to fit 5 buttons
     const double buttonWidth = 360;
-    const double buttonHeight = 110.0;
+    const double buttonHeight = 100.0;  // Reduced from 110 to 100
     
     return GestureDetector(
       onTap: onPressed,
@@ -80,13 +81,13 @@ class GameModeSelectionPage extends StatelessWidget {
               children: [
                 Text(
                   emoji,
-                  style: const TextStyle(fontSize: 36),
+                  style: const TextStyle(fontSize: 32),  // Reduced from 36 to 32
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),  // Reduced from 8 to 6
                 Text(
                   text,
                   style: GoogleFonts.poppins(
-                    fontSize: 20,
+                    fontSize: 18,  // Reduced from 20 to 18
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -113,7 +114,7 @@ class GameModeSelectionPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Back button ONLY - on its own
+                // Back button
                 IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: Icon(
@@ -123,92 +124,108 @@ class GameModeSelectionPage extends StatelessWidget {
                   ),
                 ),
                 
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),  // Reduced from 40 to 20
                 
-                // Title text - centered on its own line
+                // Title text
                 Center(
                   child: Text(
                     l10n.chooseGameMode,
                     style: GoogleFonts.poppins(
-                      fontSize: 28,
+                      fontSize: 24,  // Reduced from 28 to 24
                       fontWeight: FontWeight.bold,
                       color: ThemeHelper.getHeadingTextColor(isDarkMode),
                     ),
                   ),
                 ),
               
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),  // Reduced from 30 to 20
                 
-                // Game mode buttons
+                // Game mode buttons - Now scrollable
                 Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildLayeredGameModeButton(
-                        text: l10n.couple,
-                        emoji: '💑',
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CategorySelectionPage(
-                              gameMode: 'couple',
-                              isDarkMode: isDarkMode,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 10),  // Top padding
+                        _buildLayeredGameModeButton(
+                          text: l10n.couple,
+                          emoji: '💑',
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CategorySelectionPage(
+                                gameMode: 'couple',
+                                isDarkMode: isDarkMode,
+                              ),
                             ),
                           ),
+                          gameMode: 'couple',
+                          isDarkMode: isDarkMode,
                         ),
-                        gameMode: 'couple',
-                        isDarkMode: isDarkMode,
-                      ),
-                      const SizedBox(height: 16),
-                      _buildLayeredGameModeButton(
-                        text: l10n.friends,
-                        emoji: '👥',
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CategorySelectionPage(
-                              gameMode: 'friends',
-                              isDarkMode: isDarkMode,
+                        const SizedBox(height: 12),  // Reduced from 16 to 12
+                        _buildLayeredGameModeButton(
+                          text: l10n.friends,
+                          emoji: '👥',
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CategorySelectionPage(
+                                gameMode: 'friends',
+                                isDarkMode: isDarkMode,
+                              ),
                             ),
                           ),
+                          gameMode: 'friends',
+                          isDarkMode: isDarkMode,
                         ),
-                        gameMode: 'friends',
-                        isDarkMode: isDarkMode,
-                      ),
-                      const SizedBox(height: 16),
-                      _buildLayeredGameModeButton(
-                        text: l10n.family,
-                        emoji: '👨‍👩‍👧‍👦',
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CategorySelectionPage(
-                              gameMode: 'family',
-                              isDarkMode: isDarkMode,
+                        const SizedBox(height: 12),
+                        _buildLayeredGameModeButton(
+                          text: l10n.family,
+                          emoji: '👨‍👩‍👧‍👦',
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CategorySelectionPage(
+                                gameMode: 'family',
+                                isDarkMode: isDarkMode,
+                              ),
                             ),
                           ),
+                          gameMode: 'family',
+                          isDarkMode: isDarkMode,
                         ),
-                        gameMode: 'family',
-                        isDarkMode: isDarkMode,
-                      ),
-                      const SizedBox(height: 16),
-                      // ADDED: Personal mode button
-                      _buildLayeredGameModeButton(
-                        text: l10n.personal,
-                        emoji: '📝',
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CategorySelectionPage(
-                              gameMode: 'personal',
-                              isDarkMode: isDarkMode,
+                        const SizedBox(height: 12),
+                        _buildLayeredGameModeButton(
+                          text: l10n.personal,
+                          emoji: '📝',
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CategorySelectionPage(
+                                gameMode: 'personal',
+                                isDarkMode: isDarkMode,
+                              ),
                             ),
                           ),
+                          gameMode: 'personal',
+                          isDarkMode: isDarkMode,
                         ),
-                        gameMode: 'personal',
-                        isDarkMode: isDarkMode,
-                      ),
-                    ],
+                        const SizedBox(height: 12),
+                        _buildLayeredGameModeButton(
+                          text: 'Pandora',
+                          emoji: '🔮',  // Changed from 📦 to 🔮
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PandoraEntryPage(isDarkMode: isDarkMode),
+                            ),
+                          ),
+                          gameMode: 'pandora',
+                          isDarkMode: isDarkMode,
+                        ),
+                        const SizedBox(height: 10),  // Bottom padding
+                      ],
+                    ),
                   ),
                 ),
               ],

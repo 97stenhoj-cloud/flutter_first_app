@@ -1,21 +1,158 @@
 // lib/core/services/custom_deck_service.dart
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter/foundation.dart'; // ADDED: For debugPrint
 
 class CustomDeckService {
   final supabase = Supabase.instance.client;
+  
+  // Special Favorites deck ID (consistent across all users)
+  static const String favoritesDeckName = 'Favorites';
 
-  // Get all decks for the current user
+  // Get all decks for the current user (including Favorites)
   Future<List<Map<String, dynamic>>> getUserDecks() async {
     try {
+      final userId = supabase.auth.currentUser?.id;
+      if (userId == null) throw Exception('User not authenticated');
+
       final response = await supabase
           .from('custom_decks')
           .select('*')
+          .eq('user_id', userId)
           .order('created_at', ascending: false);
       
       return List<Map<String, dynamic>>.from(response);
     } catch (e) {
       throw Exception('Failed to load decks: $e');
     }
+  }
+
+  // Ensure Favorites deck exists for the user
+  Future<String> ensureFavoritesDeck() async {
+    try {
+      final userId = supabase.auth.currentUser?.id;
+      if (userId == null) throw Exception('User not authenticated');
+
+      // Check if Favorites deck already exists
+      final existing = await supabase
+      
+          .from('custom_decks')
+          .select('id')
+          .eq('user_id', userId)
+          .eq('deck_name', favoritesDeckName)
+          .maybeSingle();
+
+      if (existing != null) {
+        return existing['id'] as String;
+      }
+
+      // Create Favorites deck if it doesn't exist
+      final response = await supabase
+          .from('custom_decks')
+          .insert({
+            'user_id': userId,
+            'deck_name': favoritesDeckName,
+            'is_favorites': true, // Mark as favorites deck
+          })
+          .select()
+          .single();
+
+      return response['id'] as String;
+    } catch (e) {
+      throw Exception('Failed to ensure favorites deck: $e');
+    }
+  }
+
+  // Get Favorites deck ID
+  Future<String?> getFavoritesDeckId() async {
+    try {
+      final userId = supabase.auth.currentUser?.id;
+      if (userId == null) return null;
+
+      final response = await supabase
+          .from('custom_decks')
+          .select('id')
+          .eq('user_id', userId)
+          .eq('deck_name', favoritesDeckName)
+          .maybeSingle();
+
+      return response?['id'] as String?;
+    } catch (e) {
+      debugPrint('Error getting favorites deck: $e');
+      return null;
+    }
+  }
+
+  // Add question to favorites
+  Future<bool> addToFavorites(String questionText, String gameMode, String category) async {
+    try {
+      final favoritesDeckId = await ensureFavoritesDeck();
+      
+      // Check if question already exists in favorites (prevent duplicates)
+      final existing = await supabase
+          .from('custom_questions')
+          .select('id')
+          .eq('deck_id', favoritesDeckId)
+          .eq('question_text', questionText)
+          .maybeSingle();
+
+      if (existing != null) {
+        // Question already favorited
+        return false;
+      }
+
+      // Add to favorites with metadata
+      await supabase.from('custom_questions').insert({
+        'deck_id': favoritesDeckId,
+        'question_text': questionText,
+        'source_game_mode': gameMode,
+        'source_category': category,
+      });
+
+      return true;
+    } catch (e) {
+      throw Exception('Failed to add to favorites: $e');
+    }
+  }
+
+  // Remove question from favorites
+  Future<void> removeFromFavorites(String questionText) async {
+    try {
+      final favoritesDeckId = await getFavoritesDeckId();
+      if (favoritesDeckId == null) return;
+
+      await supabase
+          .from('custom_questions')
+          .delete()
+          .eq('deck_id', favoritesDeckId)
+          .eq('question_text', questionText);
+    } catch (e) {
+      throw Exception('Failed to remove from favorites: $e');
+    }
+  }
+
+  // Check if question is favorited
+  Future<bool> isQuestionFavorited(String questionText) async {
+    try {
+      final favoritesDeckId = await getFavoritesDeckId();
+      if (favoritesDeckId == null) return false;
+
+      final result = await supabase
+          .from('custom_questions')
+          .select('id')
+          .eq('deck_id', favoritesDeckId)
+          .eq('question_text', questionText)
+          .maybeSingle();
+
+      return result != null;
+    } catch (e) {
+      debugPrint('Error checking if favorited: $e');
+      return false;
+    }
+  }
+
+  // Check if deck is the Favorites deck
+  bool isFavoritesDeck(Map<String, dynamic> deck) {
+    return deck['deck_name'] == favoritesDeckName || deck['is_favorites'] == true;
   }
 
   // Create a new deck
@@ -29,6 +166,7 @@ class CustomDeckService {
           .insert({
             'user_id': userId,
             'deck_name': deckName,
+            'is_favorites': false,
           })
           .select()
           .single();
