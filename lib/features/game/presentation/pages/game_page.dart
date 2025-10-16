@@ -1,5 +1,5 @@
 // lib/features/game/presentation/pages/game_page.dart
-// Optimized with flutter_card_swiper package
+// FINAL VERSION - Database sync (no broadcast)
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,6 +13,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../../core/utils/unlock_manager.dart';
 import '../../../../core/services/supabase_service.dart';
 import '../../../../core/services/pandora_service.dart';
+import '../../../pandora/presentation/pages/session_stats_page.dart';
 
 class GamePage extends StatefulWidget {
   final String gameMode;
@@ -53,8 +54,19 @@ class _GamePageState extends State<GamePage> {
   
   // Pandora multiplayer sync
   RealtimeChannel? sessionChannel;
+  RealtimeChannel? reactionsChannel;
   bool isPandoraMode = false;
   bool isHostMode = false;
+  
+  // Reactions
+  Map<String, int> currentReactions = {
+    'laugh': 0,
+    'shock': 0,
+    'heart': 0,
+    'fire': 0,
+    'hundred': 0,
+  };
+  String? myParticipantId;
 
   @override
   void initState() {
@@ -66,9 +78,70 @@ class _GamePageState extends State<GamePage> {
     _loadAd();
     _loadLogo();
     
+    // PLAYERS ONLY: Subscribe to database changes
     if (isPandoraMode && !isHostMode) {
       _subscribeToPandoraSync();
     }
+    
+    // BOTH: Subscribe to reactions if Pandora mode
+    if (isPandoraMode) {
+      _getMyParticipantId();
+      _subscribeToReactions();
+      _loadReactionsForCurrentQuestion();
+    }
+  }
+  
+  Future<void> _getMyParticipantId() async {
+    try {
+      final userEmail = Supabase.instance.client.auth.currentUser?.email;
+      final participants = await pandoraService.getParticipants(widget.sessionId!);
+      
+      final myParticipant = participants.firstWhere(
+        (p) => p['user_email'] == userEmail || p['is_host'] == isHostMode,
+        orElse: () => participants.first,
+      );
+      
+      setState(() {
+        myParticipantId = myParticipant['id'];
+      });
+    } catch (e) {
+      debugPrint('Error getting participant ID: $e');
+    }
+  }
+  
+  void _subscribeToReactions() {
+    reactionsChannel = pandoraService.subscribeToReactions(
+      widget.sessionId!,
+      () {
+        _loadReactionsForCurrentQuestion();
+      },
+    );
+  }
+  
+  Future<void> _loadReactionsForCurrentQuestion() async {
+    if (!isPandoraMode) return;
+    
+    final reactions = await pandoraService.getReactionsForQuestion(
+      widget.sessionId!,
+      currentIndex,
+    );
+    
+    if (mounted) {
+      setState(() {
+        currentReactions = reactions;
+      });
+    }
+  }
+  
+  Future<void> _addReaction(String reactionType) async {
+    if (!isPandoraMode || myParticipantId == null) return;
+    
+    await pandoraService.addReaction(
+      sessionId: widget.sessionId!,
+      questionIndex: currentIndex,
+      participantId: myParticipantId!,
+      reactionType: reactionType,
+    );
   }
 
   @override
@@ -76,24 +149,46 @@ class _GamePageState extends State<GamePage> {
     controller.dispose();
     _interstitialAd?.dispose();
     sessionChannel?.unsubscribe();
+    reactionsChannel?.unsubscribe();
     super.dispose();
   }
 
   void _subscribeToPandoraSync() {
-    debugPrint('🔌 [Player] Subscribing to Pandora card sync');
+    debugPrint('🔌 [Player] Subscribing to database changes for sync');
+    
+    // Use database changes to sync
     sessionChannel = pandoraService.subscribeToSession(
       widget.sessionId!,
       (session) {
         final newIndex = session['current_question_index'] as int?;
+        final status = session['status'] as String?;
+        
+        // Check if game ended
+        if (status == 'ended' && mounted) {
+          debugPrint('🎮 [Player] Game ended by host');
+          _showGameEndDialog();
+          return;
+        }
+        
         if (newIndex != null && mounted) {
-          debugPrint('📡 [Player] Received index update: $newIndex (current: $currentIndex)');
+          debugPrint('📡 [Player] DB update - question index: $newIndex (current: $currentIndex)');
           
-          if (newIndex != currentIndex) {
-            debugPrint('📡 [Player] Updating to card index: $newIndex');
+          // Check if we've passed the last question
+          if (newIndex >= displayedQuestions.length) {
+            debugPrint('🎮 [Player] All questions completed');
+            _showGameEndDialog();
+            return;
+          }
+          
+          if (newIndex != currentIndex && newIndex >= 0 && newIndex < displayedQuestions.length) {
+            debugPrint('✅ [Player] Syncing to question: $newIndex');
             
             setState(() {
               currentIndex = newIndex;
             });
+            
+            // Load reactions for new question
+            _loadReactionsForCurrentQuestion();
           }
         }
       },
@@ -101,7 +196,6 @@ class _GamePageState extends State<GamePage> {
   }
 
   void _loadAd() {
-    // Skip ads for Pandora multiplayer mode
     if (isPandoraMode) {
       debugPrint('Pandora mode - skipping ads for multiplayer experience');
       return;
@@ -157,7 +251,6 @@ class _GamePageState extends State<GamePage> {
 
   Future<void> _loadQuestions() async {
     try {
-      // PANDORA/CUSTOM: Check if custom questions are provided first
       if (widget.customQuestions != null && widget.customQuestions!.isNotEmpty) {
         debugPrint('✅ Using custom questions (Pandora/Personal mode)');
         setState(() {
@@ -168,7 +261,6 @@ class _GamePageState extends State<GamePage> {
         return;
       }
       
-      // Original code for loading from Supabase
       final questions = await supabaseService.getQuestions(
         widget.gameMode,
         widget.category,
@@ -217,7 +309,6 @@ class _GamePageState extends State<GamePage> {
   }
 
   void _showAdOrPurchaseOption() {
-    // Skip ads for Pandora multiplayer mode
     if (isPandoraMode) {
       return;
     }
@@ -466,42 +557,48 @@ class _GamePageState extends State<GamePage> {
   ) {
     debugPrint('Swiped: direction=$direction, previous=$previousIndex, current=$currentIndex');
     
-    // Update current index tracking
-    if (currentIndex != null) {
-      setState(() {
-        this.currentIndex = currentIndex;
-      });
-    }
-    
-    // PANDORA HOST: Update question index in database
-    if (isPandoraMode && isHostMode && direction == CardSwiperDirection.left) {
-      if (currentIndex != null) {
-        pandoraService.updateQuestionIndex(widget.sessionId!, currentIndex);
-        debugPrint('🎮 [Host] Updated question index to: $currentIndex');
-      }
-    }
-    
-    // PANDORA PLAYER: Block manual swiping for players
+    // PANDORA PLAYER: Block manual swiping
     if (isPandoraMode && !isHostMode) {
-      debugPrint('🚫 [Player] Manual swiping blocked - host controls cards');
-      return false; // Block the swipe
+      debugPrint('🚫 [Player] Manual swiping blocked');
+      return false;
     }
     
-    // Swipe RIGHT = undo to go back
+    // Swipe RIGHT = undo
     if (direction == CardSwiperDirection.right) {
       return true;
     }
     
-    // Swipe LEFT = go to next question
+    // Swipe LEFT = next question
     if (direction == CardSwiperDirection.left) {
-      // Only show ads in non-Pandora modes
+      // Update local state
+      if (currentIndex != null) {
+        setState(() {
+          this.currentIndex = currentIndex;
+        });
+        
+        // PANDORA HOST: Update database with the question now showing
+        if (isPandoraMode && isHostMode) {
+          pandoraService.updateQuestionIndex(widget.sessionId!, previousIndex + 1);
+          debugPrint('🎮 [Host] Now showing question ${previousIndex + 1}');
+        }
+      }
+      
+      // Show ads (non-Pandora only)
       if (!isPandoraMode) {
         unlockManager.incrementQuestionCount();
         _showAdOrPurchaseOption();
       }
       
-      if (currentIndex == null || currentIndex >= displayedQuestions.length - 1) {
-        Future.delayed(const Duration(milliseconds: 300), () {
+      // Check if this was the LAST card (we've swiped past it)
+      if (currentIndex == null || currentIndex >= displayedQuestions.length) {
+        debugPrint('🎮 Game ended - all questions completed');
+        
+        // PANDORA HOST: Mark session as ended in database
+        if (isPandoraMode && isHostMode) {
+          pandoraService.endSession(widget.sessionId!);
+        }
+        
+        Future.delayed(const Duration(milliseconds: 500), () {
           _showGameEndDialog();
         });
         return true;
@@ -518,25 +615,100 @@ class _GamePageState extends State<GamePage> {
   ) {
     debugPrint('Undo: previous $previousIndex, current $currentIndex');
     
-    // Update current index tracking
     setState(() {
       this.currentIndex = currentIndex;
     });
     
-    // PANDORA HOST: Update question index when undoing
+    // PANDORA HOST: Update database on undo
     if (isPandoraMode && isHostMode) {
       pandoraService.updateQuestionIndex(widget.sessionId!, currentIndex);
-      debugPrint('🎮 [Host] Undo - Updated question index to: $currentIndex');
+      debugPrint('🎮 [Host] Undo - Now showing question: $currentIndex');
     }
     
     return true;
   }
 
   void _showGameEndDialog() {
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    if (!mounted) return;
+    
+    // Navigate to stats page for Pandora mode
+    if (isPandoraMode) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => SessionStatsPage(
+            sessionId: widget.sessionId!,
+            isDarkMode: widget.isDarkMode,
+          ),
+        ),
+      );
+      return;
+    }
+    
+    // Regular thank you dialog for non-Pandora modes
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => WillPopScope(
+        onWillPop: () async => false,
+        child: AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Column(
+            children: [
+              const Icon(
+                Icons.emoji_events,
+                size: 64,
+                color: Color(0xFFFFD700),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Thanks for Playing!',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          content: Text(
+            'Hope you had fun! 🎉',
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          actions: [
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFAD1457),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  'Back to Menu',
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
-  // Parse question to extract target player name
   Map<String, String?> _parseQuestion(String question) {
     final regex = RegExp(r'^\[(.+?)\]\s*(.+)$');
     final match = regex.firstMatch(question);
@@ -556,7 +728,6 @@ class _GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Get background gradient based on game mode
     List<Color> backgroundGradient;
     
     switch (widget.gameMode.toLowerCase()) {
@@ -605,7 +776,6 @@ class _GamePageState extends State<GamePage> {
             padding: const EdgeInsets.all(AppConstants.defaultPadding),
             child: Column(
               children: [
-                // Header
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -625,7 +795,6 @@ class _GamePageState extends State<GamePage> {
                         color: ThemeHelper.getTextColor(widget.isDarkMode),
                       ),
                     ),
-                    // Show role indicator for Pandora mode
                     if (isPandoraMode)
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -647,7 +816,6 @@ class _GamePageState extends State<GamePage> {
                   ],
                 ),
                 
-                // Card Swiper (Host) or Static Card Display (Player)
                 Expanded(
                   child: Center(
                     child: isLoading 
@@ -662,42 +830,53 @@ class _GamePageState extends State<GamePage> {
                                   color: ThemeHelper.getTextColor(widget.isDarkMode),
                                 ),
                               )
-                            : (isPandoraMode && !isHostMode)
-                                // PLAYER VIEW: Just show the current card (can't swipe)
-                                ? _buildQuestionCard(
-                                    displayedQuestions[currentIndex.clamp(0, displayedQuestions.length - 1)],
-                                    isNext: false,
-                                  )
-                                // HOST VIEW: Full swiper control
-                                : CardSwiper(
-                                    controller: controller,
-                                    cardsCount: displayedQuestions.length,
-                                    onSwipe: _onSwipe,
-                                    onUndo: _onUndo,
-                                    numberOfCardsDisplayed: math.min(2, displayedQuestions.length),
-                                    backCardOffset: const Offset(0, 15),
-                                    padding: const EdgeInsets.all(0),
-                                    scale: 0.93,
-                                    isLoop: false,
-                                    duration: const Duration(milliseconds: 300),
-                                    maxAngle: 25,
-                                    threshold: 50,
-                                    allowedSwipeDirection: AllowedSwipeDirection.only(
-                                      left: true,
-                                      right: true,
-                                    ),
-                                    cardBuilder: (
-                                      context,
-                                      index,
-                                      horizontalThresholdPercentage,
-                                      verticalThresholdPercentage,
-                                    ) {
-                                      return _buildQuestionCard(
-                                        displayedQuestions[index],
-                                        isNext: false,
-                                      );
-                                    },
+                            : Column(
+                                children: [
+                                  // Card display
+                                  Expanded(
+                                    child: (isPandoraMode && !isHostMode)
+                                        // PLAYER: Static card display
+                                        ? _buildQuestionCard(
+                                            displayedQuestions[currentIndex.clamp(0, displayedQuestions.length - 1)],
+                                            isNext: false,
+                                          )
+                                        // HOST: Swipeable cards
+                                        : CardSwiper(
+                                            controller: controller,
+                                            cardsCount: displayedQuestions.length,
+                                            onSwipe: _onSwipe,
+                                            onUndo: _onUndo,
+                                            numberOfCardsDisplayed: math.min(2, displayedQuestions.length),
+                                            backCardOffset: const Offset(0, 15),
+                                            padding: const EdgeInsets.all(0),
+                                            scale: 0.93,
+                                            isLoop: false,
+                                            duration: const Duration(milliseconds: 300),
+                                            maxAngle: 25,
+                                            threshold: 50,
+                                            allowedSwipeDirection: AllowedSwipeDirection.only(
+                                              left: true,
+                                              right: true,
+                                            ),
+                                            cardBuilder: (
+                                              context,
+                                              index,
+                                              horizontalThresholdPercentage,
+                                              verticalThresholdPercentage,
+                                            ) {
+                                              return _buildQuestionCard(
+                                                displayedQuestions[index],
+                                                isNext: false,
+                                              );
+                                            },
+                                          ),
                                   ),
+                                  
+                                  // Reaction buttons (Pandora only)
+                                  if (isPandoraMode && myParticipantId != null)
+                                    _buildReactionButtons(),
+                                ],
+                              ),
                   ),
                 ),
               ],
@@ -709,17 +888,14 @@ class _GamePageState extends State<GamePage> {
   }
 
   Widget _buildQuestionCard(String question, {bool isNext = false}) {
-    // Parse question for target name
     final parsed = _parseQuestion(question);
     final targetName = parsed['targetName'];
     final questionText = parsed['questionText'] ?? question;
     
-    // Get gradient colors based on game mode
     List<Color> cardGradient;
     Color textColor;
     String? emoji;
     
-    // PANDORA: Special handling for Pandora mode
     if (widget.gameMode.toLowerCase() == 'pandora') {
       cardGradient = widget.isDarkMode
           ? [const Color(0xFFFF6B9D), const Color(0xFFD81B60)]
@@ -727,7 +903,6 @@ class _GamePageState extends State<GamePage> {
       textColor = Colors.white;
       emoji = '🔮';
     } else {
-      // Existing game mode color logic
       switch (widget.gameMode.toLowerCase()) {
         case 'family':
           cardGradient = widget.isDarkMode
@@ -790,7 +965,6 @@ class _GamePageState extends State<GamePage> {
           padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 60),
           child: Stack(
             children: [
-              // Logo at top center (skip for Pandora - show emoji instead)
               if (emoji == null)
                 Positioned(
                   top: 0,
@@ -823,7 +997,6 @@ class _GamePageState extends State<GamePage> {
                   ),
                 ),
               
-              // PANDORA: Show emoji if in Pandora mode
               if (emoji != null)
                 Positioned(
                   top: 0,
@@ -837,7 +1010,6 @@ class _GamePageState extends State<GamePage> {
                   ),
                 ),
               
-              // Question text centered
               Center(
                 child: Text(
                   questionText,
@@ -852,7 +1024,6 @@ class _GamePageState extends State<GamePage> {
                 ),
               ),
               
-              // Target player name at bottom (like favorite heart)
               if (targetName != null)
                 Positioned(
                   bottom: 20,
@@ -890,6 +1061,66 @@ class _GamePageState extends State<GamePage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+  
+  Widget _buildReactionButtons() {
+    final reactions = [
+      {'emoji': '😂', 'type': 'laugh'},
+      {'emoji': '😮', 'type': 'shock'},
+      {'emoji': '❤️', 'type': 'heart'},
+      {'emoji': '🔥', 'type': 'fire'},
+      {'emoji': '💯', 'type': 'hundred'},
+    ];
+    
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: reactions.map((reaction) {
+          final type = reaction['type'] as String;
+          final emoji = reaction['emoji'] as String;
+          final count = currentReactions[type] ?? 0;
+          
+          return GestureDetector(
+            onTap: () => _addReaction(type),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    emoji,
+                    style: const TextStyle(fontSize: 28),
+                  ),
+                  if (count > 0) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      '$count',
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFFFF6B9D),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

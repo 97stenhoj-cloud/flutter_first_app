@@ -7,15 +7,21 @@ import 'l10n/app_localizations.dart';
 import 'core/utils/language_manager.dart';
 import 'core/utils/theme_notifier.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
   
+  // Initialize Supabase with Realtime configuration
   await Supabase.initialize(
     url: 'https://tpjsebutbieghpmvpktv.supabase.co',
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRwanNlYnV0YmllZ2hwbXZwa3R2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk2NDU4MDksImV4cCI6MjA3NTIyMTgwOX0.mj023O_wAvgjBjgGGXJ5uDR4iITV4NMjOIWDbOMjOIk',
+    realtimeClientOptions: const RealtimeClientOptions(
+      eventsPerSecond: 10,
+      logLevel: RealtimeLogLevel.info, // Enable logging to debug
+    ),
   );
+  
+  debugPrint('✅ Supabase initialized with Realtime enabled');
   
   runApp(const TalkingGameApp());
 }

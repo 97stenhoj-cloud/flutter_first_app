@@ -20,14 +20,34 @@ class PandoraHostPage extends StatefulWidget {
 
 class _PandoraHostPageState extends State<PandoraHostPage> {
   final pandoraService = PandoraService();
+  final nameController = TextEditingController();
   bool isCreating = false;
 
+  @override
+  void dispose() {
+    nameController.dispose();
+    super.dispose();
+  }
+
   Future<void> _createSession() async {
+    final displayName = nameController.text.trim();
+    
+    if (displayName.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter your name')),
+      );
+      return;
+    }
+    
     setState(() => isCreating = true);
 
     try {
+      // Add "(Host)" suffix to display name
+      final hostDisplayName = '$displayName (Host)';
+      
       final session = await pandoraService.createSession(
-        timerMinutes: 5,  // Default value, will be set later
+        timerMinutes: 5,
+        hostDisplayName: hostDisplayName,
       );
 
       if (mounted) {
@@ -80,36 +100,78 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
                             onPressed: () => Navigator.pop(context),
                             icon: Icon(
                               Icons.arrow_back,
-                              color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                              size: 28,
+                              color: ThemeHelper.getTextColor(widget.isDarkMode),
+                              size: 32,
                             ),
                           ),
                           
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 20),
                           
                           // Title
-                          Center(
-                            child: Text(
-                              '🔮 Host Pandora Session',
-                              style: GoogleFonts.poppins(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                                color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                              ),
-                              textAlign: TextAlign.center,
+                          Text(
+                            '🔮 Host Pandora Session',
+                            style: GoogleFonts.poppins(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
                             ),
                           ),
                           
-                          const SizedBox(height: 60),
+                          const SizedBox(height: 32),
+                          
+                          // Name input
+                          Text(
+                            'Your Display Name',
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: ThemeHelper.getTextColor(widget.isDarkMode),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          TextField(
+                            controller: nameController,
+                            decoration: InputDecoration(
+                              hintText: 'Enter your name',
+                              hintStyle: GoogleFonts.poppins(
+                                color: widget.isDarkMode 
+                                    ? Colors.white.withOpacity(0.5)
+                                    : Colors.grey,
+                              ),
+                              filled: true,
+                              fillColor: widget.isDarkMode 
+                                  ? Colors.white.withOpacity(0.1)
+                                  : Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide.none,
+                              ),
+                              suffixText: '(Host)',
+                              suffixStyle: GoogleFonts.poppins(
+                                color: const Color(0xFFFF6B9D),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            style: GoogleFonts.poppins(
+                              color: widget.isDarkMode ? Colors.white : Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
+                          
+                          const SizedBox(height: 32),
                           
                           // Info card
                           Container(
-                            padding: const EdgeInsets.all(24),
+                            padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               color: widget.isDarkMode
-                                  ? Colors.white.withValues(alpha: 0.1)
-                                  : Colors.white.withValues(alpha: 0.9),
+                                  ? Colors.white.withOpacity(0.05)
+                                  : Colors.white,
                               borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: const Color(0xFFFF6B9D).withOpacity(0.3),
+                                width: 2,
+                              ),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,12 +179,10 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
                                 Row(
                                   children: [
                                     Container(
-                                      padding: const EdgeInsets.all(12),
+                                      padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
-                                        gradient: const LinearGradient(
-                                          colors: [Color(0xFFFF6B9D), Color(0xFFFF8E53)],
-                                        ),
-                                        borderRadius: BorderRadius.circular(12),
+                                        color: const Color(0xFFFF6B9D),
+                                        borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: const Icon(
                                         Icons.info_outline,
@@ -145,7 +205,7 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
                                 ),
                                 const SizedBox(height: 16),
                                 _buildInfoItem('1', 'Host creates session and shares PIN'),
-                                _buildInfoItem('2', 'Players join (max 15 min)'),
+                                _buildInfoItem('2', 'Players join with their names'),
                                 _buildInfoItem('3', 'Host sets question timer (1-15 min)'),
                                 _buildInfoItem('4', 'Everyone submits questions (min 5)'),
                                 _buildInfoItem('5', 'Host controls game progression'),
@@ -156,7 +216,7 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
                           
                           const Spacer(),
                           
-                          // Host button
+                          // Create button
                           SizedBox(
                             width: double.infinity,
                             height: AppConstants.buttonHeight,
