@@ -302,39 +302,39 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
                   
                   const SizedBox(height: 40),
                   
-                  // Lobby timer display
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: remainingTime.inMinutes < 5 
-                            ? [const Color(0xFFFF6B9D), const Color(0xFFFF4081)]
-                            : [const Color(0xFF7C4DFF), const Color(0xFF536DFE)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
+                  if (widget.isHost)
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: remainingTime.inMinutes < 5 
+                          ? [const Color(0xFFFF6B9D), const Color(0xFFFF4081)]
+                          : [const Color(0xFF7C4DFF), const Color(0xFF536DFE)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.timer,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          'Join time: ${_formatTime(remainingTime)}',
-                          style: GoogleFonts.poppins(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
+                    borderRadius: BorderRadius.circular(12),
                   ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.timer,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        'Join time: ${_formatTime(remainingTime)}',
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                   
                   const SizedBox(height: 20),
                   

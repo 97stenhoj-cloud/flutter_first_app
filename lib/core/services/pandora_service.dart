@@ -220,23 +220,23 @@ class PandoraService {
     }
   }
 
-  // Initialize broadcast channel (call this BEFORE broadcasting)
   Future<void> initializeBroadcastChannel(String sessionId) async {
-    if (_broadcastChannel == null || _currentBroadcastSessionId != sessionId) {
-      debugPrint('🔧 [Host] Initializing broadcast channel: pandora_game_$sessionId');
-      _broadcastChannel = _supabase.channel('pandora_game_$sessionId');
-      _currentBroadcastSessionId = sessionId;
-      
-      await _broadcastChannel!.subscribe((status, error) {
-        debugPrint('📡 [Host] Channel status: $status');
-        if (error != null) {
-          debugPrint('❌ [Host] Channel error: $error');
-        }
-      });
-      
-      debugPrint('✅ [Host] Broadcast channel ready');
-    }
+  if (_broadcastChannel == null || _currentBroadcastSessionId != sessionId) {
+    debugPrint('🔧 [Host] Initializing broadcast channel: pandora_game_$sessionId');
+    _broadcastChannel = _supabase.channel('pandora_game_$sessionId');
+    _currentBroadcastSessionId = sessionId;
+    
+    // FIXED: Removed 'await' from subscribe
+    _broadcastChannel!.subscribe((status, error) {
+      debugPrint('📡 [Host] Channel status: $status');
+      if (error != null) {
+        debugPrint('❌ [Host] Channel error: $error');
+      }
+    });
+    
+    debugPrint('✅ [Host] Broadcast channel ready');
   }
+}
 
   // ✅ BROADCAST METHOD: Host broadcasts index changes directly to all players
   Future<void> broadcastQuestionIndex(String sessionId, int index) async {
