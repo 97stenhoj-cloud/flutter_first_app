@@ -62,119 +62,132 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
       body: Container(
         decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(AppConstants.defaultPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Back button
-                IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                    size: 28,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
                   ),
-                ),
-                
-                const SizedBox(height: 60),
-                
-                // Title
-                Center(
-                  child: Column(
-                    children: [
-                      const Text(
-                        '🔮',
-                        style: TextStyle(fontSize: 80),
-                      ),
-                      const SizedBox(height: 24),
-                      Text(
-                        'Host Pandora Session',
-                        style: GoogleFonts.poppins(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-                
-                const SizedBox(height: 60),
-                
-                // Info card
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: widget.isDarkMode
-                        ? Colors.white.withValues(alpha: 0.1)
-                        : Colors.white.withValues(alpha: 0.9),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: const Color(0xFFFF6B9D).withValues(alpha: 0.3),
-                      width: 2,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+                  child: IntrinsicHeight(
+                    child: Padding(
+                      padding: const EdgeInsets.all(AppConstants.defaultPadding),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Icon(
-                            Icons.info_outline,
-                            color: Color(0xFFFF6B9D),
-                            size: 24,
+                          // Back button
+                          IconButton(
+                            onPressed: () => Navigator.pop(context),
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                              size: 28,
+                            ),
                           ),
-                          const SizedBox(width: 12),
-                          Text(
-                            'What happens next?',
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: widget.isDarkMode ? Colors.white : const Color(0xFF2D2D2D),
+                          
+                          const SizedBox(height: 40),
+                          
+                          // Title
+                          Center(
+                            child: Text(
+                              '🔮 Host Pandora Session',
+                              style: GoogleFonts.poppins(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          
+                          const SizedBox(height: 60),
+                          
+                          // Info card
+                          Container(
+                            padding: const EdgeInsets.all(24),
+                            decoration: BoxDecoration(
+                              color: widget.isDarkMode
+                                  ? Colors.white.withValues(alpha: 0.1)
+                                  : Colors.white.withValues(alpha: 0.9),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        gradient: const LinearGradient(
+                                          colors: [Color(0xFFFF6B9D), Color(0xFFFF8E53)],
+                                        ),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: const Icon(
+                                        Icons.info_outline,
+                                        color: Colors.white,
+                                        size: 28,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Expanded(
+                                      child: Text(
+                                        'How it works',
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 16),
+                                _buildInfoItem('1', 'Host creates session and shares PIN'),
+                                _buildInfoItem('2', 'Players join (max 15 min)'),
+                                _buildInfoItem('3', 'Host sets question timer (1-15 min)'),
+                                _buildInfoItem('4', 'Everyone submits questions (min 5)'),
+                                _buildInfoItem('5', 'Host controls game progression'),
+                                _buildInfoItem('⚠️', 'Questions deleted after game'),
+                              ],
+                            ),
+                          ),
+                          
+                          const Spacer(),
+                          
+                          // Host button
+                          SizedBox(
+                            width: double.infinity,
+                            height: AppConstants.buttonHeight,
+                            child: ElevatedButton(
+                              onPressed: isCreating ? null : _createSession,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFFFF6B9D),
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                elevation: 4,
+                              ),
+                              child: isCreating
+                                  ? const CircularProgressIndicator(color: Colors.white)
+                                  : Text(
+                                      'Create Session',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
-                      _buildInfoItem('1', 'You\'ll get a 6-digit PIN'),
-                      _buildInfoItem('2', 'Share PIN with players (15 min max)'),
-                      _buildInfoItem('3', 'Set question collection timer'),
-                      _buildInfoItem('4', 'Control game progression'),
-                    ],
-                  ),
-                ),
-                
-                const Spacer(),
-                
-                // Create button
-                SizedBox(
-                  width: double.infinity,
-                  height: AppConstants.buttonHeight,
-                  child: ElevatedButton(
-                    onPressed: isCreating ? null : _createSession,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFF6B9D),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 4,
                     ),
-                    child: isCreating
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : Text(
-                            'Create Session',
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
                   ),
                 ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),

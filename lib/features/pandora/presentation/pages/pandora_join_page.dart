@@ -99,135 +99,74 @@ class _PandoraJoinPageState extends State<PandoraJoinPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Container(
         decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(AppConstants.defaultPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Back button
-                IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                    size: 28,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
                   ),
-                ),
-                
-                const SizedBox(height: 40),
-                
-                // Title
-                Center(
-                  child: Text(
-                    '🔮 Join Pandora Session',
-                    style: GoogleFonts.poppins(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
+                  child: IntrinsicHeight(
+                    child: Padding(
+                      padding: const EdgeInsets.all(AppConstants.defaultPadding),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                  // Back button
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: Icon(
+                      Icons.arrow_back,
                       color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                
-                const SizedBox(height: 60),
-                
-                // PIN input
-                Text(
-                  'Session PIN',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: pinController,
-                  keyboardType: TextInputType.number,
-                  maxLength: 6,
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 8,
-                    color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                  ),
-                  decoration: InputDecoration(
-                    hintText: '000000',
-                    counterText: '',
-                    filled: true,
-                    fillColor: widget.isDarkMode
-                        ? Colors.white.withValues(alpha: 0.1)
-                        : Colors.black.withValues(alpha: 0.05),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
+                      size: 28,
                     ),
                   ),
-                ),
-                
-                const SizedBox(height: 30),
-                
-                // Name selection
-                Text(
-                  'Display Name',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                
-                if (authService.isLoggedIn) ...[
-                  // Toggle for using email or custom name
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: widget.isDarkMode
-                          ? Colors.white.withValues(alpha: 0.1)
-                          : Colors.black.withValues(alpha: 0.05),
-                      borderRadius: BorderRadius.circular(12),
+                  
+                  const SizedBox(height: 40),
+                  
+                  // Title
+                  Center(
+                    child: Text(
+                      '🔮 Join Pandora Session',
+                      style: GoogleFonts.poppins(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          value: useConnectEmail,
-                          onChanged: (value) {
-                            setState(() => useConnectEmail = value ?? true);
-                          },
-                          activeColor: const Color(0xFFFF6B9D),
-                        ),
-                        Expanded(
-                          child: Text(
-                            'Use my Connect email: ${authService.currentUser?.email}',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
+                  ),
+                  
+                  const SizedBox(height: 60),
+                  
+                  // PIN input
+                  Text(
+                    'Session PIN',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
                     ),
                   ),
                   const SizedBox(height: 12),
-                ],
-                
-                // Custom name input
-                if (!authService.isLoggedIn || !useConnectEmail)
                   TextField(
-                    controller: nameController,
+                    controller: pinController,
+                    keyboardType: TextInputType.number,
+                    maxLength: 6,
+                    textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 8,
                       color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
                     ),
                     decoration: InputDecoration(
-                      hintText: 'Enter your name',
+                      hintText: '000000',
+                      counterText: '',
                       filled: true,
                       fillColor: widget.isDarkMode
                           ? Colors.white.withValues(alpha: 0.1)
@@ -238,36 +177,111 @@ class _PandoraJoinPageState extends State<PandoraJoinPage> {
                       ),
                     ),
                   ),
-                
-                const Spacer(),
-                
-                // Join button
-                SizedBox(
-                  width: double.infinity,
-                  height: AppConstants.buttonHeight,
-                  child: ElevatedButton(
-                    onPressed: isJoining ? null : _joinSession,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFF6B9D),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
+                  
+                  const SizedBox(height: 30),
+                  
+                  // Name selection
+                  Text(
+                    'Display Name',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  
+                  if (authService.isLoggedIn) ...[
+                    // Toggle for using email or custom name
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: widget.isDarkMode
+                            ? Colors.white.withValues(alpha: 0.1)
+                            : Colors.black.withValues(alpha: 0.05),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      elevation: 4,
-                    ),
-                    child: isJoining
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : Text(
-                            'Join Session',
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            value: useConnectEmail,
+                            onChanged: (value) {
+                              setState(() => useConnectEmail = value ?? true);
+                            },
+                            activeColor: const Color(0xFFFF6B9D),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Use my Connect email: ${authService.currentUser?.email}',
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                  
+                  // Custom name input
+                  if (!authService.isLoggedIn || !useConnectEmail)
+                    TextField(
+                      controller: nameController,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Enter your name',
+                        filled: true,
+                        fillColor: widget.isDarkMode
+                            ? Colors.white.withValues(alpha: 0.1)
+                            : Colors.black.withValues(alpha: 0.05),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+                  
+                  SizedBox(height: MediaQuery.of(context).viewInsets.bottom > 0 ? 20 : 60), // DYNAMIC SPACING
+                  
+                  // Join button
+                  SizedBox(
+                    width: double.infinity,
+                    height: AppConstants.buttonHeight,
+                    child: ElevatedButton(
+                      onPressed: isJoining ? null : _joinSession,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFFF6B9D),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 4,
+                      ),
+                      child: isJoining
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : Text(
+                              'Join Session',
+                              style: GoogleFonts.poppins(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                    ),
+                  ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),
