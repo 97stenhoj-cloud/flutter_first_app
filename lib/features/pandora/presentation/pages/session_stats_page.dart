@@ -1,9 +1,6 @@
 // lib/features/pandora/presentation/pages/session_stats_page.dart
-// Create this new file
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/services/pandora_service.dart';
 
 class SessionStatsPage extends StatefulWidget {
@@ -98,7 +95,7 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
                         'Thanks for playing together!',
                         style: GoogleFonts.poppins(
                           fontSize: 16,
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                         ),
                       ),
                       
@@ -204,7 +201,7 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -216,7 +213,7 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
             width: 60,
             height: 60,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
+              color: color.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Center(
@@ -256,13 +253,12 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
 
   Widget _buildReactionBreakdown() {
     final reactionCounts = stats!['reaction_counts'] as Map<String, dynamic>;
-    
     final reactions = [
-      {'emoji': '😂', 'type': 'laugh', 'label': 'Laughs'},
-      {'emoji': '😮', 'type': 'shock', 'label': 'Shocked'},
-      {'emoji': '❤️', 'type': 'heart', 'label': 'Hearts'},
+      {'emoji': '😂', 'type': 'laugh', 'label': 'Laugh'},
+      {'emoji': '😱', 'type': 'shock', 'label': 'Shock'},
+      {'emoji': '❤️', 'type': 'heart', 'label': 'Heart'},
       {'emoji': '🔥', 'type': 'fire', 'label': 'Fire'},
-      {'emoji': '💯', 'type': 'hundred', 'label': 'Perfect'},
+      {'emoji': '💯', 'type': 'hundred', 'label': '100'},
     ];
     
     return Container(
@@ -272,7 +268,7 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -286,24 +282,30 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
             style: GoogleFonts.poppins(
               fontSize: 18,
               fontWeight: FontWeight.bold,
+              color: Colors.grey[800],
             ),
           ),
           const SizedBox(height: 16),
-          ...reactions.map((r) {
-            final count = reactionCounts[r['type']] ?? 0;
+          ...reactions.map((reaction) {
+            final type = reaction['type'] as String;
+            final count = reactionCounts[type] ?? 0;
+            
             return Padding(
-              padding: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.only(bottom: 12),
               child: Row(
                 children: [
                   Text(
-                    r['emoji'] as String,
-                    style: const TextStyle(fontSize: 24),
+                    reaction['emoji'] as String,
+                    style: const TextStyle(fontSize: 28),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      r['label'] as String,
-                      style: GoogleFonts.poppins(fontSize: 14),
+                      reaction['label'] as String,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: Colors.grey[700],
+                      ),
                     ),
                   ),
                   Text(
@@ -317,7 +319,7 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
                 ],
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );
@@ -331,15 +333,15 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
     required Color color,
   }) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.15),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -354,9 +356,9 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
             title,
             style: GoogleFonts.poppins(
               fontSize: 16,
-              fontWeight: FontWeight.w600,
               color: Colors.grey[600],
             ),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
           Text(
@@ -366,12 +368,14 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
               fontWeight: FontWeight.bold,
               color: color,
             ),
+            textAlign: TextAlign.center,
           ),
+          const SizedBox(height: 4),
           Text(
             count,
             style: GoogleFonts.poppins(
               fontSize: 14,
-              color: Colors.grey[600],
+              color: Colors.grey[500],
             ),
           ),
         ],

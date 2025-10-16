@@ -1,5 +1,5 @@
 // lib/features/game/presentation/pages/game_page.dart
-// FINAL VERSION - Database sync (no broadcast)
+// FINAL VERSION - All fixes applied: any swipe moves forward, database syncs on every swipe
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -550,12 +550,14 @@ class _GamePageState extends State<GamePage> {
     );
   }
 
+  // FIXED: Any swipe direction moves forward, database updates on EVERY swipe
   bool _onSwipe(
     int previousIndex,
-    int? currentIndex,
+    int? currentIndexNullable,
     CardSwiperDirection direction,
   ) {
-    debugPrint('Swiped: direction=$direction, previous=$previousIndex, current=$currentIndex');
+    final newIndex = currentIndexNullable ?? previousIndex;
+    debugPrint('Swiped: prev=$previousIndex, new=$newIndex, dir=$direction');
     
     // PANDORA PLAYER: Block manual swiping
     if (isPandoraMode && !isHostMode) {
@@ -563,66 +565,74 @@ class _GamePageState extends State<GamePage> {
       return false;
     }
     
-    // Swipe RIGHT = undo
-    if (direction == CardSwiperDirection.right) {
-      return true;
-    }
-    
-    // Swipe LEFT = next question
-    if (direction == CardSwiperDirection.left) {
-      // Update local state
-      if (currentIndex != null) {
-        setState(() {
-          this.currentIndex = currentIndex;
-        });
-        
-        // PANDORA HOST: Update database with the question now showing
-        if (isPandoraMode && isHostMode) {
-          pandoraService.updateQuestionIndex(widget.sessionId!, previousIndex + 1);
-          debugPrint('🎮 [Host] Now showing question ${previousIndex + 1}');
-        }
+    // Check if we've reached the end
+    if (newIndex >= displayedQuestions.length - 1) {
+      debugPrint('🎮 Last question reached');
+      
+      setState(() {
+        currentIndex = displayedQuestions.length - 1;
+      });
+      
+      // PANDORA HOST: Update database to last question
+      if (isPandoraMode && isHostMode) {
+        _updateDatabaseIndex(displayedQuestions.length - 1);
       }
       
-      // Show ads (non-Pandora only)
-      if (!isPandoraMode) {
-        unlockManager.incrementQuestionCount();
-        _showAdOrPurchaseOption();
-      }
-      
-      // Check if this was the LAST card (we've swiped past it)
-      if (currentIndex == null || currentIndex >= displayedQuestions.length) {
-        debugPrint('🎮 Game ended - all questions completed');
-        
-        // PANDORA HOST: Mark session as ended in database
+      Future.delayed(const Duration(milliseconds: 500), () {
         if (isPandoraMode && isHostMode) {
           pandoraService.endSession(widget.sessionId!);
         }
-        
-        Future.delayed(const Duration(milliseconds: 500), () {
-          _showGameEndDialog();
-        });
-        return true;
-      }
+        _showGameEndDialog();
+      });
+      
+      return false;
+    }
+    
+    // Normal swipe - move forward
+    setState(() {
+      currentIndex = newIndex;
+    });
+    
+    // PANDORA HOST: Update database for EVERY swipe
+    if (isPandoraMode && isHostMode) {
+      _updateDatabaseIndex(newIndex);
+    }
+    
+    // Load reactions for new question
+    _loadReactionsForCurrentQuestion();
+    
+    // Show ads (non-Pandora only)
+    if (!isPandoraMode) {
+      unlockManager.incrementQuestionCount();
+      _showAdOrPurchaseOption();
     }
     
     return true;
   }
 
+  Future<void> _updateDatabaseIndex(int index) async {
+    try {
+      await pandoraService.updateQuestionIndex(widget.sessionId!, index);
+      debugPrint('💾 [Host] Updated database to index $index');
+    } catch (e) {
+      debugPrint('❌ [Host] Failed to update database: $e');
+    }
+  }
+
   bool _onUndo(
     int? previousIndex,
-    int currentIndex,
+    int currentIndexArg,
     CardSwiperDirection direction,
   ) {
-    debugPrint('Undo: previous $previousIndex, current $currentIndex');
+    debugPrint('Undo: previous=$previousIndex, current=$currentIndexArg');
     
     setState(() {
-      this.currentIndex = currentIndex;
+      currentIndex = currentIndexArg;
     });
     
     // PANDORA HOST: Update database on undo
     if (isPandoraMode && isHostMode) {
-      pandoraService.updateQuestionIndex(widget.sessionId!, currentIndex);
-      debugPrint('🎮 [Host] Undo - Now showing question: $currentIndex');
+      _updateDatabaseIndex(currentIndexArg);
     }
     
     return true;
@@ -648,8 +658,8 @@ class _GamePageState extends State<GamePage> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => WillPopScope(
-        onWillPop: () async => false,
+      builder: (context) => PopScope(
+        canPop: false,
         child: AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
@@ -1088,11 +1098,11 @@ class _GamePageState extends State<GamePage> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.9),
+                color: Colors.white.withValues(alpha: 0.9),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),

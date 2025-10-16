@@ -135,12 +135,12 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
                               hintText: 'Enter your name',
                               hintStyle: GoogleFonts.poppins(
                                 color: widget.isDarkMode 
-                                    ? Colors.white.withOpacity(0.5)
+                                    ? Colors.white.withValues(alpha: 0.5)
                                     : Colors.grey,
                               ),
                               filled: true,
                               fillColor: widget.isDarkMode 
-                                  ? Colors.white.withOpacity(0.1)
+                                  ? Colors.white.withValues(alpha: 0.1)
                                   : Colors.white,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -165,11 +165,11 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
                             padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               color: widget.isDarkMode
-                                  ? Colors.white.withOpacity(0.05)
+                                  ? Colors.white.withValues(alpha: 0.05)
                                   : Colors.white,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                color: const Color(0xFFFF6B9D).withOpacity(0.3),
+                                color: const Color(0xFFFF6B9D).withValues(alpha: 0.3),
                                 width: 2,
                               ),
                             ),
