@@ -1,4 +1,5 @@
 // lib/features/pandora/presentation/pages/session_stats_page.dart
+// FIXED: Shows most reacted questions by category, removed 100 emoji
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/services/pandora_service.dart';
@@ -129,6 +130,51 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
                         _buildReactionBreakdown(),
                       ],
                       
+                      // Most reacted questions by category
+                      if (stats?['most_loved_question'] != null) ...[
+                        const SizedBox(height: 16),
+                        _buildQuestionAwardCard(
+                          icon: '❤️',
+                          title: 'Most Loved Question',
+                          question: stats!['most_loved_question'],
+                          count: '${stats!['most_loved_count']} hearts',
+                          color: const Color(0xFFE91E63),
+                        ),
+                      ],
+                      
+                      if (stats?['most_funny_question'] != null) ...[
+                        const SizedBox(height: 16),
+                        _buildQuestionAwardCard(
+                          icon: '😂',
+                          title: 'Most Fun Question',
+                          question: stats!['most_funny_question'],
+                          count: '${stats!['most_funny_count']} laughs',
+                          color: const Color(0xFFFFEB3B),
+                        ),
+                      ],
+                      
+                      if (stats?['most_shocking_question'] != null) ...[
+                        const SizedBox(height: 16),
+                        _buildQuestionAwardCard(
+                          icon: '😮',
+                          title: 'Most Shocking Question',
+                          question: stats!['most_shocking_question'],
+                          count: '${stats!['most_shocking_count']} shocks',
+                          color: const Color(0xFF9C27B0),
+                        ),
+                      ],
+                      
+                      if (stats?['most_lit_question'] != null) ...[
+                        const SizedBox(height: 16),
+                        _buildQuestionAwardCard(
+                          icon: '🔥',
+                          title: 'Most Lit Question',
+                          question: stats!['most_lit_question'],
+                          count: '${stats!['most_lit_count']} fires',
+                          color: const Color(0xFFFF5722),
+                        ),
+                      ],
+                      
                       // Most questions by
                       if (stats?['most_questions_by_id'] != null) ...[
                         const SizedBox(height: 16),
@@ -253,12 +299,12 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
 
   Widget _buildReactionBreakdown() {
     final reactionCounts = stats!['reaction_counts'] as Map<String, dynamic>;
+    // REMOVED 'hundred' emoji
     final reactions = [
       {'emoji': '😂', 'type': 'laugh', 'label': 'Laugh'},
-      {'emoji': '😱', 'type': 'shock', 'label': 'Shock'},
+      {'emoji': '😮', 'type': 'shock', 'label': 'Shock'},
       {'emoji': '❤️', 'type': 'heart', 'label': 'Heart'},
       {'emoji': '🔥', 'type': 'fire', 'label': 'Fire'},
-      {'emoji': '💯', 'type': 'hundred', 'label': '100'},
     ];
     
     return Container(
@@ -376,6 +422,72 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
             style: GoogleFonts.poppins(
               fontSize: 14,
               color: Colors.grey[500],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuestionAwardCard({
+    required String icon,
+    required String title,
+    required String question,
+    required String count,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.15),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Text(
+            icon,
+            style: const TextStyle(fontSize: 48),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            title,
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              color: Colors.grey[600],
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              question,
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey[800],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            count,
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              color: color,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ],

@@ -753,6 +753,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Main Menu'**
   String get mainMenu;
+
+  /// No description provided for @thanksForPlaying.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks for Playing!'**
+  String get thanksForPlaying;
+
+  /// No description provided for @hopeYouHadFun.
+  ///
+  /// In en, this message translates to:
+  /// **'Hope you had fun! 🎉'**
+  String get hopeYouHadFun;
+
+  /// No description provided for @backToMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Menu'**
+  String get backToMenu;
+
+  /// No description provided for @leaveGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Game?'**
+  String get leaveGame;
+
+  /// No description provided for @leaveGameMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to leave? The game will continue for other players.'**
+  String get leaveGameMessage;
+
+  /// No description provided for @leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get leave;
+
+  /// No description provided for @noQuestionsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions available'**
+  String get noQuestionsAvailable;
 }
 
 class _AppLocalizationsDelegate
