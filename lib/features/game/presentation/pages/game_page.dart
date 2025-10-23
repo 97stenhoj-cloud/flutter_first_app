@@ -1,14 +1,11 @@
 // lib/features/game/presentation/pages/game_page.dart
-// FINAL VERSION - All fixes applied: any swipe moves forward, database syncs on every swipe
+// FINAL VERSION - All fixes applied: any swipe moves forward, database syncs on every swipe, FAVORITE FUNCTIONALITY RESTORED
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'dart:math' as math;
-import '../../../../core/utils/theme_helper.dart';
-import '../../../../core/constants/app_constants.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/utils/unlock_manager.dart';
 import '../../../../core/services/supabase_service.dart';
@@ -58,15 +55,17 @@ class _GamePageState extends State<GamePage> {
   bool isPandoraMode = false;
   bool isHostMode = false;
   
-  // Reactions
+  // Reactions (REMOVED 'hundred')
   Map<String, int> currentReactions = {
     'laugh': 0,
     'shock': 0,
     'heart': 0,
     'fire': 0,
-    'hundred': 0,
   };
   String? myParticipantId;
+  
+  // Favorite questions tracking
+  Set<String> favoriteQuestions = {};
 
   @override
   void initState() {
@@ -77,6 +76,7 @@ class _GamePageState extends State<GamePage> {
     _loadQuestions();
     _loadAd();
     _loadLogo();
+    _loadFavoriteQuestions();
     
     // PLAYERS ONLY: Subscribe to database changes
     if (isPandoraMode && !isHostMode) {
@@ -88,6 +88,138 @@ class _GamePageState extends State<GamePage> {
       _getMyParticipantId();
       _subscribeToReactions();
       _loadReactionsForCurrentQuestion();
+    }
+  }
+  
+  Future<void> _loadFavoriteQuestions() async {
+    if (isPandoraMode) return; // No favorites in Pandora mode
+    
+    try {
+      final userId = Supabase.instance.client.auth.currentUser?.id;
+      if (userId == null) return;
+      
+      // Find the user's Favorites deck
+      final deckResponse = await Supabase.instance.client
+          .from('custom_decks')
+          .select('id')
+          .eq('user_id', userId)
+          .eq('deck_name', 'Favorites')
+          .maybeSingle();
+      
+      if (deckResponse == null) {
+        // No favorites deck yet
+        return;
+      }
+      
+      final deckId = deckResponse['id'];
+      
+      // Get all questions from the Favorites deck
+      final questionsResponse = await Supabase.instance.client
+          .from('custom_questions')
+          .select('question_text')
+          .eq('deck_id', deckId);
+      
+      setState(() {
+        favoriteQuestions = (questionsResponse as List)
+            .map((item) => item['question_text'] as String)
+            .toSet();
+      });
+    } catch (e) {
+      debugPrint('Error loading favorites: $e');
+    }
+  }
+  
+  Future<void> _toggleFavorite(String question) async {
+    if (isPandoraMode) return; // No favorites in Pandora mode
+    
+    try {
+      final userId = Supabase.instance.client.auth.currentUser?.id;
+      if (userId == null) return;
+      
+      // Find or create the user's Favorites deck
+      var deckResponse = await Supabase.instance.client
+          .from('custom_decks')
+          .select('id')
+          .eq('user_id', userId)
+          .eq('deck_name', 'Favorites')
+          .maybeSingle();
+      
+      String deckId;
+      
+      if (deckResponse == null) {
+        // Create a new Favorites deck
+        final newDeckResponse = await Supabase.instance.client
+            .from('custom_decks')
+            .insert({
+          'user_id': userId,
+          'deck_name': 'Favorites',
+        })
+            .select('id')
+            .single();
+        
+        deckId = newDeckResponse['id'];
+      } else {
+        deckId = deckResponse['id'];
+      }
+      
+      final isFavorite = favoriteQuestions.contains(question);
+      
+      if (isFavorite) {
+        // Remove from favorites
+        await Supabase.instance.client
+            .from('custom_questions')
+            .delete()
+            .eq('deck_id', deckId)
+            .eq('question_text', question);
+        
+        setState(() {
+          favoriteQuestions.remove(question);
+        });
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Removed from favorites'),
+              duration: Duration(seconds: 2),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+      } else {
+        // Add to favorites
+        await Supabase.instance.client
+            .from('custom_questions')
+            .insert({
+          'deck_id': deckId,
+          'question_text': question,
+        });
+        
+        setState(() {
+          favoriteQuestions.add(question);
+        });
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Added to favorites'),
+              duration: Duration(seconds: 2),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint('❌ Error toggling favorite: $e');
+      debugPrint('❌ Error details: ${e.toString()}');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error saving favorite'),
+            duration: Duration(seconds: 2),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
   
@@ -655,6 +787,8 @@ class _GamePageState extends State<GamePage> {
     }
     
     // Regular thank you dialog for non-Pandora modes
+    final l10n = AppLocalizations.of(context)!;
+    
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -673,7 +807,7 @@ class _GamePageState extends State<GamePage> {
               ),
               const SizedBox(height: 16),
               Text(
-                'Thanks for Playing!',
+                l10n.thanksForPlaying,
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.bold,
                   fontSize: 24,
@@ -683,7 +817,7 @@ class _GamePageState extends State<GamePage> {
             ],
           ),
           content: Text(
-            'Hope you had fun! 🎉',
+            l10n.hopeYouHadFun,
             style: GoogleFonts.poppins(
               fontSize: 16,
             ),
@@ -705,7 +839,7 @@ class _GamePageState extends State<GamePage> {
                   ),
                 ),
                 child: Text(
-                  'Back to Menu',
+                  l10n.backToMenu,
                   style: GoogleFonts.poppins(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -738,166 +872,164 @@ class _GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Color> backgroundGradient;
-    
-    switch (widget.gameMode.toLowerCase()) {
-      case 'family':
-        backgroundGradient = widget.isDarkMode
-            ? [const Color(0xFF4A3A30), const Color(0xFF3A2A20)]
-            : [const Color(0xFFF5E8E1), const Color(0xFFE8D6D0)];
-        break;
-      case 'couple':
-        backgroundGradient = widget.isDarkMode
-            ? [const Color(0xFF5A3A44), const Color(0xFF4A2A34)]
-            : [const Color(0xFFFCE4EC), const Color(0xFFFAD4DD)];
-        break;
-      case 'friends':
-        backgroundGradient = widget.isDarkMode
-            ? [const Color(0xFF4A3A5A), const Color(0xFF3A2A4A)]
-            : [const Color(0xFFE8DAEF), const Color(0xFFD4C4E8)];
-        break;
-      case 'personal':
-        backgroundGradient = widget.isDarkMode
-            ? [const Color(0xFF3A4A5A), const Color(0xFF2A3A4A)]
-            : [const Color(0xFFD4E4F8), const Color(0xFFC4D4E8)];
-        break;
-      case 'pandora':
-        backgroundGradient = widget.isDarkMode
-            ? [const Color(0xFF5A2A3A), const Color(0xFF4A1A2A)]
-            : [const Color(0xFFFFE4EC), const Color(0xFFFFD4E4)];
-        break;
-      default:
-        backgroundGradient = [const Color(0xFFF5E8E1), const Color(0xFFE8D6D0)];
+    if (isLoading) {
+      return Scaffold(
+        backgroundColor: widget.isDarkMode ? const Color(0xFF2D1B2E) : const Color(0xFFF5F5F5),
+        body: Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+              widget.isDarkMode ? const Color(0xFFFF6B9D) : const Color(0xFFAD1457),
+            ),
+          ),
+        ),
+      );
     }
 
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: backgroundGradient,
+      backgroundColor: widget.isDarkMode ? const Color(0xFF2D1B2E) : const Color(0xFFF5F5F5),
+      body: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: widget.isDarkMode
+                  ? [
+                      const Color(0xFF2D1B2E),
+                      const Color(0xFF1A0E1F),
+                    ]
+                  : [
+                      const Color(0xFFF5F5F5),
+                      const Color(0xFFE8E8E8),
+                    ],
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            padding: const EdgeInsets.all(AppConstants.defaultPadding),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: Icon(
-                        Icons.home,
-                        color: ThemeHelper.getTextColor(widget.isDarkMode),
-                        size: 32,
-                      ),
-                    ),
-                    Text(
-                      widget.category,
-                      style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: ThemeHelper.getTextColor(widget.isDarkMode),
-                      ),
-                    ),
-                    if (isPandoraMode)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: isHostMode ? Colors.green : Colors.blue,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          isHostMode ? 'HOST' : 'PLAYER',
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      )
-                    else
-                      const SizedBox(width: 48),
-                  ],
-                ),
-                
-                Expanded(
-                  child: Center(
-                    child: isLoading 
-                        ? CircularProgressIndicator(
-                            color: ThemeHelper.getTextColor(widget.isDarkMode),
-                          )
-                        : displayedQuestions.isEmpty
-                            ? Text(
-                                'No questions available',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 18,
-                                  color: ThemeHelper.getTextColor(widget.isDarkMode),
-                                ),
-                              )
-                            : Column(
-                                children: [
-                                  // Card display
-                                  Expanded(
-                                    child: (isPandoraMode && !isHostMode)
-                                        // PLAYER: Static card display
-                                        ? _buildQuestionCard(
-                                            displayedQuestions[currentIndex.clamp(0, displayedQuestions.length - 1)],
-                                            isNext: false,
-                                          )
-                                        // HOST: Swipeable cards
-                                        : CardSwiper(
-                                            controller: controller,
-                                            cardsCount: displayedQuestions.length,
-                                            onSwipe: _onSwipe,
-                                            onUndo: _onUndo,
-                                            numberOfCardsDisplayed: math.min(2, displayedQuestions.length),
-                                            backCardOffset: const Offset(0, 15),
-                                            padding: const EdgeInsets.all(0),
-                                            scale: 0.93,
-                                            isLoop: false,
-                                            duration: const Duration(milliseconds: 300),
-                                            maxAngle: 25,
-                                            threshold: 50,
-                                            allowedSwipeDirection: AllowedSwipeDirection.only(
-                                              left: true,
-                                              right: true,
-                                            ),
-                                            cardBuilder: (
-                                              context,
-                                              index,
-                                              horizontalThresholdPercentage,
-                                              verticalThresholdPercentage,
-                                            ) {
-                                              return _buildQuestionCard(
-                                                displayedQuestions[index],
-                                                isNext: false,
-                                              );
-                                            },
-                                          ),
-                                  ),
-                                  
-                                  // Reaction buttons (Pandora only)
-                                  if (isPandoraMode && myParticipantId != null)
-                                    _buildReactionButtons(),
-                                ],
+          child: Stack(
+            children: [
+              // Back button (top left)
+              Positioned(
+                top: 16,
+                left: 16,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: widget.isDarkMode ? Colors.white : Colors.black87,
+                    size: 28,
+                  ),
+                  onPressed: () {
+                    if (isPandoraMode) {
+                      final l10n = AppLocalizations.of(context)!;
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text(l10n.leaveGame),
+                          content: Text(l10n.leaveGameMessage),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text(l10n.cancel),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context); // Close dialog
+                                Navigator.of(context).pop(); // Leave game
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
                               ),
+                              child: Text(l10n.leave),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              ),
+
+              // Question counter (top right)
+              Positioned(
+                top: 24,
+                right: 24,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: widget.isDarkMode
+                        ? Colors.white.withValues(alpha: 0.15)
+                        : Colors.black.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    '${currentIndex + 1}/${displayedQuestions.length}',
+                    style: GoogleFonts.poppins(
+                      color: widget.isDarkMode ? Colors.white : Colors.black87,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
-              ],
-            ),
+              ),
+
+              // Main content
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 80),
+                    
+                    // Card swiper
+                    Expanded(
+                      child: displayedQuestions.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.error_outline,
+                                    size: 64,
+                                    color: widget.isDarkMode ? Colors.white70 : Colors.black54,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    AppLocalizations.of(context)!.noQuestionsAvailable,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 18,
+                                      color: widget.isDarkMode ? Colors.white70 : Colors.black54,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : CardSwiper(
+                              controller: controller,
+                              cardsCount: displayedQuestions.length,
+                              onSwipe: _onSwipe,
+                              onUndo: _onUndo,
+                              numberOfCardsDisplayed: 2,
+                              backCardOffset: const Offset(0, 40),
+                              padding: const EdgeInsets.all(24.0),
+                              cardBuilder: (context, index, horizontalThresholdPercentage, verticalThresholdPercentage) {
+                                return _buildQuestionCard(displayedQuestions[index]);
+                              },
+                            ),
+                    ),
+                    
+                    // Reaction buttons for Pandora mode
+                    if (isPandoraMode && myParticipantId != null)
+                      _buildReactionButtons(),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _buildQuestionCard(String question, {bool isNext = false}) {
+  Widget _buildQuestionCard(String question) {
     final parsed = _parseQuestion(question);
     final targetName = parsed['targetName'];
     final questionText = parsed['questionText'] ?? question;
@@ -1068,6 +1200,35 @@ class _GamePageState extends State<GamePage> {
                     ),
                   ),
                 ),
+              
+              // Favorite heart button (bottom middle of card) - only in non-Pandora modes
+              if (!isPandoraMode)
+                Positioned(
+                  bottom: targetName != null ? 70 : 20, // Position above targetName if it exists
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () => _toggleFavorite(question),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.3),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          favoriteQuestions.contains(question)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: favoriteQuestions.contains(question)
+                              ? Colors.red
+                              : Colors.white,
+                          size: 32,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
@@ -1076,12 +1237,12 @@ class _GamePageState extends State<GamePage> {
   }
   
   Widget _buildReactionButtons() {
+    // REMOVED 100 emoji
     final reactions = [
       {'emoji': '😂', 'type': 'laugh'},
       {'emoji': '😮', 'type': 'shock'},
       {'emoji': '❤️', 'type': 'heart'},
       {'emoji': '🔥', 'type': 'fire'},
-      {'emoji': '💯', 'type': 'hundred'},
     ];
     
     return Container(

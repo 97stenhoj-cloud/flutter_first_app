@@ -116,5 +116,12 @@
   "gameComplete": "Game Complete!",
   "noMoreQuestions": "You've gone through all the questions in this deck!",
   "playAgain": "Play Again",
-  "mainMenu": "Main Menu"
+  "mainMenu": "Main Menu",
+    "thanksForPlaying": "Thanks for Playing!",
+  "hopeYouHadFun": "Hope you had fun! 🎉",
+  "backToMenu": "Back to Menu",
+  "leaveGame": "Leave Game?",
+  "leaveGameMessage": "Are you sure you want to leave? The game will continue for other players.",
+  "leave": "Leave",
+  "noQuestionsAvailable": "No questions available"
 }

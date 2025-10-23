@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
-import '../../../../core/utils/theme_helper.dart';
-import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/pandora_service.dart';
 import '../../../game/presentation/pages/game_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -154,21 +152,6 @@ class _PandoraQuestionSubmissionPageState
     }
   }
 
-  Future<void> _checkGameStatus() async {
-    if (hasNavigatedToGame) return;
-    
-    try {
-      final session = await pandoraService.getSession(widget.sessionId);
-      if (session != null && session['status'] == 'playing') {
-        debugPrint('🔍 [Polling] Game started - navigating...');
-        hasNavigatedToGame = true;
-        _navigateToGame();
-      }
-    } catch (e) {
-      debugPrint('❌ Error checking game status: $e');
-    }
-  }
-
   void _startCountdown() {
     countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!mounted) {
@@ -176,24 +159,39 @@ class _PandoraQuestionSubmissionPageState
         return;
       }
       
-      final now = DateTime.now().toUtc();
-      final remaining = endTime.difference(now);
-      
       setState(() {
-        remainingTime = remaining;
+        remainingTime = endTime.difference(DateTime.now().toUtc());
         
-        if (remainingTime.isNegative || remainingTime.inSeconds <= 0) {
+        if (remainingTime.isNegative) {
           remainingTime = Duration.zero;
           timer.cancel();
-          if (widget.isHost && !isStartingGame && questions.length >= 5) {
-            debugPrint('⏰ Timer expired - starting game automatically');
+          if (widget.isHost && !isStartingGame && !hasNavigatedToGame) {
             _startGame();
-          } else if (widget.isHost && questions.length < 5) {
-            debugPrint('⏰ Timer expired but only ${questions.length} questions - need 5 minimum');
           }
         }
       });
     });
+    
+    debugPrint('✅ Question collection started with timer: ${widget.timerMinutes} minutes');
+  }
+
+  String _formatTime(Duration duration) {
+    final minutes = duration.inMinutes;
+    final seconds = duration.inSeconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+  }
+
+  Future<void> _checkGameStatus() async {
+    try {
+      final session = await pandoraService.getSession(widget.sessionId);
+      if (session != null && session['status'] == 'playing' && mounted && !hasNavigatedToGame) {
+        debugPrint('📡 [Polling] Game started - navigating...');
+        hasNavigatedToGame = true;
+        _navigateToGame();
+      }
+    } catch (e) {
+      debugPrint('❌ Error checking game status: $e');
+    }
   }
 
   void _subscribeToChanges() {
@@ -214,8 +212,28 @@ class _PandoraQuestionSubmissionPageState
           hasNavigatedToGame = true;
           _navigateToGame();
         }
+        // Handle session cancellation
+        if (session['status'] == 'cancelled' && mounted) {
+          debugPrint('🚫 Session cancelled by host');
+          _handleSessionCancellation();
+        }
       },
     );
+  }
+
+  void _handleSessionCancellation() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Session cancelled by host'),
+        backgroundColor: Colors.red,
+      ),
+    );
+    
+    Future.delayed(const Duration(seconds: 1), () {
+      if (mounted) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      }
+    });
   }
 
   Future<void> _submitQuestion() async {
@@ -342,19 +360,17 @@ class _PandoraQuestionSubmissionPageState
         
         if (targetName != null) {
           return '[$targetName] $questionText';
+        } else {
+          return questionText;
         }
-        return questionText;
       }).toList();
-
-      debugPrint('🎮 Navigating with ${questionTexts.length} questions');
-
+      
       if (mounted) {
-        Navigator.pushReplacement(
-          context,
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => GamePage(
-              gameMode: 'Pandora',
-              category: 'Live Session',
+              gameMode: 'pandora',
+              category: 'pandora',
               isDarkMode: widget.isDarkMode,
               customQuestions: questionTexts,
               sessionId: widget.sessionId,
@@ -374,361 +390,387 @@ class _PandoraQuestionSubmissionPageState
     }
   }
 
-  String _formatTime(Duration duration) {
-    final minutes = duration.inMinutes;
-    final seconds = duration.inSeconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+  Future<void> _cancelSession() async {
+    try {
+      await pandoraService.cancelSession(widget.sessionId);
+      debugPrint('🚫 Session cancelled by host');
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Session cancelled'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+        
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      }
+    } catch (e) {
+      debugPrint('❌ Error cancelling session: $e');
+    }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: Container(
-        decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode),
-        child: SafeArea(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraints.maxHeight,
-                  ),
-                  child: IntrinsicHeight(
-                    child: Padding(
-                      padding: const EdgeInsets.all(AppConstants.defaultPadding),
-                      child: Column(
-                        children: [
-                          // Timer display
-                          Container(
-                            padding: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFFFF6B9D), Color(0xFFFF8E53)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.timer,
-                                  color: Colors.white,
-                                  size: 32,
-                                ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  _formatTime(remainingTime),
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 36,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          
-                          const SizedBox(height: 24),
-                          
-                          // Questions submitted counter
-                          Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: widget.isDarkMode
-                                  ? Colors.white.withValues(alpha: 0.1)
-                                  : Colors.black.withValues(alpha: 0.05),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.question_answer,
-                                  color: Color(0xFFFF6B9D),
-                                  size: 24,
-                                ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  'Questions submitted: ${questions.length}',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          
-                          const SizedBox(height: 24),
-                          
-                          // Minimum questions warning (show if less than 5)
-                          if (widget.isHost && questions.length < 5) ...[
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Colors.orange.withValues(alpha: 0.2),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: Colors.orange, width: 2),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.info_outline, color: Colors.orange),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Text(
-                                      'Need ${5 - questions.length} more question${5 - questions.length == 1 ? '' : 's'} to start (minimum 5)',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.orange.shade800,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                          ],
-                          
-                          // Host start game button
-                          if (widget.isHost) ...[
-                            SizedBox(
-                              width: double.infinity,
-                              height: 50,
-                              child: ElevatedButton.icon(
-                                onPressed: isStartingGame || questions.length < 5 ? null : _startGame,
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF4CAF50),
-                                  foregroundColor: Colors.white,
-                                  disabledBackgroundColor: Colors.grey,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                icon: isStartingGame
-                                    ? const SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: CircularProgressIndicator(
-                                          color: Colors.white,
-                                          strokeWidth: 2,
-                                        ),
-                                      )
-                                    : const Icon(Icons.play_arrow),
-                                label: Text(
-                                  isStartingGame
-                                      ? 'Starting Game...'
-                                      : questions.length < 5
-                                          ? 'Need ${5 - questions.length} More'
-                                          : 'Start Game Now',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                          ],
-                          
-                          // Question input card
-                          Container(
-                            constraints: BoxConstraints(
-                              minHeight: 300,
-                              maxHeight: MediaQuery.of(context).size.height * 0.5,
-                            ),
-                            padding: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: widget.isDarkMode
-                                  ? Colors.white.withValues(alpha: 0.1)
-                                  : Colors.white.withValues(alpha: 0.9),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Submit Your Question',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                                  ),
-                                ),
-                                
-                                const SizedBox(height: 20),
-                                
-                                // Question input
-                                TextField(
-                                  controller: questionController,
-                                  maxLines: 3,
-                                  minLines: 2,
-                                  style: GoogleFonts.poppins(
-                                    color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
-                                  ),
-                                  decoration: InputDecoration(
-                                    hintText: 'Enter your question here...',
-                                    filled: true,
-                                    fillColor: widget.isDarkMode
-                                        ? Colors.white.withValues(alpha: 0.1)
-                                        : Colors.black.withValues(alpha: 0.05),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                      borderSide: BorderSide.none,
-                                    ),
-                                  ),
-                                ),
-                                
-                                const SizedBox(height: 20),
-                                
-                                // Target selection
-                                Text(
-                                  'Who is this for?',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                                  ),
-                                ),
-                                
-                                const SizedBox(height: 12),
-                                
-                                // Target buttons
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: _buildTargetButton('Everyone', 'all', Icons.groups),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: _buildTargetButton('Specific Player', 'specific', Icons.person),
-                                    ),
-                                  ],
-                                ),
-                                
-                                if (targetType == 'specific') ...[
-                                  const SizedBox(height: 16),
-                                  DropdownButtonFormField<String>(
-                                    initialValue: targetParticipantId,
-                                    dropdownColor: widget.isDarkMode
-                                        ? const Color(0xFF2D2D2D)
-                                        : Colors.white,
-                                    style: GoogleFonts.poppins(
-                                      color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
-                                    ),
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: widget.isDarkMode
-                                          ? Colors.white.withValues(alpha: 0.1)
-                                          : Colors.black.withValues(alpha: 0.05),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                    ),
-                                    hint: Text('Select a player'),
-                                    items: participants
-                                        .where((p) => p['id'] != myParticipantId)
-                                        .map((p) => DropdownMenuItem<String>(
-                                              value: p['id'],
-                                              child: Text(p['display_name']),
-                                            ))
-                                        .toList(),
-                                    onChanged: (value) {
-                                      setState(() => targetParticipantId = value);
-                                    },
-                                  ),
-                                ],
-                                
-                                const SizedBox(height: 20),
-                                
-                                // Submit button
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 50,
-                                  child: ElevatedButton(
-                                    onPressed: isSubmitting ? null : _submitQuestion,
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFFFF6B9D),
-                                      foregroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    ),
-                                    child: isSubmitting
-                                        ? const CircularProgressIndicator(color: Colors.white)
-                                        : Text(
-                                            'Submit Question',
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                        ],
-                      ),
-                    ),
-                  ),
+  Widget _buildTargetButton(String label, String type, IconData icon) {
+    final isSelected = targetType == type;
+    
+    return GestureDetector(
+      onTap: () => setState(() => targetType = type),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFFFF6B9D) : Colors.grey[200],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 20,
+              color: isSelected ? Colors.white : Colors.grey,
+            ),
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                label,
+                style: GoogleFonts.poppins(
+                  color: isSelected ? Colors.white : Colors.black,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  fontSize: 14,
                 ),
-              );
-            },
-          ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildTargetButton(String label, String value, IconData icon) {
-    final isSelected = targetType == value;
-    
-    return GestureDetector(
-      onTap: () => setState(() => targetType = value),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? const Color(0xFFFF6B9D)
-              : (widget.isDarkMode
-                  ? Colors.white.withValues(alpha: 0.1)
-                  : Colors.black.withValues(alpha: 0.05)),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected
-                ? const Color(0xFFFF6B9D)
-                : Colors.transparent,
-            width: 2,
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      canPop: !widget.isHost,
+      onPopInvokedWithResult: (bool didPop, dynamic result) async {
+        if (didPop) return;
+        
+        // Host confirms cancellation
+        if (widget.isHost) {
+          final shouldCancel = await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Cancel Session?'),
+              content: const Text(
+                'This will cancel the session for all players. Are you sure?',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('No'),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                  ),
+                  child: const Text('Yes, Cancel'),
+                ),
+              ],
+            ),
+          );
+          
+          if (shouldCancel == true) {
+            await _cancelSession();
+          }
+        }
+      },
+      child: Scaffold(
+        backgroundColor: widget.isDarkMode ? const Color(0xFF2D1B2E) : const Color(0xFFF5F5F5),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: widget.isHost
+              ? IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    color: widget.isDarkMode ? Colors.white : Colors.black87,
+                  ),
+                  onPressed: () async {
+                    final shouldCancel = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Cancel Session?'),
+                        content: const Text(
+                          'This will cancel the session for all players. Are you sure?',
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text('No'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                            child: const Text('Yes, Cancel'),
+                          ),
+                        ],
+                      ),
+                    );
+                    
+                    if (shouldCancel == true) {
+                      await _cancelSession();
+                    }
+                  },
+                )
+              : null,
+          title: Text(
+            widget.isHost ? 'Host - Question Collection' : 'Question Collection',
+            style: GoogleFonts.poppins(
+              color: widget.isDarkMode ? Colors.white : Colors.black87,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              color: isSelected
-                  ? Colors.white
-                  : ThemeHelper.getBodyTextColor(widget.isDarkMode),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                // Timer display
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFFF6B9D), Color(0xFFFF8E53)],
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.timer, color: Colors.white, size: 28),
+                      const SizedBox(width: 12),
+                      Text(
+                        _formatTime(remainingTime),
+                        style: GoogleFonts.poppins(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                const SizedBox(height: 20),
+                
+                // Questions count
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: widget.isDarkMode
+                        ? Colors.white.withValues(alpha: 0.1)
+                        : Colors.black.withValues(alpha: 0.05),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.question_answer,
+                        color: const Color(0xFFFF6B9D),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        '${questions.length} questions submitted',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: widget.isDarkMode ? Colors.white70 : Colors.black87,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                const SizedBox(height: 24),
+                
+                // Scrollable form
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Question input
+                        Text(
+                          'Your Question',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: widget.isDarkMode ? Colors.white : Colors.black87,
+                          ),
+                        ),
+                        
+                        const SizedBox(height: 12),
+                        
+                        TextField(
+                          controller: questionController,
+                          maxLines: 4,
+                          style: GoogleFonts.poppins(
+                            color: widget.isDarkMode ? Colors.white70 : Colors.black87,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: 'Type your question here...',
+                            hintStyle: GoogleFonts.poppins(
+                              color: Colors.grey,
+                            ),
+                            filled: true,
+                            fillColor: widget.isDarkMode
+                                ? Colors.white.withValues(alpha: 0.1)
+                                : Colors.black.withValues(alpha: 0.05),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                        ),
+                        
+                        const SizedBox(height: 20),
+                        
+                        // Target selection
+                        Text(
+                          'Who is this for?',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: widget.isDarkMode ? Colors.white : Colors.black87,
+                          ),
+                        ),
+                        
+                        const SizedBox(height: 12),
+                        
+                        // Target buttons
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _buildTargetButton('Everyone', 'all', Icons.groups),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: _buildTargetButton('Specific', 'specific', Icons.person),
+                            ),
+                          ],
+                        ),
+                        
+                        if (targetType == 'specific') ...[
+                          const SizedBox(height: 16),
+                          DropdownButtonFormField<String>(
+                            initialValue: targetParticipantId,
+                            dropdownColor: widget.isDarkMode
+                                ? const Color(0xFF2D2D2D)
+                                : Colors.white,
+                            style: GoogleFonts.poppins(
+                              color: widget.isDarkMode ? Colors.white : Colors.black87,
+                            ),
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: widget.isDarkMode
+                                  ? Colors.white.withValues(alpha: 0.1)
+                                  : Colors.black.withValues(alpha: 0.05),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                            hint: Text('Select a player'),
+                            items: participants
+                                .where((p) => p['id'] != myParticipantId)
+                                .map((p) => DropdownMenuItem<String>(
+                                      value: p['id'],
+                                      child: Text(p['display_name']),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() => targetParticipantId = value);
+                            },
+                          ),
+                        ],
+                        
+                        const SizedBox(height: 20),
+                        
+                        // Submit button
+                        SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: isSubmitting ? null : _submitQuestion,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFFF6B9D),
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: isSubmitting
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : Text(
+                                    'Submit Question',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                
+                const SizedBox(height: 16),
+                
+                // Host start button
+                if (widget.isHost)
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton(
+                      onPressed: (isStartingGame || questions.length < 5)
+                          ? null
+                          : _startGame,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4CAF50),
+                        foregroundColor: Colors.white,
+                        disabledBackgroundColor: Colors.grey,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: isStartingGame
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : Text(
+                              questions.length < 5
+                                  ? 'Need ${5 - questions.length} more questions'
+                                  : 'Start Game Now',
+                              style: GoogleFonts.poppins(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                    ),
+                  ),
+              ],
             ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: GoogleFonts.poppins(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: isSelected
-                    ? Colors.white
-                    : ThemeHelper.getBodyTextColor(widget.isDarkMode),
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+          ),
         ),
       ),
     );

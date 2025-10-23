@@ -221,22 +221,22 @@ class PandoraService {
   }
 
   Future<void> initializeBroadcastChannel(String sessionId) async {
-  if (_broadcastChannel == null || _currentBroadcastSessionId != sessionId) {
-    debugPrint('🔧 [Host] Initializing broadcast channel: pandora_game_$sessionId');
-    _broadcastChannel = _supabase.channel('pandora_game_$sessionId');
-    _currentBroadcastSessionId = sessionId;
-    
-    // FIXED: Removed 'await' from subscribe
-    _broadcastChannel!.subscribe((status, error) {
-      debugPrint('📡 [Host] Channel status: $status');
-      if (error != null) {
-        debugPrint('❌ [Host] Channel error: $error');
-      }
-    });
-    
-    debugPrint('✅ [Host] Broadcast channel ready');
+    if (_broadcastChannel == null || _currentBroadcastSessionId != sessionId) {
+      debugPrint('🔧 [Host] Initializing broadcast channel: pandora_game_$sessionId');
+      _broadcastChannel = _supabase.channel('pandora_game_$sessionId');
+      _currentBroadcastSessionId = sessionId;
+      
+      // FIXED: Removed 'await' from subscribe
+      _broadcastChannel!.subscribe((status, error) {
+        debugPrint('📡 [Host] Channel status: $status');
+        if (error != null) {
+          debugPrint('❌ [Host] Channel error: $error');
+        }
+      });
+      
+      debugPrint('✅ [Host] Broadcast channel ready');
+    }
   }
-}
 
   // ✅ BROADCAST METHOD: Host broadcasts index changes directly to all players
   Future<void> broadcastQuestionIndex(String sessionId, int index) async {
@@ -274,10 +274,8 @@ class PandoraService {
             debugPrint('📥 [Player] Broadcast received: $payload');
             final index = payload['index'] as int?;
             if (index != null) {
-              debugPrint('✅ [Player] Syncing to index: $index');
+              debugPrint('✅ [Player] Updating to index: $index');
               onIndexUpdate(index);
-            } else {
-              debugPrint('⚠️ [Player] No index in broadcast payload');
             }
           },
         )
@@ -291,7 +289,7 @@ class PandoraService {
     return channel;
   }
 
-  // Keep database update for backup/recovery
+  // ✅ DATABASE METHOD: Update the database (backup, not for real-time sync)
   Future<void> updateQuestionIndex(String sessionId, int index) async {
     try {
       await _supabase
@@ -302,7 +300,7 @@ class PandoraService {
           })
           .eq('id', sessionId);
 
-      debugPrint('✅ Updated question index in DB to: $index');
+      debugPrint('✅ Question index updated in database: $index');
     } catch (e) {
       debugPrint('❌ Error updating question index: $e');
     }
@@ -325,9 +323,27 @@ class PandoraService {
     }
   }
 
+  // ADDED: Cancel session method
+  Future<void> cancelSession(String sessionId) async {
+    try {
+      await _supabase
+          .from('pandora_sessions')
+          .update({
+            'status': 'cancelled',
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .eq('id', sessionId);
+
+      debugPrint('✅ Session cancelled');
+    } catch (e) {
+      debugPrint('❌ Error cancelling session: $e');
+      rethrow;
+    }
+  }
+
   // ============ REACTIONS ============
   
-  /// Add a reaction to a question
+  /// Add a reaction to a question (FIXED: Each player can give their own emoji)
   Future<void> addReaction({
     required String sessionId,
     required int questionIndex,
@@ -357,7 +373,7 @@ class PandoraService {
     }
   }
 
-  /// Get reactions for a specific question
+  /// Get reactions for a specific question (REMOVED 'hundred')
   Future<Map<String, int>> getReactionsForQuestion(
     String sessionId,
     int questionIndex,
@@ -374,7 +390,6 @@ class PandoraService {
         'shock': 0,
         'heart': 0,
         'fire': 0,
-        'hundred': 0,
       };
 
       for (final row in response) {
@@ -413,7 +428,7 @@ class PandoraService {
         .subscribe();
   }
 
-  /// Get session statistics
+  /// Get session statistics (UPDATED: Added most reacted questions)
   Future<Map<String, dynamic>> getSessionStats(String sessionId) async {
     try {
       // Get total questions
@@ -422,25 +437,76 @@ class PandoraService {
       // Get total participants
       final participants = await getParticipants(sessionId);
       
-      // Get total reactions
+      // Get all reactions
       final reactionsResponse = await _supabase
           .from('pandora_reactions')
-          .select('reaction_type')
+          .select('reaction_type, question_index')
           .eq('session_id', sessionId);
       
-      // Count reactions by type
+      // Count reactions by type (REMOVED 'hundred')
       final reactionCounts = <String, int>{
         'laugh': 0,
         'shock': 0,
         'heart': 0,
         'fire': 0,
-        'hundred': 0,
       };
+      
+      // Count reactions per question per type
+      final questionReactions = <int, Map<String, int>>{};
       
       for (final row in reactionsResponse) {
         final type = row['reaction_type'] as String;
+        final questionIndex = row['question_index'] as int;
+        
         reactionCounts[type] = (reactionCounts[type] ?? 0) + 1;
+        
+        if (!questionReactions.containsKey(questionIndex)) {
+          questionReactions[questionIndex] = {
+            'laugh': 0,
+            'shock': 0,
+            'heart': 0,
+            'fire': 0,
+          };
+        }
+        questionReactions[questionIndex]![type] = 
+            (questionReactions[questionIndex]![type] ?? 0) + 1;
       }
+      
+      // Find most reacted question for each category
+      String? mostLovedQuestion;
+      int mostLovedCount = 0;
+      String? mostFunnyQuestion;
+      int mostFunnyCount = 0;
+      String? mostShockingQuestion;
+      int mostShockingCount = 0;
+      String? mostLitQuestion;
+      int mostLitCount = 0;
+      
+      questionReactions.forEach((index, reactions) {
+        if (index < questions.length) {
+          final question = questions[index]['question_text'] as String;
+          
+          if (reactions['heart']! > mostLovedCount) {
+            mostLovedCount = reactions['heart']!;
+            mostLovedQuestion = question;
+          }
+          
+          if (reactions['laugh']! > mostFunnyCount) {
+            mostFunnyCount = reactions['laugh']!;
+            mostFunnyQuestion = question;
+          }
+          
+          if (reactions['shock']! > mostShockingCount) {
+            mostShockingCount = reactions['shock']!;
+            mostShockingQuestion = question;
+          }
+          
+          if (reactions['fire']! > mostLitCount) {
+            mostLitCount = reactions['fire']!;
+            mostLitQuestion = question;
+          }
+        }
+      });
       
       // Find most questions by participant
       final questionsByParticipant = <String, int>{};
@@ -489,6 +555,15 @@ class PandoraService {
         'most_targeted_id': mostTargetedId,
         'most_targeted_count': maxTargets,
         'participants': participants,
+        // Most reacted questions
+        'most_loved_question': mostLovedQuestion,
+        'most_loved_count': mostLovedCount,
+        'most_funny_question': mostFunnyQuestion,
+        'most_funny_count': mostFunnyCount,
+        'most_shocking_question': mostShockingQuestion,
+        'most_shocking_count': mostShockingCount,
+        'most_lit_question': mostLitQuestion,
+        'most_lit_count': mostLitCount,
       };
     } catch (e) {
       debugPrint('❌ Error fetching session stats: $e');

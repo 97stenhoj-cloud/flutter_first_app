@@ -369,4 +369,26 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get mainMenu => 'Main Menu';
+
+  @override
+  String get thanksForPlaying => 'Thanks for Playing!';
+
+  @override
+  String get hopeYouHadFun => 'Hope you had fun! 🎉';
+
+  @override
+  String get backToMenu => 'Back to Menu';
+
+  @override
+  String get leaveGame => 'Leave Game?';
+
+  @override
+  String get leaveGameMessage =>
+      'Are you sure you want to leave? The game will continue for other players.';
+
+  @override
+  String get leave => 'Leave';
+
+  @override
+  String get noQuestionsAvailable => 'No questions available';
 }
