@@ -22,9 +22,9 @@ class GameModeSelectionPage extends StatefulWidget {
 class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
   final PageController _pageController = PageController(
     viewportFraction: 0.45,
-    initialPage: 0,
+    initialPage: 1,
   );
-  int currentPage = 0;
+  int currentPage = 1;
 
   @override
   void dispose() {

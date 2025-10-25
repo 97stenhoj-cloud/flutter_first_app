@@ -266,8 +266,8 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
         ? [const Color(0xFFD85E72), const Color(0xFFC4405A)] // Night mode - Favorites (muted rose red → deep rose)
         : [const Color(0xFFFF9BA8), const Color(0xFFFF6B85)]) // Day mode - Favorites (soft pink red → vibrant coral red)
     : (widget.isDarkMode
-        ? [const Color(0xFF5E8E8C), const Color(0xFF46706E)] // Night mode - User decks
-        : [const Color(0xFFB9E8E0), const Color(0xFF93D3C9)]); // Day mode - User decks
+        ? [const Color(0xFF6C92A3), const Color(0xFF547A8D)] // Night mode - User decks
+        : [const Color(0xFFB9D9E8), const Color(0xFFA4C8E0)]); // Day mode - User decks
   return Container(
     height: 76.0, // Increased from 68 to accommodate content
     decoration: BoxDecoration(

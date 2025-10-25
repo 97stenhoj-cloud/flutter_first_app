@@ -950,27 +950,55 @@ class _GamePageState extends State<GamePage> {
               ),
 
               // Question counter (top right)
-              Positioned(
-                top: 24,
-                right: 24,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: widget.isDarkMode
-                        ? Colors.white.withValues(alpha: 0.15)
-                        : Colors.black.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    '${currentIndex + 1}/${displayedQuestions.length}',
-                    style: GoogleFonts.poppins(
-                      color: widget.isDarkMode ? Colors.white : Colors.black87,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              ),
+              // Question counter (top right) - CLICKABLE
+            // Question counter (top right) - CLICKABLE (Premium only)
+Positioned(
+  top: 24,
+  right: 24,
+  child: GestureDetector(
+    onTap: () {
+      if (unlockManager.isPremium) {
+        _showQuestionPicker();
+      } else {
+        _showPremiumRequiredDialog();
+      }
+    },
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: widget.isDarkMode
+            ? Colors.white.withValues(alpha: 0.15)
+            : Colors.black.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: widget.isDarkMode 
+              ? Colors.white.withValues(alpha: 0.3)
+              : Colors.black.withValues(alpha: 0.2),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            '${currentIndex + 1}/${displayedQuestions.length}',
+            style: GoogleFonts.poppins(
+              color: widget.isDarkMode ? Colors.white : Colors.black87,
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(width: 6),
+          Icon(
+            unlockManager.isPremium ? Icons.list : Icons.lock,
+            size: 18,
+            color: widget.isDarkMode ? Colors.white : Colors.black87,
+          ),
+        ],
+      ),
+    ),
+  ),
+),
 
               // Main content
               Center(
@@ -1028,7 +1056,213 @@ class _GamePageState extends State<GamePage> {
       ),
     );
   }
-
+  void _showPremiumRequiredDialog() {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Row(
+        children: [
+          const Icon(Icons.lock, color: Color(0xFFFF6B9D)),
+          const SizedBox(width: 12),
+          Text(
+            'Premium Feature',
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+      content: Text(
+        'Question navigation is a premium feature. Subscribe to unlock the ability to jump to any question!',
+        style: GoogleFonts.poppins(fontSize: 16),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(
+            'Maybe Later',
+            style: GoogleFonts.poppins(color: Colors.grey),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+            // Navigate to subscription page
+            // Add your subscription navigation here
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFFFF6B9D),
+            foregroundColor: Colors.white,
+          ),
+          child: Text(
+            'Subscribe',
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+  void _showQuestionPicker() {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.transparent,
+    isScrollControlled: true,
+    builder: (context) => Container(
+      height: MediaQuery.of(context).size.height * 0.7,
+      decoration: BoxDecoration(
+        color: widget.isDarkMode ? const Color(0xFF2D1B2E) : Colors.white,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        children: [
+          // Header
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: widget.isDarkMode 
+                      ? Colors.white.withValues(alpha: 0.1)
+                      : Colors.black.withValues(alpha: 0.1),
+                ),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Select Question',
+                  style: GoogleFonts.poppins(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: widget.isDarkMode ? Colors.white : Colors.black87,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(
+                    Icons.close,
+                    color: widget.isDarkMode ? Colors.white : Colors.black87,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          // Question list
+          Expanded(
+            child: ListView.builder(
+              itemCount: displayedQuestions.length,
+              padding: const EdgeInsets.all(16),
+              itemBuilder: (context, index) {
+                final question = displayedQuestions[index];
+                final isCurrentQuestion = index == currentIndex;
+                
+                // Extract first 4 words
+                final words = question.split(' ');
+                final displayText = words.length > 4 
+                    ? '${words.take(4).join(' ')}...' 
+                    : question;
+                
+                return GestureDetector(
+                  onTap: () {
+                    // Jump to selected question
+                    setState(() {
+                      currentIndex = index;
+                    });
+                    controller.moveTo(index);
+                    Navigator.pop(context);
+                    
+                    // Update database if host in Pandora mode
+                    if (isPandoraMode && isHostMode) {
+                      _updateDatabaseIndex(index);
+                    }
+                    
+                    // Load reactions for new question
+                    _loadReactionsForCurrentQuestion();
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: isCurrentQuestion
+                          ? (widget.isDarkMode 
+                              ? const Color(0xFFFF6B9D).withValues(alpha: 0.3)
+                              : const Color(0xFFFF6B9D).withValues(alpha: 0.1))
+                          : (widget.isDarkMode
+                              ? Colors.white.withValues(alpha: 0.05)
+                              : Colors.black.withValues(alpha: 0.03)),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: isCurrentQuestion
+                            ? const Color(0xFFFF6B9D)
+                            : Colors.transparent,
+                        width: 2,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        // Question number
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: isCurrentQuestion
+                                ? const Color(0xFFFF6B9D)
+                                : (widget.isDarkMode
+                                    ? Colors.white.withValues(alpha: 0.1)
+                                    : Colors.black.withValues(alpha: 0.1)),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              '${index + 1}',
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: isCurrentQuestion
+                                    ? Colors.white
+                                    : (widget.isDarkMode ? Colors.white : Colors.black87),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        
+                        // Question text (first 4 words)
+                        Expanded(
+                          child: Text(
+                            displayText,
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              color: widget.isDarkMode ? Colors.white : Colors.black87,
+                              fontWeight: isCurrentQuestion 
+                                  ? FontWeight.w600 
+                                  : FontWeight.normal,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        
+                        // Current indicator
+                        if (isCurrentQuestion)
+                          const Icon(
+                            Icons.check_circle,
+                            color: Color(0xFFFF6B9D),
+                            size: 24,
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
  Widget _buildQuestionCard(String question) {
   final parsed = _parseQuestion(question);
   final targetName = parsed['targetName'];
@@ -1076,8 +1310,8 @@ class _GamePageState extends State<GamePage> {
       } else {
         // Regular custom deck - use aqua/teal gradient
         cardGradient = widget.isDarkMode
-            ? [const Color(0xFF5E8E8C), const Color(0xFF46706E)] // Night mode - User decks (muted teal → ocean dusk)
-            : [const Color(0xFFB9E8E0), const Color(0xFF93D3C9)]; // Day mode - User decks (misty aqua → soft teal)
+        ? [const Color(0xFF6C92A3), const Color(0xFF547A8D)] // Night mode - User decks
+        : [const Color(0xFFB9D9E8), const Color(0xFFA4C8E0)]; // Day mode - User decks
       }
         textColor = Colors.white;
         break;
