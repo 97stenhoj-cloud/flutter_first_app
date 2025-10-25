@@ -60,10 +60,19 @@ class PandoraEntryPage extends StatelessWidget {
                               ),
                             ],
                           ),
-                          child: const Center(
-                            child: Text(
-                              '🔮',
-                              style: TextStyle(fontSize: 60),
+                          child: Center(
+                            child: Image.network(
+                              'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/pandora.png',
+                              width: 70,
+                              height: 70,
+                              fit: BoxFit.contain,
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Icon(
+                                  Icons.psychology,
+                                  size: 70,
+                                  color: Colors.white,
+                                );
+                              },
                             ),
                           ),
                         ),

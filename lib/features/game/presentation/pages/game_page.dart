@@ -950,27 +950,55 @@ class _GamePageState extends State<GamePage> {
               ),
 
               // Question counter (top right)
-              Positioned(
-                top: 24,
-                right: 24,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: widget.isDarkMode
-                        ? Colors.white.withValues(alpha: 0.15)
-                        : Colors.black.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    '${currentIndex + 1}/${displayedQuestions.length}',
-                    style: GoogleFonts.poppins(
-                      color: widget.isDarkMode ? Colors.white : Colors.black87,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              ),
+              // Question counter (top right) - CLICKABLE
+            // Question counter (top right) - CLICKABLE (Premium only)
+Positioned(
+  top: 24,
+  right: 24,
+  child: GestureDetector(
+    onTap: () {
+      if (unlockManager.isPremium) {
+        _showQuestionPicker();
+      } else {
+        _showPremiumRequiredDialog();
+      }
+    },
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: widget.isDarkMode
+            ? Colors.white.withValues(alpha: 0.15)
+            : Colors.black.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: widget.isDarkMode 
+              ? Colors.white.withValues(alpha: 0.3)
+              : Colors.black.withValues(alpha: 0.2),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            '${currentIndex + 1}/${displayedQuestions.length}',
+            style: GoogleFonts.poppins(
+              color: widget.isDarkMode ? Colors.white : Colors.black87,
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(width: 6),
+          Icon(
+            unlockManager.isPremium ? Icons.list : Icons.lock,
+            size: 18,
+            color: widget.isDarkMode ? Colors.white : Colors.black87,
+          ),
+        ],
+      ),
+    ),
+  ),
+),
 
               // Main content
               Center(
@@ -1028,213 +1056,427 @@ class _GamePageState extends State<GamePage> {
       ),
     );
   }
-
-  Widget _buildQuestionCard(String question) {
-    final parsed = _parseQuestion(question);
-    final targetName = parsed['targetName'];
-    final questionText = parsed['questionText'] ?? question;
-    
-    List<Color> cardGradient;
-    Color textColor;
-    String? emoji;
-    
-   if (widget.gameMode.toLowerCase() == 'pandora') {
-  cardGradient = widget.isDarkMode
-      ? [const Color(0xFFC25483), const Color(0xFF9E4069)] // Night mode
-      : [const Color(0xFFFF80B5), const Color(0xFFFF5592)]; // Day mode
-  textColor = Colors.white;
-  emoji = '🔮';
-} else {
-  switch (widget.gameMode.toLowerCase()) {
-    case 'family':
-      cardGradient = widget.isDarkMode
-          ? [const Color(0xFFC99850), const Color(0xFFA96E4B)] // Night mode
-          : [const Color(0xFFFFD97A), const Color(0xFFFFAC5F)]; // Day mode
-      textColor = Colors.white;
-      break;
-    case 'couple':
-      cardGradient = widget.isDarkMode
-          ? [const Color(0xFFC7697D), const Color(0xFF9E5168)] // Night mode
-          : [const Color(0xFFFF9DAF), const Color(0xFFFF6F91)]; // Day mode
-      textColor = Colors.white;
-      break;
-    case 'friends':
-      cardGradient = widget.isDarkMode
-          ? [const Color(0xFF7A62C9), const Color(0xFF5E4AA3)] // Night mode
-          : [const Color(0xFFB38DF8), const Color(0xFF8A6CF3)]; // Day mode
-      textColor = Colors.white;
-      break;
-    case 'personal':
-      cardGradient = widget.isDarkMode
-          ? [const Color(0xFF418AB6), const Color(0xFF306F93)] // Night mode
-          : [const Color(0xFF6FD6FF), const Color(0xFF3EA9F5)]; // Day mode
-      textColor = Colors.white;
-      break;
-    default:
-      cardGradient = [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
-      textColor = const Color(0xFF4A3A33);
-  }
-}
-    
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
-      height: MediaQuery.of(context).size.height * 0.6,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: cardGradient,
-        ),
-        borderRadius: BorderRadius.circular(32),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.15),
-            blurRadius: 40,
-            offset: const Offset(0, 15),
-            spreadRadius: 0,
-          ),
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-            spreadRadius: -5,
+  void _showPremiumRequiredDialog() {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Row(
+        children: [
+          const Icon(Icons.lock, color: Color(0xFFFF6B9D)),
+          const SizedBox(width: 12),
+          Text(
+            'Premium Feature',
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
           ),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(32),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 60),
-          child: Stack(
-            children: [
-              if (emoji == null)
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: logoUrl != null
-                        ? Image.network(
-                            logoUrl!,
-                            width: 80,
-                            height: 80,
-                            fit: BoxFit.contain,
-                            cacheWidth: 80,
-                            cacheHeight: 80,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return const SizedBox(
-                                width: 80,
-                                height: 80,
-                              );
-                            },
-                            errorBuilder: (context, error, stackTrace) {
-                              return const SizedBox(
-                                width: 80,
-                                height: 80,
-                              );
-                            },
-                          )
-                        : const SizedBox(width: 80, height: 80),
+      content: Text(
+        'Question navigation is a premium feature. Subscribe to unlock the ability to jump to any question!',
+        style: GoogleFonts.poppins(fontSize: 16),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(
+            'Maybe Later',
+            style: GoogleFonts.poppins(color: Colors.grey),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+            // Navigate to subscription page
+            // Add your subscription navigation here
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFFFF6B9D),
+            foregroundColor: Colors.white,
+          ),
+          child: Text(
+            'Subscribe',
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+  void _showQuestionPicker() {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.transparent,
+    isScrollControlled: true,
+    builder: (context) => Container(
+      height: MediaQuery.of(context).size.height * 0.7,
+      decoration: BoxDecoration(
+        color: widget.isDarkMode ? const Color(0xFF2D1B2E) : Colors.white,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        children: [
+          // Header
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: widget.isDarkMode 
+                      ? Colors.white.withValues(alpha: 0.1)
+                      : Colors.black.withValues(alpha: 0.1),
+                ),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Select Question',
+                  style: GoogleFonts.poppins(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: widget.isDarkMode ? Colors.white : Colors.black87,
                   ),
                 ),
-              
-              if (emoji != null)
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: Text(
-                      emoji,
-                      style: const TextStyle(fontSize: 64),
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(
+                    Icons.close,
+                    color: widget.isDarkMode ? Colors.white : Colors.black87,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          // Question list
+          Expanded(
+            child: ListView.builder(
+              itemCount: displayedQuestions.length,
+              padding: const EdgeInsets.all(16),
+              itemBuilder: (context, index) {
+                final question = displayedQuestions[index];
+                final isCurrentQuestion = index == currentIndex;
+                
+                // Extract first 4 words
+                final words = question.split(' ');
+                final displayText = words.length > 4 
+                    ? '${words.take(4).join(' ')}...' 
+                    : question;
+                
+                return GestureDetector(
+                  onTap: () {
+                    // Jump to selected question
+                    setState(() {
+                      currentIndex = index;
+                    });
+                    controller.moveTo(index);
+                    Navigator.pop(context);
+                    
+                    // Update database if host in Pandora mode
+                    if (isPandoraMode && isHostMode) {
+                      _updateDatabaseIndex(index);
+                    }
+                    
+                    // Load reactions for new question
+                    _loadReactionsForCurrentQuestion();
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: isCurrentQuestion
+                          ? (widget.isDarkMode 
+                              ? const Color(0xFFFF6B9D).withValues(alpha: 0.3)
+                              : const Color(0xFFFF6B9D).withValues(alpha: 0.1))
+                          : (widget.isDarkMode
+                              ? Colors.white.withValues(alpha: 0.05)
+                              : Colors.black.withValues(alpha: 0.03)),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: isCurrentQuestion
+                            ? const Color(0xFFFF6B9D)
+                            : Colors.transparent,
+                        width: 2,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        // Question number
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: isCurrentQuestion
+                                ? const Color(0xFFFF6B9D)
+                                : (widget.isDarkMode
+                                    ? Colors.white.withValues(alpha: 0.1)
+                                    : Colors.black.withValues(alpha: 0.1)),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              '${index + 1}',
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: isCurrentQuestion
+                                    ? Colors.white
+                                    : (widget.isDarkMode ? Colors.white : Colors.black87),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        
+                        // Question text (first 4 words)
+                        Expanded(
+                          child: Text(
+                            displayText,
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              color: widget.isDarkMode ? Colors.white : Colors.black87,
+                              fontWeight: isCurrentQuestion 
+                                  ? FontWeight.w600 
+                                  : FontWeight.normal,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        
+                        // Current indicator
+                        if (isCurrentQuestion)
+                          const Icon(
+                            Icons.check_circle,
+                            color: Color(0xFFFF6B9D),
+                            size: 24,
+                          ),
+                      ],
                     ),
                   ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+ Widget _buildQuestionCard(String question) {
+  final parsed = _parseQuestion(question);
+  final targetName = parsed['targetName'];
+  final questionText = parsed['questionText'] ?? question;
+  
+  List<Color> cardGradient;
+  Color textColor;
+  String? emoji;
+  
+  if (widget.gameMode.toLowerCase() == 'pandora') {
+    cardGradient = widget.isDarkMode
+        ? [const Color(0xFFC25483), const Color(0xFF9E4069)]
+        : [const Color(0xFFFF80B5), const Color(0xFFFF5592)];
+    textColor = Colors.white;
+    emoji = '🔮';
+  } else {
+    switch (widget.gameMode.toLowerCase()) {
+      case 'family':
+        cardGradient = widget.isDarkMode
+            ? [const Color(0xFFC99850), const Color(0xFFA96E4B)]
+            : [const Color(0xFFFFD97A), const Color(0xFFFFAC5F)];
+        textColor = Colors.white;
+        break;
+      case 'couple':
+        cardGradient = widget.isDarkMode
+            ? [const Color(0xFFC7697D), const Color(0xFF9E5168)]
+            : [const Color(0xFFFF9DAF), const Color(0xFFFF6F91)];
+        textColor = Colors.white;
+        break;
+      case 'friends':
+        cardGradient = widget.isDarkMode
+            ? [const Color(0xFF7A62C9), const Color(0xFF5E4AA3)]
+            : [const Color(0xFFB38DF8), const Color(0xFF8A6CF3)];
+        textColor = Colors.white;
+        break;
+      case 'personal':
+      // Check if this is Favorites deck or regular custom deck
+      final isFavoritesDeck = widget.category.toLowerCase() == 'favorites';
+      
+      if (isFavoritesDeck) {
+        // Favorites deck - use heart red gradient
+        cardGradient = widget.isDarkMode
+            ? [const Color(0xFFD85E72), const Color(0xFFC4405A)] // Night mode - Favorites (muted rose red → deep rose)
+            : [const Color(0xFFFF9BA8), const Color(0xFFFF6B85)]; // Day mode - Favorites (soft pink red → vibrant coral red)
+      } else {
+        // Regular custom deck - use aqua/teal gradient
+        cardGradient = widget.isDarkMode
+        ? [const Color(0xFF6C92A3), const Color(0xFF547A8D)] // Night mode - User decks
+        : [const Color(0xFFB9D9E8), const Color(0xFFA4C8E0)]; // Day mode - User decks
+      }
+        textColor = Colors.white;
+        break;
+      default:
+        cardGradient = [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
+        textColor = const Color(0xFF4A3A33);
+    }
+  }
+  
+  return Container(
+    width: MediaQuery.of(context).size.width * 0.9,
+    height: MediaQuery.of(context).size.height * 0.6,
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: cardGradient,
+      ),
+      borderRadius: BorderRadius.circular(32),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.15),
+          blurRadius: 40,
+          offset: const Offset(0, 15),
+          spreadRadius: 0,
+        ),
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.1),
+          blurRadius: 20,
+          offset: const Offset(0, 8),
+          spreadRadius: -5,
+        ),
+      ],
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(32),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 60),
+        child: Stack(
+          children: [
+            // Connect logo at top (keep original)
+            if (emoji == null)
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: logoUrl != null
+                      ? Image.network(
+                          logoUrl!,
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const SizedBox.shrink();
+                          },
+                        )
+                      : const SizedBox.shrink(),
                 ),
-              
-              Center(
+              ),
+            
+            // Emoji for Pandora mode
+            if (emoji != null)
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Text(
+                    emoji,
+                    style: const TextStyle(fontSize: 64),
+                  ),
+                ),
+              ),
+            
+            // Question text
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
                   questionText,
+                  textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
-                    fontSize: 28,
+                    fontSize: 26,
                     fontWeight: FontWeight.w600,
                     color: textColor,
                     height: 1.4,
-                    letterSpacing: 0.5,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ),
-              
-              if (targetName != null)
-                Positioned(
-                  bottom: 20,
-                  left: 0,
-                  right: 0,
-                  child: Center(
+            ),
+            
+            // Target name badge
+            if (targetName != null)
+              Positioned(
+                bottom: 20,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.person,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          targetName,
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            
+            // Favorite heart button
+            if (!isPandoraMode)
+              Positioned(
+                bottom: targetName != null ? 70 : 20,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: GestureDetector(
+                    onTap: () => _toggleFavorite(question),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.3),
-                        borderRadius: BorderRadius.circular(20),
+                        shape: BoxShape.circle,
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.person,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            targetName,
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
+                      child: Icon(
+                        favoriteQuestions.contains(question)
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: favoriteQuestions.contains(question)
+                            ? Colors.red
+                            : Colors.white,
+                        size: 32,
                       ),
                     ),
                   ),
                 ),
-              
-              // Favorite heart button (bottom middle of card) - only in non-Pandora modes
-              if (!isPandoraMode)
-                Positioned(
-                  bottom: targetName != null ? 70 : 20, // Position above targetName if it exists
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () => _toggleFavorite(question),
-                      child: Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.3),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          favoriteQuestions.contains(question)
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color: favoriteQuestions.contains(question)
-                              ? Colors.red
-                              : Colors.white,
-                          size: 32,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
   
   Widget _buildReactionButtons() {
     // REMOVED 100 emoji
