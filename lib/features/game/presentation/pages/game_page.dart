@@ -1029,212 +1029,220 @@ class _GamePageState extends State<GamePage> {
     );
   }
 
-  Widget _buildQuestionCard(String question) {
-    final parsed = _parseQuestion(question);
-    final targetName = parsed['targetName'];
-    final questionText = parsed['questionText'] ?? question;
-    
-    List<Color> cardGradient;
-    Color textColor;
-    String? emoji;
-    
-   if (widget.gameMode.toLowerCase() == 'pandora') {
-  cardGradient = widget.isDarkMode
-      ? [const Color(0xFFC25483), const Color(0xFF9E4069)] // Night mode
-      : [const Color(0xFFFF80B5), const Color(0xFFFF5592)]; // Day mode
-  textColor = Colors.white;
-  emoji = '🔮';
-} else {
-  switch (widget.gameMode.toLowerCase()) {
-    case 'family':
-      cardGradient = widget.isDarkMode
-          ? [const Color(0xFFC99850), const Color(0xFFA96E4B)] // Night mode
-          : [const Color(0xFFFFD97A), const Color(0xFFFFAC5F)]; // Day mode
-      textColor = Colors.white;
-      break;
-    case 'couple':
-      cardGradient = widget.isDarkMode
-          ? [const Color(0xFFC7697D), const Color(0xFF9E5168)] // Night mode
-          : [const Color(0xFFFF9DAF), const Color(0xFFFF6F91)]; // Day mode
-      textColor = Colors.white;
-      break;
-    case 'friends':
-      cardGradient = widget.isDarkMode
-          ? [const Color(0xFF7A62C9), const Color(0xFF5E4AA3)] // Night mode
-          : [const Color(0xFFB38DF8), const Color(0xFF8A6CF3)]; // Day mode
-      textColor = Colors.white;
-      break;
-    case 'personal':
-      cardGradient = widget.isDarkMode
-          ? [const Color(0xFF418AB6), const Color(0xFF306F93)] // Night mode
-          : [const Color(0xFF6FD6FF), const Color(0xFF3EA9F5)]; // Day mode
-      textColor = Colors.white;
-      break;
-    default:
-      cardGradient = [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
-      textColor = const Color(0xFF4A3A33);
+ Widget _buildQuestionCard(String question) {
+  final parsed = _parseQuestion(question);
+  final targetName = parsed['targetName'];
+  final questionText = parsed['questionText'] ?? question;
+  
+  List<Color> cardGradient;
+  Color textColor;
+  String? emoji;
+  
+  if (widget.gameMode.toLowerCase() == 'pandora') {
+    cardGradient = widget.isDarkMode
+        ? [const Color(0xFFC25483), const Color(0xFF9E4069)]
+        : [const Color(0xFFFF80B5), const Color(0xFFFF5592)];
+    textColor = Colors.white;
+    emoji = '🔮';
+  } else {
+    switch (widget.gameMode.toLowerCase()) {
+      case 'family':
+        cardGradient = widget.isDarkMode
+            ? [const Color(0xFFC99850), const Color(0xFFA96E4B)]
+            : [const Color(0xFFFFD97A), const Color(0xFFFFAC5F)];
+        textColor = Colors.white;
+        break;
+      case 'couple':
+        cardGradient = widget.isDarkMode
+            ? [const Color(0xFFC7697D), const Color(0xFF9E5168)]
+            : [const Color(0xFFFF9DAF), const Color(0xFFFF6F91)];
+        textColor = Colors.white;
+        break;
+      case 'friends':
+        cardGradient = widget.isDarkMode
+            ? [const Color(0xFF7A62C9), const Color(0xFF5E4AA3)]
+            : [const Color(0xFFB38DF8), const Color(0xFF8A6CF3)];
+        textColor = Colors.white;
+        break;
+      case 'personal':
+      // Check if this is Favorites deck or regular custom deck
+      final isFavoritesDeck = widget.category.toLowerCase() == 'favorites';
+      
+      if (isFavoritesDeck) {
+        // Favorites deck - use heart red gradient
+        cardGradient = widget.isDarkMode
+            ? [const Color(0xFFD85E72), const Color(0xFFC4405A)] // Night mode - Favorites (muted rose red → deep rose)
+            : [const Color(0xFFFF9BA8), const Color(0xFFFF6B85)]; // Day mode - Favorites (soft pink red → vibrant coral red)
+      } else {
+        // Regular custom deck - use aqua/teal gradient
+        cardGradient = widget.isDarkMode
+            ? [const Color(0xFF5E8E8C), const Color(0xFF46706E)] // Night mode - User decks (muted teal → ocean dusk)
+            : [const Color(0xFFB9E8E0), const Color(0xFF93D3C9)]; // Day mode - User decks (misty aqua → soft teal)
+      }
+        textColor = Colors.white;
+        break;
+      default:
+        cardGradient = [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
+        textColor = const Color(0xFF4A3A33);
+    }
   }
-}
-    
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
-      height: MediaQuery.of(context).size.height * 0.6,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: cardGradient,
-        ),
-        borderRadius: BorderRadius.circular(32),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.15),
-            blurRadius: 40,
-            offset: const Offset(0, 15),
-            spreadRadius: 0,
-          ),
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-            spreadRadius: -5,
-          ),
-        ],
+  
+  return Container(
+    width: MediaQuery.of(context).size.width * 0.9,
+    height: MediaQuery.of(context).size.height * 0.6,
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: cardGradient,
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(32),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 60),
-          child: Stack(
-            children: [
-              if (emoji == null)
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: logoUrl != null
-                        ? Image.network(
-                            logoUrl!,
-                            width: 80,
-                            height: 80,
-                            fit: BoxFit.contain,
-                            cacheWidth: 80,
-                            cacheHeight: 80,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return const SizedBox(
-                                width: 80,
-                                height: 80,
-                              );
-                            },
-                            errorBuilder: (context, error, stackTrace) {
-                              return const SizedBox(
-                                width: 80,
-                                height: 80,
-                              );
-                            },
-                          )
-                        : const SizedBox(width: 80, height: 80),
+      borderRadius: BorderRadius.circular(32),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.15),
+          blurRadius: 40,
+          offset: const Offset(0, 15),
+          spreadRadius: 0,
+        ),
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.1),
+          blurRadius: 20,
+          offset: const Offset(0, 8),
+          spreadRadius: -5,
+        ),
+      ],
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(32),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 60),
+        child: Stack(
+          children: [
+            // Connect logo at top (keep original)
+            if (emoji == null)
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: logoUrl != null
+                      ? Image.network(
+                          logoUrl!,
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const SizedBox.shrink();
+                          },
+                        )
+                      : const SizedBox.shrink(),
+                ),
+              ),
+            
+            // Emoji for Pandora mode
+            if (emoji != null)
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Text(
+                    emoji,
+                    style: const TextStyle(fontSize: 64),
                   ),
                 ),
-              
-              if (emoji != null)
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: Text(
-                      emoji,
-                      style: const TextStyle(fontSize: 64),
-                    ),
-                  ),
-                ),
-              
-              Center(
+              ),
+            
+            // Question text
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
                   questionText,
+                  textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
-                    fontSize: 28,
+                    fontSize: 26,
                     fontWeight: FontWeight.w600,
                     color: textColor,
                     height: 1.4,
-                    letterSpacing: 0.5,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ),
-              
-              if (targetName != null)
-                Positioned(
-                  bottom: 20,
-                  left: 0,
-                  right: 0,
-                  child: Center(
+            ),
+            
+            // Target name badge
+            if (targetName != null)
+              Positioned(
+                bottom: 20,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.person,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          targetName,
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            
+            // Favorite heart button
+            if (!isPandoraMode)
+              Positioned(
+                bottom: targetName != null ? 70 : 20,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: GestureDetector(
+                    onTap: () => _toggleFavorite(question),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.3),
-                        borderRadius: BorderRadius.circular(20),
+                        shape: BoxShape.circle,
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.person,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            targetName,
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
+                      child: Icon(
+                        favoriteQuestions.contains(question)
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: favoriteQuestions.contains(question)
+                            ? Colors.red
+                            : Colors.white,
+                        size: 32,
                       ),
                     ),
                   ),
                 ),
-              
-              // Favorite heart button (bottom middle of card) - only in non-Pandora modes
-              if (!isPandoraMode)
-                Positioned(
-                  bottom: targetName != null ? 70 : 20, // Position above targetName if it exists
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () => _toggleFavorite(question),
-                      child: Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.3),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          favoriteQuestions.contains(question)
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color: favoriteQuestions.contains(question)
-                              ? Colors.red
-                              : Colors.white,
-                          size: 32,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
   
   Widget _buildReactionButtons() {
     // REMOVED 100 emoji

@@ -37,7 +37,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
     return [
       {
         'text': l10n.couple,
-        'emoji': '💑',
+        'imageUrl': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/couple.png',
         'gameMode': 'couple',
         'onPressed': () => Navigator.push(
           context,
@@ -51,7 +51,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
       },
       {
         'text': l10n.friends,
-        'emoji': '👥',
+        'imageUrl': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/friends.png',
         'gameMode': 'friends',
         'onPressed': () => Navigator.push(
           context,
@@ -65,7 +65,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
       },
       {
         'text': l10n.family,
-        'emoji': '👨‍👩‍👧‍👦',
+        'imageUrl': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/family.png',
         'gameMode': 'family',
         'onPressed': () => Navigator.push(
           context,
@@ -79,7 +79,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
       },
       {
         'text': l10n.personal,
-        'emoji': '📝',
+        'imageUrl': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/personal.png',
         'gameMode': 'personal',
         'onPressed': () => Navigator.push(
           context,
@@ -93,7 +93,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
       },
       {
         'text': 'Pandora',
-        'emoji': '🔮',
+        'imageUrl': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/pandora.png',
         'gameMode': 'pandora',
         'onPressed': () => Navigator.push(
           context,
@@ -129,7 +129,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
                   final mode = gameModes[index];
                   return _buildCarouselCard(
                     text: mode['text'],
-                    emoji: mode['emoji'],
+                    imageUrl: mode['imageUrl'],
                     gameMode: mode['gameMode'],
                     onPressed: mode['onPressed'],
                     index: index,
@@ -162,7 +162,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
 
   Widget _buildCarouselCard({
     required String text,
-    required String emoji,
+    required String imageUrl,
     required String gameMode,
     required VoidCallback onPressed,
     required int index,
@@ -180,109 +180,61 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
           final page = _pageController.page ?? currentPage.toDouble();
           final distanceFromCenter = (page - index).abs();
           
-          // Dramatic scaling - current is 2x, others are 0.5x (half size)
-          scale = (1.0 - (distanceFromCenter * 0.5)).clamp(0.5, 1.0);
-          opacity = (1.0 - (distanceFromCenter * 0.5)).clamp(0.4, 1.0);
+          scale = (1.0 - (distanceFromCenter * 0.15)).clamp(0.85, 1.0);
+          opacity = (1.0 - (distanceFromCenter * 0.3)).clamp(0.5, 1.0);
         }
         
-        return Center(
-          child: Transform.scale(
-            scale: scale,
-            child: Opacity(
-              opacity: opacity,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 2),
-                child: GestureDetector(
-                  onTap: onPressed,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: colors,
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+        return Transform.scale(
+          scale: scale,
+          child: Opacity(
+            opacity: opacity,
+            child: GestureDetector(
+              onTap: onPressed,
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: colors,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(32),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: widget.isDarkMode ? 0.4 : 0.2),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Image instead of emoji
+                      Image.network(
+                        imageUrl,
+                        width: 120,
+                        height: 120,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.image_not_supported,
+                            size: 120,
+                            color: Colors.white.withValues(alpha: 0.5),
+                          );
+                        },
                       ),
-                      borderRadius: BorderRadius.circular(24),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: widget.isDarkMode ? 0.4 : 0.2),
-                          blurRadius: isCurrentPage ? 20 : 8,
-                          offset: Offset(0, isCurrentPage ? 10 : 4),
+                      const SizedBox(height: 24),
+                      Text(
+                        text,
+                        style: GoogleFonts.poppins(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
-                      ],
-                    ),
-                    child: Stack(
-                      children: [
-                        // Content - using SingleChildScrollView to prevent overflow
-                        SingleChildScrollView(
-                          physics: const NeverScrollableScrollPhysics(),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: isCurrentPage ? 40 : 20,
-                              horizontal: 24,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  emoji,
-                                  style: TextStyle(
-                                    fontSize: isCurrentPage ? 90 : 40, // Slightly reduced from 96
-                                  ),
-                                ),
-                                SizedBox(height: isCurrentPage ? 16 : 8),
-                                Text(
-                                  text,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: isCurrentPage ? 34 : 16, // Slightly reduced from 36
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                if (isCurrentPage) ...[
-                                  const SizedBox(height: 12),
-                                  Text(
-                                    'Tap to continue',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 16,
-                                      color: Colors.white.withValues(alpha: 0.9),
-                                    ),
-                                  ),
-                                ],
-                              ],
-                            ),
-                          ),
-                        ),
-                        
-                        // Decorative gradient overlay at bottom (only on current page)
-                        if (isCurrentPage)
-                          Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: Container(
-                              height: 60,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Colors.transparent,
-                                    Colors.black.withValues(alpha: 0.15),
-                                  ],
-                                ),
-                                borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(24),
-                                  bottomRight: Radius.circular(24),
-                                ),
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

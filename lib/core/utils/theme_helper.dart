@@ -337,24 +337,24 @@ class ThemeHelper {
   switch (normalizedMode) {
     case 'couple':
       return isDarkMode
-          ? [const Color(0xFFC7697D), const Color(0xFF9E5168)] // Night mode
-          : [const Color(0xFFFF9DAF), const Color(0xFFFF6F91)]; // Day mode
+          ? [const Color(0xFFA86F84), const Color(0xFF8D5D71)] // Night mode - dusty rose → mauve dusk
+          : [const Color(0xFFE9B8C8), const Color(0xFFDFA7B8)]; // Day mode - muted rose → dusty blush
     case 'friends':
       return isDarkMode
-          ? [const Color(0xFF7A62C9), const Color(0xFF5E4AA3)] // Night mode
-          : [const Color(0xFFB38DF8), const Color(0xFF8A6CF3)]; // Day mode
+          ? [const Color(0xFF7E72A9), const Color(0xFF665E93)] // Night mode - muted violet → deep periwinkle
+          : [const Color(0xFFC4B4E3), const Color(0xFFB2A4DB)]; // Day mode - soft lilac → periwinkle
     case 'family':
       return isDarkMode
-          ? [const Color(0xFFC99850), const Color(0xFFA96E4B)] // Night mode
-          : [const Color(0xFFFFD97A), const Color(0xFFFFAC5F)]; // Day mode
+          ? [const Color(0xFFA78E72), const Color(0xFF8C7059)] // Night mode - warm tan → cocoa brown
+          : [const Color(0xFFE9CFAE), const Color(0xFFD9B892)]; // Day mode - cream gold → toffee beige
     case 'personal':
       return isDarkMode
-          ? [const Color(0xFF418AB6), const Color(0xFF306F93)] // Night mode
-          : [const Color(0xFF6FD6FF), const Color(0xFF3EA9F5)]; // Day mode
+          ? [const Color(0xFF6C92A3), const Color(0xFF547A8D)] // Night mode - misty blue → slate teal
+          : [const Color(0xFFB9D9E8), const Color(0xFFA4C8E0)]; // Day mode - pale sky → misty teal
     case 'pandora':
       return isDarkMode
-          ? [const Color(0xFFC25483), const Color(0xFF9E4069)] // Night mode
-          : [const Color(0xFFFF80B5), const Color(0xFFFF5592)]; // Day mode
+          ? [const Color(0xFFC25483), const Color(0xFF9E4069)] // Night mode - deep rose magenta → plum
+          : [const Color(0xFFFF80B5), const Color(0xFFFF5592)]; // Day mode - vibrant pink → magenta
     default:
       return getMainMenuGradient(isDarkMode);
   }

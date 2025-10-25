@@ -27,22 +27,35 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
   }
 
   Future<void> _loadDecks() async {
-    try {
-      // Ensure Favorites deck exists
-      await customDeckService.ensureFavoritesDeck();
+  try {
+    final fetchedDecks = await customDeckService.getUserDecks();
+    
+    // Sort decks: Favorites first, then others by created_at
+    fetchedDecks.sort((a, b) {
+      final aIsFavorites = customDeckService.isFavoritesDeck(a);
+      final bIsFavorites = customDeckService.isFavoritesDeck(b);
       
-      final fetchedDecks = await customDeckService.getUserDecks();
-      setState(() {
-        decks = fetchedDecks;
-        isLoading = false;
-      });
-    } catch (e) {
-      debugPrint('Error loading decks: $e');
-      setState(() {
-        isLoading = false;
-      });
-    }
+      // Favorites always comes first
+      if (aIsFavorites && !bIsFavorites) return -1;
+      if (!aIsFavorites && bIsFavorites) return 1;
+      
+      // For non-favorites, sort by created_at (newest first)
+      final aCreated = DateTime.parse(a['created_at'] as String);
+      final bCreated = DateTime.parse(b['created_at'] as String);
+      return bCreated.compareTo(aCreated);
+    });
+    
+    setState(() {
+      decks = fetchedDecks;
+      isLoading = false;
+    });
+  } catch (e) {
+    debugPrint('Error loading decks: $e');
+    setState(() {
+      isLoading = false;
+    });
   }
+}
 
   Future<void> _createDeck() async {
     final controller = TextEditingController();
@@ -242,22 +255,28 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
     );
   }
 
-  Widget _buildDeckCard(Map<String, dynamic> deck) {
+ Widget _buildDeckCard(Map<String, dynamic> deck) {
   final deckId = deck['id'] as String;
   final deckName = deck['deck_name'] as String;
   final isFavorites = customDeckService.isFavoritesDeck(deck);
 
+  // Determine gradient colors based on deck type
+  final List<Color> gradientColors = isFavorites
+    ? (widget.isDarkMode
+        ? [const Color(0xFFD85E72), const Color(0xFFC4405A)] // Night mode - Favorites (muted rose red → deep rose)
+        : [const Color(0xFFFF9BA8), const Color(0xFFFF6B85)]) // Day mode - Favorites (soft pink red → vibrant coral red)
+    : (widget.isDarkMode
+        ? [const Color(0xFF5E8E8C), const Color(0xFF46706E)] // Night mode - User decks
+        : [const Color(0xFFB9E8E0), const Color(0xFF93D3C9)]); // Day mode - User decks
   return Container(
-    height: 68.0, // 15% smaller than 80
+    height: 76.0, // Increased from 68 to accommodate content
     decoration: BoxDecoration(
       gradient: LinearGradient(
-        colors: isFavorites
-            ? ThemeHelper.getGameModeGradient('personal', widget.isDarkMode)
-            : ThemeHelper.getGameModeGradient('personal', widget.isDarkMode),
+        colors: gradientColors,
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
-      borderRadius: BorderRadius.circular(14), // Reduced from 16
+      borderRadius: BorderRadius.circular(14),
       boxShadow: ThemeHelper.getButtonShadow(widget.isDarkMode),
     ),
     child: Material(
@@ -311,29 +330,32 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
         },
         borderRadius: BorderRadius.circular(14),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 14), // Reduced padding
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12), // Reduced horizontal padding
           child: Row(
             children: [
               Icon(
                 isFavorites ? Icons.favorite : Icons.style,
-                size: 28, // Reduced from 32
+                size: 26, // Slightly reduced from 28
                 color: Colors.white,
               ),
-              const SizedBox(width: 14), // Reduced from 16
+              const SizedBox(width: 12), // Reduced from 14
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min, // Added to prevent overflow
                   children: [
                     Text(
                       deckName,
                       style: GoogleFonts.poppins(
-                        fontSize: 16, // Reduced from 18
+                        fontSize: 15, // Reduced from 16
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 4),
                     FutureBuilder<List<Map<String, dynamic>>>(
                       future: customDeckService.getDeckQuestions(deckId),
                       builder: (context, snapshot) {
@@ -341,37 +363,43 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
                         final hasEnough = count >= 5;
                         
                         return Row(
+                          mainAxisSize: MainAxisSize.min, // Prevent overflow
                           children: [
-                            Text(
-                              '$count question${count != 1 ? 's' : ''}',
-                              style: GoogleFonts.poppins(
-                                fontSize: 13, // Reduced from 14
-                                color: Colors.white.withValues(alpha: 0.9),
+                            Flexible(
+                              child: Text(
+                                '$count question${count != 1 ? 's' : ''}',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 12, // Reduced from 13
+                                  color: Colors.white.withValues(alpha: 0.9),
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             if (!hasEnough) ...[
-                              const SizedBox(width: 6),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: Colors.orange[800],
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  'Need ${5 - count} more',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 11, // Reduced from 12
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
+                              const SizedBox(width: 4), // Reduced from 6
+                              Flexible(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.orange[800],
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    'Need ${5 - count}',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 10, // Reduced from 11
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
                             ],
                             if (hasEnough) ...[
-                              const SizedBox(width: 6),
+                              const SizedBox(width: 4),
                               Icon(
                                 Icons.check_circle,
-                                size: 14, // Reduced from 16
+                                size: 13, // Reduced from 14
                                 color: Colors.white,
                               ),
                             ],
@@ -382,6 +410,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
                   ],
                 ),
               ),
+              const SizedBox(width: 4), // Space between content and buttons
               if (!isFavorites) ...[
                 IconButton(
                   onPressed: () {
@@ -398,17 +427,22 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
                   },
                   icon: Icon(
                     Icons.edit,
-                    size: 22, // Reduced icon size
-                    color: ThemeHelper.getSecondaryButtonTextColor(widget.isDarkMode),
+                    size: 20, // Reduced from 22
+                    color: Colors.white,
                   ),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
                 ),
+                const SizedBox(width: 4),
                 IconButton(
                   onPressed: () => _deleteDeck(deckId, deckName),
                   icon: Icon(
                     Icons.delete,
-                    size: 22, // Reduced icon size
-                    color: ThemeHelper.getSecondaryButtonTextColor(widget.isDarkMode),
+                    size: 20, // Reduced from 22
+                    color: Colors.white,
                   ),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
                 ),
               ] else ...[
                 IconButton(
@@ -427,9 +461,11 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
                   },
                   icon: const Icon(
                     Icons.visibility,
-                    size: 22, // Reduced icon size
+                    size: 20, // Reduced from 22
                     color: Colors.white,
                   ),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
                   tooltip: 'View favorites',
                 ),
               ],
