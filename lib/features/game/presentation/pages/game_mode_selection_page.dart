@@ -21,7 +21,7 @@ class GameModeSelectionPage extends StatefulWidget {
 
 class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
   final PageController _pageController = PageController(
-    viewportFraction: 0.5, // Show 50% of each card, so you see current + parts of prev/next
+    viewportFraction: 0.45,
     initialPage: 0,
   );
   int currentPage = 0;
@@ -107,66 +107,50 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     final gameModes = getGameModes(context);
     
     return Scaffold(
       body: Container(
         decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode),
         child: SafeArea(
-          child: Column(
+          child: Stack(
             children: [
-              // Header
-              Padding(
-                padding: const EdgeInsets.all(AppConstants.defaultPadding),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                        size: 28,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        l10n.chooseGameMode,
-                        style: GoogleFonts.poppins(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                    ),
-                  ],
-                ),
+              // Vertical Carousel - Full screen
+              PageView.builder(
+                controller: _pageController,
+                scrollDirection: Axis.vertical,
+                itemCount: gameModes.length,
+                onPageChanged: (index) {
+                  setState(() {
+                    currentPage = index;
+                  });
+                },
+                itemBuilder: (context, index) {
+                  final mode = gameModes[index];
+                  return _buildCarouselCard(
+                    text: mode['text'],
+                    emoji: mode['emoji'],
+                    gameMode: mode['gameMode'],
+                    onPressed: mode['onPressed'],
+                    index: index,
+                  );
+                },
               ),
               
-              // Vertical Carousel
-              Expanded(
-                child: PageView.builder(
-                  controller: _pageController,
-                  scrollDirection: Axis.vertical,
-                  itemCount: gameModes.length,
-                  onPageChanged: (index) {
-                    setState(() {
-                      currentPage = index;
-                    });
-                  },
-                  itemBuilder: (context, index) {
-                    final mode = gameModes[index];
-                    return _buildCarouselCard(
-                      text: mode['text'],
-                      emoji: mode['emoji'],
-                      gameMode: mode['gameMode'],
-                      onPressed: mode['onPressed'],
-                      index: index,
-                    );
-                  },
+              // Back button overlay (top left)
+              Positioned(
+                top: 16,
+                left: 16,
+                child: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                    size: 32,
+                  ),
+                  style: IconButton.styleFrom(
+                    backgroundColor: Colors.black.withValues(alpha: 0.2),
+                  ),
                 ),
               ),
             ],
@@ -196,9 +180,9 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
           final page = _pageController.page ?? currentPage.toDouble();
           final distanceFromCenter = (page - index).abs();
           
-          // Subtle scaling - keep all visible cards readable
-          scale = (1.0 - (distanceFromCenter * 0.2)).clamp(0.8, 1.0);
-          opacity = (1.0 - (distanceFromCenter * 0.4)).clamp(0.5, 1.0);
+          // Dramatic scaling - current is 2x, others are 0.5x (half size)
+          scale = (1.0 - (distanceFromCenter * 0.5)).clamp(0.5, 1.0);
+          opacity = (1.0 - (distanceFromCenter * 0.5)).clamp(0.4, 1.0);
         }
         
         return Center(
@@ -207,7 +191,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
             child: Opacity(
               opacity: opacity,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 2),
                 child: GestureDetector(
                   onTap: onPressed,
                   child: Container(
@@ -221,49 +205,55 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: widget.isDarkMode ? 0.4 : 0.2),
-                          blurRadius: isCurrentPage ? 20 : 10,
-                          offset: Offset(0, isCurrentPage ? 10 : 5),
+                          blurRadius: isCurrentPage ? 20 : 8,
+                          offset: Offset(0, isCurrentPage ? 10 : 4),
                         ),
                       ],
                     ),
                     child: Stack(
                       children: [
-                        // Content
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                emoji,
-                                style: TextStyle(
-                                  fontSize: isCurrentPage ? 56 : 44,
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              Text(
-                                text,
-                                style: GoogleFonts.poppins(
-                                  fontSize: isCurrentPage ? 26 : 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              if (isCurrentPage) ...[
-                                const SizedBox(height: 8),
+                        // Content - using SingleChildScrollView to prevent overflow
+                        SingleChildScrollView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: isCurrentPage ? 40 : 20,
+                              horizontal: 24,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
                                 Text(
-                                  'Tap to continue',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14,
-                                    color: Colors.white.withValues(alpha: 0.9),
+                                  emoji,
+                                  style: TextStyle(
+                                    fontSize: isCurrentPage ? 90 : 40, // Slightly reduced from 96
                                   ),
                                 ),
+                                SizedBox(height: isCurrentPage ? 16 : 8),
+                                Text(
+                                  text,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: isCurrentPage ? 34 : 16, // Slightly reduced from 36
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                if (isCurrentPage) ...[
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    'Tap to continue',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16,
+                                      color: Colors.white.withValues(alpha: 0.9),
+                                    ),
+                                  ),
+                                ],
                               ],
-                            ],
+                            ),
                           ),
                         ),
                         
@@ -274,7 +264,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
                             left: 0,
                             right: 0,
                             child: Container(
-                              height: 50,
+                              height: 60,
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   begin: Alignment.topCenter,
