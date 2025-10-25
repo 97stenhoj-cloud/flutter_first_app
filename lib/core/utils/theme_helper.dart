@@ -330,34 +330,35 @@ class ThemeHelper {
     }
   }
 
+
   static List<Color> getGameModeGradient(String gameMode, bool isDarkMode) {
-    String normalizedMode = gameMode.toLowerCase();
-    
-    switch (normalizedMode) {
-      case 'couple':
-        return isDarkMode
-            ? [const Color(0xFFE57A8C), const Color(0xFFE39867)]
-            : [const Color(0xFFF28B9C), const Color(0xFFF5A877)];
-      case 'friends':
-        return isDarkMode
-            ? [const Color(0xFF9276AB), const Color(0xFF7A6A9C)]
-            : [const Color(0xFFB995D3), const Color(0xFFA384C2)];
-      case 'family':
-        return isDarkMode
-            ? [const Color(0xFFD4A066), const Color(0xFFBF8F4F)]
-            : [const Color(0xFFF0D6A6), const Color(0xFFE3C590)];
-      case 'personal':
-        return isDarkMode
-            ? [const Color(0xFF5A8AA8), const Color(0xFF4A7A98)]
-            : [const Color(0xFF90B5E8), const Color(0xFF7A9AD7)];
-      case 'pandora':
-        return isDarkMode
-            ? [const Color(0xFFFF6B9D), const Color(0xFFD81B60)]
-            : [const Color(0xFFFF6B9D), const Color(0xFFFF8E53)];
-      default:
-        return getMainMenuGradient(isDarkMode);
-    }
+  String normalizedMode = gameMode.toLowerCase();
+  
+  switch (normalizedMode) {
+    case 'couple':
+      return isDarkMode
+          ? [const Color(0xFFC7697D), const Color(0xFF9E5168)] // Night mode
+          : [const Color(0xFFFF9DAF), const Color(0xFFFF6F91)]; // Day mode
+    case 'friends':
+      return isDarkMode
+          ? [const Color(0xFF7A62C9), const Color(0xFF5E4AA3)] // Night mode
+          : [const Color(0xFFB38DF8), const Color(0xFF8A6CF3)]; // Day mode
+    case 'family':
+      return isDarkMode
+          ? [const Color(0xFFC99850), const Color(0xFFA96E4B)] // Night mode
+          : [const Color(0xFFFFD97A), const Color(0xFFFFAC5F)]; // Day mode
+    case 'personal':
+      return isDarkMode
+          ? [const Color(0xFF418AB6), const Color(0xFF306F93)] // Night mode
+          : [const Color(0xFF6FD6FF), const Color(0xFF3EA9F5)]; // Day mode
+    case 'pandora':
+      return isDarkMode
+          ? [const Color(0xFFC25483), const Color(0xFF9E4069)] // Night mode
+          : [const Color(0xFFFF80B5), const Color(0xFFFF5592)]; // Day mode
+    default:
+      return getMainMenuGradient(isDarkMode);
   }
+}
   
   // ============================================================================
   // BUTTON SHADOW

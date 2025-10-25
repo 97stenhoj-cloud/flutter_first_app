@@ -7,7 +7,7 @@ import '../../../../l10n/app_localizations.dart';
 import 'category_selection_page.dart';
 import '../../../pandora/presentation/pages/pandora_entry_page.dart';
 
-class GameModeSelectionPage extends StatelessWidget {
+class GameModeSelectionPage extends StatefulWidget {
   final bool isDarkMode;
   
   const GameModeSelectionPage({
@@ -15,224 +15,281 @@ class GameModeSelectionPage extends StatelessWidget {
     required this.isDarkMode,
   });
 
-  Widget _buildLayeredGameModeButton({
-    required String text,
-    required String emoji,
-    required VoidCallback onPressed,
-    required String gameMode,
-    required bool isDarkMode,
-  }) {
-    final colors = ThemeHelper.getGameModeGradient(gameMode, isDarkMode);
-    
-    // Adjusted button sizes to fit 5 buttons
-    const double buttonWidth = 360;
-    const double buttonHeight = 100.0;  // Reduced from 110 to 100
-    
-    return GestureDetector(
-      onTap: onPressed,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // Outermost layer (shadow effect)
-          Container(
-            width: buttonWidth,
-            height: buttonHeight,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: colors,
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: ThemeHelper.getButtonShadow(isDarkMode),
+  @override
+  State<GameModeSelectionPage> createState() => _GameModeSelectionPageState();
+}
+
+class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
+  final PageController _pageController = PageController(
+    viewportFraction: 0.45,
+    initialPage: 0,
+  );
+  int currentPage = 0;
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  List<Map<String, dynamic>> getGameModes(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return [
+      {
+        'text': l10n.couple,
+        'emoji': '💑',
+        'gameMode': 'couple',
+        'onPressed': () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategorySelectionPage(
+              gameMode: 'couple',
+              isDarkMode: widget.isDarkMode,
             ),
           ),
-          // Middle layer (depth effect)
-          Container(
-            width: buttonWidth - 8,
-            height: buttonHeight - 8,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  colors[0].withValues(alpha: 0.85),
-                  colors[1].withValues(alpha: 0.85)
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(10),
+        ),
+      },
+      {
+        'text': l10n.friends,
+        'emoji': '👥',
+        'gameMode': 'friends',
+        'onPressed': () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategorySelectionPage(
+              gameMode: 'friends',
+              isDarkMode: widget.isDarkMode,
             ),
           ),
-          // Innermost layer (button content)
-          Container(
-            width: buttonWidth - 16,
-            height: buttonHeight - 16,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: colors,
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  emoji,
-                  style: const TextStyle(fontSize: 32),  // Reduced from 36 to 32
-                ),
-                const SizedBox(height: 6),  // Reduced from 8 to 6
-                Text(
-                  text,
-                  style: GoogleFonts.poppins(
-                    fontSize: 18,  // Reduced from 20 to 18
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+        ),
+      },
+      {
+        'text': l10n.family,
+        'emoji': '👨‍👩‍👧‍👦',
+        'gameMode': 'family',
+        'onPressed': () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategorySelectionPage(
+              gameMode: 'family',
+              isDarkMode: widget.isDarkMode,
             ),
           ),
-        ],
-      ),
-    );
+        ),
+      },
+      {
+        'text': l10n.personal,
+        'emoji': '📝',
+        'gameMode': 'personal',
+        'onPressed': () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategorySelectionPage(
+              gameMode: 'personal',
+              isDarkMode: widget.isDarkMode,
+            ),
+          ),
+        ),
+      },
+      {
+        'text': 'Pandora',
+        'emoji': '🔮',
+        'gameMode': 'pandora',
+        'onPressed': () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PandoraEntryPage(isDarkMode: widget.isDarkMode),
+          ),
+        ),
+      },
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final gameModes = getGameModes(context);
     
     return Scaffold(
       body: Container(
-        decoration: ThemeHelper.getBackgroundDecoration(isDarkMode),
+        decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(AppConstants.defaultPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Back button
-                IconButton(
+          child: Stack(
+            children: [
+              // Vertical Carousel - Full screen
+              PageView.builder(
+                controller: _pageController,
+                scrollDirection: Axis.vertical,
+                itemCount: gameModes.length,
+                onPageChanged: (index) {
+                  setState(() {
+                    currentPage = index;
+                  });
+                },
+                itemBuilder: (context, index) {
+                  final mode = gameModes[index];
+                  return _buildCarouselCard(
+                    text: mode['text'],
+                    emoji: mode['emoji'],
+                    gameMode: mode['gameMode'],
+                    onPressed: mode['onPressed'],
+                    index: index,
+                  );
+                },
+              ),
+              
+              // Back button overlay (top left)
+              Positioned(
+                top: 16,
+                left: 16,
+                child: IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: Icon(
-                    Icons.arrow_back, 
-                    color: ThemeHelper.getHeadingTextColor(isDarkMode), 
-                    size: 28
+                    Icons.arrow_back,
+                    color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                    size: 32,
+                  ),
+                  style: IconButton.styleFrom(
+                    backgroundColor: Colors.black.withValues(alpha: 0.2),
                   ),
                 ),
-                
-                const SizedBox(height: 20),  // Reduced from 40 to 20
-                
-                // Title text
-                Center(
-                  child: Text(
-                    l10n.chooseGameMode,
-                    style: GoogleFonts.poppins(
-                      fontSize: 24,  // Reduced from 28 to 24
-                      fontWeight: FontWeight.bold,
-                      color: ThemeHelper.getHeadingTextColor(isDarkMode),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCarouselCard({
+    required String text,
+    required String emoji,
+    required String gameMode,
+    required VoidCallback onPressed,
+    required int index,
+  }) {
+    final colors = ThemeHelper.getGameModeGradient(gameMode, widget.isDarkMode);
+    final isCurrentPage = currentPage == index;
+    
+    return AnimatedBuilder(
+      animation: _pageController,
+      builder: (context, child) {
+        double scale = 1.0;
+        double opacity = 1.0;
+        
+        if (_pageController.position.haveDimensions) {
+          final page = _pageController.page ?? currentPage.toDouble();
+          final distanceFromCenter = (page - index).abs();
+          
+          // Dramatic scaling - current is 2x, others are 0.5x (half size)
+          scale = (1.0 - (distanceFromCenter * 0.5)).clamp(0.5, 1.0);
+          opacity = (1.0 - (distanceFromCenter * 0.5)).clamp(0.4, 1.0);
+        }
+        
+        return Center(
+          child: Transform.scale(
+            scale: scale,
+            child: Opacity(
+              opacity: opacity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 2),
+                child: GestureDetector(
+                  onTap: onPressed,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: colors,
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: widget.isDarkMode ? 0.4 : 0.2),
+                          blurRadius: isCurrentPage ? 20 : 8,
+                          offset: Offset(0, isCurrentPage ? 10 : 4),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-              
-                const SizedBox(height: 20),  // Reduced from 30 to 20
-                
-                // Game mode buttons - Now scrollable
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Stack(
                       children: [
-                        const SizedBox(height: 10),  // Top padding
-                        _buildLayeredGameModeButton(
-                          text: l10n.couple,
-                          emoji: '💑',
-                          onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CategorySelectionPage(
-                                gameMode: 'couple',
-                                isDarkMode: isDarkMode,
+                        // Content - using SingleChildScrollView to prevent overflow
+                        SingleChildScrollView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: isCurrentPage ? 40 : 20,
+                              horizontal: 24,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  emoji,
+                                  style: TextStyle(
+                                    fontSize: isCurrentPage ? 90 : 40, // Slightly reduced from 96
+                                  ),
+                                ),
+                                SizedBox(height: isCurrentPage ? 16 : 8),
+                                Text(
+                                  text,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: isCurrentPage ? 34 : 16, // Slightly reduced from 36
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                if (isCurrentPage) ...[
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    'Tap to continue',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16,
+                                      color: Colors.white.withValues(alpha: 0.9),
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ),
+                        ),
+                        
+                        // Decorative gradient overlay at bottom (only on current page)
+                        if (isCurrentPage)
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              height: 60,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.transparent,
+                                    Colors.black.withValues(alpha: 0.15),
+                                  ],
+                                ),
+                                borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(24),
+                                  bottomRight: Radius.circular(24),
+                                ),
                               ),
                             ),
                           ),
-                          gameMode: 'couple',
-                          isDarkMode: isDarkMode,
-                        ),
-                        const SizedBox(height: 12),  // Reduced from 16 to 12
-                        _buildLayeredGameModeButton(
-                          text: l10n.friends,
-                          emoji: '👥',
-                          onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CategorySelectionPage(
-                                gameMode: 'friends',
-                                isDarkMode: isDarkMode,
-                              ),
-                            ),
-                          ),
-                          gameMode: 'friends',
-                          isDarkMode: isDarkMode,
-                        ),
-                        const SizedBox(height: 12),
-                        _buildLayeredGameModeButton(
-                          text: l10n.family,
-                          emoji: '👨‍👩‍👧‍👦',
-                          onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CategorySelectionPage(
-                                gameMode: 'family',
-                                isDarkMode: isDarkMode,
-                              ),
-                            ),
-                          ),
-                          gameMode: 'family',
-                          isDarkMode: isDarkMode,
-                        ),
-                        const SizedBox(height: 12),
-                        _buildLayeredGameModeButton(
-                          text: l10n.personal,
-                          emoji: '📝',
-                          onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CategorySelectionPage(
-                                gameMode: 'personal',
-                                isDarkMode: isDarkMode,
-                              ),
-                            ),
-                          ),
-                          gameMode: 'personal',
-                          isDarkMode: isDarkMode,
-                        ),
-                        const SizedBox(height: 12),
-                        _buildLayeredGameModeButton(
-                          text: 'Pandora',
-                          emoji: '🔮',  // Changed from 📦 to 🔮
-                          onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PandoraEntryPage(isDarkMode: isDarkMode),
-                            ),
-                          ),
-                          gameMode: 'pandora',
-                          isDarkMode: isDarkMode,
-                        ),
-                        const SizedBox(height: 10),  // Bottom padding
                       ],
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

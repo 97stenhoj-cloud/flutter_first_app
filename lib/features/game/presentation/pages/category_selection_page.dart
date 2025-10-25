@@ -26,14 +26,15 @@ class CategorySelectionPage extends StatefulWidget {
 class _CategorySelectionPageState extends State<CategorySelectionPage> {
   final unlockManager = UnlockManager();
   final supabaseService = SupabaseService();
+  final PageController _pageController = PageController(viewportFraction: 0.85);
   
   List<String> categories = [];
   bool isLoading = true;
+  int currentPage = 0;
 
   @override
   void initState() {
     super.initState();
-    // FIXED: Only load categories if NOT personal mode
     if (widget.gameMode.toLowerCase() != 'personal') {
       _loadCategories();
     } else {
@@ -41,6 +42,12 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
         isLoading = false;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadCategories() async {
@@ -106,6 +113,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
         child: SafeArea(
           child: Column(
             children: [
+              // Header
               Padding(
                 padding: const EdgeInsets.all(AppConstants.defaultPadding),
                 child: Row(
@@ -132,9 +140,10 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
                       ),
                     ),
                   ],
-                ),  
+                ),
               ),
               
+              // Carousel
               Expanded(
                 child: isLoading
                     ? Center(
@@ -152,45 +161,195 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
                               ),
                             ),
                           )
-                        : ListView.builder(
-                            padding: const EdgeInsets.all(AppConstants.defaultPadding),
-                            itemCount: categories.length,
-                            itemBuilder: (context, index) {
-                              final category = categories[index];
-                              final isLocked = _isCategoryLocked(category);
-                              
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 16),
-                                child: ThemeHelper.buildLayeredButton(
-                                  text: category,
-                                  icon: isLocked ? Icons.lock : null,
-                                  onPressed: () {
-                                    if (isLocked) {
-                                      _showLockedDialog(context);
-                                    } else {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => GamePage(
-                                            gameMode: widget.gameMode,
-                                            category: category,
-                                            isDarkMode: widget.isDarkMode,
-                                          ),
-                                        ),
-                                      );
-                                    }
+                        : Column(
+                            children: [
+                              // Carousel
+                              Expanded(
+                                child: PageView.builder(
+                                  controller: _pageController,
+                                  itemCount: categories.length,
+                                  onPageChanged: (index) {
+                                    setState(() {
+                                      currentPage = index;
+                                    });
                                   },
-                                  isPrimary: !isLocked,
-                                  isDarkMode: widget.isDarkMode,
+                                  itemBuilder: (context, index) {
+                                    final category = categories[index];
+                                    final isLocked = _isCategoryLocked(category);
+                                    return _buildCarouselCard(
+                                      category: category,
+                                      isLocked: isLocked,
+                                      index: index,
+                                    );
+                                  },
                                 ),
-                              );
-                            },
+                              ),
+                              
+                              // Page indicators
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 40),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: List.generate(
+                                    categories.length,
+                                    (index) => AnimatedContainer(
+                                      duration: const Duration(milliseconds: 300),
+                                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                                      width: currentPage == index ? 24 : 8,
+                                      height: 8,
+                                      decoration: BoxDecoration(
+                                        color: currentPage == index
+                                            ? ThemeHelper.getGameModeGradient(widget.gameMode, widget.isDarkMode)[0]
+                                            : ThemeHelper.getHeadingTextColor(widget.isDarkMode).withValues(alpha: 0.3),
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildCarouselCard({
+    required String category,
+    required bool isLocked,
+    required int index,
+  }) {
+    final colors = ThemeHelper.getGameModeGradient(widget.gameMode, widget.isDarkMode);
+    final isCurrentPage = currentPage == index;
+    
+    return AnimatedBuilder(
+      animation: _pageController,
+      builder: (context, child) {
+        double scale = 1.0;
+        double opacity = 1.0;
+        
+        if (_pageController.position.haveDimensions) {
+          final page = _pageController.page ?? currentPage.toDouble();
+          final distanceFromCenter = (page - index).abs();
+          
+          // Scale and opacity based on distance from center
+          scale = (1.0 - (distanceFromCenter * 0.15)).clamp(0.85, 1.0);
+          opacity = (1.0 - (distanceFromCenter * 0.3)).clamp(0.5, 1.0);
+        }
+        
+        return Transform.scale(
+          scale: scale,
+          child: Opacity(
+            opacity: opacity,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+              child: GestureDetector(
+                onTap: () {
+                  if (isLocked) {
+                    _showLockedDialog(context);
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GamePage(
+                          gameMode: widget.gameMode,
+                          category: category,
+                          isDarkMode: widget.isDarkMode,
+                        ),
+                      ),
+                    );
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: colors,
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: widget.isDarkMode ? 0.4 : 0.2),
+                        blurRadius: isCurrentPage ? 20 : 10,
+                        offset: Offset(0, isCurrentPage ? 10 : 5),
+                      ),
+                    ],
+                  ),
+                  child: Stack(
+                    children: [
+                      // Content
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (isLocked)
+                              const Icon(
+                                Icons.lock,
+                                size: 48,
+                                color: Colors.white,
+                              ),
+                            if (isLocked) const SizedBox(height: 16),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 32),
+                              child: Text(
+                                category,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              isLocked ? 'Premium' : 'Tap to play',
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                color: Colors.white.withValues(alpha: 0.9),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      
+                      // Decorative gradient overlay at bottom
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 100,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                Colors.black.withValues(alpha: 0.2),
+                              ],
+                            ),
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(24),
+                              bottomRight: Radius.circular(24),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

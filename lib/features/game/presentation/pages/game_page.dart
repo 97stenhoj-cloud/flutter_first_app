@@ -1038,43 +1038,43 @@ class _GamePageState extends State<GamePage> {
     Color textColor;
     String? emoji;
     
-    if (widget.gameMode.toLowerCase() == 'pandora') {
+   if (widget.gameMode.toLowerCase() == 'pandora') {
+  cardGradient = widget.isDarkMode
+      ? [const Color(0xFFC25483), const Color(0xFF9E4069)] // Night mode
+      : [const Color(0xFFFF80B5), const Color(0xFFFF5592)]; // Day mode
+  textColor = Colors.white;
+  emoji = '🔮';
+} else {
+  switch (widget.gameMode.toLowerCase()) {
+    case 'family':
       cardGradient = widget.isDarkMode
-          ? [const Color(0xFFFF6B9D), const Color(0xFFD81B60)]
-          : [const Color(0xFFFF6B9D), const Color(0xFFFF8E53)];
+          ? [const Color(0xFFC99850), const Color(0xFFA96E4B)] // Night mode
+          : [const Color(0xFFFFD97A), const Color(0xFFFFAC5F)]; // Day mode
       textColor = Colors.white;
-      emoji = '🔮';
-    } else {
-      switch (widget.gameMode.toLowerCase()) {
-        case 'family':
-          cardGradient = widget.isDarkMode
-              ? [const Color(0xFF7B5D47), const Color(0xFF5D4537)]
-              : [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
-          textColor = widget.isDarkMode ? Colors.white : const Color(0xFF4A3A33);
-          break;
-        case 'couple':
-          cardGradient = widget.isDarkMode
-              ? [const Color(0xFF8A6A64), const Color(0xFF6B4A54)]
-              : [const Color(0xFFF28B9C), const Color(0xFFF5A877)];
-          textColor = Colors.white;
-          break;
-        case 'friends':
-          cardGradient = widget.isDarkMode
-              ? [const Color(0xFF6B5A72), const Color(0xFF4B3A52)]
-              : [const Color(0xFFB995D3), const Color(0xFF9B7AB8)];
-          textColor = Colors.white;
-          break;
-        case 'personal':
-          cardGradient = widget.isDarkMode
-              ? [const Color(0xFF5A6A7B), const Color(0xFF4A5A6B)]
-              : [const Color(0xFF90B5E8), const Color(0xFF7A9AD7)];
-          textColor = Colors.white;
-          break;
-        default:
-          cardGradient = [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
-          textColor = const Color(0xFF4A3A33);
-      }
-    }
+      break;
+    case 'couple':
+      cardGradient = widget.isDarkMode
+          ? [const Color(0xFFC7697D), const Color(0xFF9E5168)] // Night mode
+          : [const Color(0xFFFF9DAF), const Color(0xFFFF6F91)]; // Day mode
+      textColor = Colors.white;
+      break;
+    case 'friends':
+      cardGradient = widget.isDarkMode
+          ? [const Color(0xFF7A62C9), const Color(0xFF5E4AA3)] // Night mode
+          : [const Color(0xFFB38DF8), const Color(0xFF8A6CF3)]; // Day mode
+      textColor = Colors.white;
+      break;
+    case 'personal':
+      cardGradient = widget.isDarkMode
+          ? [const Color(0xFF418AB6), const Color(0xFF306F93)] // Night mode
+          : [const Color(0xFF6FD6FF), const Color(0xFF3EA9F5)]; // Day mode
+      textColor = Colors.white;
+      break;
+    default:
+      cardGradient = [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
+      textColor = const Color(0xFF4A3A33);
+  }
+}
     
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,

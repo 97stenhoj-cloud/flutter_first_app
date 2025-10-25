@@ -243,242 +243,201 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
   }
 
   Widget _buildDeckCard(Map<String, dynamic> deck) {
-    final deckId = deck['id'] as String;
-    final deckName = deck['deck_name'] as String;
-    final isFavorites = customDeckService.isFavoritesDeck(deck); // ADDED
+  final deckId = deck['id'] as String;
+  final deckName = deck['deck_name'] as String;
+  final isFavorites = customDeckService.isFavoritesDeck(deck);
 
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: isFavorites // ADDED: Special gradient for Favorites
-              ? [const Color(0xFFFF6B9D), const Color(0xFFC94A7D)]
-              : ThemeHelper.getSecondaryButtonGradient(widget.isDarkMode).colors,
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+  return Container(
+    height: 68.0, // 15% smaller than 80
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        colors: isFavorites
+            ? ThemeHelper.getGameModeGradient('personal', widget.isDarkMode)
+            : ThemeHelper.getGameModeGradient('personal', widget.isDarkMode),
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () async {
-            // Check if deck has questions
-            final questions = await customDeckService.getQuestionsForGame(deckId);
-            
-            if (!mounted) return;
-            
-            // FIXED: Validate minimum 5 questions
-            if (questions.isEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    isFavorites 
-                        ? 'No favorite questions yet. Heart questions during gameplay to add them!'
-                        : 'This deck has no questions. Add some first!',
-                    style: GoogleFonts.poppins(),
-                  ),
-                  action: isFavorites ? null : SnackBarAction(
-                    label: 'Add Questions',
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QuestionEditorPage(
-                            deckId: deckId,
-                            deckName: deckName,
-                            isDarkMode: widget.isDarkMode,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+      borderRadius: BorderRadius.circular(14), // Reduced from 16
+      boxShadow: ThemeHelper.getButtonShadow(widget.isDarkMode),
+    ),
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () async {
+          // Get questions for this deck
+          final questions = await customDeckService.getDeckQuestions(deckId);
+          final questionTexts = questions.map((q) => q['question_text'] as String).toList();
+
+          if (questionTexts.length < 5) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'This deck needs at least 5 questions to play.\nCurrently: ${questions.length}/5',
+                  style: GoogleFonts.poppins(),
                 ),
-              );
-            } else if (questions.length < 5) {
-              // FIXED: New validation for minimum 5 questions
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'You need at least 5 questions to play. Currently: ${questions.length}/5',
-                    style: GoogleFonts.poppins(),
-                  ),
-                  backgroundColor: Colors.orange,
-                  action: isFavorites ? null : SnackBarAction(
-                    label: 'Add More',
-                    textColor: Colors.white,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QuestionEditorPage(
-                            deckId: deckId,
-                            deckName: deckName,
-                            isDarkMode: widget.isDarkMode,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  duration: const Duration(seconds: 4),
-                ),
-              );
-            } else {
-              // Navigate to game with custom questions
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => GamePage(
-                    gameMode: 'personal',
-                    category: deckName,
-                    isDarkMode: widget.isDarkMode,
-                    customQuestions: questions,
-                  ),
-                ),
-              );
-            }
-          },
-          borderRadius: BorderRadius.circular(16),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              children: [
-                Icon(
-                  isFavorites ? Icons.favorite : Icons.style, // ADDED: Heart icon for Favorites
-                  size: 32,
-                  color: Colors.white, // ADDED: Always white for favorites
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        deckName,
-                        style: GoogleFonts.poppins(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white, // ADDED: Always white for favorites
+                backgroundColor: Colors.orange,
+                action: isFavorites ? null : SnackBarAction(
+                  label: 'Add More',
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuestionEditorPage(
+                          deckId: deckId,
+                          deckName: deckName,
+                          isDarkMode: widget.isDarkMode,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      FutureBuilder<List<Map<String, dynamic>>>(
-                        future: customDeckService.getDeckQuestions(deckId),
-                        builder: (context, snapshot) {
-                          final count = snapshot.data?.length ?? 0;
-                          // FIXED: Show visual indicator of 5 question minimum
-                          final hasEnough = count >= 5;
-                          
-                          return Row(
-                            children: [
-                              Text(
-                                '$count question${count != 1 ? 's' : ''}',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 13,
-                                  color: Colors.white.withValues(alpha: 0.9), // ADDED
+                    );
+                  },
+                ),
+                duration: const Duration(seconds: 4),
+              ),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => GamePage(
+                  gameMode: 'personal',
+                  category: deckName,
+                  isDarkMode: widget.isDarkMode,
+                  customQuestions: questionTexts,
+                ),
+              ),
+            );
+          }
+        },
+        borderRadius: BorderRadius.circular(14),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 14), // Reduced padding
+          child: Row(
+            children: [
+              Icon(
+                isFavorites ? Icons.favorite : Icons.style,
+                size: 28, // Reduced from 32
+                color: Colors.white,
+              ),
+              const SizedBox(width: 14), // Reduced from 16
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      deckName,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16, // Reduced from 18
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    FutureBuilder<List<Map<String, dynamic>>>(
+                      future: customDeckService.getDeckQuestions(deckId),
+                      builder: (context, snapshot) {
+                        final count = snapshot.data?.length ?? 0;
+                        final hasEnough = count >= 5;
+                        
+                        return Row(
+                          children: [
+                            Text(
+                              '$count question${count != 1 ? 's' : ''}',
+                              style: GoogleFonts.poppins(
+                                fontSize: 13, // Reduced from 14
+                                color: Colors.white.withValues(alpha: 0.9),
+                              ),
+                            ),
+                            if (!hasEnough) ...[
+                              const SizedBox(width: 6),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: Colors.orange[800],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  'Need ${5 - count} more',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 11, // Reduced from 12
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
-                              if (count > 0 && count < 5) ...[
-                                const SizedBox(width: 8),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 6,
-                                    vertical: 2,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.orange.withValues(alpha: 0.2),
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(
-                                      color: Colors.orange,
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'Need ${5 - count} more',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.orange[800],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                              if (hasEnough) ...[
-                                const SizedBox(width: 8),
-                                Icon(
-                                  Icons.check_circle,
-                                  size: 16,
-                                  color: Colors.white,
-                                ),
-                              ],
                             ],
-                          );
-                        },
+                            if (hasEnough) ...[
+                              const SizedBox(width: 6),
+                              Icon(
+                                Icons.check_circle,
+                                size: 14, // Reduced from 16
+                                color: Colors.white,
+                              ),
+                            ],
+                          ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              if (!isFavorites) ...[
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuestionEditorPage(
+                          deckId: deckId,
+                          deckName: deckName,
+                          isDarkMode: widget.isDarkMode,
+                        ),
                       ),
-                    ],
+                    ).then((_) => setState(() {}));
+                  },
+                  icon: Icon(
+                    Icons.edit,
+                    size: 22, // Reduced icon size
+                    color: ThemeHelper.getSecondaryButtonTextColor(widget.isDarkMode),
                   ),
                 ),
-                // ADDED: Only show edit/delete for non-Favorites decks
-                if (!isFavorites) ...[
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QuestionEditorPage(
-                            deckId: deckId,
-                            deckName: deckName,
-                            isDarkMode: widget.isDarkMode,
-                          ),
+                IconButton(
+                  onPressed: () => _deleteDeck(deckId, deckName),
+                  icon: Icon(
+                    Icons.delete,
+                    size: 22, // Reduced icon size
+                    color: ThemeHelper.getSecondaryButtonTextColor(widget.isDarkMode),
+                  ),
+                ),
+              ] else ...[
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuestionEditorPage(
+                          deckId: deckId,
+                          deckName: deckName,
+                          isDarkMode: widget.isDarkMode,
+                          isFavorites: true,
                         ),
-                      ).then((_) => setState(() {}));
-                    },
-                    icon: Icon(
-                      Icons.edit,
-                      color: ThemeHelper.getSecondaryButtonTextColor(widget.isDarkMode),
-                    ),
+                      ),
+                    ).then((_) => setState(() {}));
+                  },
+                  icon: const Icon(
+                    Icons.visibility,
+                    size: 22, // Reduced icon size
+                    color: Colors.white,
                   ),
-                  IconButton(
-                    onPressed: () => _deleteDeck(deckId, deckName),
-                    icon: Icon(
-                      Icons.delete,
-                      color: ThemeHelper.getSecondaryButtonTextColor(widget.isDarkMode),
-                    ),
-                  ),
-                ] else ...[
-                  // ADDED: View-only button for Favorites
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QuestionEditorPage(
-                            deckId: deckId,
-                            deckName: deckName,
-                            isDarkMode: widget.isDarkMode,
-                            isFavorites: true, // ADDED: Pass flag
-                          ),
-                        ),
-                      ).then((_) => setState(() {}));
-                    },
-                    icon: const Icon(
-                      Icons.visibility,
-                      color: Colors.white,
-                    ),
-                    tooltip: 'View favorites',
-                  ),
-                ],
+                  tooltip: 'View favorites',
+                ),
               ],
-            ),
+            ],
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }
