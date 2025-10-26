@@ -6,6 +6,7 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/pandora_service.dart';
 import '../../../../core/services/auth_service.dart';
 import 'pandora_lobby_page.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class PandoraJoinPage extends StatefulWidget {
   final bool isDarkMode;
@@ -44,6 +45,7 @@ class _PandoraJoinPageState extends State<PandoraJoinPage> {
   }
 
   Future<void> _joinSession() async {
+    final l10n = AppLocalizations.of(context)!;
     if (pinController.text.length != 6) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter a 6-digit PIN')),
@@ -57,7 +59,7 @@ class _PandoraJoinPageState extends State<PandoraJoinPage> {
 
     if (displayName.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your name')),
+        SnackBar(content: Text(l10n.pleaseEnterName)),
       );
       return;
     }
@@ -98,6 +100,7 @@ class _PandoraJoinPageState extends State<PandoraJoinPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Container(
@@ -145,7 +148,7 @@ class _PandoraJoinPageState extends State<PandoraJoinPage> {
                   
                   // PIN input
                   Text(
-                    'Session PIN',
+                    l10n.sessionPin,
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -267,7 +270,7 @@ class _PandoraJoinPageState extends State<PandoraJoinPage> {
                       child: isJoining
                           ? const CircularProgressIndicator(color: Colors.white)
                           : Text(
-                              'Join Session',
+                              l10n.joinSession,
                               style: GoogleFonts.poppins(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,

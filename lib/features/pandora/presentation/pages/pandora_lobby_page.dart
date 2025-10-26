@@ -9,6 +9,7 @@ import '../../../../core/services/pandora_service.dart';
 import 'pandora_timer_selection_page.dart';
 import 'pandora_question_submission_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class PandoraLobbyPage extends StatefulWidget {
   final String sessionId;
@@ -213,10 +214,11 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
   }
 
   void _copyPinToClipboard() {
+    final l10n = AppLocalizations.of(context)!;
     Clipboard.setData(ClipboardData(text: widget.sessionPin));
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('PIN copied to clipboard!'),
+      SnackBar(
+        content: Text(l10n.pinCopied),
         duration: Duration(seconds: 2),
       ),
     );
@@ -224,6 +226,7 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return PopScope(
       canPop: !widget.isHost,
       onPopInvokedWithResult: (bool didPop, dynamic result) async {
@@ -234,8 +237,8 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
           final shouldExit = await showDialog<bool>(
             context: context,
             builder: (context) => AlertDialog(
-              title: const Text('End Session?'),
-              content: const Text('Are you sure you want to end this Pandora session?'),
+              title: Text(l10n.endSession),
+              content: Text(l10n.endSessionConfirm),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context, false),
@@ -359,7 +362,7 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
                   child: Column(
                     children: [
                       Text(
-                        'Session PIN',
+                        l10n.sessionPin,
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -479,7 +482,7 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
                                               ),
                                               if (isHost)
                                                 Text(
-                                                  'Host',
+                                                  l10n.pandoraHost,
                                                   style: GoogleFonts.poppins(
                                                     fontSize: 12,
                                                     color: const Color(0xFFFF6B9D),

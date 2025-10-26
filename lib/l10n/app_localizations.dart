@@ -9,6 +9,7 @@ import 'app_localizations_da.dart';
 import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
 import 'app_localizations_es.dart';
+import 'app_localizations_fr.dart';
 import 'app_localizations_pt.dart';
 import 'app_localizations_ro.dart';
 
@@ -102,6 +103,7 @@ abstract class AppLocalizations {
     Locale('de'),
     Locale('en'),
     Locale('es'),
+    Locale('fr'),
     Locale('pt'),
     Locale('ro'),
   ];
@@ -795,6 +797,648 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No questions available'**
   String get noQuestionsAvailable;
+
+  /// No description provided for @showLess.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Less'**
+  String get showLess;
+
+  /// No description provided for @readMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Read More'**
+  String get readMore;
+
+  /// No description provided for @tapToPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to Play'**
+  String get tapToPlay;
+
+  /// No description provided for @coupleBundle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couple Bundle'**
+  String get coupleBundle;
+
+  /// No description provided for @friendsBundle.
+  ///
+  /// In en, this message translates to:
+  /// **'Friends Bundle'**
+  String get friendsBundle;
+
+  /// No description provided for @familyBundle.
+  ///
+  /// In en, this message translates to:
+  /// **'Family Bundle'**
+  String get familyBundle;
+
+  /// No description provided for @favorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites'**
+  String get favorites;
+
+  /// No description provided for @pandoraHostCreatePin.
+  ///
+  /// In en, this message translates to:
+  /// **'Host creates session and shares PIN'**
+  String get pandoraHostCreatePin;
+
+  /// No description provided for @pandoraPlayersJoinMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Players join (max 15 min)'**
+  String get pandoraPlayersJoinMax;
+
+  /// No description provided for @pandoraHostSetsTimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Host sets question timer (1-15 min)'**
+  String get pandoraHostSetsTimer;
+
+  /// No description provided for @pandoraEveryoneSubmits.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone submits questions'**
+  String get pandoraEveryoneSubmits;
+
+  /// No description provided for @pandoraHostControls.
+  ///
+  /// In en, this message translates to:
+  /// **'Host controls game progression'**
+  String get pandoraHostControls;
+
+  /// No description provided for @pandoraQuestionsDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions deleted after game'**
+  String get pandoraQuestionsDeleted;
+
+  /// No description provided for @pandoraHost.
+  ///
+  /// In en, this message translates to:
+  /// **'Host'**
+  String get pandoraHost;
+
+  /// No description provided for @pandoraJoinGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Join Game'**
+  String get pandoraJoinGame;
+
+  /// No description provided for @pandoraPandoraBox.
+  ///
+  /// In en, this message translates to:
+  /// **'Pandora Box'**
+  String get pandoraPandoraBox;
+
+  /// No description provided for @pleaseEnterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get pleaseEnterName;
+
+  /// No description provided for @hostSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'(Host)'**
+  String get hostSuffix;
+
+  /// No description provided for @playersJoinWithNames.
+  ///
+  /// In en, this message translates to:
+  /// **'Players join with their names'**
+  String get playersJoinWithNames;
+
+  /// No description provided for @everyoneSubmitsMin5.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone submits questions (min 5)'**
+  String get everyoneSubmitsMin5;
+
+  /// No description provided for @createSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Session'**
+  String get createSession;
+
+  /// No description provided for @creating.
+  ///
+  /// In en, this message translates to:
+  /// **'Creating...'**
+  String get creating;
+
+  /// No description provided for @yourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Name'**
+  String get yourName;
+
+  /// No description provided for @enterDisplayName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your display name'**
+  String get enterDisplayName;
+
+  /// No description provided for @howItWorks.
+  ///
+  /// In en, this message translates to:
+  /// **'How It Works'**
+  String get howItWorks;
+
+  /// No description provided for @pinCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN copied to clipboard!'**
+  String get pinCopied;
+
+  /// No description provided for @endSession.
+  ///
+  /// In en, this message translates to:
+  /// **'End Session?'**
+  String get endSession;
+
+  /// No description provided for @endSessionConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to end this Pandora session?'**
+  String get endSessionConfirm;
+
+  /// No description provided for @end.
+  ///
+  /// In en, this message translates to:
+  /// **'End'**
+  String get end;
+
+  /// No description provided for @sessionPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Session PIN'**
+  String get sessionPin;
+
+  /// No description provided for @sharePin.
+  ///
+  /// In en, this message translates to:
+  /// **'Share this PIN with players'**
+  String get sharePin;
+
+  /// No description provided for @waitingForPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for players...'**
+  String get waitingForPlayers;
+
+  /// No description provided for @startGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Game'**
+  String get startGame;
+
+  /// No description provided for @lobby.
+  ///
+  /// In en, this message translates to:
+  /// **'Lobby'**
+  String get lobby;
+
+  /// No description provided for @hostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **' (Host)'**
+  String get hostLabel;
+
+  /// No description provided for @selectTimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Timer'**
+  String get selectTimer;
+
+  /// No description provided for @timerQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'How long should players have to submit questions?'**
+  String get timerQuestion;
+
+  /// No description provided for @minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'minutes'**
+  String get minutes;
+
+  /// No description provided for @startCollectingQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Collecting Questions'**
+  String get startCollectingQuestions;
+
+  /// No description provided for @sessionCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Session cancelled'**
+  String get sessionCancelled;
+
+  /// No description provided for @questionCannotBeEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Question cannot be empty'**
+  String get questionCannotBeEmpty;
+
+  /// No description provided for @questionSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Question submitted!'**
+  String get questionSubmitted;
+
+  /// No description provided for @failedToSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to submit question'**
+  String get failedToSubmit;
+
+  /// No description provided for @notEnoughQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough questions. Minimum 5 required. (Currently: {count})'**
+  String notEnoughQuestions(Object count);
+
+  /// No description provided for @submitQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Questions'**
+  String get submitQuestions;
+
+  /// No description provided for @submitMinimum5.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit at least 5 questions to start the game'**
+  String get submitMinimum5;
+
+  /// No description provided for @yourQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Question'**
+  String get yourQuestion;
+
+  /// No description provided for @enterQuestionHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your question here...'**
+  String get enterQuestionHere;
+
+  /// No description provided for @forEveryone.
+  ///
+  /// In en, this message translates to:
+  /// **'For Everyone'**
+  String get forEveryone;
+
+  /// No description provided for @forSpecificPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'For Specific Person'**
+  String get forSpecificPerson;
+
+  /// No description provided for @submit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get submit;
+
+  /// No description provided for @questionsRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} questions remaining'**
+  String questionsRemaining(Object count);
+
+  /// No description provided for @questionRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} question remaining'**
+  String questionRemaining(Object count);
+
+  /// No description provided for @startGameExclamation.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Game!'**
+  String get startGameExclamation;
+
+  /// No description provided for @cancelSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Session'**
+  String get cancelSession;
+
+  /// No description provided for @timeRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Remaining'**
+  String get timeRemaining;
+
+  /// No description provided for @pleaseEnterPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a PIN'**
+  String get pleaseEnterPin;
+
+  /// No description provided for @sessionNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Session not found'**
+  String get sessionNotFound;
+
+  /// No description provided for @sessionEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'Session has ended'**
+  String get sessionEnded;
+
+  /// No description provided for @sessionStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Session has already started'**
+  String get sessionStarted;
+
+  /// No description provided for @failedToJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to join session'**
+  String get failedToJoin;
+
+  /// No description provided for @joinSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Join Session'**
+  String get joinSession;
+
+  /// No description provided for @joining.
+  ///
+  /// In en, this message translates to:
+  /// **'Joining...'**
+  String get joining;
+
+  /// No description provided for @enterPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter 6-digit PIN'**
+  String get enterPin;
+
+  /// No description provided for @join.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get join;
+
+  /// No description provided for @reactionBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Reaction Breakdown'**
+  String get reactionBreakdown;
+
+  /// No description provided for @laugh.
+  ///
+  /// In en, this message translates to:
+  /// **'Laugh'**
+  String get laugh;
+
+  /// No description provided for @shock.
+  ///
+  /// In en, this message translates to:
+  /// **'Shock'**
+  String get shock;
+
+  /// No description provided for @heart.
+  ///
+  /// In en, this message translates to:
+  /// **'Heart'**
+  String get heart;
+
+  /// No description provided for @fire.
+  ///
+  /// In en, this message translates to:
+  /// **'Fire'**
+  String get fire;
+
+  /// No description provided for @mostLaughs.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Laughs'**
+  String get mostLaughs;
+
+  /// No description provided for @mostShocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Shocked'**
+  String get mostShocked;
+
+  /// No description provided for @mostHearts.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Hearts'**
+  String get mostHearts;
+
+  /// No description provided for @sessionComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Session Complete!'**
+  String get sessionComplete;
+
+  /// No description provided for @thanksForPlayingPandora.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks for playing Pandora Box!'**
+  String get thanksForPlayingPandora;
+
+  /// No description provided for @returnToMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to Menu'**
+  String get returnToMenu;
+
+  /// No description provided for @failedToCreateDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create deck'**
+  String get failedToCreateDeck;
+
+  /// No description provided for @createNewDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Create New Deck'**
+  String get createNewDeck;
+
+  /// No description provided for @deckName.
+  ///
+  /// In en, this message translates to:
+  /// **'Deck Name'**
+  String get deckName;
+
+  /// No description provided for @enterDeckName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter deck name'**
+  String get enterDeckName;
+
+  /// No description provided for @create.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get create;
+
+  /// No description provided for @deleteDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Deck'**
+  String get deleteDeck;
+
+  /// No description provided for @deleteDeckConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete \"{name}\"? This will delete all questions in this deck.'**
+  String deleteDeckConfirm(Object name);
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @deckDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Deck deleted'**
+  String get deckDeleted;
+
+  /// No description provided for @failedToDeleteDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete deck'**
+  String get failedToDeleteDeck;
+
+  /// No description provided for @myDecks.
+  ///
+  /// In en, this message translates to:
+  /// **'My Decks'**
+  String get myDecks;
+
+  /// No description provided for @noDecksYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No decks yet'**
+  String get noDecksYet;
+
+  /// No description provided for @createFirstDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first custom deck!'**
+  String get createFirstDeck;
+
+  /// No description provided for @questionsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} questions'**
+  String questionsCount(Object count);
+
+  /// No description provided for @questionCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} question'**
+  String questionCount(Object count);
+
+  /// No description provided for @questionAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Question added!'**
+  String get questionAdded;
+
+  /// No description provided for @failedToAddQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to add question'**
+  String get failedToAddQuestion;
+
+  /// No description provided for @editQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Question'**
+  String get editQuestion;
+
+  /// No description provided for @enterYourQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your question'**
+  String get enterYourQuestion;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @questionUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Question updated!'**
+  String get questionUpdated;
+
+  /// No description provided for @failedToUpdateQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update question'**
+  String get failedToUpdateQuestion;
+
+  /// No description provided for @deleteQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Question'**
+  String get deleteQuestion;
+
+  /// No description provided for @deleteQuestionConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this question?'**
+  String get deleteQuestionConfirm;
+
+  /// No description provided for @questionDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Question deleted'**
+  String get questionDeleted;
+
+  /// No description provided for @failedToDeleteQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete question'**
+  String get failedToDeleteQuestion;
+
+  /// No description provided for @addQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Question'**
+  String get addQuestion;
+
+  /// No description provided for @typeQuestionHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Type your question here...'**
+  String get typeQuestionHere;
+
+  /// No description provided for @add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// No description provided for @noQuestionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions yet'**
+  String get noQuestionsYet;
+
+  /// No description provided for @addFirstQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your first question!'**
+  String get addFirstQuestion;
 }
 
 class _AppLocalizationsDelegate
@@ -812,6 +1456,7 @@ class _AppLocalizationsDelegate
     'de',
     'en',
     'es',
+    'fr',
     'pt',
     'ro',
   ].contains(locale.languageCode);
@@ -831,6 +1476,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsEn();
     case 'es':
       return AppLocalizationsEs();
+    case 'fr':
+      return AppLocalizationsFr();
     case 'pt':
       return AppLocalizationsPt();
     case 'ro':

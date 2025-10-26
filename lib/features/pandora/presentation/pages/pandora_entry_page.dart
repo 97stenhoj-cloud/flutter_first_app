@@ -5,6 +5,7 @@ import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/constants/app_constants.dart';
 import 'pandora_host_page.dart';
 import 'pandora_join_page.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class PandoraEntryPage extends StatelessWidget {
   final bool isDarkMode;
@@ -16,6 +17,7 @@ class PandoraEntryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
         decoration: ThemeHelper.getBackgroundDecoration(isDarkMode),
@@ -134,12 +136,12 @@ class PandoraEntryPage extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 16),
-                        _buildInfoItem('1', 'Host creates session and shares PIN'),
-                        _buildInfoItem('2', 'Players join (max 15 min)'),
-                        _buildInfoItem('3', 'Host sets question timer (1-15 min)'),
-                        _buildInfoItem('4', 'Everyone submits questions'),
-                        _buildInfoItem('5', 'Host controls game progression'),
-                        _buildInfoItem('⚠️', 'Questions deleted after game'),
+                        _buildInfoItem('1', l10n.pandoraHostCreatePin),
+                        _buildInfoItem('2', l10n.pandoraPlayersJoinMax),
+                        _buildInfoItem('3', l10n.pandoraHostSetsTimer),
+                        _buildInfoItem('4', l10n.pandoraEveryoneSubmits),
+                        _buildInfoItem('5', l10n.pandoraHostControls),
+                        _buildInfoItem('⚠️', l10n.pandoraQuestionsDeleted),
                       ],
                     ),
                   ),

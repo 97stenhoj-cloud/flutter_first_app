@@ -5,6 +5,7 @@ import 'dart:async';
 import '../../../../core/services/pandora_service.dart';
 import '../../../game/presentation/pages/game_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class PandoraQuestionSubmissionPage extends StatefulWidget {
   final String sessionId;
@@ -237,6 +238,7 @@ class _PandoraQuestionSubmissionPageState
   }
 
   Future<void> _submitQuestion() async {
+    final l10n = AppLocalizations.of(context)!;
     if (questionController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter a question')),
@@ -273,8 +275,8 @@ class _PandoraQuestionSubmissionPageState
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Question submitted!'),
+          SnackBar(
+            content: Text(l10n.questionSubmitted),
             duration: Duration(seconds: 1),
           ),
         );
@@ -391,14 +393,15 @@ class _PandoraQuestionSubmissionPageState
   }
 
   Future<void> _cancelSession() async {
+    final l10n = AppLocalizations.of(context)!;
     try {
       await pandoraService.cancelSession(widget.sessionId);
       debugPrint('🚫 Session cancelled by host');
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Session cancelled'),
+          SnackBar(
+            content: Text(l10n.sessionCancelled),
             backgroundColor: Colors.orange,
           ),
         );
@@ -449,6 +452,7 @@ class _PandoraQuestionSubmissionPageState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return PopScope(
       canPop: !widget.isHost,
       onPopInvokedWithResult: (bool didPop, dynamic result) async {
@@ -605,7 +609,7 @@ class _PandoraQuestionSubmissionPageState
                       children: [
                         // Question input
                         Text(
-                          'Your Question',
+                          l10n.yourQuestion,
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -622,7 +626,7 @@ class _PandoraQuestionSubmissionPageState
                             color: widget.isDarkMode ? Colors.white70 : Colors.black87,
                           ),
                           decoration: InputDecoration(
-                            hintText: 'Type your question here...',
+                            hintText: l10n.typeQuestionHere,
                             hintStyle: GoogleFonts.poppins(
                               color: Colors.grey,
                             ),
