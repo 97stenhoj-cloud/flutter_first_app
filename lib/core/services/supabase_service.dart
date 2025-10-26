@@ -5,21 +5,27 @@ class SupabaseService {
   final _supabase = Supabase.instance.client;
 
   /// Fetch questions filtered by game mode and category
-  Future<List<String>> getQuestions(String gameMode, String category) async {
+  /// Now extracts text from JSONB translations based on language
+  Future<List<String>> getQuestions(
+    String gameMode, 
+    String category,
+    {String languageCode = 'da'} // Default to English
+  ) async {
     try {
       debugPrint('🔍 Fetching questions');
       debugPrint('   Game Mode: $gameMode');
       debugPrint('   Category: $category');
+      debugPrint('   Language: $languageCode');
       
       // Map game mode to the correct column name
       String columnName = _getGameModeColumn(gameMode);
       
+      // Fetch with translations JSONB
       final response = await _supabase
           .from('questions')
-          .select('text')
+          .select('translations')  // Select JSONB column
           .eq('category_name', category)
-          .eq(columnName, true)
-          .order('order_index');
+          .eq(columnName, true);
       
       debugPrint('✅ Raw response: $response');
       
@@ -28,11 +34,17 @@ class SupabaseService {
         return [];
       }
       
+      // Extract text from JSONB based on language
       final questions = (response as List)
-          .map((item) => item['text'] as String)
+          .map((item) {
+            final translations = item['translations'] as Map<String, dynamic>;
+            // Get the requested language, fallback to English if not found
+            return (translations[languageCode] ?? translations['da'] ?? '') as String;
+          })
+          .where((text) => text.isNotEmpty) // Filter out empty strings
           .toList();
       
-      debugPrint('✅ Successfully loaded ${questions.length} questions');
+      debugPrint('✅ Successfully loaded ${questions.length} questions in $languageCode');
       return questions;
       
     } catch (e, stackTrace) {

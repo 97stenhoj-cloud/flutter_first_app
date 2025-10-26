@@ -39,7 +39,7 @@ class _GamePageState extends State<GamePage> {
   final unlockManager = UnlockManager();
   final pandoraService = PandoraService();
   final CardSwiperController controller = CardSwiperController();
-
+  String? _loadedLanguageCode; // Track what language questions are loaded in
   List<String> allQuestions = [];
   List<String> displayedQuestions = [];
   int currentIndex = 0;
@@ -90,7 +90,26 @@ class _GamePageState extends State<GamePage> {
       _loadReactionsForCurrentQuestion();
     }
   }
+  @override
+void didChangeDependencies() {
+  super.didChangeDependencies();
   
+  // Get current app language
+  String currentLanguageCode = 'en';
+  try {
+    currentLanguageCode = Localizations.localeOf(context).languageCode;
+  } catch (e) {
+    // Context not ready
+  }
+  
+  // If questions are loaded AND language changed, reload them
+  if (_loadedLanguageCode != null && 
+      _loadedLanguageCode != currentLanguageCode && 
+      !isLoading) {
+    debugPrint('🌍 Language changed from $_loadedLanguageCode to $currentLanguageCode - reloading');
+    _loadQuestions();
+  }
+}
   Future<void> _loadFavoriteQuestions() async {
     if (isPandoraMode) return; // No favorites in Pandora mode
     
@@ -319,6 +338,9 @@ class _GamePageState extends State<GamePage> {
               currentIndex = newIndex;
             });
             
+            // Move card swiper to new index
+            controller.moveTo(newIndex);
+            
             // Load reactions for new question
             _loadReactionsForCurrentQuestion();
           }
@@ -383,6 +405,9 @@ class _GamePageState extends State<GamePage> {
 
   Future<void> _loadQuestions() async {
     try {
+      setState(() {
+      isLoading = true;  // ADD THIS LINE AT THE START
+    });
       if (widget.customQuestions != null && widget.customQuestions!.isNotEmpty) {
         debugPrint('✅ Using custom questions (Pandora/Personal mode)');
         setState(() {
@@ -390,31 +415,42 @@ class _GamePageState extends State<GamePage> {
           displayedQuestions = List.from(allQuestions);
           isLoading = false;
         });
+        
         return;
       }
-      
+      String languageCode = 'da';
+      try {
+        languageCode = Localizations.localeOf(context).languageCode;
+      } catch (e) {
+        debugPrint('Using default language: English');
+      }
       final questions = await supabaseService.getQuestions(
         widget.gameMode,
         widget.category,
+        languageCode: languageCode, // <-- ADD THIS PARAMETER
       );
 
       if (!mounted) return;
 
       if (questions.isEmpty) {
-        final l10n = AppLocalizations.of(context)!;
-        setState(() {
-          allQuestions = [l10n.noQuestionsFoundMessage(widget.category, widget.gameMode)];
-          displayedQuestions = List.from(allQuestions);
-          isLoading = false;
-        });
-        return;
-      }
+  final l10n = AppLocalizations.of(context)!;
+  setState(() {
+    allQuestions = [l10n.noQuestionsFoundMessage(widget.category, widget.gameMode)];
+    displayedQuestions = List.from(allQuestions);
+    isLoading = false;
+    _loadedLanguageCode = languageCode; // SAVE what language we loaded
+  });
+  return;
+}
 
-      setState(() {
-        allQuestions = questions;
-        displayedQuestions = List.from(allQuestions);
-        isLoading = false;
-      });
+setState(() {
+  allQuestions = questions;
+  displayedQuestions = List.from(allQuestions);
+  isLoading = false;
+  _loadedLanguageCode = languageCode; // SAVE what language we loaded
+});
+
+debugPrint('✅ Loaded ${questions.length} questions in $languageCode');
     } catch (e) {
       debugPrint('Error loading questions: $e');
       
@@ -872,6 +908,25 @@ class _GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Check if language changed every time page is shown
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || isLoading) return;
+      
+      String currentLanguage = 'da';
+      try {
+        currentLanguage = Localizations.localeOf(context).languageCode;
+      } catch (e) {
+        return;
+      }
+      
+      if (_loadedLanguageCode != null && _loadedLanguageCode != currentLanguage) {
+        debugPrint('🌍 Language changed: $_loadedLanguageCode → $currentLanguage');
+        setState(() {
+          isLoading = true;
+        });
+        _loadQuestions();
+      }
+    });
     if (isLoading) {
       return Scaffold(
         backgroundColor: widget.isDarkMode ? const Color(0xFF2D1B2E) : const Color(0xFFF5F5F5),
@@ -956,7 +1011,7 @@ Positioned(
   top: 24,
   right: 24,
   child: GestureDetector(
-    onTap: () {
+    onTap: isPandoraMode ? null : () {
       if (unlockManager.isPremium) {
         _showQuestionPicker();
       } else {
@@ -988,12 +1043,14 @@ Positioned(
               fontSize: 16,
             ),
           ),
-          const SizedBox(width: 6),
-          Icon(
-            unlockManager.isPremium ? Icons.list : Icons.lock,
-            size: 18,
-            color: widget.isDarkMode ? Colors.white : Colors.black87,
-          ),
+          if (!isPandoraMode) ...[
+            const SizedBox(width: 6),
+            Icon(
+              unlockManager.isPremium ? Icons.list : Icons.lock,
+              size: 18,
+              color: widget.isDarkMode ? Colors.white : Colors.black87,
+            ),
+          ],
         ],
       ),
     ),
@@ -1041,6 +1098,7 @@ Positioned(
                               cardBuilder: (context, index, horizontalThresholdPercentage, verticalThresholdPercentage) {
                                 return _buildQuestionCard(displayedQuestions[index]);
                               },
+                              isDisabled: isPandoraMode && !isHostMode,
                             ),
                     ),
                     
@@ -1293,11 +1351,11 @@ Positioned(
         textColor = Colors.white;
         break;
       case 'friends':
-        cardGradient = widget.isDarkMode
-            ? [const Color(0xFF7A62C9), const Color(0xFF5E4AA3)]
-            : [const Color(0xFFB38DF8), const Color(0xFF8A6CF3)];
-        textColor = Colors.white;
-        break;
+          cardGradient = widget.isDarkMode
+              ? [const Color(0xFF7E72A9), const Color(0xFF665E93)]
+              : [const Color(0xFFC4B4E3), const Color(0xFFB2A4DB)];
+          textColor = Colors.white;
+          break;
       case 'personal':
       // Check if this is Favorites deck or regular custom deck
       final isFavoritesDeck = widget.category.toLowerCase() == 'favorites';
