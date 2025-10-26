@@ -5,6 +5,7 @@ import '../../../../../core/services/custom_deck_service.dart';
 import '../../../../../core/utils/theme_helper.dart';
 import 'question_editor_page.dart';
 import '../../../game/presentation/pages/game_page.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class CustomDeckListPage extends StatefulWidget {
   final bool isDarkMode;
@@ -58,12 +59,13 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
 }
 
   Future<void> _createDeck() async {
+    final l10n = AppLocalizations.of(context)!;
     final controller = TextEditingController();
 
     final deckName = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Create New Deck', style: GoogleFonts.poppins()),
+        title: Text(l10n.createNewDeck, style: GoogleFonts.poppins()),
         content: TextField(
           controller: controller,
           decoration: const InputDecoration(
@@ -79,7 +81,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, controller.text),
-            child: Text('Create', style: GoogleFonts.poppins()),
+            child: Text(l10n.create, style: GoogleFonts.poppins()),
           ),
         ],
       ),
@@ -101,7 +103,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to create deck', style: GoogleFonts.poppins()),
+              content: Text(l10n.failedToCreateDeck, style: GoogleFonts.poppins()),
               backgroundColor: Colors.red,
             ),
           );
@@ -111,10 +113,11 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
   }
 
   Future<void> _deleteDeck(String deckId, String deckName) async {
+    final l10n = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Delete Deck', style: GoogleFonts.poppins()),
+        title: Text(l10n.deleteDeck, style: GoogleFonts.poppins()),
         content: Text(
           'Are you sure you want to delete "$deckName"? This will delete all questions in this deck.',
           style: GoogleFonts.poppins(),
@@ -127,7 +130,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: Text('Delete', style: GoogleFonts.poppins()),
+            child: Text(l10n.delete, style: GoogleFonts.poppins()),
           ),
         ],
       ),
@@ -140,7 +143,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Deck deleted', style: GoogleFonts.poppins()),
+              content: Text(l10n.deckDeleted, style: GoogleFonts.poppins()),
             ),
           );
         }
@@ -148,7 +151,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to delete deck', style: GoogleFonts.poppins()),
+              content: Text(l10n.failedToDeleteDeck, style: GoogleFonts.poppins()),
               backgroundColor: Colors.red,
             ),
           );
@@ -159,6 +162,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
         decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode),
@@ -218,7 +222,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
                                   ),
                                   const SizedBox(height: 16),
                                   Text(
-                                    'No decks yet',
+                                    l10n.noDecksYet,
                                     style: GoogleFonts.poppins(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600,

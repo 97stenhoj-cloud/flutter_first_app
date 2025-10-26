@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../../core/services/custom_deck_service.dart';
 import '../../../../../core/utils/theme_helper.dart';
 import '../../../../../core/constants/app_constants.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class QuestionEditorPage extends StatefulWidget {
   final String deckId;
@@ -94,16 +95,17 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
   }
 
   Future<void> _addQuestion() async {
+    final l10n = AppLocalizations.of(context)!;
     final controller = TextEditingController();
 
     final questionText = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Add Question', style: GoogleFonts.poppins()),
+        title: Text(l10n.addQuestion, style: GoogleFonts.poppins()),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(
-            hintText: 'Enter your question',
+          decoration: InputDecoration(
+            hintText: l10n.enterYourQuestion,
             border: OutlineInputBorder(),
           ),
           maxLines: 3,
@@ -116,7 +118,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, controller.text),
-            child: Text('Add', style: GoogleFonts.poppins()),
+            child: Text(l10n.add, style: GoogleFonts.poppins()),
           ),
         ],
       ),
@@ -129,7 +131,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Question added!', style: GoogleFonts.poppins()),
+              content: Text(l10n.questionAdded, style: GoogleFonts.poppins()),
               backgroundColor: Colors.green,
             ),
           );
@@ -138,7 +140,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to add question', style: GoogleFonts.poppins()),
+              content: Text(l10n.failedToAddQuestion, style: GoogleFonts.poppins()),
               backgroundColor: Colors.red,
             ),
           );
@@ -148,16 +150,17 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
   }
 
   Future<void> _editQuestion(String questionId, String currentText) async {
+    final l10n = AppLocalizations.of(context)!;
     final controller = TextEditingController(text: currentText);
 
     final newText = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Edit Question', style: GoogleFonts.poppins()),
+        title: Text(l10n.editQuestion, style: GoogleFonts.poppins()),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(
-            hintText: 'Enter your question',
+          decoration: InputDecoration(
+            hintText: l10n.enterYourQuestion,
             border: OutlineInputBorder(),
           ),
           maxLines: 3,
@@ -170,7 +173,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, controller.text),
-            child: Text('Save', style: GoogleFonts.poppins()),
+            child: Text(l10n.save, style: GoogleFonts.poppins()),
           ),
         ],
       ),
@@ -183,7 +186,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Question updated!', style: GoogleFonts.poppins()),
+              content: Text(l10n.questionUpdated, style: GoogleFonts.poppins()),
               backgroundColor: Colors.green,
             ),
           );
@@ -192,7 +195,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to update question', style: GoogleFonts.poppins()),
+              content: Text(l10n.failedToUpdateQuestion, style: GoogleFonts.poppins()),
               backgroundColor: Colors.red,
             ),
           );
@@ -202,13 +205,14 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
   }
 
   Future<void> _deleteQuestion(String questionId) async {
+    final l10n = AppLocalizations.of(context)!;
     // FIXED: Removed the restriction - allow deletion at any count
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Delete Question', style: GoogleFonts.poppins()),
+        title: Text(l10n.deleteQuestion, style: GoogleFonts.poppins()),
         content: Text(
-          'Are you sure you want to delete this question?',
+          l10n.deleteQuestionConfirm,
           style: GoogleFonts.poppins(),
         ),
         actions: [
@@ -219,7 +223,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: Text('Delete', style: GoogleFonts.poppins()),
+            child: Text(l10n.delete, style: GoogleFonts.poppins()),
           ),
         ],
       ),
@@ -232,7 +236,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Question deleted', style: GoogleFonts.poppins()),
+              content: Text(l10n.questionDeleted, style: GoogleFonts.poppins()),
             ),
           );
         }
@@ -240,7 +244,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to delete question', style: GoogleFonts.poppins()),
+              content: Text(l10n.failedToDeleteQuestion, style: GoogleFonts.poppins()),
               backgroundColor: Colors.red,
             ),
           );
@@ -251,6 +255,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final hasEnoughQuestions = questions.length >= minimumQuestions;
     final questionsNeeded = minimumQuestions - questions.length;
 
@@ -482,7 +487,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
                                   ),
                                   const SizedBox(height: 20),
                                   Text(
-                                    widget.isFavorites ? 'No favorites yet' : 'No questions yet', // ADDED
+                                    widget.isFavorites ? 'No favorites yet' : l10n.noQuestionsYet, // ADDED
                                     style: GoogleFonts.poppins(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w600,

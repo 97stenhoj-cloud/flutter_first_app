@@ -387,4 +387,340 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noQuestionsAvailable => 'No questions available';
+
+  @override
+  String get showLess => 'Show Less';
+
+  @override
+  String get readMore => 'Read More';
+
+  @override
+  String get tapToPlay => 'Tap to Play';
+
+  @override
+  String get coupleBundle => 'Couple Bundle';
+
+  @override
+  String get friendsBundle => 'Friends Bundle';
+
+  @override
+  String get familyBundle => 'Family Bundle';
+
+  @override
+  String get favorites => 'Favorites';
+
+  @override
+  String get pandoraHostCreatePin => 'Host creates session and shares PIN';
+
+  @override
+  String get pandoraPlayersJoinMax => 'Players join (max 15 min)';
+
+  @override
+  String get pandoraHostSetsTimer => 'Host sets question timer (1-15 min)';
+
+  @override
+  String get pandoraEveryoneSubmits => 'Everyone submits questions';
+
+  @override
+  String get pandoraHostControls => 'Host controls game progression';
+
+  @override
+  String get pandoraQuestionsDeleted => 'Questions deleted after game';
+
+  @override
+  String get pandoraHost => 'Host';
+
+  @override
+  String get pandoraJoinGame => 'Join Game';
+
+  @override
+  String get pandoraPandoraBox => 'Pandora Box';
+
+  @override
+  String get pleaseEnterName => 'Please enter your name';
+
+  @override
+  String get hostSuffix => '(Host)';
+
+  @override
+  String get playersJoinWithNames => 'Players join with their names';
+
+  @override
+  String get everyoneSubmitsMin5 => 'Everyone submits questions (min 5)';
+
+  @override
+  String get createSession => 'Create Session';
+
+  @override
+  String get creating => 'Creating...';
+
+  @override
+  String get yourName => 'Your Name';
+
+  @override
+  String get enterDisplayName => 'Enter your display name';
+
+  @override
+  String get howItWorks => 'How It Works';
+
+  @override
+  String get pinCopied => 'PIN copied to clipboard!';
+
+  @override
+  String get endSession => 'End Session?';
+
+  @override
+  String get endSessionConfirm =>
+      'Are you sure you want to end this Pandora session?';
+
+  @override
+  String get end => 'End';
+
+  @override
+  String get sessionPin => 'Session PIN';
+
+  @override
+  String get sharePin => 'Share this PIN with players';
+
+  @override
+  String get waitingForPlayers => 'Waiting for players...';
+
+  @override
+  String get startGame => 'Start Game';
+
+  @override
+  String get lobby => 'Lobby';
+
+  @override
+  String get hostLabel => ' (Host)';
+
+  @override
+  String get selectTimer => 'Select Timer';
+
+  @override
+  String get timerQuestion =>
+      'How long should players have to submit questions?';
+
+  @override
+  String get minutes => 'minutes';
+
+  @override
+  String get startCollectingQuestions => 'Start Collecting Questions';
+
+  @override
+  String get sessionCancelled => 'Session cancelled';
+
+  @override
+  String get questionCannotBeEmpty => 'Question cannot be empty';
+
+  @override
+  String get questionSubmitted => 'Question submitted!';
+
+  @override
+  String get failedToSubmit => 'Failed to submit question';
+
+  @override
+  String notEnoughQuestions(Object count) {
+    return 'Not enough questions. Minimum 5 required. (Currently: $count)';
+  }
+
+  @override
+  String get submitQuestions => 'Submit Questions';
+
+  @override
+  String get submitMinimum5 => 'Submit at least 5 questions to start the game';
+
+  @override
+  String get yourQuestion => 'Your Question';
+
+  @override
+  String get enterQuestionHere => 'Enter your question here...';
+
+  @override
+  String get forEveryone => 'For Everyone';
+
+  @override
+  String get forSpecificPerson => 'For Specific Person';
+
+  @override
+  String get submit => 'Submit';
+
+  @override
+  String questionsRemaining(Object count) {
+    return '$count questions remaining';
+  }
+
+  @override
+  String questionRemaining(Object count) {
+    return '$count question remaining';
+  }
+
+  @override
+  String get startGameExclamation => 'Start Game!';
+
+  @override
+  String get cancelSession => 'Cancel Session';
+
+  @override
+  String get timeRemaining => 'Time Remaining';
+
+  @override
+  String get pleaseEnterPin => 'Please enter a PIN';
+
+  @override
+  String get sessionNotFound => 'Session not found';
+
+  @override
+  String get sessionEnded => 'Session has ended';
+
+  @override
+  String get sessionStarted => 'Session has already started';
+
+  @override
+  String get failedToJoin => 'Failed to join session';
+
+  @override
+  String get joinSession => 'Join Session';
+
+  @override
+  String get joining => 'Joining...';
+
+  @override
+  String get enterPin => 'Enter 6-digit PIN';
+
+  @override
+  String get join => 'Join';
+
+  @override
+  String get reactionBreakdown => 'Reaction Breakdown';
+
+  @override
+  String get laugh => 'Laugh';
+
+  @override
+  String get shock => 'Shock';
+
+  @override
+  String get heart => 'Heart';
+
+  @override
+  String get fire => 'Fire';
+
+  @override
+  String get mostLaughs => 'Most Laughs';
+
+  @override
+  String get mostShocked => 'Most Shocked';
+
+  @override
+  String get mostHearts => 'Most Hearts';
+
+  @override
+  String get sessionComplete => 'Session Complete!';
+
+  @override
+  String get thanksForPlayingPandora => 'Thanks for playing Pandora Box!';
+
+  @override
+  String get returnToMenu => 'Return to Menu';
+
+  @override
+  String get failedToCreateDeck => 'Failed to create deck';
+
+  @override
+  String get createNewDeck => 'Create New Deck';
+
+  @override
+  String get deckName => 'Deck Name';
+
+  @override
+  String get enterDeckName => 'Enter deck name';
+
+  @override
+  String get create => 'Create';
+
+  @override
+  String get deleteDeck => 'Delete Deck';
+
+  @override
+  String deleteDeckConfirm(Object name) {
+    return 'Are you sure you want to delete \"$name\"? This will delete all questions in this deck.';
+  }
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get deckDeleted => 'Deck deleted';
+
+  @override
+  String get failedToDeleteDeck => 'Failed to delete deck';
+
+  @override
+  String get myDecks => 'My Decks';
+
+  @override
+  String get noDecksYet => 'No decks yet';
+
+  @override
+  String get createFirstDeck => 'Create your first custom deck!';
+
+  @override
+  String questionsCount(Object count) {
+    return '$count questions';
+  }
+
+  @override
+  String questionCount(Object count) {
+    return '$count question';
+  }
+
+  @override
+  String get questionAdded => 'Question added!';
+
+  @override
+  String get failedToAddQuestion => 'Failed to add question';
+
+  @override
+  String get editQuestion => 'Edit Question';
+
+  @override
+  String get enterYourQuestion => 'Enter your question';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get questionUpdated => 'Question updated!';
+
+  @override
+  String get failedToUpdateQuestion => 'Failed to update question';
+
+  @override
+  String get deleteQuestion => 'Delete Question';
+
+  @override
+  String get deleteQuestionConfirm =>
+      'Are you sure you want to delete this question?';
+
+  @override
+  String get questionDeleted => 'Question deleted';
+
+  @override
+  String get failedToDeleteQuestion => 'Failed to delete question';
+
+  @override
+  String get addQuestion => 'Add Question';
+
+  @override
+  String get typeQuestionHere => 'Type your question here...';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get noQuestionsYet => 'No questions yet';
+
+  @override
+  String get addFirstQuestion => 'Add your first question!';
 }

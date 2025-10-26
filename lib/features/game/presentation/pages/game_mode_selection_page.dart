@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/theme_helper.dart';
-import '../../../../core/constants/app_constants.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'category_selection_page.dart';
 import '../../../pandora/presentation/pages/pandora_entry_page.dart';

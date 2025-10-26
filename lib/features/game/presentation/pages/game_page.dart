@@ -38,7 +38,7 @@ class _GamePageState extends State<GamePage> {
   final supabaseService = SupabaseService();
   final unlockManager = UnlockManager();
   final pandoraService = PandoraService();
-  final CardSwiperController controller = CardSwiperController();
+  final CardSwiperController controller = CardSwiperController  ();
   String? _loadedLanguageCode; // Track what language questions are loaded in
   List<String> allQuestions = [];
   List<String> displayedQuestions = [];
@@ -111,6 +111,7 @@ void didChangeDependencies() {
   }
 }
   Future<void> _loadFavoriteQuestions() async {
+    final l10n = AppLocalizations.of(context)!;
     if (isPandoraMode) return; // No favorites in Pandora mode
     
     try {
@@ -122,7 +123,7 @@ void didChangeDependencies() {
           .from('custom_decks')
           .select('id')
           .eq('user_id', userId)
-          .eq('deck_name', 'Favorites')
+          .eq('deck_name', l10n.favorites)
           .maybeSingle();
       
       if (deckResponse == null) {
@@ -149,6 +150,7 @@ void didChangeDependencies() {
   }
   
   Future<void> _toggleFavorite(String question) async {
+    final l10n = AppLocalizations.of(context)!;
     if (isPandoraMode) return; // No favorites in Pandora mode
     
     try {
@@ -160,7 +162,7 @@ void didChangeDependencies() {
           .from('custom_decks')
           .select('id')
           .eq('user_id', userId)
-          .eq('deck_name', 'Favorites')
+          .eq('deck_name', l10n.favorites)
           .maybeSingle();
       
       String deckId;
@@ -171,7 +173,7 @@ void didChangeDependencies() {
             .from('custom_decks')
             .insert({
           'user_id': userId,
-          'deck_name': 'Favorites',
+          'deck_name': l10n.favorites,
         })
             .select('id')
             .single();
@@ -602,19 +604,19 @@ debugPrint('✅ Loaded ${questions.length} questions in $languageCode');
                   ),
                   const SizedBox(height: 20),
                   _buildBundleOption(
-                    'Couple Bundle',
+                    l10n.coupleBundle,
                     'couple',
                     selectedBundle,
                     (value) => setState(() => selectedBundle = value),
                   ),
                   _buildBundleOption(
-                    'Friends Bundle',
+                    l10n.friendsBundle,
                     'friends',
                     selectedBundle,
                     (value) => setState(() => selectedBundle = value),
                   ),
                   _buildBundleOption(
-                    'Family Bundle',
+                    l10n.familyBundle,
                     'family',
                     selectedBundle,
                     (value) => setState(() => selectedBundle = value),

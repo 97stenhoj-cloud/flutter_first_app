@@ -303,6 +303,7 @@ List<TextSpan> _buildDescriptionSpans(String description) {
   final description = categoryDescriptions[category] ?? 'Discover amazing questions in this category!';
   final imageKey = '${widget.gameMode.toLowerCase()}_$category';
   final imageUrl = categoryImages[imageKey];
+  final l10n = AppLocalizations.of(context)!;
   
   return AnimatedBuilder(
     animation: _pageController,
@@ -459,7 +460,7 @@ List<TextSpan> _buildDescriptionSpans(String description) {
                                     color: Colors.white,
                                   ),
                                   label: Text(
-                                    isExpanded ? 'Show Less' : 'Read More',
+                                    isExpanded ? l10n.showLess : l10n.readMore,
                                     style: GoogleFonts.poppins(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w600,
@@ -478,7 +479,7 @@ List<TextSpan> _buildDescriptionSpans(String description) {
                                 
                                 // Tap to Play Text
                                 Text(
-                                  isLocked ? 'Premium' : 'Tap to play',
+                                  isLocked ? 'Premium' : l10n.tapToPlay,
                                   style: GoogleFonts.poppins(
                                     fontSize: 14,
                                     color: Colors.white.withValues(alpha: 0.7),

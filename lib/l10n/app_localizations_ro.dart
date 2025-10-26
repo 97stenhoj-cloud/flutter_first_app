@@ -12,16 +12,16 @@ class AppLocalizationsRo extends AppLocalizations {
   String get appTitle => 'Connect';
 
   @override
-  String get start => 'Start';
+  String get start => 'Începe';
 
   @override
   String get settings => 'Setări';
 
   @override
-  String get howToPlay => 'Cum se joacă';
+  String get howToPlay => 'Cum să joci';
 
   @override
-  String get chooseGameMode => 'Alege modul de joc';
+  String get chooseGameMode => 'Alege modul tău de joc';
 
   @override
   String get family => 'Familie';
@@ -40,7 +40,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get lockedMessage =>
-      'Această categorie este blocată. Actualizează la premium pentru a debloca toate categoriile!';
+      'Această categorie este blocată. Upgradează la premium pentru a debloca toate categoriile!';
 
   @override
   String get ok => 'OK';
@@ -49,32 +49,32 @@ class AppLocalizationsRo extends AppLocalizations {
   String get mayBeLater => 'Poate mai târziu';
 
   @override
-  String get chooseSubscription => 'Alege abonamentul';
+  String get chooseSubscription => 'Alege abonamentul tău';
 
   @override
   String get subscriptionDescription =>
-      'Deblochează categorii premium și obține acces la pachete exclusive de întrebări';
+      'Deblochează categoriile premium și obține acces la pachete de întrebări exclusive';
 
   @override
-  String get chooseBundleOne => 'Alege 1 pachet de categorii';
+  String get chooseBundleOne => 'Alege 1 pachet de categorie';
 
   @override
-  String get chooseBundleTwo => 'Alege 2 pachete de categorii';
+  String get chooseBundleTwo => 'Alege 2 pachete de categorie';
 
   @override
-  String get chooseBundleThree => 'Toate cele 3 pachete';
+  String get chooseBundleThree => 'Toate cele 3 pachete de categorie';
 
   @override
   String get perMonth => '/lună';
 
   @override
-  String get bestValue => 'CEL MAI BUNĂ OFERTĂ';
+  String get bestValue => 'CEL MAI BUN RAPORT CALITATE-PREȚ';
 
   @override
-  String get unlockAllBundles => 'Deblochează toate pachetele';
+  String get unlockAllBundles => 'Dezvoltă toate pachetele';
 
   @override
-  String get selectYourBundle => 'Selectează pachetul tău';
+  String get selectYourBundle => 'Selectează-ți pachetul';
 
   @override
   String selectBundles(Object count, Object plural) {
@@ -92,7 +92,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String subscriptionActivated(Object bundles) {
-    return 'Abonament activat! $bundles deblocat.';
+    return 'Abonamentul activat! $bundles deblocate.';
   }
 
   @override
@@ -100,7 +100,7 @@ class AppLocalizationsRo extends AppLocalizations {
       'Demo: Deblocările se vor reseta la repornirea aplicației';
 
   @override
-  String get swipeOrTap => 'Glisează sau apasă săgețile';
+  String get swipeOrTap => 'Glisează sau apasă pe săgeți';
 
   @override
   String get previous => 'Anterior';
@@ -113,55 +113,54 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get watchAdMessage =>
-      'Vizionează o reclamă scurtă pentru a continua, sau elimină reclamele cu premium!';
+      'Vizionați o reclamă scurtă pentru a continua sau treceți la versiunea fără reclame cu premium!';
 
   @override
-  String get watchAd => 'Vizionează reclama';
+  String get watchAd => 'Vizionați reclamă';
 
   @override
-  String get goAdFree => 'Fără reclame - 59 DKK/lună';
+  String get goAdFree => 'Treceți la versiunea fără reclame - 59 DKK/lună';
 
   @override
-  String get removeAdsForever => 'Elimină reclamele pentru totdeauna';
+  String get removeAdsForever => 'Îndepărtați reclamele pentru totdeauna';
 
   @override
   String get chooseOneBundle =>
-      'Alege 1 pachet pentru a debloca și elimina toate reclamele';
+      'Alegeți 1 pachet pentru a debloca și a elimina toate reclamele';
 
   @override
-  String get noAdsForever => 'Fără reclame niciodată';
+  String get noAdsForever => 'Fără reclame pentru totdeauna';
 
   @override
   String premiumActivated(Object bundle) {
-    return 'Premium activat! Reclame eliminate. Pachetul $bundle deblocat.';
+    return 'Premium activat! Reclamele au fost eliminate. Pachetul $bundle a fost deblocat.';
   }
 
   @override
-  String get adNotReady =>
-      'Reclama nu este pregătită. Se continuă fără reclamă.';
+  String get adNotReady => 'Reclama nu este gata. Continuăm fără reclamă.';
 
   @override
-  String get adLoadingContinue => 'Reclama se încarcă... Continuă';
+  String get adLoadingContinue => 'Încărcare anunț... Continuă';
 
   @override
   String get pricePerMonth => '59 DKK/lună';
 
   @override
   String noQuestionsFoundMessage(Object category, Object mode) {
-    return 'Nu s-au găsit întrebări pentru $category în modul $mode';
+    return 'Nicio întrebare găsită pentru $category în modul $mode';
   }
 
   @override
   String get errorLoadingQuestions =>
-      'Eroare la încărcarea întrebărilor. Te rugăm verifică conexiunea.';
+      'Eroare la încărcarea întrebărilor. Te rog verifică-ți conexiunea.';
 
   @override
   String failedToLoadQuestions(Object error) {
-    return 'Încărcarea întrebărilor a eșuat: $error';
+    return 'Nu s-au putut încărca întrebările: $error';
   }
 
   @override
-  String get madeForWife => 'Creat pentru frumoasa mea soție';
+  String get madeForWife => 'Creat pentru soția mea frumoasă';
 
   @override
   String get otiLia => 'Otilia Stenhøj';
@@ -193,20 +192,20 @@ class AppLocalizationsRo extends AppLocalizations {
   String get signOut => 'Deconectare';
 
   @override
-  String get notSignedIn => 'Nu ești autentificat';
+  String get notSignedIn => 'Nu ești conectat';
 
   @override
-  String get signInSignUp => 'Autentificare / Înregistrare';
+  String get signInSignUp => 'Conectează-te / Înscrie-te';
 
   @override
   String get signInToSync =>
-      'Autentifică-te pentru a sincroniza abonamentele pe toate dispozitivele și a debloca conținut premium';
+      'Conectează-te pentru a sincroniza abonamentele pe dispozitive și a debloca conținut premium';
 
   @override
   String get signOutConfirm => 'Ești sigur că vrei să te deconectezi?';
 
   @override
-  String get signedOutSuccess => 'Deconectat cu succes';
+  String get signedOutSuccess => 'Deconectare reușită';
 
   @override
   String get accountInformation => 'Informații cont';
@@ -218,7 +217,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get memberSince => 'Membru din';
 
   @override
-  String get notAvailable => 'Indisponibil';
+  String get notAvailable => 'Nedisponibil';
 
   @override
   String get unknown => 'Necunoscut';
@@ -228,22 +227,22 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String bundlesUnlocked(Object count, Object plural) {
-    return '$count pachet$plural deblocat';
+    return '$count Pachet$plural deblocat';
   }
 
   @override
   String bundle(Object name) {
-    return 'Pachetul $name';
+    return 'Pachet $name';
   }
 
   @override
-  String get premiumMember => 'Membru premium';
+  String get premiumMember => 'Membru Premium';
 
   @override
   String get freeAccount => 'Cont gratuit';
 
   @override
-  String get welcomeToConnect => 'Bun venit la Connect!';
+  String get welcomeToConnect => 'Bine ai venit la Connect!';
 
   @override
   String get continueWithApple => 'Continuă cu Apple';
@@ -252,26 +251,26 @@ class AppLocalizationsRo extends AppLocalizations {
   String get continueWithGoogle => 'Continuă cu Google';
 
   @override
-  String get skipForNow => 'Omite deocamdată';
+  String get skipForNow => 'Sari peste pentru acum';
 
   @override
   String get byContining =>
-      'Continuând, accepți Termenii de serviciu și Politica de confidențialitate';
+      'Prin continuare, ești de acord cu Termenii și Condițiile noastre și Politica de Confidențialitate';
 
   @override
   String get googleSignInFailed =>
-      'Autentificarea Google a eșuat. Te rugăm încearcă din nou.';
+      'Autentificarea Google a eșuat. Te rugăm să încerci din nou.';
 
   @override
   String get appleSignInFailed =>
-      'Autentificarea Apple a eșuat. Te rugăm încearcă din nou.';
+      'Autentificarea Apple a eșuat. Te rugăm să încerci din nou.';
 
   @override
-  String get noCategoriesFound => 'Nu s-au găsit categorii';
+  String get noCategoriesFound => 'Nu au fost găsite categorii';
 
   @override
   String selectBundlePlural(Object plural) {
-    return 'Selectează pachetul$plural de categorii pe care vrei să îl deblochezi';
+    return 'Selectează pachetul de categorii$plural pe care vrei să-l deblochezi';
   }
 
   @override
@@ -280,7 +279,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String subscriptionActivatedFull(Object bundles) {
-    return 'Abonament activat! $bundles deblocat.';
+    return 'Abonament activat! $bundles deblocate.';
   }
 
   @override
@@ -290,106 +289,445 @@ class AppLocalizationsRo extends AppLocalizations {
   String get welcomeBack => 'Bine ai revenit!';
 
   @override
-  String get createAccount => 'Creează cont';
+  String get createAccount => 'Creează un cont';
 
   @override
-  String get displayName => 'Nume afișat';
+  String get displayName => 'Nume de afișare';
 
   @override
   String get password => 'Parolă';
 
   @override
-  String get signIn => 'Autentificare';
+  String get signIn => 'Conectează-te';
 
   @override
-  String get signUp => 'Înregistrare';
+  String get signUp => 'Înscrie-te';
 
   @override
-  String get dontHaveAccount => 'Nu ai cont? Înregistrează-te';
+  String get dontHaveAccount => 'Nu ai un cont? Înscrie-te';
 
   @override
-  String get alreadyHaveAccount => 'Ai deja cont? Autentifică-te';
+  String get alreadyHaveAccount => 'Ai deja un cont? Conectează-te';
 
   @override
-  String get chooseYourMode => '1. Alege modul tău';
+  String get chooseYourMode => '1. Alege-ți Modul';
 
   @override
   String get chooseYourModeDesc =>
-      'Selectează dintre cele trei stiluri de conversație:\n\n• Familie - Conversații calde și plăcute, perfecte pentru toate vârstele\n• Cuplu - Întrebări intime și romantice pentru a aprofunda legătura\n• Prieteni - Subiecte distractive și antrenante pentru grupul tău';
+      'Selectează din trei stiluri de conversație:';
 
   @override
-  String get pickCategory => '2. Alege o categorie';
+  String get pickCategory => '2. Alege o Categorie';
 
   @override
   String get pickCategoryDesc =>
-      'Fiecare mod are mai multe categorii cu pachete unice de întrebări. Categoriile gratuite sunt deblocate, în timp ce categoriile premium necesită abonament.';
+      'Fiecare mod are mai multe categorii cu pachete unice de întrebări. Categoriile gratuite sunt deblocate, în timp ce categoriile premium necesită un abonament.';
 
   @override
-  String get startTalking => '3. Începe să vorbești';
+  String get startTalking => '3. Începe Să Vorbești';
 
   @override
   String get startTalkingDesc =>
-      'Întrebările apar pe tot ecranul. Pe rând, citiți și răspundeți sincer. Nu există răspunsuri greșite - scopul este o conversație profundă!';
+      'Întrebările apar pe ecran complet. Faceți schimb de rânduri citind și răspunzând sincer. Nu există răspunsuri greșite - scopul este o conversație semnificativă!';
 
   @override
-  String get navigateQuestions => '4. Navighează întrebările';
+  String get navigateQuestions => '4. Navighează Întrebările';
 
   @override
   String get navigateQuestionsDesc =>
-      '• Glisează la dreapta sau apasă \"Următorul\" pentru întrebarea următoare\n• Glisează la stânga sau apasă \"Anterior\" pentru a revizita întrebările\n• Apasă butonul home pentru a reveni la meniul principal oricând';
+      '• Glisează spre dreapta sau apasă \"Următorul\" pentru următoarea întrebare';
 
   @override
-  String get premiumFeatures => '5. Funcții premium';
+  String get premiumFeatures => '5. Funcții Premium';
 
   @override
   String get premiumFeaturesDesc =>
-      'Deblochează categorii exclusive de întrebări cu un abonament:\n\n• 1 pachet (4 categorii) - 59 DKK/lună\n• 2 pachete (8 categorii) - 109 DKK/lună\n• 3 pachete (12 categorii) - 149 DKK/lună';
+      'Deblochează categorii exclusive de întrebări cu un abonament:';
 
   @override
   String get proTips => 'Sfaturi Pro';
 
   @override
-  String get proTipsDesc =>
-      '• Creează un mediu confortabil, fără distrageri\n• Ascultă activ și fii prezent\n• Împărtășește sincer și încurajează pe alții să facă la fel\n• Respectă limitele - omite întrebări dacă este necesar\n• Distrează-te și bucură-te de conexiune!';
+  String get proTipsDesc => '• Creează un mediu confortabil, fără distrageri';
 
   @override
   String get personal => 'Personal';
 
   @override
-  String get personalDesc => 'Create your own custom question decks';
+  String get personalDesc =>
+      'Creează-ți propriile pachete de întrebări personalizate';
 
   @override
-  String get gameComplete => 'Game Complete!';
+  String get gameComplete => 'Joc complet!';
 
   @override
   String get noMoreQuestions =>
-      'You\'ve gone through all the questions in this deck!';
+      'Ai parcurs toate întrebările din acest pachet!';
 
   @override
-  String get playAgain => 'Play Again';
+  String get playAgain => 'Joacă din nou';
 
   @override
-  String get mainMenu => 'Main Menu';
+  String get mainMenu => 'Meniu principal';
 
   @override
-  String get thanksForPlaying => 'Thanks for Playing!';
+  String get thanksForPlaying => 'Mulțumim că ai jucat!';
 
   @override
-  String get hopeYouHadFun => 'Hope you had fun! 🎉';
+  String get hopeYouHadFun => 'Sper că te-ai distrat! 🎉';
 
   @override
-  String get backToMenu => 'Back to Menu';
+  String get backToMenu => 'Înapoi la Meniu';
 
   @override
-  String get leaveGame => 'Leave Game?';
+  String get leaveGame => 'Părăsești jocul?';
 
   @override
   String get leaveGameMessage =>
-      'Are you sure you want to leave? The game will continue for other players.';
+      'Ești sigur că vrei să pleci? Jocul va continua pentru ceilalți jucători.';
 
   @override
-  String get leave => 'Leave';
+  String get leave => 'Părăsește';
 
   @override
-  String get noQuestionsAvailable => 'No questions available';
+  String get noQuestionsAvailable => 'Nu sunt întrebări disponibile';
+
+  @override
+  String get showLess => 'Arată mai puțin';
+
+  @override
+  String get readMore => 'Citește mai mult';
+
+  @override
+  String get tapToPlay => 'Apasă pentru a juca';
+
+  @override
+  String get coupleBundle => 'Pachet pentru Cupluri';
+
+  @override
+  String get friendsBundle => 'Pachet pentru Prieteni';
+
+  @override
+  String get familyBundle => 'Pachet Familie';
+
+  @override
+  String get favorites => 'Preferate';
+
+  @override
+  String get pandoraHostCreatePin =>
+      'Gazda creează sesiunea și împărtășește PIN-ul';
+
+  @override
+  String get pandoraPlayersJoinMax => 'Jucătorii se alătură (max 15 min)';
+
+  @override
+  String get pandoraHostSetsTimer =>
+      'Gazda setează cronometrul pentru întrebări (1-15 min)';
+
+  @override
+  String get pandoraEveryoneSubmits => 'Toată lumea trimite întrebările';
+
+  @override
+  String get pandoraHostControls => 'Gazda controlează progresul jocului';
+
+  @override
+  String get pandoraQuestionsDeleted => 'Întrebările sunt șterse după joc';
+
+  @override
+  String get pandoraHost => 'Gazda';
+
+  @override
+  String get pandoraJoinGame => 'Alătură-te Jocului';
+
+  @override
+  String get pandoraPandoraBox => 'Cutia Pandorei';
+
+  @override
+  String get pleaseEnterName => 'Te rog introdu numele tău';
+
+  @override
+  String get hostSuffix => '(Gazdă)';
+
+  @override
+  String get playersJoinWithNames => 'Jucătorii se alătură cu numele lor';
+
+  @override
+  String get everyoneSubmitsMin5 => 'Toată lumea trimite întrebări (minim 5)';
+
+  @override
+  String get createSession => 'Creează sesiune';
+
+  @override
+  String get creating => 'Se creează...';
+
+  @override
+  String get yourName => 'Numele tău';
+
+  @override
+  String get enterDisplayName => 'Introdu numele tău de afișare';
+
+  @override
+  String get howItWorks => 'Cum funcționează';
+
+  @override
+  String get pinCopied => 'PIN copiat în clipboard!';
+
+  @override
+  String get endSession => 'Încheie sesiunea?';
+
+  @override
+  String get endSessionConfirm =>
+      'Ești sigur că vrei să închei această sesiune Pandora?';
+
+  @override
+  String get end => 'Încheie';
+
+  @override
+  String get sessionPin => 'PIN-ul sesiunii';
+
+  @override
+  String get sharePin => 'Împărtășește acest PIN cu jucătorii';
+
+  @override
+  String get waitingForPlayers => 'Aștept jucătorii...';
+
+  @override
+  String get startGame => 'Începe jocul';
+
+  @override
+  String get lobby => 'Lobby';
+
+  @override
+  String get hostLabel => '(Gazdă)';
+
+  @override
+  String get selectTimer => 'Selectați Timer';
+
+  @override
+  String get timerQuestion =>
+      'Cât timp ar trebui să aibă jucătorii pentru a trimite întrebările?';
+
+  @override
+  String get minutes => 'minute';
+
+  @override
+  String get startCollectingQuestions => 'Începeți să colectați întrebări';
+
+  @override
+  String get sessionCancelled => 'Sesiunea a fost anulată';
+
+  @override
+  String get questionCannotBeEmpty => 'Întrebarea nu poate fi goală';
+
+  @override
+  String get questionSubmitted => 'Întrebarea a fost trimisă!';
+
+  @override
+  String get failedToSubmit => 'Nu s-a reușit trimiterea întrebării';
+
+  @override
+  String notEnoughQuestions(Object count) {
+    return 'Nu sunt suficiente întrebări. Minimum 5 necesare. (În prezent: $count)';
+  }
+
+  @override
+  String get submitQuestions => 'Trimiteți întrebările';
+
+  @override
+  String get submitMinimum5 =>
+      'Trimite cel puțin 5 întrebări pentru a începe jocul';
+
+  @override
+  String get yourQuestion => 'Întrebarea ta';
+
+  @override
+  String get enterQuestionHere => 'Introdu întrebarea ta aici...';
+
+  @override
+  String get forEveryone => 'Pentru toată lumea';
+
+  @override
+  String get forSpecificPerson => 'Pentru o persoană specifică';
+
+  @override
+  String get submit => 'Trimite';
+
+  @override
+  String questionsRemaining(Object count) {
+    return '$count întrebări rămase';
+  }
+
+  @override
+  String questionRemaining(Object count) {
+    return '$count întrebare rămasă';
+  }
+
+  @override
+  String get startGameExclamation => 'Începe jocul!';
+
+  @override
+  String get cancelSession => 'Anulează sesiunea';
+
+  @override
+  String get timeRemaining => 'Timp rămas';
+
+  @override
+  String get pleaseEnterPin => 'Te rog introdu un PIN';
+
+  @override
+  String get sessionNotFound => 'Sesiune negăsită';
+
+  @override
+  String get sessionEnded => 'Sesiunea s-a încheiat';
+
+  @override
+  String get sessionStarted => 'Sesiunea a început deja';
+
+  @override
+  String get failedToJoin => 'Nu s-a putut alătura sesiunii';
+
+  @override
+  String get joinSession => 'Alătură-te sesiunii';
+
+  @override
+  String get joining => 'Se alătură...';
+
+  @override
+  String get enterPin => 'Introdu un PIN de 6 cifre';
+
+  @override
+  String get join => 'Alătură-te';
+
+  @override
+  String get reactionBreakdown => 'Analiza reacțiilor';
+
+  @override
+  String get laugh => 'Râs';
+
+  @override
+  String get shock => 'Șoc';
+
+  @override
+  String get heart => 'Inimă';
+
+  @override
+  String get fire => 'Foc';
+
+  @override
+  String get mostLaughs => 'Cele mai multe râsete';
+
+  @override
+  String get mostShocked => 'Cei mai șocați';
+
+  @override
+  String get mostHearts => 'Cele mai multe inimi';
+
+  @override
+  String get sessionComplete => 'Sesiune completă!';
+
+  @override
+  String get thanksForPlayingPandora => 'Mulțumim că ai jucat Pandora Box!';
+
+  @override
+  String get returnToMenu => 'Întoarce-te la Meniu';
+
+  @override
+  String get failedToCreateDeck => 'Nu s-a reușit crearea pachetului';
+
+  @override
+  String get createNewDeck => 'Creează un Pachet Nou';
+
+  @override
+  String get deckName => 'Numele Pachetului';
+
+  @override
+  String get enterDeckName => 'Introdu numele pachetului';
+
+  @override
+  String get create => 'Creează';
+
+  @override
+  String get deleteDeck => 'Șterge Pachetul';
+
+  @override
+  String deleteDeckConfirm(Object name) {
+    return 'Ești sigur că vrei să ștergi \"$name\"? Aceasta va șterge toate întrebările din acest pachet.';
+  }
+
+  @override
+  String get delete => 'Șterge';
+
+  @override
+  String get deckDeleted => 'Pachet șters';
+
+  @override
+  String get failedToDeleteDeck => 'Nu s-a reușit ștergerea pachetului';
+
+  @override
+  String get myDecks => 'Pachetele mele';
+
+  @override
+  String get noDecksYet => 'Încă nu ai pachete';
+
+  @override
+  String get createFirstDeck => 'Creează-ți primul pachet personalizat!';
+
+  @override
+  String questionsCount(Object count) {
+    return '$count întrebări';
+  }
+
+  @override
+  String questionCount(Object count) {
+    return '$count întrebare';
+  }
+
+  @override
+  String get questionAdded => 'Întrebarea a fost adăugată!';
+
+  @override
+  String get failedToAddQuestion => 'Nu s-a reușit adăugarea întrebării';
+
+  @override
+  String get editQuestion => 'Editează întrebare';
+
+  @override
+  String get enterYourQuestion => 'Introdu întrebarea ta';
+
+  @override
+  String get save => 'Salvează';
+
+  @override
+  String get questionUpdated => 'Întrebarea a fost actualizată!';
+
+  @override
+  String get failedToUpdateQuestion => 'Nu s-a putut actualiza întrebarea';
+
+  @override
+  String get deleteQuestion => 'Șterge întrebarea';
+
+  @override
+  String get deleteQuestionConfirm =>
+      'Ești sigur că vrei să ștergi această întrebare?';
+
+  @override
+  String get questionDeleted => 'Întrebarea a fost ștearsă';
+
+  @override
+  String get failedToDeleteQuestion => 'Nu s-a putut șterge întrebarea';
+
+  @override
+  String get addQuestion => 'Adaugă întrebare';
+
+  @override
+  String get typeQuestionHere => 'Scrie întrebarea ta aici...';
+
+  @override
+  String get add => 'Adaugă';
+
+  @override
+  String get noQuestionsYet => 'Încă nu sunt întrebări';
+
+  @override
+  String get addFirstQuestion => 'Adaugă-ți prima întrebare!';
 }

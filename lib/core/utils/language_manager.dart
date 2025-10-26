@@ -19,6 +19,7 @@ class LanguageManager extends ChangeNotifier {
     {'code': 'da', 'name': 'Dansk', 'flag': '🇩🇰'},
     {'code': 'de', 'name': 'Deutsch', 'flag': '🇩🇪'},
     {'code': 'es', 'name': 'Español', 'flag': '🇪🇸'},
+    {'code': 'fr', 'name': 'Français', 'flag': '🇫🇷'},
     {'code': 'pt', 'name': 'Português', 'flag': '🇵🇹'},
     {'code': 'ro', 'name': 'Română', 'flag': '🇷🇴'},
   ];

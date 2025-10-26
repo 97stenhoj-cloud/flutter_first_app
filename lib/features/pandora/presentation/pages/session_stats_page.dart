@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/services/pandora_service.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class SessionStatsPage extends StatefulWidget {
   final String sessionId;
@@ -298,6 +299,7 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
   }
 
   Widget _buildReactionBreakdown() {
+    final l10n = AppLocalizations.of(context)!;
     final reactionCounts = stats!['reaction_counts'] as Map<String, dynamic>;
     // REMOVED 'hundred' emoji
     final reactions = [
@@ -324,7 +326,7 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Reaction Breakdown',
+            l10n.reactionBreakdown,
             style: GoogleFonts.poppins(
               fontSize: 18,
               fontWeight: FontWeight.bold,

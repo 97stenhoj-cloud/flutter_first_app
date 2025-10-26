@@ -78,6 +78,7 @@ class _TalkingGameAppState extends State<TalkingGameApp> {
           Locale('da'),
           Locale('de'),
           Locale('es'),
+          Locale('fr'),
           Locale('pt'),
           Locale('ro'),
         ],

@@ -6,7 +6,6 @@ import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/pandora_service.dart';
 import 'pandora_question_submission_page.dart';
-
 class PandoraTimerSelectionPage extends StatefulWidget {
   final String sessionId;
   final bool isDarkMode;

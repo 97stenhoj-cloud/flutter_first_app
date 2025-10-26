@@ -5,6 +5,7 @@ import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/pandora_service.dart';
 import 'pandora_lobby_page.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class PandoraHostPage extends StatefulWidget {
   final bool isDarkMode;
@@ -30,11 +31,12 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
   }
 
   Future<void> _createSession() async {
+    final l10n = AppLocalizations.of(context)!;
     final displayName = nameController.text.trim();
     
     if (displayName.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your name')),
+        SnackBar(content: Text(l10n.pleaseEnterName)),
       );
       return;
     }
@@ -78,6 +80,7 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
         decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode),
@@ -146,7 +149,7 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide.none,
                               ),
-                              suffixText: '(Host)',
+                              suffixText: l10n.hostSuffix,
                               suffixStyle: GoogleFonts.poppins(
                                 color: const Color(0xFFFF6B9D),
                                 fontWeight: FontWeight.bold,
@@ -204,12 +207,12 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
                                   ],
                                 ),
                                 const SizedBox(height: 16),
-                                _buildInfoItem('1', 'Host creates session and shares PIN'),
-                                _buildInfoItem('2', 'Players join with their names'),
-                                _buildInfoItem('3', 'Host sets question timer (1-15 min)'),
-                                _buildInfoItem('4', 'Everyone submits questions (min 5)'),
-                                _buildInfoItem('5', 'Host controls game progression'),
-                                _buildInfoItem('⚠️', 'Questions deleted after game'),
+                                _buildInfoItem('1', l10n.pandoraHostCreatePin),
+                                _buildInfoItem('2', l10n.playersJoinWithNames),
+                                _buildInfoItem('3', l10n.pandoraHostSetsTimer),
+                                _buildInfoItem('4', l10n.everyoneSubmitsMin5),
+                                _buildInfoItem('5', l10n.pandoraHostControls),
+                                _buildInfoItem('⚠️', l10n.pandoraQuestionsDeleted),
                               ],
                             ),
                           ),
@@ -233,7 +236,7 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
                               child: isCreating
                                   ? const CircularProgressIndicator(color: Colors.white)
                                   : Text(
-                                      'Create Session',
+                                      l10n.createSession,
                                       style: GoogleFonts.poppins(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
