@@ -5,7 +5,7 @@ class LanguageManager extends ChangeNotifier {
   factory LanguageManager() => _instance;
   LanguageManager._internal();
 
-  Locale _currentLocale = const Locale('en');
+  Locale _currentLocale = const Locale('da');
 
   Locale get currentLocale => _currentLocale;
 

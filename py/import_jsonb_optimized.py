@@ -1,6 +1,6 @@
 """
-Import Talk Card questions to Supabase (ALL LANGUAGES)
-Imports: English, Danish, German, Spanish, Portuguese, Romanian, French
+Import Talk Card questions to Supabase with JSONB translations
+OPTIMAL FORMAT: One row per question with all translations in JSONB
 """
 
 import openpyxl
@@ -14,22 +14,20 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # Language mapping: column index -> language code
 LANGUAGES = {
-    2: 'en',  # Column C
-    3: 'da',  # Column D
-    4: 'de',  # Column E
-    5: 'es',  # Column F
-    6: 'pt',  # Column G
-    7: 'ro',  # Column H
-    8: 'fr',  # Column I
+    2: 'en',  # Column C - English
+    3: 'da',  # Column D - Danish
+    4: 'de',  # Column E - German
+    5: 'es',  # Column F - Spanish
+    6: 'pt',  # Column G - Portuguese
+    7: 'ro',  # Column H - Romanian
+    8: 'fr',  # Column I - French
 }
 
 def map_deck_to_game_mode(deck_name: str) -> dict:
     """Map deck name to boolean flags based on exact categorization"""
     
-    # Normalize the deck name for comparison
     deck_normalized = deck_name.strip()
     
-    # Define exact mappings
     couple_decks = [
         'Love Talks',
         'Deep Talks',
@@ -53,19 +51,17 @@ def map_deck_to_game_mode(deck_name: str) -> dict:
     family_decks = [
         'Cozy Talks',
         'Car Talks',
-        'History Talks',  # Assuming this is "Family Legends Talks"
+        'History Talks',
         'Silly Talks',
         'Would You Rather Talks',
         'Tiny Talks',
         'The Good Old Days Talks'
     ]
     
-    # Check which categories this deck belongs to
     is_couple = deck_normalized in couple_decks
     is_friends = deck_normalized in friends_decks
     is_family = deck_normalized in family_decks
     
-    # If not found in any category, default to friends
     if not (is_couple or is_friends or is_family):
         print(f"  ⚠️  Warning: '{deck_normalized}' not in any category, defaulting to Friends")
         is_friends = True
@@ -77,53 +73,62 @@ def map_deck_to_game_mode(deck_name: str) -> dict:
     }
 
 def import_questions(excel_file: str):
-    """Import ALL LANGUAGE questions from Excel to Supabase"""
+    """Import questions with JSONB translations"""
     
     print("📖 Loading Excel file...")
     wb = openpyxl.load_workbook(excel_file)
     ws = wb['Sheet v2.0']
     
-    print("🌍 Importing questions in all languages...")
+    print("🌍 Importing questions with JSONB translations...")
+    print("📦 Format: One row per question, all languages in JSONB\n")
     
     questions_batch = []
     total_imported = 0
-    language_counts = {lang: 0 for lang in LANGUAGES.values()}
+    skipped = 0
     
-    for row in ws.iter_rows(min_row=2, max_row=ws.max_row, values_only=True):
+    for row_num, row in enumerate(ws.iter_rows(min_row=2, max_row=ws.max_row, values_only=True), start=2):
         deck_name = row[0]  # Column A: Card Deck
         
         if not deck_name:
             continue
         
-        game_mode_flags = map_deck_to_game_mode(deck_name)
+        # Build translations object with all languages
+        translations = {}
+        has_any_translation = False
         
-        # Import question for each language
         for col_idx, lang_code in LANGUAGES.items():
             question_text = row[col_idx]
             
-            if not question_text:
-                continue
-            
-            questions_batch.append({
-                'category_name': deck_name,
-                'text': question_text,
-                'language_code': lang_code,
-                'is_couple': game_mode_flags['is_couple'],
-                'is_friends': game_mode_flags['is_friends'],
-                'is_family': game_mode_flags['is_family'],
-            })
-            
-            language_counts[lang_code] += 1
+            if question_text and str(question_text).strip():
+                translations[lang_code] = str(question_text).strip()
+                has_any_translation = True
         
-        # Insert in batches of 100
-        if len(questions_batch) >= 100:
+        # Skip if no translations found
+        if not has_any_translation:
+            skipped += 1
+            continue
+        
+        # Get game mode flags
+        game_mode_flags = map_deck_to_game_mode(deck_name)
+        
+        # Create question object
+        questions_batch.append({
+            'category_name': deck_name,
+            'translations': translations,
+            'is_couple': game_mode_flags['is_couple'],
+            'is_friends': game_mode_flags['is_friends'],
+            'is_family': game_mode_flags['is_family'],
+        })
+        
+        # Insert in batches of 50 (smaller batches for JSONB)
+        if len(questions_batch) >= 50:
             try:
                 supabase.table('questions').insert(questions_batch).execute()
                 total_imported += len(questions_batch)
                 print(f"  ✅ Imported {total_imported} questions...")
                 questions_batch = []
             except Exception as e:
-                print(f"  ❌ Error: {e}")
+                print(f"  ❌ Error at row {row_num}: {e}")
                 return
     
     # Insert remaining questions
@@ -131,21 +136,21 @@ def import_questions(excel_file: str):
         try:
             supabase.table('questions').insert(questions_batch).execute()
             total_imported += len(questions_batch)
-            print(f"  ✅ Imported {len(questions_batch)} more questions")
+            print(f"  ✅ Imported final {len(questions_batch)} questions")
         except Exception as e:
             print(f"  ❌ Error: {e}")
             return
     
-    print(f"\n✨ Done! Total questions imported: {total_imported}")
-    print(f"\n📊 Questions per language:")
-    for lang_code, count in language_counts.items():
-        print(f"   {lang_code.upper()}: {count}")
-    print(f"\n📈 Expected: ~8,400 total questions (1,200 per language × 7 languages)")
+    print(f"\n✨ Done!")
+    print(f"📊 Total questions imported: {total_imported}")
+    print(f"⚠️  Skipped rows: {skipped}")
+    print(f"\n💡 Each question contains translations for: {', '.join(LANGUAGES.values())}")
+    print(f"📈 Expected: ~1,200 questions (one per unique question)")
 
 if __name__ == "__main__":
-    print("=" * 50)
-    print("Talk Card Questions Import (ALL LANGUAGES)")
-    print("=" * 50)
+    print("=" * 60)
+    print("Talk Card Questions Import - JSONB Optimized")
+    print("=" * 60)
     
     excel_file = "/Users/stenhoej/Desktop/flutter_first_app/py/Talk_Card__2_.xlsx"
     import_questions(excel_file)

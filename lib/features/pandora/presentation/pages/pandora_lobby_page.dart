@@ -340,60 +340,65 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
                   
                   // PIN Display
                   Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFFFF6B9D), Color(0xFFFF8E53)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFFF6B9D), Color(0xFFFF8E53)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFFFF6B9D).withValues(alpha: 0.3),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
                       ),
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFFFF6B9D).withValues(alpha: 0.3),
-                          blurRadius: 20,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Session PIN',
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white.withValues(alpha: 0.9),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              widget.sessionPin,
-                              style: GoogleFonts.poppins(
-                                fontSize: 48,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                letterSpacing: 8,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            IconButton(
-                              onPressed: _copyPinToClipboard,
-                              icon: const Icon(
-                                Icons.copy,
-                                color: Colors.white,
-                                size: 28,
-                              ),
-                              tooltip: 'Copy PIN',
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                    ],
                   ),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Session PIN',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white.withValues(alpha: 0.9),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                widget.sessionPin,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 48,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  letterSpacing: 8,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          IconButton(
+                            onPressed: _copyPinToClipboard,
+                            icon: const Icon(
+                              Icons.copy,
+                              color: Colors.white,
+                              size: 28,
+                            ),
+                            tooltip: 'Copy PIN',
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
                   
                   const SizedBox(height: 40),
                   
