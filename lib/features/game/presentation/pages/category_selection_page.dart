@@ -28,8 +28,7 @@ const Map<String, String> categoryImages = {
   'friends_Unpopular Opinions XL ': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/friends.png',
   'friends_After Dark Talks': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/friends.png',
   'friends_Plot Twists & Dilemmas ': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/friends.png',
-  'friends_Green & Red Flags': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/friends.png',
-  
+
   // Family mode
   'family_Silly Talks': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/family.png',
   'family_Cozy Talks': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/family.png',
