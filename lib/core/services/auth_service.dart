@@ -1,8 +1,10 @@
+// lib/core/services/auth_service.dart
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'dart:io' show Platform;
+import '../config/env.dart'; // ADD THIS
 
 class AuthService {
   static final AuthService _instance = AuthService._internal();
@@ -11,9 +13,9 @@ class AuthService {
 
   final SupabaseClient _supabase = Supabase.instance.client;
   
-  // Your Google Web Client ID
-  static const String _googleWebClientId = '712131109538-n7aqt4uvp7cjf3bn1fojaqhe3os79p3a.apps.googleusercontent.com';
-
+  // Use secure environment variable
+  static final String _googleWebClientId = Env.googleWebClientId; // CHANGED
+  
   // Get current user
   User? get currentUser => _supabase.auth.currentUser;
   

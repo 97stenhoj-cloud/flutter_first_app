@@ -49,3 +49,40 @@ app.*.map.json
 
 # macOS
 **/macos/Flutter/GeneratedPluginRegistrant.swift
+
+# ============================================
+# SECRETS & SENSITIVE FILES - NEVER COMMIT
+# ============================================
+
+# Environment variables
+.env
+*.env
+.env.*
+!.env.example
+
+# Generated files from envied (contain obfuscated secrets)
+*.g.dart
+lib/core/config/env.g.dart
+
+# Any secrets files
+secrets.dart
+**/secrets.dart
+
+# Firebase/Google Services config files
+google-services.json
+GoogleService-Info.plist
+ios/Runner/GoogleService-Info.plist
+android/app/google-services.json
+firebase.json
+.firebaserc
+
+# API Keys and certificates
+*.pem
+*.key
+*.p12
+*.jks
+key.properties
+
+# IDE-specific files that might contain secrets
+.vscode/launch.json
+.idea/workspace.xml
