@@ -18,6 +18,8 @@ class PandoraEntryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final pandoraColors = ThemeHelper.getGameModeGradient('pandora', isDarkMode);
+    
     return Scaffold(
       body: Container(
         decoration: ThemeHelper.getBackgroundDecoration(isDarkMode),
@@ -48,15 +50,15 @@ class PandoraEntryPage extends StatelessWidget {
                           width: 120,
                           height: 120,
                           decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [Color(0xFFFF6B9D), Color(0xFFFF8E53)],
+                            gradient: LinearGradient(
+                              colors: pandoraColors,
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
                             borderRadius: BorderRadius.circular(30),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFFFF6B9D).withValues(alpha: 0.4),
+                                color: pandoraColors[0].withValues(alpha: 0.4),
                                 blurRadius: 30,
                                 offset: const Offset(0, 15),
                               ),
@@ -110,7 +112,7 @@ class PandoraEntryPage extends StatelessWidget {
                           : Colors.white.withValues(alpha: 0.9),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: const Color(0xFFFF6B9D).withValues(alpha: 0.3),
+                        color: pandoraColors[0].withValues(alpha: 0.3),
                         width: 2,
                       ),
                     ),
@@ -119,9 +121,9 @@ class PandoraEntryPage extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.info_outline,
-                              color: Color(0xFFFF6B9D),
+                              color: pandoraColors[0],
                               size: 28,
                             ),
                             const SizedBox(width: 12),
@@ -136,12 +138,12 @@ class PandoraEntryPage extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 16),
-                        _buildInfoItem('1', l10n.pandoraHostCreatePin),
-                        _buildInfoItem('2', l10n.pandoraPlayersJoinMax),
-                        _buildInfoItem('3', l10n.pandoraHostSetsTimer),
-                        _buildInfoItem('4', l10n.pandoraEveryoneSubmits),
-                        _buildInfoItem('5', l10n.pandoraHostControls),
-                        _buildInfoItem('⚠️', l10n.pandoraQuestionsDeleted),
+                        _buildInfoItem('1', l10n.pandoraHostCreatePin, pandoraColors[0]),
+                        _buildInfoItem('2', l10n.pandoraPlayersJoinMax, pandoraColors[0]),
+                        _buildInfoItem('3', l10n.pandoraHostSetsTimer, pandoraColors[0]),
+                        _buildInfoItem('4', l10n.pandoraEveryoneSubmits, pandoraColors[0]),
+                        _buildInfoItem('5', l10n.pandoraHostControls, pandoraColors[0]),
+                        _buildInfoItem('⚠️', l10n.pandoraQuestionsDeleted, pandoraColors[0]),
                       ],
                     ),
                   ),
@@ -162,7 +164,7 @@ class PandoraEntryPage extends StatelessWidget {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFF6B9D),
+                        backgroundColor: pandoraColors[0],
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -202,9 +204,9 @@ class PandoraEntryPage extends StatelessWidget {
                         );
                       },
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: const Color(0xFFFF6B9D),
-                        side: const BorderSide(
-                          color: Color(0xFFFF6B9D),
+                        foregroundColor: pandoraColors[0],
+                        side: BorderSide(
+                          color: pandoraColors[0],
                           width: 2,
                         ),
                         shape: RoundedRectangleBorder(
@@ -238,7 +240,7 @@ class PandoraEntryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoItem(String number, String text) {
+  Widget _buildInfoItem(String number, String text, Color accentColor) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -248,7 +250,7 @@ class PandoraEntryPage extends StatelessWidget {
             width: 32,
             height: 32,
             decoration: BoxDecoration(
-              color: const Color(0xFFFF6B9D),
+              color: accentColor,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Center(

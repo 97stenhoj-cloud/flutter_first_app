@@ -730,4 +730,68 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get addFirstQuestion => 'Adaugă-ți prima întrebare!';
+
+  @override
+  String get deckDescLoveTalks =>
+      'Explorează romantismul, chimia și conexiunea prin întrebări sincere care celebrează relația voastră. De la \"cum ne-am cunoscut\" până la ce te face să te simți cel mai iubit, aceste cărți adâncesc intimitatea emoțională.';
+
+  @override
+  String get deckDescDeepTalks =>
+      'Aceste cărți explorează valorile, vulnerabilitatea și ce înseamnă să crești împreună. Ele ajută partenerii să reflecteze asupra independenței, comunicării și scopului comun.';
+
+  @override
+  String get deckDescSpicyTalks =>
+      'Îndrăznețe, pasionale și intime — aceste cărți invită cuplurile să exploreze dorința, fanteziile și pasiunea împreună. Fiecare întrebare provoacă conversații sincere și incitante care apropie partenerii.';
+
+  @override
+  String get deckDescDoYouDareTalks =>
+      'Un set curajos care combină onestitatea emoțională cu subiecte sensibile precum încrederea, religia, banii și limitele personale — totul pentru a descoperi ce contează cu adevărat. *Avertisment:* Unele întrebări sunt directe — abordați-le cu empatie și respect.';
+
+  @override
+  String get deckDescLoveLanguagesTalks =>
+      'Inspirat de cele cinci limbaje ale iubirii, acest set îi ajută pe parteneri să își exprime afecțiunea în moduri care rezonează cu adevărat. Descoperă cum cuvintele, acțiunile și gesturile întăresc conexiunea.';
+
+  @override
+  String get deckDescSillyTalks =>
+      'Distracție și râsete! Aceste întrebări amuzante dezvăluie obiceiurile și gândurile tale cele mai ciudate. Perfecte pentru prieteni, familie sau cupluri care iau viața cu umor.';
+
+  @override
+  String get deckDescCarTalks =>
+      'Perfecte pentru călătorii lungi — aceste cărți transformă timpul din mașină în conversații grozave. Întrebări amuzante, creative și nostalgice despre călătorii, aventuri și ciudățenii.';
+
+  @override
+  String get deckDescUnpopularOpinions =>
+      'Setul care te provoacă să spui ceea ce toți gândesc, dar nimeni nu recunoaște. De la cultura influencerilor la valorile moderne — aceste cărți stârnesc dezbateri oneste și perspective surprinzătoare.';
+
+  @override
+  String get deckDescPlotTwists =>
+      'Acest set te aruncă în cele mai amuzante și dificile momente \"ce ai face dacă…\". Perfect pentru seri de grup pline de râsete, surprize și reacții neașteptate.';
+
+  @override
+  String get deckDescAfterDark =>
+      'Intră în latura întunecată a conversației cu întrebări care îți dau fiori. Perfect pentru nopți târzii și momente de suspans.';
+
+  @override
+  String get deckDescHistoryTalks =>
+      'Un amestec nostalgic de amintiri personale și momente de familie. Aceste întrebări inspiră povești și redescoperirea rădăcinilor.';
+
+  @override
+  String get deckDescTinyTalks =>
+      'Creat pentru părinți și micuții lor! Întrebări simple și jucăușe care îi ajută pe copii să se exprime și pe părinți să îi înțeleagă mai bine. Ideal pentru 3–9 ani.';
+
+  @override
+  String get deckDescGoodOldDays =>
+      'O călătorie nostalgică în trecut — de la amintiri din copilărie la cum s-a schimbat viața. Perfect pentru bunici să-și împărtășească poveștile.';
+
+  @override
+  String get deckDescWouldYouRather =>
+      'O versiune de familie a clasicului joc \"Ai prefera…?\". Plin de alegeri amuzante și creative care aduc zâmbete și discuții.';
+
+  @override
+  String get deckDescCozyTalks =>
+      'Întrebări calde și relaxante care te fac să te simți acasă. Ele inspiră discuții liniștitoare despre bucurii mărunte și amintiri frumoase.';
+
+  @override
+  String get deckDescPartyNight =>
+      'Pachetul tău perfect pentru seri amuzante cu prietenii! Aceste întrebări pline de viață provoacă râsete, povești și dezbateri jucăușe — de la eșecuri la petreceri la cine e cel mai mare flirt. Ideal pentru a anima atmosfera.';
 }

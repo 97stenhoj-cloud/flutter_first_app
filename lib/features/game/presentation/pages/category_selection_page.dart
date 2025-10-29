@@ -9,31 +9,6 @@ import 'game_page.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../custom/presentation/pages/custom_deck_list_page.dart';
 
-// Category descriptions
-const Map<String, String> categoryDescriptions = {
-  // Couple mode
-  'Love Talks': 'Explore romance, chemistry, and connection through heartfelt questions that celebrate your relationship. From "how we met" moments to what makes you feel most loved, these cards deepen emotional intimacy.',
-  'Deep Talks': 'These cards dive into values, vulnerability, and what it means to grow together. They help partners reflect on independence, communication, and shared purpose.',
-  'Silly Talks': 'Pure fun and laughter! These quirky, light-hearted prompts uncover your weirdest habits, funniest thoughts, and most random "what ifs." Great for friends, family, or couples who love not taking life too seriously.',
-  'Car Talks': 'Perfect for road trips or long drives, this deck turns time on the road into great conversation. Expect funny, creative, and nostalgic prompts about travel, adventure, and personality quirks. Keeps everyone talking long after the music fades.',
-  'Spicy Talks': 'Flirty, bold, and intimate — these cards invite couples to explore desire, fantasies, and passion together. Every question is crafted to spark honest, exciting conversations about what turns you on and brings you closer. Best for nights when sparks should fly.',
-  'Do-you-dare Talks': 'A fearless deck that blends emotional honesty with hot-button topics. Expect questions about trust, politics, religion, money, and personal boundaries — all designed to reveal what really matters to you both. Disclaimer: Some questions are raw and unfiltered — they can spark breakthrough conversations or touch sensitive nerves. Play with openness, empathy, and respect.',
-  'Love Languages Remix Talks': 'Inspired by the five love languages, this deck helps partners express affection in the ways that truly resonate. Discover how words, actions, and gestures make your connection stronger. A must-have for couples who want to love more intentionally.',
-  
-  // Friends mode
-  'Cozy Talks': 'Warm and easygoing questions that make you feel right at home. They spark comforting chats about small joys, memories, and what makes you smile. Great for lazy Sundays, rainy days, or getting to know someone gently.',
-  'Party Night Talks': 'Your go-to ice-breaker deck for fun nights with friends. These lively questions spark laughter, stories, and playful debates — from party fails to who\'s the biggest flirt on the dance floor. Perfect for loosening up the mood and keeping the good times rolling.',
-  'Unpopular Opinions XL ': 'The deck that dares you to say what everyone else is thinking but won\'t admit. From tipping culture to influencer fame, social rules, and modern values — these cards spark honest debates and surprising insights. Perfect for friends who love good conversation, strong opinions, and a little healthy disagreement.',
-  'After Dark Talks': 'Enter the eerie side of conversation with questions that send shivers down your spine. From creepy coincidences to survival fears and "what would you do" horror moments, this deck is made to thrill and unsettle. Perfect for late-night hangs, candlelight chills, or anyone who loves a good scare.',
-  'Plot Twists & Dilemmas ': 'This deck drops you right into life\'s funniest and trickiest "what would you do?" moments. From loyalty tests to outrageous hypotheticals, it\'s all about quick thinking, gut reactions, and seeing how everyone handles a curveball. Perfect for group nights full of laughter, surprises, and revealing who\'s really got your back.',
-  
-  // Family mode
-  'History Talks': 'A nostalgic mix of personal memories and family moments. These questions inspire storytelling, laughter, and rediscovery of your roots. Perfect for family gatherings, reunions, or cozy evenings together with loved ones.',
-  'Tiny Talks': 'Made for parents and their little ones, this deck turns everyday moments into playful conversations. With fun, simple questions about imagination, favorites, and silly ideas, it helps kids express themselves while parents learn more about how they think. Perfect for ages 3 to 9.',
-  'The Good Old Days Talks': 'A nostalgic journey through the past — from childhood memories to how life has changed. These cards spark laughter, stories, and appreciation for how far we\'ve come. Perfect for grandparents to share their memories and connect across generations.',
-  'Would You Rather Talks': 'A family-friendly twist on the classic "Would you rather…" game. Packed with funny, imaginative choices that get everyone thinking, laughing, and defending their picks.',
-};
-
 // Category image URLs - keyed by "gameMode_categoryName"
 const Map<String, String> categoryImages = {
   // Couple mode
@@ -90,6 +65,7 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
   int currentPage = 0;
   Map<String, bool> expandedStates = {}; // Track which cards are expanded
 List<TextSpan> _buildDescriptionSpans(String description) {
+  // Handle "Disclaimer:" pattern
   if (description.contains('Disclaimer:')) {
     final parts = description.split('Disclaimer:');
     return [
@@ -100,11 +76,27 @@ List<TextSpan> _buildDescriptionSpans(String description) {
         style: const TextStyle(
           fontWeight: FontWeight.w900,
           fontSize: 15.5,
-          
         ),
       ),
     ];
   }
+  
+  // Handle "*Note:*" pattern (from translations)
+  if (description.contains('*Note:*')) {
+    final parts = description.split('*Note:*');
+    return [
+      TextSpan(text: parts[0]),
+      TextSpan(text: '\n\n'),
+      TextSpan(
+        text: 'Note:${parts[1]}',
+        style: const TextStyle(
+          fontWeight: FontWeight.w900,
+          fontSize: 15.5,
+        ),
+      ),
+    ];
+  }
+  
   return [TextSpan(text: description)];
 }
   @override
@@ -153,6 +145,50 @@ List<TextSpan> _buildDescriptionSpans(String description) {
     final isBundleUnlocked = unlockManager.isBundleUnlocked(widget.gameMode);
     
     return isMarkedAsLocked && !isBundleUnlocked;
+  }
+
+  // Get translated category description
+  String _getCategoryDescription(String category) {
+    final l10n = AppLocalizations.of(context)!;
+    
+    switch (category) {
+      case 'Love Talks':
+        return l10n.deckDescLoveTalks;
+      case 'Deep Talks':
+        return l10n.deckDescDeepTalks;
+      case 'Spicy Talks':
+        return l10n.deckDescSpicyTalks;
+      case 'Do-you-dare Talks':
+        return l10n.deckDescDoYouDareTalks;
+      case 'Love Languages Remix Talks':
+        return l10n.deckDescLoveLanguagesTalks;
+      case 'Silly Talks':
+        return l10n.deckDescSillyTalks;
+      case 'Car Talks':
+        return l10n.deckDescCarTalks;
+      case 'Cozy Talks':
+        return l10n.deckDescCozyTalks;
+      case 'Party Night Talks':
+        return l10n.deckDescPartyNight;
+      case 'Unpopular Opinions XL':
+      case 'Unpopular Opinions XL ':
+        return l10n.deckDescUnpopularOpinions;
+      case 'Plot Twists & Dilemmas':
+      case 'Plot Twists & Dilemmas ':
+        return l10n.deckDescPlotTwists;
+      case 'After Dark Talks':
+        return l10n.deckDescAfterDark;
+      case 'History Talks':
+        return l10n.deckDescHistoryTalks;
+      case 'Tiny Talks':
+        return l10n.deckDescTinyTalks;
+      case 'The Good Old Days Talks':
+        return l10n.deckDescGoodOldDays;
+      case 'Would You Rather Talks':
+        return l10n.deckDescWouldYouRather;
+      default:
+        return '';
+    }
   }
 
   void _showLockedDialog(BuildContext context) {
@@ -300,7 +336,7 @@ List<TextSpan> _buildDescriptionSpans(String description) {
   final colors = ThemeHelper.getGameModeGradient(widget.gameMode, widget.isDarkMode);
   final isCurrentPage = currentPage == index;
   final isExpanded = expandedStates[category] ?? false;
-  final description = categoryDescriptions[category] ?? 'Discover amazing questions in this category!';
+  final description = _getCategoryDescription(category);
   final imageKey = '${widget.gameMode.toLowerCase()}_$category';
   final imageUrl = categoryImages[imageKey];
   final l10n = AppLocalizations.of(context)!;

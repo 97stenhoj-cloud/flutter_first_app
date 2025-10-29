@@ -732,4 +732,68 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get addFirstQuestion => '¡Agrega tu primera pregunta!';
+
+  @override
+  String get deckDescLoveTalks =>
+      'Explora el romance, la química y la conexión a través de preguntas sinceras que celebran tu relación. Desde \"cómo nos conocimos\" hasta lo que te hace sentir más amado, estas cartas profundizan la intimidad emocional.';
+
+  @override
+  String get deckDescDeepTalks =>
+      'Estas cartas profundizan en valores, vulnerabilidad y lo que significa crecer juntos. Ayudan a las parejas a reflexionar sobre independencia, comunicación y propósito compartido.';
+
+  @override
+  String get deckDescSpicyTalks =>
+      'Atrevidas, audaces e íntimas: estas cartas invitan a las parejas a explorar el deseo, las fantasías y la pasión juntos. Cada pregunta está diseñada para provocar conversaciones sinceras y emocionantes que los acerquen más.';
+
+  @override
+  String get deckDescDoYouDareTalks =>
+      'Un mazo valiente que combina honestidad emocional con temas delicados como confianza, religión, dinero y límites, para revelar lo que realmente importa. *Aviso:* Algunas preguntas son crudas — jueguen con apertura, empatía y respeto.';
+
+  @override
+  String get deckDescLoveLanguagesTalks =>
+      'Inspirado en los cinco lenguajes del amor, este mazo ayuda a las parejas a expresar cariño de formas que realmente resuenen. Descubre cómo las palabras, acciones y gestos fortalecen la conexión.';
+
+  @override
+  String get deckDescSillyTalks =>
+      '¡Diversión pura y risas! Estas preguntas ligeras y divertidas revelan tus hábitos más raros y pensamientos más graciosos. Perfectas para amigos, familia o parejas que no se toman la vida demasiado en serio.';
+
+  @override
+  String get deckDescCarTalks =>
+      'Perfectas para viajes en carretera: estas cartas transforman el tiempo de conducción en grandes conversaciones. Espera preguntas divertidas, creativas y nostálgicas sobre viajes, aventuras y peculiaridades.';
+
+  @override
+  String get deckDescUnpopularOpinions =>
+      'La baraja que te anima a decir lo que todos piensan pero nadie admite. Desde la fama de influencers hasta las normas sociales — estas cartas provocan debates sinceros y puntos de vista sorprendentes. Perfecta para amigos con carácter.';
+
+  @override
+  String get deckDescPlotTwists =>
+      'Esta baraja te mete de lleno en los momentos más divertidos y complicados de la vida: \"¿Qué harías si…?\". Ideal para noches de grupo llenas de risas, sorpresas y reacciones inesperadas.';
+
+  @override
+  String get deckDescAfterDark =>
+      'Entra en el lado oscuro de la conversación con preguntas que te pondrán los pelos de punta. Ideal para noches de miedo y escalofríos.';
+
+  @override
+  String get deckDescHistoryTalks =>
+      'Una mezcla nostálgica de recuerdos personales y momentos familiares. Estas preguntas inspiran historias, risas y redescubrimiento de tus raíces.';
+
+  @override
+  String get deckDescTinyTalks =>
+      'Hecho para padres y sus pequeños. Estas preguntas divertidas ayudan a los niños a expresarse y a los padres a comprender cómo piensan. Ideal para 3 a 9 años.';
+
+  @override
+  String get deckDescGoodOldDays =>
+      'Un viaje nostálgico al pasado, desde recuerdos de infancia hasta cómo ha cambiado la vida. Perfecto para abuelos que quieran compartir sus recuerdos.';
+
+  @override
+  String get deckDescWouldYouRather =>
+      'Una versión familiar del clásico juego \"¿Qué preferirías...?\". Llena de opciones divertidas e imaginativas que hacen pensar y reír.';
+
+  @override
+  String get deckDescCozyTalks =>
+      'Preguntas cálidas y acogedoras que te hacen sentir en casa. Despiertan charlas reconfortantes sobre pequeñas alegrías, recuerdos y sonrisas.';
+
+  @override
+  String get deckDescPartyNight =>
+      'Tu baraja ideal para noches divertidas con amigos. Estas preguntas animadas provocan risas, historias y debates juguetones — desde fracasos en fiestas hasta quién es el más coqueto del grupo. Perfectas para mantener la diversión.';
 }

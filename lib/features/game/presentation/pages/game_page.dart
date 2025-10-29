@@ -40,6 +40,7 @@ class _GamePageState extends State<GamePage> {
   final pandoraService = PandoraService();
   final CardSwiperController controller = CardSwiperController  ();
   String? _loadedLanguageCode; // Track what language questions are loaded in
+  bool _favoritesLoaded = false; // Track if favorites have been loaded
   List<String> allQuestions = [];
   List<String> displayedQuestions = [];
   int currentIndex = 0;
@@ -76,7 +77,7 @@ class _GamePageState extends State<GamePage> {
     _loadQuestions();
     _loadAd();
     _loadLogo();
-    _loadFavoriteQuestions();
+    // DON'T load favorites here - will be called in didChangeDependencies
     
     // PLAYERS ONLY: Subscribe to database changes
     if (isPandoraMode && !isHostMode) {
@@ -93,6 +94,12 @@ class _GamePageState extends State<GamePage> {
   @override
 void didChangeDependencies() {
   super.didChangeDependencies();
+  
+  // Load favorites once when context is ready
+  if (!_favoritesLoaded && !isPandoraMode) {
+    _favoritesLoaded = true;
+    _loadFavoriteQuestions();
+  }
   
   // Get current app language
   String currentLanguageCode = 'en';
@@ -111,19 +118,18 @@ void didChangeDependencies() {
   }
 }
   Future<void> _loadFavoriteQuestions() async {
-    final l10n = AppLocalizations.of(context)!;
     if (isPandoraMode) return; // No favorites in Pandora mode
     
     try {
       final userId = Supabase.instance.client.auth.currentUser?.id;
       if (userId == null) return;
       
-      // Find the user's Favorites deck
+      // Find the user's Favorites deck (always use "Favorites" as the key)
       final deckResponse = await Supabase.instance.client
           .from('custom_decks')
           .select('id')
           .eq('user_id', userId)
-          .eq('deck_name', l10n.favorites)
+          .eq('deck_name', 'Favorites')
           .maybeSingle();
       
       if (deckResponse == null) {
@@ -157,12 +163,12 @@ void didChangeDependencies() {
       final userId = Supabase.instance.client.auth.currentUser?.id;
       if (userId == null) return;
       
-      // Find or create the user's Favorites deck
+      // Find or create the user's Favorites deck (always use "Favorites" as the key)
       var deckResponse = await Supabase.instance.client
           .from('custom_decks')
           .select('id')
           .eq('user_id', userId)
-          .eq('deck_name', l10n.favorites)
+          .eq('deck_name', 'Favorites')
           .maybeSingle();
       
       String deckId;
@@ -173,7 +179,7 @@ void didChangeDependencies() {
             .from('custom_decks')
             .insert({
           'user_id': userId,
-          'deck_name': l10n.favorites,
+          'deck_name': 'Favorites',
         })
             .select('id')
             .single();
