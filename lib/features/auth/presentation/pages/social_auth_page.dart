@@ -1,3 +1,4 @@
+// lib/features/auth/presentation/pages/social_auth_page.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:io' show Platform;
@@ -117,16 +118,11 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
     
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: ThemeHelper.getSecondaryGradient(widget.isDarkMode),
-          ),
-        ),
+        decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode),
         child: SafeArea(
           child: Column(
             children: [
+              // Back button
               Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
@@ -135,7 +131,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                     onPressed: () => Navigator.pop(context),
                     icon: Icon(
                       Icons.arrow_back,
-                      color: ThemeHelper.getTextColor(widget.isDarkMode),
+                      color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
                       size: 28,
                     ),
                   ),
@@ -145,24 +141,70 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
               Expanded(
                 child: Center(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(24),
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
-                          Icons.chat_bubble,
-                          size: 80,
-                          color: Colors.white,
+                        // App Icon from Supabase storage
+                        const SizedBox(height: 20),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(30),
+                          child: Image.network(
+                            'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/AppIcon/AppIcon.png',
+                            width: 120,
+                            height: 120,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Container(
+                                width: 120,
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                width: 120,
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(30),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withValues(alpha: 0.1),
+                                      blurRadius: 20,
+                                      offset: const Offset(0, 10),
+                                    ),
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.chat_bubble_rounded,
+                                    size: 60,
+                                    color: widget.isDarkMode 
+                                        ? const Color(0xFF8D6E63)
+                                        : const Color(0xFF6D4C41),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
-                        const SizedBox(height: 24),
+                        
+                        const SizedBox(height: 40),
                         
                         Text(
                           l10n.welcomeToConnect,
                           style: GoogleFonts.poppins(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -172,7 +214,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                           l10n.signInToSync,
                           style: GoogleFonts.poppins(
                             fontSize: 16,
-                            color: Colors.white70,
+                            color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -195,7 +237,14 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                           onPressed: _handleGoogleSignIn,
                           backgroundColor: Colors.white,
                           textColor: Colors.black87,
-                          icon: const Icon(Icons.g_mobiledata, size: 32, color: Colors.red),
+                          icon: Image.asset(
+                            'assets/images/google_logo.png',
+                            height: 24,
+                            width: 24,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.g_mobiledata, size: 32, color: Colors.red);
+                            },
+                          ),
                         ),
                         
                         const SizedBox(height: 24),
@@ -203,43 +252,58 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                         if (_errorMessage != null)
                           Container(
                             padding: const EdgeInsets.all(12),
+                            margin: const EdgeInsets.only(bottom: 16),
                             decoration: BoxDecoration(
                               color: Colors.red.shade50,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(color: Colors.red.shade300),
                             ),
-                            child: Text(
-                              _errorMessage!,
-                              style: GoogleFonts.poppins(
-                                color: Colors.red.shade900,
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.center,
+                            child: Row(
+                              children: [
+                                Icon(Icons.error_outline, color: Colors.red.shade900),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
+                                    _errorMessage!,
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.red.shade900,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         
-                        const SizedBox(height: 24),
+                        if (_isLoading)
+                          const Padding(
+                            padding: EdgeInsets.only(bottom: 16),
+                            child: CircularProgressIndicator(),
+                          ),
                         
                         TextButton(
                           onPressed: () => Navigator.pop(context),
                           child: Text(
                             l10n.skipForNow,
                             style: GoogleFonts.poppins(
-                              color: Colors.white70,
-                              fontSize: 14,
+                              fontSize: 16,
+                              color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
                             ),
                           ),
                         ),
                         
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 32),
                         
-                        Text(
-                          l10n.byContining,
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            color: Colors.white60,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            l10n.byContining,
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),

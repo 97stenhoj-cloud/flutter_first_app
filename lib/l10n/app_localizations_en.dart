@@ -723,4 +723,68 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addFirstQuestion => 'Add your first question!';
+
+  @override
+  String get deckDescLoveTalks =>
+      'Explore romance, chemistry, and connection through heartfelt questions that celebrate your relationship. From \"how we met\" moments to what makes you feel most loved, these cards deepen emotional intimacy.';
+
+  @override
+  String get deckDescDeepTalks =>
+      'These cards dive into values, vulnerability, and what it means to grow together. They help partners reflect on independence, communication, and shared purpose.';
+
+  @override
+  String get deckDescSpicyTalks =>
+      'Flirty, bold, and intimate — these cards invite couples to explore desire, fantasies, and passion together. Every question is crafted to spark honest, exciting conversations about what turns you on and brings you closer.';
+
+  @override
+  String get deckDescDoYouDareTalks =>
+      'A fearless deck that blends emotional honesty with hot-button topics like trust, religion, money, and personal boundaries — all designed to reveal what really matters to you both. *Note:* Some questions are raw and unfiltered — play with openness, empathy, and respect.';
+
+  @override
+  String get deckDescLoveLanguagesTalks =>
+      'Inspired by the five love languages, this deck helps partners express affection in the ways that truly resonate. Discover how words, actions, and gestures make your connection stronger.';
+
+  @override
+  String get deckDescSillyTalks =>
+      'Pure fun and laughter! These quirky, light-hearted questions uncover your weirdest habits and funniest thoughts. Perfect for friends, family, or couples who don\'t take life too seriously.';
+
+  @override
+  String get deckDescCarTalks =>
+      'Perfect for road trips — these cards turn driving time into great conversation. Expect funny, creative, and nostalgic questions about travel, adventure, and quirks.';
+
+  @override
+  String get deckDescUnpopularOpinions =>
+      'The deck that challenges you to say what everyone thinks but no one admits. From influencer culture to social norms — these cards spark honest debates and surprising perspectives. Perfect for friends with opinions.';
+
+  @override
+  String get deckDescPlotTwists =>
+      'This deck throws you right into life\'s funniest and hardest \"what would you do?\" moments. Quick thinking, gut feelings, and laughter guaranteed! Perfect for group nights full of surprises and laughs.';
+
+  @override
+  String get deckDescAfterDark =>
+      'Step into the dark side of conversation with questions that send chills down your spine. From creepy coincidences to survival scenarios — perfect for late nights with a thrill.';
+
+  @override
+  String get deckDescHistoryTalks =>
+      'A nostalgic blend of personal memories and family moments. These questions inspire stories, laughter, and rediscovering your roots. Perfect for family gatherings or cozy evenings.';
+
+  @override
+  String get deckDescTinyTalks =>
+      'Made for parents and their little ones! These simple, playful questions help kids express themselves while parents learn how they think. Perfect for ages 3-9.';
+
+  @override
+  String get deckDescGoodOldDays =>
+      'A nostalgic journey through the past — from childhood memories to life\'s changes. These cards inspire stories, laughs, and gratitude. Perfect for grandparents to share memories.';
+
+  @override
+  String get deckDescWouldYouRather =>
+      'A family-friendly version of the classic \"Would you rather...\" game. Filled with fun and imaginative choices that make everyone think, laugh, and defend their choices.';
+
+  @override
+  String get deckDescCozyTalks =>
+      'Warm and easygoing questions that make you feel right at home. They spark comforting chats about small joys, memories, and what makes you smile.';
+
+  @override
+  String get deckDescPartyNight =>
+      'Your go-to ice-breaker deck for fun nights with friends. These lively questions spark laughter, stories, and playful debates — from party fails to who\'s the biggest flirt on the dance floor. Perfect for loosening up the mood and keeping the good times rolling.';
 }

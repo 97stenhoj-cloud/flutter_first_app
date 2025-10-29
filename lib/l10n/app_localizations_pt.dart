@@ -729,4 +729,68 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get addFirstQuestion => 'Adicione sua primeira pergunta!';
+
+  @override
+  String get deckDescLoveTalks =>
+      'Explore o romance, a química e a conexão através de perguntas sinceras que celebram o vosso relacionamento. Desde \"como nos conhecemos\" até ao que te faz sentir mais amado — estas cartas aprofundam a intimidade emocional.';
+
+  @override
+  String get deckDescDeepTalks =>
+      'Estas cartas mergulham em valores, vulnerabilidade e no que significa crescer juntos. Ajudam os parceiros a refletir sobre independência, comunicação e propósito partilhado.';
+
+  @override
+  String get deckDescSpicyTalks =>
+      'Ousadas, atrevidas e íntimas — estas cartas convidam os casais a explorar o desejo, as fantasias e a paixão juntos. Cada pergunta desperta conversas honestas e excitantes que aproximam o casal.';
+
+  @override
+  String get deckDescDoYouDareTalks =>
+      'Um baralho destemido que combina honestidade emocional com temas delicados como confiança, religião, dinheiro e limites pessoais — tudo para revelar o que realmente importa. *Nota:* Algumas perguntas são diretas — joguem com empatia e respeito.';
+
+  @override
+  String get deckDescLoveLanguagesTalks =>
+      'Inspirado nas cinco linguagens do amor, este baralho ajuda os parceiros a expressar afeto de formas que realmente ressoam. Descubram como palavras, ações e gestos fortalecem a vossa ligação.';
+
+  @override
+  String get deckDescSillyTalks =>
+      'Diversão e gargalhadas! Estas perguntas leves e engraçadas revelam os teus hábitos mais estranhos e pensamentos mais divertidos. Perfeitas para amigos, família ou casais que gostam de rir juntos.';
+
+  @override
+  String get deckDescCarTalks =>
+      'Perfeito para viagens de carro — estas cartas transformam o tempo de condução em ótimas conversas. Espera perguntas engraçadas, criativas e nostálgicas sobre viagens, aventuras e peculiaridades.';
+
+  @override
+  String get deckDescUnpopularOpinions =>
+      'O baralho que te desafia a dizer o que todos pensam, mas ninguém admite. Da cultura dos influenciadores às regras sociais — estas cartas despertam debates honestos e perspetivas inesperadas. Perfeito para conversas fortes.';
+
+  @override
+  String get deckDescPlotTwists =>
+      'Este baralho coloca-te no centro dos momentos mais engraçados e difíceis da vida — \"O que farias se…?\". Ideal para noites de grupo cheias de gargalhadas e surpresas.';
+
+  @override
+  String get deckDescAfterDark =>
+      'Entra no lado sombrio da conversa com perguntas que dão arrepios. Perfeito para noites tardias cheias de mistério.';
+
+  @override
+  String get deckDescHistoryTalks =>
+      'Uma mistura nostálgica de memórias pessoais e momentos familiares. Estas perguntas inspiram histórias e risadas em família.';
+
+  @override
+  String get deckDescTinyTalks =>
+      'Feito para pais e os seus pequenos! Perguntas simples e divertidas que ajudam as crianças a expressar-se e os pais a compreendê-las. Ideal dos 3 aos 9 anos.';
+
+  @override
+  String get deckDescGoodOldDays =>
+      'Uma viagem nostálgica ao passado — da infância até às mudanças da vida. Perfeito para avós que querem partilhar histórias.';
+
+  @override
+  String get deckDescWouldYouRather =>
+      'Uma versão familiar do clássico jogo \"Preferias...?\". Repleta de escolhas engraçadas e criativas que fazem todos rir e pensar.';
+
+  @override
+  String get deckDescCozyTalks =>
+      'Perguntas quentes e acolhedoras que te fazem sentir em casa. Inspiram conversas reconfortantes sobre pequenas alegrias e memórias.';
+
+  @override
+  String get deckDescPartyNight =>
+      'O teu baralho ideal para noites divertidas com amigos! Estas perguntas animadas trazem risadas, histórias e debates divertidos — de falhas em festas a quem é o maior flirt da noite. Perfeito para manter o bom humor.';
 }

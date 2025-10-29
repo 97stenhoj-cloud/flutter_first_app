@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/theme_helper.dart';
+
 import '../../../../l10n/app_localizations.dart';
 import 'category_selection_page.dart';
 import '../../../pandora/presentation/pages/pandora_entry_page.dart';
@@ -23,7 +24,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
     viewportFraction: 0.45,
     initialPage: 1,
   );
-  int currentPage = 1;
+  int currentPage = 0;
 
   @override
   void dispose() {

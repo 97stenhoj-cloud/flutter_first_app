@@ -733,4 +733,68 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get addFirstQuestion => 'Ajoutez votre première question !';
+
+  @override
+  String get deckDescLoveTalks =>
+      'Explorez la romance, la chimie et la connexion à travers des questions sincères qui célèbrent votre relation. Des \"comment nous nous sommes rencontrés\" à ce qui vous fait vous sentir le plus aimé, ces cartes approfondissent l\'intimité émotionnelle.';
+
+  @override
+  String get deckDescDeepTalks =>
+      'Ces cartes explorent les valeurs, la vulnérabilité et ce que signifie grandir ensemble. Elles aident les partenaires à réfléchir à l\'indépendance, à la communication et à un but commun.';
+
+  @override
+  String get deckDescSpicyTalks =>
+      'Audacieuses, sensuelles et intimes — ces cartes invitent les couples à explorer le désir, les fantasmes et la passion ensemble. Chaque question suscite des conversations honnêtes et excitantes qui rapprochent.';
+
+  @override
+  String get deckDescDoYouDareTalks =>
+      'Un jeu audacieux qui mêle honnêteté émotionnelle et sujets sensibles comme la confiance, la religion, l\'argent et les limites personnelles — pour révéler ce qui compte vraiment. *Avertissement:* Certaines questions sont franches — jouez avec ouverture et respect.';
+
+  @override
+  String get deckDescLoveLanguagesTalks =>
+      'Inspiré des cinq langages de l\'amour, ce jeu aide les couples à exprimer leur affection de manière authentique. Découvrez comment les mots, les gestes et les actions renforcent votre lien.';
+
+  @override
+  String get deckDescSillyTalks =>
+      'Du pur plaisir et des rires ! Ces questions légères révèlent vos habitudes les plus étranges et vos pensées les plus drôles. Idéal pour amis, famille ou couples qui aiment s\'amuser.';
+
+  @override
+  String get deckDescCarTalks =>
+      'Parfaites pour les road trips — ces cartes transforment le temps de conduite en super conversations. Des questions amusantes, créatives et nostalgiques sur les voyages et les aventures.';
+
+  @override
+  String get deckDescUnpopularOpinions =>
+      'Le jeu qui t\'encourage à dire tout haut ce que tout le monde pense tout bas. De la culture des influenceurs aux valeurs modernes — ces cartes suscitent des débats francs et des réflexions surprenantes.';
+
+  @override
+  String get deckDescPlotTwists =>
+      'Ce jeu t\'embarque dans les moments les plus drôles et délicats du \"Que ferais-tu si… ?\". Idéal pour des soirées entre amis pleines de rires, surprises et rebondissements.';
+
+  @override
+  String get deckDescAfterDark =>
+      'Explore le côté sombre des conversations avec des questions qui donnent des frissons. Parfait pour les soirées tardives entre amateurs de sensations fortes.';
+
+  @override
+  String get deckDescHistoryTalks =>
+      'Un mélange nostalgique de souvenirs personnels et familiaux. Ces questions inspirent récits, rires et redécouverte de ses racines.';
+
+  @override
+  String get deckDescTinyTalks =>
+      'Conçu pour les parents et leurs petits ! Des questions simples et ludiques qui aident les enfants à s\'exprimer et les parents à mieux les comprendre. Idéal de 3 à 9 ans.';
+
+  @override
+  String get deckDescGoodOldDays =>
+      'Un voyage nostalgique dans le passé — de l\'enfance aux changements de la vie. Idéal pour les grands-parents qui aiment partager leurs souvenirs.';
+
+  @override
+  String get deckDescWouldYouRather =>
+      'Une version familiale du classique \"Tu préfères…\". Remplie de choix drôles et imaginatifs qui font réfléchir et rire tout le monde.';
+
+  @override
+  String get deckDescCozyTalks =>
+      'Des questions douces et réconfortantes qui te font sentir bien chez toi. Elles inspirent des conversations apaisantes sur les petits plaisirs et souvenirs.';
+
+  @override
+  String get deckDescPartyNight =>
+      'Ton jeu idéal pour des soirées amusantes entre amis ! Ces questions pleines d\'énergie déclenchent rires, histoires et débats ludiques – de petits ratés de fête à \"qui flirte le plus ?\". Parfait pour détendre l\'ambiance.';
 }

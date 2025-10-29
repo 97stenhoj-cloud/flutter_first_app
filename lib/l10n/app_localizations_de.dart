@@ -732,4 +732,68 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get addFirstQuestion => 'Füge deine erste Frage hinzu!';
+
+  @override
+  String get deckDescLoveTalks =>
+      'Erkundet Romantik, Chemie und Verbundenheit durch herzliche Fragen, die eure Beziehung feiern. Von „Wie wir uns trafen\"-Momenten bis zu dem, was euch am meisten geliebt fühlen lässt – diese Karten vertiefen emotionale Intimität.';
+
+  @override
+  String get deckDescDeepTalks =>
+      'Diese Karten tauchen in Werte, Verletzlichkeit und gemeinsames Wachstum ein. Sie helfen Paaren, über Unabhängigkeit, Kommunikation und gemeinsamen Sinn nachzudenken.';
+
+  @override
+  String get deckDescSpicyTalks =>
+      'Frech, mutig und intim – diese Karten laden Paare ein, Verlangen, Fantasien und Leidenschaft gemeinsam zu erkunden. Jede Frage ist darauf ausgelegt, ehrliche, aufregende Gespräche auszulösen, die euch näherbringen.';
+
+  @override
+  String get deckDescDoYouDareTalks =>
+      'Ein mutiges Set, das emotionale Ehrlichkeit mit heiklen Themen wie Vertrauen, Religion, Geld und Grenzen verbindet – alles, um herauszufinden, was euch wirklich wichtig ist. *Hinweis:* Manche Fragen sind roh und ungefiltert – spielt mit Offenheit, Empathie und Respekt.';
+
+  @override
+  String get deckDescLoveLanguagesTalks =>
+      'Inspiriert von den fünf Liebessprachen hilft dieses Deck Partnern, Zuneigung auf wirklich bedeutsame Weise auszudrücken. Entdeckt, wie Worte, Taten und Gesten eure Verbindung stärken.';
+
+  @override
+  String get deckDescSillyTalks =>
+      'Reiner Spaß und Lachen! Diese skurrilen, leichten Fragen enthüllen eure lustigsten Gedanken und seltsamsten Angewohnheiten. Ideal für Freunde, Familie oder Paare mit Humor.';
+
+  @override
+  String get deckDescCarTalks =>
+      'Perfekt für Roadtrips – diese Karten verwandeln Fahrten in tolle Gespräche. Erwartet lustige, kreative und nostalgische Fragen über Reisen, Abenteuer und Eigenheiten.';
+
+  @override
+  String get deckDescUnpopularOpinions =>
+      'Das Deck, das dich herausfordert zu sagen, was alle denken, aber niemand zugibt. Von Influencer-Kultur bis zu sozialen Normen – diese Karten provozieren ehrliche Debatten und überraschende Perspektiven.';
+
+  @override
+  String get deckDescPlotTwists =>
+      'Dieses Deck steckt dich mitten in die lustigsten und schwierigsten „Was würdest du tun?\"-Momente. Schnelles Denken, Bauchgefühl und Lachen garantiert! Perfekt für Gruppenabende voller Überraschungen.';
+
+  @override
+  String get deckDescAfterDark =>
+      'Tauche in die dunkle Seite der Gespräche ein – mit Fragen, die dir einen Schauer über den Rücken jagen. Perfekt für späte Abende und Gruselfans.';
+
+  @override
+  String get deckDescHistoryTalks =>
+      'Eine nostalgische Mischung aus persönlichen Erinnerungen und Familienmomenten. Diese Fragen regen zum Erzählen, Lachen und Erinnern an.';
+
+  @override
+  String get deckDescTinyTalks =>
+      'Für Eltern und ihre Kleinen! Diese einfachen, spielerischen Fragen helfen Kindern, sich auszudrücken, während Eltern lernen, wie sie denken. Ideal für 3–9 Jahre.';
+
+  @override
+  String get deckDescGoodOldDays =>
+      'Eine nostalgische Reise in die Vergangenheit – von Kindheitserinnerungen bis zu Lebensveränderungen. Perfekt für Großeltern, um Geschichten zu teilen.';
+
+  @override
+  String get deckDescWouldYouRather =>
+      'Eine familienfreundliche Version des klassischen \"Würdest du eher...\"-Spiels. Voller lustiger und fantasievoller Entscheidungen, die alle zum Lachen bringen.';
+
+  @override
+  String get deckDescCozyTalks =>
+      'Warme, gemütliche Fragen, die dich zu Hause fühlen lassen. Sie regen tröstliche Gespräche über kleine Freuden und Erinnerungen an.';
+
+  @override
+  String get deckDescPartyNight =>
+      'Dein Party-Starter-Deck für lustige Abende mit Freunden! Diese lebhaften Fragen sorgen für Lachen, Geschichten und spielerische Debatten – von Party-Pannen bis zum größten Flirt auf der Tanzfläche. Perfekt, um die Stimmung zu lockern.';
 }

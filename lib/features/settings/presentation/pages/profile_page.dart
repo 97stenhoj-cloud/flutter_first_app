@@ -6,6 +6,7 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/utils/unlock_manager.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../auth/presentation/pages/social_auth_page.dart';  // ADD THIS IMPORT
 
 class ProfilePage extends StatefulWidget {
   final bool isDarkMode;
@@ -210,44 +211,55 @@ class _ProfilePageState extends State<ProfilePage> {
                               Text(
                                 'Subscription',
                                 style: GoogleFonts.poppins(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                   color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
                                 ),
                               ),
                               const SizedBox(height: 16),
 
-                              // Active Bundles
-                              Wrap(
-                                spacing: 12,
-                                runSpacing: 12,
-                                children: [
-                                  if (unlockManager.isBundleUnlocked('couple'))
-                                    _buildSubscriptionCard('Couple'),
-                                  if (unlockManager.isBundleUnlocked('friends'))
-                                    _buildSubscriptionCard('Friends'),
-                                  if (unlockManager.isBundleUnlocked('family'))
-                                    _buildSubscriptionCard('Family'),
-                                  // Check if no bundles are unlocked
-                                  if (!unlockManager.isBundleUnlocked('couple') && 
-                                      !unlockManager.isBundleUnlocked('friends') && 
-                                      !unlockManager.isBundleUnlocked('family'))
-                                    Container(
-                                      padding: const EdgeInsets.all(16),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey.withValues(alpha: 0.3),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Text(
-                                        'No active subscription',
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 14,
-                                          color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
+                              // Check if user has any unlocked bundles
+                              if (!unlockManager.isBundleUnlocked('couple') &&
+                                  !unlockManager.isBundleUnlocked('friends') &&
+                                  !unlockManager.isBundleUnlocked('family'))
+                                Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withValues(alpha: 0.1),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: Colors.white.withValues(alpha: 0.2),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      const Icon(Icons.info_outline, color: Colors.white70),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Text(
+                                          'No Active Subscription',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 14,
+                                            color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                ],
-                              ),
+                                    ],
+                                  ),
+                                )
+                              else
+                                Wrap(
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children: [
+                                    if (unlockManager.isBundleUnlocked('couple'))
+                                      _buildSubscriptionCard('Couple'),
+                                    if (unlockManager.isBundleUnlocked('friends'))
+                                      _buildSubscriptionCard('Friends'),
+                                    if (unlockManager.isBundleUnlocked('family'))
+                                      _buildSubscriptionCard('Family'),
+                                  ],
+                                ),
 
                               const SizedBox(height: 40),
 
@@ -260,7 +272,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     context: context,
                                     builder: (context) => AlertDialog(
                                       title: Text(l10n.signOut),
-                                      content: const Text('Are you sure you want to sign out?'),
+                                      content: Text(l10n.signOutConfirm),
                                       actions: [
                                         TextButton(
                                           onPressed: () => Navigator.pop(context, false),
@@ -294,24 +306,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                width: 120,
-                                height: 120,
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withValues(alpha: 0.15),
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.white.withValues(alpha: 0.3),
-                                    width: 2,
-                                  ),
-                                ),
-                                child: Icon(
-                                  Icons.person_outline,
-                                  size: 60,
-                                  color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
-                                ),
+                              Icon(
+                                Icons.person_outline,
+                                size: 100,
+                                color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
                               ),
-                              const SizedBox(height: 32),
+                              const SizedBox(height: 24),
                               Text(
                                 l10n.notSignedIn,
                                 style: GoogleFonts.poppins(
@@ -324,7 +324,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 40),
                                 child: Text(
-                                  'Sign in to sync your subscriptions across devices',
+                                  l10n.signInToSync,
                                   style: GoogleFonts.poppins(
                                     fontSize: 16,
                                     color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
@@ -334,13 +334,19 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               const SizedBox(height: 40),
                               
-                              // Sign In Button
+                              // Sign In Button - NAVIGATE TO SOCIAL AUTH PAGE
                               ThemeHelper.buildLayeredButton(
                                 text: l10n.signInSignUp,
                                 icon: Icons.login,
-                                onPressed: () async {
-                                  await authService.signInWithGoogle();
-                                  setState(() {});
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SocialAuthPage(isDarkMode: widget.isDarkMode),
+                                    ),
+                                  ).then((_) {
+                                    setState(() {});  // Refresh the page when coming back
+                                  });
                                 },
                                 isPrimary: true,
                                 isDarkMode: widget.isDarkMode,

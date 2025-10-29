@@ -1439,6 +1439,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add your first question!'**
   String get addFirstQuestion;
+
+  /// No description provided for @deckDescLoveTalks.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore romance, chemistry, and connection through heartfelt questions that celebrate your relationship. From \"how we met\" moments to what makes you feel most loved, these cards deepen emotional intimacy.'**
+  String get deckDescLoveTalks;
+
+  /// No description provided for @deckDescDeepTalks.
+  ///
+  /// In en, this message translates to:
+  /// **'These cards dive into values, vulnerability, and what it means to grow together. They help partners reflect on independence, communication, and shared purpose.'**
+  String get deckDescDeepTalks;
+
+  /// No description provided for @deckDescSpicyTalks.
+  ///
+  /// In en, this message translates to:
+  /// **'Flirty, bold, and intimate — these cards invite couples to explore desire, fantasies, and passion together. Every question is crafted to spark honest, exciting conversations about what turns you on and brings you closer.'**
+  String get deckDescSpicyTalks;
+
+  /// No description provided for @deckDescDoYouDareTalks.
+  ///
+  /// In en, this message translates to:
+  /// **'A fearless deck that blends emotional honesty with hot-button topics like trust, religion, money, and personal boundaries — all designed to reveal what really matters to you both. *Note:* Some questions are raw and unfiltered — play with openness, empathy, and respect.'**
+  String get deckDescDoYouDareTalks;
+
+  /// No description provided for @deckDescLoveLanguagesTalks.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspired by the five love languages, this deck helps partners express affection in the ways that truly resonate. Discover how words, actions, and gestures make your connection stronger.'**
+  String get deckDescLoveLanguagesTalks;
+
+  /// No description provided for @deckDescSillyTalks.
+  ///
+  /// In en, this message translates to:
+  /// **'Pure fun and laughter! These quirky, light-hearted questions uncover your weirdest habits and funniest thoughts. Perfect for friends, family, or couples who don\'t take life too seriously.'**
+  String get deckDescSillyTalks;
+
+  /// No description provided for @deckDescCarTalks.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect for road trips — these cards turn driving time into great conversation. Expect funny, creative, and nostalgic questions about travel, adventure, and quirks.'**
+  String get deckDescCarTalks;
+
+  /// No description provided for @deckDescUnpopularOpinions.
+  ///
+  /// In en, this message translates to:
+  /// **'The deck that challenges you to say what everyone thinks but no one admits. From influencer culture to social norms — these cards spark honest debates and surprising perspectives. Perfect for friends with opinions.'**
+  String get deckDescUnpopularOpinions;
+
+  /// No description provided for @deckDescPlotTwists.
+  ///
+  /// In en, this message translates to:
+  /// **'This deck throws you right into life\'s funniest and hardest \"what would you do?\" moments. Quick thinking, gut feelings, and laughter guaranteed! Perfect for group nights full of surprises and laughs.'**
+  String get deckDescPlotTwists;
+
+  /// No description provided for @deckDescAfterDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Step into the dark side of conversation with questions that send chills down your spine. From creepy coincidences to survival scenarios — perfect for late nights with a thrill.'**
+  String get deckDescAfterDark;
+
+  /// No description provided for @deckDescHistoryTalks.
+  ///
+  /// In en, this message translates to:
+  /// **'A nostalgic blend of personal memories and family moments. These questions inspire stories, laughter, and rediscovering your roots. Perfect for family gatherings or cozy evenings.'**
+  String get deckDescHistoryTalks;
+
+  /// No description provided for @deckDescTinyTalks.
+  ///
+  /// In en, this message translates to:
+  /// **'Made for parents and their little ones! These simple, playful questions help kids express themselves while parents learn how they think. Perfect for ages 3-9.'**
+  String get deckDescTinyTalks;
+
+  /// No description provided for @deckDescGoodOldDays.
+  ///
+  /// In en, this message translates to:
+  /// **'A nostalgic journey through the past — from childhood memories to life\'s changes. These cards inspire stories, laughs, and gratitude. Perfect for grandparents to share memories.'**
+  String get deckDescGoodOldDays;
+
+  /// No description provided for @deckDescWouldYouRather.
+  ///
+  /// In en, this message translates to:
+  /// **'A family-friendly version of the classic \"Would you rather...\" game. Filled with fun and imaginative choices that make everyone think, laugh, and defend their choices.'**
+  String get deckDescWouldYouRather;
+
+  /// No description provided for @deckDescCozyTalks.
+  ///
+  /// In en, this message translates to:
+  /// **'Warm and easygoing questions that make you feel right at home. They spark comforting chats about small joys, memories, and what makes you smile.'**
+  String get deckDescCozyTalks;
+
+  /// No description provided for @deckDescPartyNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Your go-to ice-breaker deck for fun nights with friends. These lively questions spark laughter, stories, and playful debates — from party fails to who\'s the biggest flirt on the dance floor. Perfect for loosening up the mood and keeping the good times rolling.'**
+  String get deckDescPartyNight;
 }
 
 class _AppLocalizationsDelegate
