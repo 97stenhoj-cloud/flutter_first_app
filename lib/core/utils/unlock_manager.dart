@@ -8,64 +8,89 @@ class UnlockManager extends ChangeNotifier {
 
   final authService = AuthService();
   
-  // Local cache
-  final Set<String> _unlockedBundles = {};
+  // Single premium status
+  bool _isPremium = false;
   int _questionCount = 0;
 
   // Initialize from Supabase
   Future<void> initialize() async {
     if (authService.isLoggedIn) {
-      final bundles = await authService.getUnlockedBundles();
-      _unlockedBundles.clear();
-      _unlockedBundles.addAll(bundles);
+      // Check if user has premium tier
+      final tier = await authService.getSubscriptionTier();
+      _isPremium = tier == 'premium';
       notifyListeners();
     }
   }
 
-  bool isBundleUnlocked(String gameMode) {
-    return _unlockedBundles.contains(gameMode);
-  }
+  // Check if user has premium
+  bool get isPremium => _isPremium;
 
-  Future<void> unlockBundle(String gameMode) async {
-    _unlockedBundles.add(gameMode);
+  // Unlock premium (for all categories)
+  Future<void> unlockPremium() async {
+    _isPremium = true;
     
     if (authService.isLoggedIn) {
       await authService.updateSubscription(
-        unlockedBundles: _unlockedBundles.toList(),
-        tier: _getTierFromCount(_unlockedBundles.length),
+        unlockedBundles: [],
+        tier: 'premium',
       );
     }
     
     notifyListeners();
   }
 
-  Future<void> unlockMultipleBundles(List<String> gameModes) async {
-    _unlockedBundles.addAll(gameModes);
+  // Lock premium
+  void lockPremium() {
+    _isPremium = false;
+    notifyListeners();
+  }
+
+  // Check if category is locked
+  bool isCategoryLocked(String gameMode, String categoryName) {
+    if (_isPremium) return false;
     
-    if (authService.isLoggedIn) {
-      await authService.updateSubscription(
-        unlockedBundles: _unlockedBundles.toList(),
-        tier: _getTierFromCount(_unlockedBundles.length),
-      );
+    final freeCategories = _getFreeCategoriesForMode(gameMode);
+    return !freeCategories.contains(categoryName);
+  }
+
+  // Get free categories per mode
+  List<String> _getFreeCategoriesForMode(String gameMode) {
+    switch (gameMode.toLowerCase()) {
+      case 'couple':
+        return ['Love Talks', 'Deep Talks', 'Silly Talks'];
+      case 'friends':
+        return ['Cozy Talks', 'Silly Talks', 'Car Talks'];
+      case 'family':
+        return ['Cozy Talks', 'History Talks', 'Silly Talks'];
+      default:
+        return [];
+    }
+  }
+
+  // Check if question is accessible in free category (max 30)
+  bool canAccessQuestionInFreeCategory(String gameMode, String categoryName, int questionIndex) {
+    if (_isPremium) return true;
+    
+    final freeCategories = _getFreeCategoriesForMode(gameMode);
+    if (!freeCategories.contains(categoryName)) {
+      // Locked category: allow 5-question preview
+      return questionIndex < 5;
     }
     
-    notifyListeners();
+    // Free category: allow 30 questions
+    return questionIndex < 30;
   }
 
-  void lockAllBundles() {
-    _unlockedBundles.clear();
-    notifyListeners();
+  // Get question limit for category
+  int getQuestionLimitForCategory(String gameMode, String categoryName) {
+    if (_isPremium) return 999999; // Unlimited
+    
+    final freeCategories = _getFreeCategoriesForMode(gameMode);
+    if (freeCategories.contains(categoryName)) {
+      return 30; // Free category limit
+    }
+    return 5; // Locked category preview
   }
-
-  String _getTierFromCount(int count) {
-    if (count == 0) return 'none';
-    if (count == 1) return '1-bundle';
-    if (count == 2) return '2-bundles';
-    return '3-bundles';
-  }
-
-  Set<String> get unlockedBundles => Set.from(_unlockedBundles);
-  int get unlockedBundleCount => _unlockedBundles.length;
 
   // Question counter for ads
   void incrementQuestionCount() {
@@ -79,8 +104,21 @@ class UnlockManager extends ChangeNotifier {
   int get questionCount => _questionCount;
 
   bool shouldShowAd() {
-    return _unlockedBundles.isEmpty && _questionCount > 0 && _questionCount % 7 == 0;
+    return !_isPremium && _questionCount > 0 && _questionCount % 7 == 0;
   }
 
-  bool get isPremium => _unlockedBundles.isNotEmpty;
+  // Pandora limits
+  bool canCreatePandoraSession() => true; // Anyone can create
+  
+  int getMaxPandoraPlayers() {
+    return _isPremium ? 999 : 6; // Free: 6, Premium: unlimited
+  }
+  
+  int getMaxPandoraQuestions() {
+    return _isPremium ? 999 : 12; // Free: 12, Premium: unlimited
+  }
+  
+  bool shouldShowPandoraUpgrade(int currentQuestions) {
+    return !_isPremium && currentQuestions >= 12;
+  }
 }

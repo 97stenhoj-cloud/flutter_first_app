@@ -12,6 +12,7 @@ import '../../../../core/services/supabase_service.dart';
 import '../../../../core/services/pandora_service.dart';
 import '../../../pandora/presentation/pages/session_stats_page.dart';
 
+
 class GamePage extends StatefulWidget {
   final String gameMode;
   final String category;
@@ -645,7 +646,7 @@ debugPrint('✅ Loaded ${questions.length} questions in $languageCode');
                       child: ElevatedButton(
                         onPressed: selectedBundle != null
                             ? () {
-                                unlockManager.unlockBundle(selectedBundle!);
+                                unlockManager.unlockPremium();
                                 Navigator.pop(context);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(

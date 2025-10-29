@@ -141,9 +141,9 @@ List<TextSpan> _buildDescriptionSpans(String description) {
     );
     
     final isMarkedAsLocked = categoryData['locked'] as bool;
-    final isBundleUnlocked = unlockManager.isBundleUnlocked(widget.gameMode);
+    final isCategoryUnlocked = !unlockManager.isCategoryLocked(widget.gameMode, categoryName);
     
-    return isMarkedAsLocked && !isBundleUnlocked;
+    return isMarkedAsLocked && !isCategoryUnlocked;
   }
 
   // Get translated category description
