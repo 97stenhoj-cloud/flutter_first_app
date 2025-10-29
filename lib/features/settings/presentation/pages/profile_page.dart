@@ -219,9 +219,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               const SizedBox(height: 16),
 
                               // Check if user has any unlocked bundles
-                              if (!unlockManager.isBundleUnlocked('couple') &&
-                                  !unlockManager.isBundleUnlocked('friends') &&
-                                  !unlockManager.isBundleUnlocked('family'))
+                              if (!unlockManager.isPremium)
                                 Container(
                                   padding: const EdgeInsets.all(16),
                                   decoration: BoxDecoration(
@@ -252,12 +250,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   spacing: 8,
                                   runSpacing: 8,
                                   children: [
-                                    if (unlockManager.isBundleUnlocked('couple'))
-                                      _buildSubscriptionCard('Couple'),
-                                    if (unlockManager.isBundleUnlocked('friends'))
-                                      _buildSubscriptionCard('Friends'),
-                                    if (unlockManager.isBundleUnlocked('family'))
-                                      _buildSubscriptionCard('Family'),
+                                    if (unlockManager.isPremium)
+                                      _buildSubscriptionCard('Premium')
                                   ],
                                 ),
 

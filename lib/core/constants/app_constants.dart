@@ -1,8 +1,5 @@
 class AppConstants {
-  static const String appTitle = 'Connect';  // Changed from 'Swipe & Talk'
-  
-  // ... rest of the file stays the same
-
+  static const String appTitle = 'Connect';
   
   // Game Modes
   static const String coupleMode = 'Couple';
@@ -44,32 +41,40 @@ class AppConstants {
   };
 
   // Category data structure
+  // Free categories: first 3 in each mode (30 questions each)
+  // Premium categories: all others (unlimited with premium)
   static const Map<String, List<Map<String, dynamic>>> gameCategories = {
     coupleMode: [
+      // FREE CATEGORIES (first 3)
       {'name': 'Love Talks', 'locked': false},
       {'name': 'Deep Talks', 'locked': false},
       {'name': 'Silly Talks', 'locked': false},
-      {'name': 'Car Talks', 'locked': false},
+      // PREMIUM CATEGORIES
+      {'name': 'Car Talks', 'locked': true},
       {'name': 'Spicy Talks', 'locked': true},
       {'name': 'Do-You-Dare', 'locked': true},
       {'name': 'Plot Twist: Our Future', 'locked': true},
       {'name': 'Love Languages Remix', 'locked': true},
     ],
     friendsMode: [
+      // FREE CATEGORIES (first 3)
       {'name': 'Cozy Talks', 'locked': false},
       {'name': 'Silly Talks', 'locked': false},
       {'name': 'Car Talks', 'locked': false},
-      {'name': 'Party Night Talks', 'locked': false},
+      // PREMIUM CATEGORIES
+      {'name': 'Party Night Talks', 'locked': true},
       {'name': 'Unpopular Opinions XL', 'locked': true},
       {'name': 'After Dark Confessions', 'locked': true},
       {'name': 'Then & Now', 'locked': true},
       {'name': 'Green & Red Flags', 'locked': true},
     ],
     familyMode: [
+      // FREE CATEGORIES (first 3)
       {'name': 'Cozy Talks', 'locked': false},
       {'name': 'History Talks', 'locked': false},
-      {'name': 'Fun Talks', 'locked': false},
-      {'name': 'Car Talks', 'locked': false},
+      {'name': 'Silly Talks', 'locked': false},
+      // PREMIUM CATEGORIES
+      {'name': 'Car Talks', 'locked': true},
       {'name': 'What-Ifs', 'locked': true},
       {'name': 'Would You Rather', 'locked': true},
       {'name': 'Time Capsule: Talk Edition', 'locked': true},
