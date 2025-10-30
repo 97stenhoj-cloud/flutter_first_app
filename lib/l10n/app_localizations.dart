@@ -165,14 +165,26 @@ abstract class AppLocalizations {
   /// No description provided for @locked.
   ///
   /// In en, this message translates to:
-  /// **'Locked Category'**
+  /// **'Premium Category'**
   String get locked;
 
   /// No description provided for @lockedMessage.
   ///
   /// In en, this message translates to:
-  /// **'This category is locked. Upgrade to premium to unlock all categories!'**
+  /// **'This is a premium category. Upgrade to unlock all categories and remove ads!'**
   String get lockedMessage;
+
+  /// No description provided for @previewAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview: First 5 questions available'**
+  String get previewAvailable;
+
+  /// No description provided for @upgradeNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade Now'**
+  String get upgradeNow;
 
   /// No description provided for @ok.
   ///
@@ -186,77 +198,101 @@ abstract class AppLocalizations {
   /// **'Maybe Later'**
   String get mayBeLater;
 
-  /// No description provided for @chooseSubscription.
+  /// No description provided for @getPremium.
   ///
   /// In en, this message translates to:
-  /// **'Choose Your Subscription'**
-  String get chooseSubscription;
+  /// **'Get Premium'**
+  String get getPremium;
 
-  /// No description provided for @subscriptionDescription.
+  /// No description provided for @premiumTitle.
   ///
   /// In en, this message translates to:
-  /// **'Unlock premium categories and get access to exclusive question packs'**
-  String get subscriptionDescription;
+  /// **'Unlock Everything'**
+  String get premiumTitle;
 
-  /// No description provided for @chooseBundleOne.
+  /// No description provided for @premiumDescription.
   ///
   /// In en, this message translates to:
-  /// **'Choose 1 category bundle'**
-  String get chooseBundleOne;
+  /// **'Get unlimited access to all categories across all modes, remove ads, and enjoy unlimited Pandora sessions.'**
+  String get premiumDescription;
 
-  /// No description provided for @chooseBundleTwo.
+  /// No description provided for @premiumPriceMonthly.
   ///
   /// In en, this message translates to:
-  /// **'Choose 2 category bundles'**
-  String get chooseBundleTwo;
+  /// **'49 DKK/month'**
+  String get premiumPriceMonthly;
 
-  /// No description provided for @chooseBundleThree.
+  /// No description provided for @premiumPriceYearly.
   ///
   /// In en, this message translates to:
-  /// **'All 3 category bundles'**
-  String get chooseBundleThree;
+  /// **'399 DKK/year'**
+  String get premiumPriceYearly;
 
-  /// No description provided for @perMonth.
+  /// No description provided for @saveWithYearly.
   ///
   /// In en, this message translates to:
-  /// **'/month'**
-  String get perMonth;
+  /// **'Save 189 DKK with yearly!'**
+  String get saveWithYearly;
 
-  /// No description provided for @bestValue.
+  /// No description provided for @monthly.
   ///
   /// In en, this message translates to:
-  /// **'BEST VALUE'**
-  String get bestValue;
+  /// **'Monthly'**
+  String get monthly;
 
-  /// No description provided for @unlockAllBundles.
+  /// No description provided for @yearly.
   ///
   /// In en, this message translates to:
-  /// **'Unlock All Bundles'**
-  String get unlockAllBundles;
+  /// **'Yearly'**
+  String get yearly;
 
-  /// No description provided for @selectYourBundle.
+  /// No description provided for @billedMonthly.
   ///
   /// In en, this message translates to:
-  /// **'Select Your Bundle'**
-  String get selectYourBundle;
+  /// **'Billed monthly'**
+  String get billedMonthly;
 
-  /// No description provided for @selectBundles.
+  /// No description provided for @billedYearly.
   ///
   /// In en, this message translates to:
-  /// **'Select {count} Bundle{plural}'**
-  String selectBundles(Object count, Object plural);
+  /// **'Billed annually'**
+  String get billedYearly;
 
-  /// No description provided for @premiumCategories.
+  /// No description provided for @premiumFeature1.
   ///
   /// In en, this message translates to:
-  /// **'4 premium categories'**
-  String get premiumCategories;
+  /// **'✓ All 21 premium categories unlocked'**
+  String get premiumFeature1;
 
-  /// No description provided for @cancel.
+  /// No description provided for @premiumFeature2.
   ///
   /// In en, this message translates to:
-  /// **'Cancel'**
-  String get cancel;
+  /// **'✓ No ads forever'**
+  String get premiumFeature2;
+
+  /// No description provided for @premiumFeature3.
+  ///
+  /// In en, this message translates to:
+  /// **'✓ Unlimited questions in all categories'**
+  String get premiumFeature3;
+
+  /// No description provided for @premiumFeature4.
+  ///
+  /// In en, this message translates to:
+  /// **'✓ Pandora: Unlimited players & questions'**
+  String get premiumFeature4;
+
+  /// No description provided for @premiumFeature5.
+  ///
+  /// In en, this message translates to:
+  /// **'✓ Support ongoing development'**
+  String get premiumFeature5;
+
+  /// No description provided for @subscribePremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe to Premium'**
+  String get subscribePremium;
 
   /// No description provided for @subscribe.
   ///
@@ -264,17 +300,89 @@ abstract class AppLocalizations {
   /// **'Subscribe'**
   String get subscribe;
 
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
   /// No description provided for @subscriptionActivated.
   ///
   /// In en, this message translates to:
-  /// **'Subscription activated! {bundles} unlocked.'**
+  /// **'Premium activated! All categories unlocked.'**
   String subscriptionActivated(Object bundles);
+
+  /// No description provided for @premiumActivated.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Activated!'**
+  String get premiumActivated;
 
   /// No description provided for @demoNote.
   ///
   /// In en, this message translates to:
-  /// **'Demo: Unlocks will reset on app restart'**
+  /// **'Demo: Subscription will reset on app restart'**
   String get demoNote;
+
+  /// No description provided for @freeTier.
+  ///
+  /// In en, this message translates to:
+  /// **'Free Tier'**
+  String get freeTier;
+
+  /// No description provided for @freeTierDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'3 categories per mode (30 questions each)\n5-question previews of premium categories\nAds every 7 questions'**
+  String get freeTierDesc;
+
+  /// No description provided for @currentPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Plan'**
+  String get currentPlan;
+
+  /// No description provided for @limitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Limit Reached'**
+  String get limitReached;
+
+  /// No description provided for @freeCategoryLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve reached the 30-question limit for free categories. Upgrade to Premium for unlimited access!'**
+  String get freeCategoryLimit;
+
+  /// No description provided for @previewLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve seen all 5 preview questions. Upgrade to Premium to continue!'**
+  String get previewLimit;
+
+  /// No description provided for @pandoraFreeLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Free Limit'**
+  String get pandoraFreeLimit;
+
+  /// No description provided for @pandoraFreeLimitMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Free hosts can have max 6 players and 12 questions. Upgrade to Premium for unlimited!'**
+  String get pandoraFreeLimitMessage;
+
+  /// No description provided for @pandoraUpgradeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve reached 12 questions. Upgrade to Premium to continue playing!'**
+  String get pandoraUpgradeMessage;
+
+  /// No description provided for @pandoraMaxPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum 6 players reached (Free limit). Upgrade to Premium for unlimited players!'**
+  String get pandoraMaxPlayers;
 
   /// No description provided for @swipeOrTap.
   ///
@@ -315,7 +423,7 @@ abstract class AppLocalizations {
   /// No description provided for @goAdFree.
   ///
   /// In en, this message translates to:
-  /// **'Go Ad-Free - 59 DKK/month'**
+  /// **'Go Ad-Free with Premium'**
   String get goAdFree;
 
   /// No description provided for @removeAdsForever.
@@ -323,24 +431,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove Ads Forever'**
   String get removeAdsForever;
-
-  /// No description provided for @chooseOneBundle.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose 1 bundle to unlock and remove all ads'**
-  String get chooseOneBundle;
-
-  /// No description provided for @noAdsForever.
-  ///
-  /// In en, this message translates to:
-  /// **'No Ads Forever'**
-  String get noAdsForever;
-
-  /// No description provided for @premiumActivated.
-  ///
-  /// In en, this message translates to:
-  /// **'Premium activated! Ads removed. {bundle} bundle unlocked.'**
-  String premiumActivated(Object bundle);
 
   /// No description provided for @adNotReady.
   ///
@@ -357,7 +447,7 @@ abstract class AppLocalizations {
   /// No description provided for @pricePerMonth.
   ///
   /// In en, this message translates to:
-  /// **'59 DKK/month'**
+  /// **'49 DKK/month or 399 DKK/year'**
   String get pricePerMonth;
 
   /// No description provided for @noQuestionsFoundMessage.
@@ -453,7 +543,7 @@ abstract class AppLocalizations {
   /// No description provided for @signInToSync.
   ///
   /// In en, this message translates to:
-  /// **'Sign in to sync your subscriptions across devices and unlock premium content'**
+  /// **'Sign in to sync your subscription across devices and unlock premium content'**
   String get signInToSync;
 
   /// No description provided for @signOutConfirm.
@@ -498,23 +588,11 @@ abstract class AppLocalizations {
   /// **'Unknown'**
   String get unknown;
 
-  /// No description provided for @activeSubscriptions.
+  /// No description provided for @subscriptionStatus.
   ///
   /// In en, this message translates to:
-  /// **'Active Subscriptions'**
-  String get activeSubscriptions;
-
-  /// No description provided for @bundlesUnlocked.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} Bundle{plural} Unlocked'**
-  String bundlesUnlocked(Object count, Object plural);
-
-  /// No description provided for @bundle.
-  ///
-  /// In en, this message translates to:
-  /// **'{name} Bundle'**
-  String bundle(Object name);
+  /// **'Subscription Status'**
+  String get subscriptionStatus;
 
   /// No description provided for @premiumMember.
   ///
@@ -575,24 +653,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No categories found'**
   String get noCategoriesFound;
-
-  /// No description provided for @selectBundlePlural.
-  ///
-  /// In en, this message translates to:
-  /// **'Select the category bundle{plural} you want to unlock'**
-  String selectBundlePlural(Object plural);
-
-  /// No description provided for @getAccessAllBundles.
-  ///
-  /// In en, this message translates to:
-  /// **'Get access to all premium categories in all 3 bundles!'**
-  String get getAccessAllBundles;
-
-  /// No description provided for @subscriptionActivatedFull.
-  ///
-  /// In en, this message translates to:
-  /// **'Subscription activated! {bundles} unlocked.'**
-  String subscriptionActivatedFull(Object bundles);
 
   /// No description provided for @aboutCredits.
   ///
@@ -669,7 +729,7 @@ abstract class AppLocalizations {
   /// No description provided for @pickCategoryDesc.
   ///
   /// In en, this message translates to:
-  /// **'Each mode has multiple categories with unique question packs. Free categories are unlocked, while premium categories require a subscription.'**
+  /// **'Each mode has multiple categories with unique question packs. 3 free categories per mode (30 questions each), with 5-question previews of premium categories.'**
   String get pickCategoryDesc;
 
   /// No description provided for @startTalking.
@@ -705,7 +765,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumFeaturesDesc.
   ///
   /// In en, this message translates to:
-  /// **'Unlock exclusive question categories with a subscription:\n\n• 1 Bundle (4 categories) - 59 DKK/month\n• 2 Bundles (8 categories) - 109 DKK/month\n• 3 Bundles (12 categories) - 149 DKK/month'**
+  /// **'Unlock all 24 categories with Premium:\n\n• Monthly: 49 DKK/month\n• Yearly: 399 DKK/year (save 189 DKK!)\n\n✓ All categories unlocked\n✓ No ads\n✓ Unlimited questions\n✓ Unlimited Pandora sessions'**
   String get premiumFeaturesDesc;
 
   /// No description provided for @proTips.
@@ -816,24 +876,6 @@ abstract class AppLocalizations {
   /// **'Tap to Play'**
   String get tapToPlay;
 
-  /// No description provided for @coupleBundle.
-  ///
-  /// In en, this message translates to:
-  /// **'Couple Bundle'**
-  String get coupleBundle;
-
-  /// No description provided for @friendsBundle.
-  ///
-  /// In en, this message translates to:
-  /// **'Friends Bundle'**
-  String get friendsBundle;
-
-  /// No description provided for @familyBundle.
-  ///
-  /// In en, this message translates to:
-  /// **'Family Bundle'**
-  String get familyBundle;
-
   /// No description provided for @favorites.
   ///
   /// In en, this message translates to:
@@ -849,7 +891,7 @@ abstract class AppLocalizations {
   /// No description provided for @pandoraPlayersJoinMax.
   ///
   /// In en, this message translates to:
-  /// **'Players join (max 15 min)'**
+  /// **'Players join (max 6 free, unlimited premium)'**
   String get pandoraPlayersJoinMax;
 
   /// No description provided for @pandoraHostSetsTimer.
@@ -861,7 +903,7 @@ abstract class AppLocalizations {
   /// No description provided for @pandoraEveryoneSubmits.
   ///
   /// In en, this message translates to:
-  /// **'Everyone submits questions'**
+  /// **'Everyone submits questions (max 12 free)'**
   String get pandoraEveryoneSubmits;
 
   /// No description provided for @pandoraHostControls.
@@ -915,7 +957,7 @@ abstract class AppLocalizations {
   /// No description provided for @everyoneSubmitsMin5.
   ///
   /// In en, this message translates to:
-  /// **'Everyone submits questions (min 5)'**
+  /// **'Everyone submits questions (min 5, max 12 free)'**
   String get everyoneSubmitsMin5;
 
   /// No description provided for @createSession.
@@ -966,305 +1008,11 @@ abstract class AppLocalizations {
   /// **'Are you sure you want to end this Pandora session?'**
   String get endSessionConfirm;
 
-  /// No description provided for @end.
+  /// No description provided for @createCustomDeck.
   ///
   /// In en, this message translates to:
-  /// **'End'**
-  String get end;
-
-  /// No description provided for @sessionPin.
-  ///
-  /// In en, this message translates to:
-  /// **'Session PIN'**
-  String get sessionPin;
-
-  /// No description provided for @sharePin.
-  ///
-  /// In en, this message translates to:
-  /// **'Share this PIN with players'**
-  String get sharePin;
-
-  /// No description provided for @waitingForPlayers.
-  ///
-  /// In en, this message translates to:
-  /// **'Waiting for players...'**
-  String get waitingForPlayers;
-
-  /// No description provided for @startGame.
-  ///
-  /// In en, this message translates to:
-  /// **'Start Game'**
-  String get startGame;
-
-  /// No description provided for @lobby.
-  ///
-  /// In en, this message translates to:
-  /// **'Lobby'**
-  String get lobby;
-
-  /// No description provided for @hostLabel.
-  ///
-  /// In en, this message translates to:
-  /// **' (Host)'**
-  String get hostLabel;
-
-  /// No description provided for @selectTimer.
-  ///
-  /// In en, this message translates to:
-  /// **'Select Timer'**
-  String get selectTimer;
-
-  /// No description provided for @timerQuestion.
-  ///
-  /// In en, this message translates to:
-  /// **'How long should players have to submit questions?'**
-  String get timerQuestion;
-
-  /// No description provided for @minutes.
-  ///
-  /// In en, this message translates to:
-  /// **'minutes'**
-  String get minutes;
-
-  /// No description provided for @startCollectingQuestions.
-  ///
-  /// In en, this message translates to:
-  /// **'Start Collecting Questions'**
-  String get startCollectingQuestions;
-
-  /// No description provided for @sessionCancelled.
-  ///
-  /// In en, this message translates to:
-  /// **'Session cancelled'**
-  String get sessionCancelled;
-
-  /// No description provided for @questionCannotBeEmpty.
-  ///
-  /// In en, this message translates to:
-  /// **'Question cannot be empty'**
-  String get questionCannotBeEmpty;
-
-  /// No description provided for @questionSubmitted.
-  ///
-  /// In en, this message translates to:
-  /// **'Question submitted!'**
-  String get questionSubmitted;
-
-  /// No description provided for @failedToSubmit.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to submit question'**
-  String get failedToSubmit;
-
-  /// No description provided for @notEnoughQuestions.
-  ///
-  /// In en, this message translates to:
-  /// **'Not enough questions. Minimum 5 required. (Currently: {count})'**
-  String notEnoughQuestions(Object count);
-
-  /// No description provided for @submitQuestions.
-  ///
-  /// In en, this message translates to:
-  /// **'Submit Questions'**
-  String get submitQuestions;
-
-  /// No description provided for @submitMinimum5.
-  ///
-  /// In en, this message translates to:
-  /// **'Submit at least 5 questions to start the game'**
-  String get submitMinimum5;
-
-  /// No description provided for @yourQuestion.
-  ///
-  /// In en, this message translates to:
-  /// **'Your Question'**
-  String get yourQuestion;
-
-  /// No description provided for @enterQuestionHere.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your question here...'**
-  String get enterQuestionHere;
-
-  /// No description provided for @forEveryone.
-  ///
-  /// In en, this message translates to:
-  /// **'For Everyone'**
-  String get forEveryone;
-
-  /// No description provided for @forSpecificPerson.
-  ///
-  /// In en, this message translates to:
-  /// **'For Specific Person'**
-  String get forSpecificPerson;
-
-  /// No description provided for @submit.
-  ///
-  /// In en, this message translates to:
-  /// **'Submit'**
-  String get submit;
-
-  /// No description provided for @questionsRemaining.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} questions remaining'**
-  String questionsRemaining(Object count);
-
-  /// No description provided for @questionRemaining.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} question remaining'**
-  String questionRemaining(Object count);
-
-  /// No description provided for @startGameExclamation.
-  ///
-  /// In en, this message translates to:
-  /// **'Start Game!'**
-  String get startGameExclamation;
-
-  /// No description provided for @cancelSession.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel Session'**
-  String get cancelSession;
-
-  /// No description provided for @timeRemaining.
-  ///
-  /// In en, this message translates to:
-  /// **'Time Remaining'**
-  String get timeRemaining;
-
-  /// No description provided for @pleaseEnterPin.
-  ///
-  /// In en, this message translates to:
-  /// **'Please enter a PIN'**
-  String get pleaseEnterPin;
-
-  /// No description provided for @sessionNotFound.
-  ///
-  /// In en, this message translates to:
-  /// **'Session not found'**
-  String get sessionNotFound;
-
-  /// No description provided for @sessionEnded.
-  ///
-  /// In en, this message translates to:
-  /// **'Session has ended'**
-  String get sessionEnded;
-
-  /// No description provided for @sessionStarted.
-  ///
-  /// In en, this message translates to:
-  /// **'Session has already started'**
-  String get sessionStarted;
-
-  /// No description provided for @failedToJoin.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to join session'**
-  String get failedToJoin;
-
-  /// No description provided for @joinSession.
-  ///
-  /// In en, this message translates to:
-  /// **'Join Session'**
-  String get joinSession;
-
-  /// No description provided for @joining.
-  ///
-  /// In en, this message translates to:
-  /// **'Joining...'**
-  String get joining;
-
-  /// No description provided for @enterPin.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter 6-digit PIN'**
-  String get enterPin;
-
-  /// No description provided for @join.
-  ///
-  /// In en, this message translates to:
-  /// **'Join'**
-  String get join;
-
-  /// No description provided for @reactionBreakdown.
-  ///
-  /// In en, this message translates to:
-  /// **'Reaction Breakdown'**
-  String get reactionBreakdown;
-
-  /// No description provided for @laugh.
-  ///
-  /// In en, this message translates to:
-  /// **'Laugh'**
-  String get laugh;
-
-  /// No description provided for @shock.
-  ///
-  /// In en, this message translates to:
-  /// **'Shock'**
-  String get shock;
-
-  /// No description provided for @heart.
-  ///
-  /// In en, this message translates to:
-  /// **'Heart'**
-  String get heart;
-
-  /// No description provided for @fire.
-  ///
-  /// In en, this message translates to:
-  /// **'Fire'**
-  String get fire;
-
-  /// No description provided for @mostLaughs.
-  ///
-  /// In en, this message translates to:
-  /// **'Most Laughs'**
-  String get mostLaughs;
-
-  /// No description provided for @mostShocked.
-  ///
-  /// In en, this message translates to:
-  /// **'Most Shocked'**
-  String get mostShocked;
-
-  /// No description provided for @mostHearts.
-  ///
-  /// In en, this message translates to:
-  /// **'Most Hearts'**
-  String get mostHearts;
-
-  /// No description provided for @sessionComplete.
-  ///
-  /// In en, this message translates to:
-  /// **'Session Complete!'**
-  String get sessionComplete;
-
-  /// No description provided for @thanksForPlayingPandora.
-  ///
-  /// In en, this message translates to:
-  /// **'Thanks for playing Pandora Box!'**
-  String get thanksForPlayingPandora;
-
-  /// No description provided for @returnToMenu.
-  ///
-  /// In en, this message translates to:
-  /// **'Return to Menu'**
-  String get returnToMenu;
-
-  /// No description provided for @failedToCreateDeck.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to create deck'**
-  String get failedToCreateDeck;
-
-  /// No description provided for @createNewDeck.
-  ///
-  /// In en, this message translates to:
-  /// **'Create New Deck'**
-  String get createNewDeck;
+  /// **'Create Custom Deck'**
+  String get createCustomDeck;
 
   /// No description provided for @deckName.
   ///
@@ -1284,16 +1032,28 @@ abstract class AppLocalizations {
   /// **'Create'**
   String get create;
 
+  /// No description provided for @deckCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Deck created!'**
+  String get deckCreated;
+
+  /// No description provided for @failedToCreateDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create deck'**
+  String get failedToCreateDeck;
+
   /// No description provided for @deleteDeck.
   ///
   /// In en, this message translates to:
-  /// **'Delete Deck'**
+  /// **'Delete Deck?'**
   String get deleteDeck;
 
   /// No description provided for @deleteDeckConfirm.
   ///
   /// In en, this message translates to:
-  /// **'Are you sure you want to delete \"{name}\"? This will delete all questions in this deck.'**
+  /// **'This will delete all questions in this deck.'**
   String deleteDeckConfirm(Object name);
 
   /// No description provided for @delete.
@@ -1482,6 +1242,18 @@ abstract class AppLocalizations {
   /// **'Perfect for road trips — these cards turn driving time into great conversation. Expect funny, creative, and nostalgic questions about travel, adventure, and quirks.'**
   String get deckDescCarTalks;
 
+  /// No description provided for @deckDescCozyTalks.
+  ///
+  /// In en, this message translates to:
+  /// **'Warm, relaxed conversations perfect for cozy evenings. These questions create comfortable, heartfelt moments of connection.'**
+  String get deckDescCozyTalks;
+
+  /// No description provided for @deckDescPartyNight.
+  ///
+  /// In en, this message translates to:
+  /// **'High-energy questions designed for fun group settings. Perfect for parties and social gatherings with friends.'**
+  String get deckDescPartyNight;
+
   /// No description provided for @deckDescUnpopularOpinions.
   ///
   /// In en, this message translates to:
@@ -1509,32 +1281,62 @@ abstract class AppLocalizations {
   /// No description provided for @deckDescTinyTalks.
   ///
   /// In en, this message translates to:
-  /// **'Made for parents and their little ones! These simple, playful questions help kids express themselves while parents learn how they think. Perfect for ages 3-9.'**
+  /// **'Designed for parents and little ones! These simple, playful questions help children express themselves while parents learn how they think. Perfect for ages 3–9.'**
   String get deckDescTinyTalks;
 
   /// No description provided for @deckDescGoodOldDays.
   ///
   /// In en, this message translates to:
-  /// **'A nostalgic journey through the past — from childhood memories to life\'s changes. These cards inspire stories, laughs, and gratitude. Perfect for grandparents to share memories.'**
+  /// **'Journey back in time with questions about cherished memories, past experiences, and how things used to be. Perfect for all ages.'**
   String get deckDescGoodOldDays;
 
   /// No description provided for @deckDescWouldYouRather.
   ///
   /// In en, this message translates to:
-  /// **'A family-friendly version of the classic \"Would you rather...\" game. Filled with fun and imaginative choices that make everyone think, laugh, and defend their choices.'**
+  /// **'Classic dilemma questions that spark debates and reveal preferences. Choose between two options and discover what matters most.'**
   String get deckDescWouldYouRather;
 
-  /// No description provided for @deckDescCozyTalks.
+  /// No description provided for @createNewDeck.
   ///
   /// In en, this message translates to:
-  /// **'Warm and easygoing questions that make you feel right at home. They spark comforting chats about small joys, memories, and what makes you smile.'**
-  String get deckDescCozyTalks;
+  /// **'Create New Deck'**
+  String get createNewDeck;
 
-  /// No description provided for @deckDescPartyNight.
+  /// No description provided for @sessionPin.
   ///
   /// In en, this message translates to:
-  /// **'Your go-to ice-breaker deck for fun nights with friends. These lively questions spark laughter, stories, and playful debates — from party fails to who\'s the biggest flirt on the dance floor. Perfect for loosening up the mood and keeping the good times rolling.'**
-  String get deckDescPartyNight;
+  /// **'Session PIN'**
+  String get sessionPin;
+
+  /// No description provided for @joinSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Join Session'**
+  String get joinSession;
+
+  /// No description provided for @questionSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Question Submitted'**
+  String get questionSubmitted;
+
+  /// No description provided for @sessionCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Session Cancelled'**
+  String get sessionCancelled;
+
+  /// No description provided for @yourQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Question'**
+  String get yourQuestion;
+
+  /// No description provided for @reactionBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Reaction Breakdown'**
+  String get reactionBreakdown;
 }
 
 class _AppLocalizationsDelegate

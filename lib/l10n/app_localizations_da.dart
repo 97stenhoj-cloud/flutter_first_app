@@ -36,67 +36,126 @@ class AppLocalizationsDa extends AppLocalizations {
   String get chooseCategory => 'Vælg en kategori';
 
   @override
-  String get locked => 'Låst kategori';
+  String get locked => 'Premium Kategori';
 
   @override
   String get lockedMessage =>
-      'Denne kategori er låst. Opgrader til premium for at låse alle kategorier op!';
+      'Dette er en premium kategori. Opgrader for at låse alle kategorier op og fjerne annoncer!';
+
+  @override
+  String get previewAvailable =>
+      'Forhåndsvisning: Første 5 spørgsmål tilgængelige';
+
+  @override
+  String get upgradeNow => 'Opgrader Nu';
 
   @override
   String get ok => 'OK';
 
   @override
-  String get mayBeLater => 'Måske senere';
+  String get mayBeLater => 'Måske Senere';
 
   @override
-  String get chooseSubscription => 'Vælg dit abonnement';
+  String get getPremium => 'Få Premium';
 
   @override
-  String get subscriptionDescription =>
-      'Lås premium kategorier op og få adgang til eksklusive spørgepakker';
+  String get premiumTitle => 'Lås Alt Op';
 
   @override
-  String get chooseBundleOne => 'Vælg 1 kategori bundle';
+  String get premiumDescription =>
+      'Få ubegrænset adgang til alle kategorier på tværs af alle tilstande, fjern annoncer og nyd ubegrænsede Pandora-sessioner.';
 
   @override
-  String get chooseBundleTwo => 'Vælg 2 kategori bundles';
+  String get premiumPriceMonthly => '49 DKK/måned';
 
   @override
-  String get chooseBundleThree => 'Alle 3 kategori bundles';
+  String get premiumPriceYearly => '399 DKK/år';
 
   @override
-  String get perMonth => '/måned';
+  String get saveWithYearly => 'Spar 189 DKK med årligt!';
 
   @override
-  String get bestValue => 'BEDSTE VÆRDI';
+  String get monthly => 'Månedligt';
 
   @override
-  String get unlockAllBundles => 'Lås alle Bundles op';
+  String get yearly => 'Årligt';
 
   @override
-  String get selectYourBundle => 'Vælg din Bundle';
+  String get billedMonthly => 'Faktureret månedligt';
 
   @override
-  String selectBundles(Object count, Object plural) {
-    return 'Vælg $count Bundle$plural';
-  }
+  String get billedYearly => 'Faktureret årligt';
 
   @override
-  String get premiumCategories => '4 premium kategorier';
+  String get premiumFeature1 => '✓ Alle 24 premium kategorier låst op';
 
   @override
-  String get cancel => 'Annuller';
+  String get premiumFeature2 => '✓ Ingen annoncer for altid';
+
+  @override
+  String get premiumFeature3 => '✓ Ubegrænsede spørgsmål i alle kategorier';
+
+  @override
+  String get premiumFeature4 => '✓ Pandora: Ubegrænsede spillere og spørgsmål';
+
+  @override
+  String get premiumFeature5 => '✓ Støt løbende udvikling';
+
+  @override
+  String get subscribePremium => 'Abonner på Premium';
 
   @override
   String get subscribe => 'Abonner';
 
   @override
+  String get cancel => 'Annuller';
+
+  @override
   String subscriptionActivated(Object bundles) {
-    return 'Abonnement aktiveret! $bundles låst op.';
+    return 'Premium aktiveret! Alle kategorier låst op.';
   }
 
   @override
-  String get demoNote => 'Demo: Låsninger nulstilles ved genstart af appen';
+  String get premiumActivated => 'Premium Aktiveret!';
+
+  @override
+  String get demoNote => 'Demo: Abonnement nulstilles ved genstart af app';
+
+  @override
+  String get freeTier => 'Gratis Niveau';
+
+  @override
+  String get freeTierDesc =>
+      '3 kategorier per tilstand (30 spørgsmål hver)\n5-spørgsmåls forhåndsvisninger af premium kategorier\nAnnoncer hver 7. spørgsmål';
+
+  @override
+  String get currentPlan => 'Nuværende Plan';
+
+  @override
+  String get limitReached => 'Grænse Nået';
+
+  @override
+  String get freeCategoryLimit =>
+      'Du har nået 30-spørgsmåls grænsen for gratis kategorier. Opgrader til Premium for ubegrænset adgang!';
+
+  @override
+  String get previewLimit =>
+      'Du har set alle 5 forhåndsvisningsspørgsmål. Opgrader til Premium for at fortsætte!';
+
+  @override
+  String get pandoraFreeLimit => 'Gratis Grænse';
+
+  @override
+  String get pandoraFreeLimitMessage =>
+      'Gratis værter kan have maks 6 spillere og 12 spørgsmål. Opgrader til Premium for ubegrænset!';
+
+  @override
+  String get pandoraUpgradeMessage =>
+      'Du har nået 12 spørgsmål. Opgrader til Premium for at fortsætte med at spille!';
+
+  @override
+  String get pandoraMaxPlayers =>
+      'Maksimum 6 spillere nået (Gratis grænse). Opgrader til Premium for ubegrænsede spillere!';
 
   @override
   String get swipeOrTap => 'Stryg eller tryk på pilene';
@@ -115,34 +174,22 @@ class AppLocalizationsDa extends AppLocalizations {
       'Se en kort annonce for at fortsætte, eller gå uden annoncer med premium!';
 
   @override
-  String get watchAd => 'Se annonce';
+  String get watchAd => 'Se Annonce';
 
   @override
-  String get goAdFree => 'Gå uden annoncer - 59 DKK/måned';
+  String get goAdFree => 'Gå Uden Annoncer med Premium';
 
   @override
-  String get removeAdsForever => 'Fjern annoncer for altid';
-
-  @override
-  String get chooseOneBundle =>
-      'Vælg 1 bundle for at låse op og fjerne alle annoncer';
-
-  @override
-  String get noAdsForever => 'Ingen annoncer for altid';
-
-  @override
-  String premiumActivated(Object bundle) {
-    return 'Premium aktiveret! Annoncer fjernet. $bundle bundle låst op.';
-  }
+  String get removeAdsForever => 'Fjern Annoncer For Altid';
 
   @override
   String get adNotReady => 'Annonce ikke klar. Fortsætter uden annonce.';
 
   @override
-  String get adLoadingContinue => 'Annoncer indlæses... Fortsæt';
+  String get adLoadingContinue => 'Annonce indlæses... Fortsæt';
 
   @override
-  String get pricePerMonth => '59 DKK/måned';
+  String get pricePerMonth => '49 DKK/måned eller 399 DKK/år';
 
   @override
   String noQuestionsFoundMessage(Object category, Object mode) {
@@ -155,11 +202,11 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String failedToLoadQuestions(Object error) {
-    return 'Kunne ikke indlæse spørgsmål: $error';
+    return 'Kunne ikke indlæse spørgsmål';
   }
 
   @override
-  String get madeForWife => 'Lavede til min smukke kone';
+  String get madeForWife => 'Lavet til min smukke kone';
 
   @override
   String get otiLia => 'Otilia Stenhøj';
@@ -188,17 +235,17 @@ class AppLocalizationsDa extends AppLocalizations {
   String get profile => 'Profil';
 
   @override
-  String get signOut => 'Log ud';
+  String get signOut => 'Log Ud';
 
   @override
-  String get notSignedIn => 'Ikke logget ind';
+  String get notSignedIn => 'Ikke Logget Ind';
 
   @override
-  String get signInSignUp => 'Log ind / Tilmeld';
+  String get signInSignUp => 'Log Ind / Tilmeld';
 
   @override
   String get signInToSync =>
-      'Log ind for at synkronisere dine abonnementer på tværs af enheder og låse op for premium indhold';
+      'Log ind for at synkronisere dit abonnement på tværs af enheder og låse op for premium indhold';
 
   @override
   String get signOutConfirm => 'Er du sikker på, at du vil logge ud?';
@@ -222,17 +269,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get unknown => 'Ukendt';
 
   @override
-  String get activeSubscriptions => 'Aktive Abonnementer';
-
-  @override
-  String bundlesUnlocked(Object count, Object plural) {
-    return '$count Bundle$plural Låst Op';
-  }
-
-  @override
-  String bundle(Object name) {
-    return '$name Bundle';
-  }
+  String get subscriptionStatus => 'Abonnementsstatus';
 
   @override
   String get premiumMember => 'Premium Medlem';
@@ -266,27 +303,13 @@ class AppLocalizationsDa extends AppLocalizations {
   String get noCategoriesFound => 'Ingen kategorier fundet';
 
   @override
-  String selectBundlePlural(Object plural) {
-    return 'Vælg den kategori bundle$plural, du ønsker at låse op for';
-  }
-
-  @override
-  String get getAccessAllBundles =>
-      'Få adgang til alle premium kategorier i alle 3 bundles!';
-
-  @override
-  String subscriptionActivatedFull(Object bundles) {
-    return 'Abonnement aktiveret! $bundles låst op.';
-  }
-
-  @override
   String get aboutCredits => 'Om / Credits';
 
   @override
-  String get welcomeBack => 'Velkommen tilbage!';
+  String get welcomeBack => 'Velkommen Tilbage!';
 
   @override
-  String get createAccount => 'Opret konto';
+  String get createAccount => 'Opret Konto';
 
   @override
   String get displayName => 'Visningsnavn';
@@ -295,10 +318,10 @@ class AppLocalizationsDa extends AppLocalizations {
   String get password => 'Adgangskode';
 
   @override
-  String get signIn => 'Log ind';
+  String get signIn => 'Log Ind';
 
   @override
-  String get signUp => 'Tilmeld dig';
+  String get signUp => 'Tilmeld Dig';
 
   @override
   String get dontHaveAccount => 'Har du ikke en konto? Tilmeld dig';
@@ -307,44 +330,46 @@ class AppLocalizationsDa extends AppLocalizations {
   String get alreadyHaveAccount => 'Har du allerede en konto? Log ind';
 
   @override
-  String get chooseYourMode => '1. Vælg din tilstand';
+  String get chooseYourMode => '1. Vælg Din Tilstand';
 
   @override
-  String get chooseYourModeDesc => 'Vælg mellem tre samtalestile:';
+  String get chooseYourModeDesc =>
+      'Vælg mellem tre samtalestile:\n\n• Familie - Varme, sunde samtaler perfekt for alle aldre\n• Par - Intime og romantiske spørgsmål til at uddybe jeres forbindelse\n• Venner - Sjove og underholdende emner til din gruppe';
 
   @override
-  String get pickCategory => '2. Vælg en kategori';
+  String get pickCategory => '2. Vælg en Kategori';
 
   @override
   String get pickCategoryDesc =>
-      'Hver tilstand har flere kategorier med unikke spørgsmålspakker. Gratis kategorier er låst op, mens premium kategorier kræver et abonnement.';
+      'Hver tilstand har flere kategorier med unikke spørgsmålspakker. 3 gratis kategorier per tilstand (30 spørgsmål hver), med 5-spørgsmåls forhåndsvisninger af premium kategorier.';
 
   @override
-  String get startTalking => '3. Begynd at tale';
+  String get startTalking => '3. Begynd at Tale';
 
   @override
   String get startTalkingDesc =>
       'Spørgsmål vises i fuld skærm. Skift til at læse og besvare dem ærligt. Der er ingen forkerte svar - målet er meningsfuld samtale!';
 
   @override
-  String get navigateQuestions => '4. Naviger spørgsmål';
+  String get navigateQuestions => '4. Naviger Spørgsmål';
 
   @override
   String get navigateQuestionsDesc =>
-      '• Swipe til højre eller tryk på \"Næste\" for næste spørgsmål';
+      '• Swipe til højre eller tryk på \"Næste\" for næste spørgsmål\n• Swipe til venstre eller tryk på \"Forrige\" for at gense spørgsmål\n• Tryk på hjem-knappen for at vende tilbage til hovedmenuen når som helst';
 
   @override
-  String get premiumFeatures => '5. Premium funktioner';
+  String get premiumFeatures => '5. Premium Funktioner';
 
   @override
   String get premiumFeaturesDesc =>
-      'Lås op for eksklusive spørgsmålskategorier med et abonnement:';
+      'Lås alle 24 kategorier op med Premium:\n\n• Månedligt: 49 DKK/måned\n• Årligt: 399 DKK/år (spar 189 DKK!)\n\n✓ Alle kategorier låst op\n✓ Ingen annoncer\n✓ Ubegrænsede spørgsmål\n✓ Ubegrænsede Pandora-sessioner';
 
   @override
   String get proTips => 'Pro Tips';
 
   @override
-  String get proTipsDesc => '• Skab et komfortabelt, distraktionsfrit miljø';
+  String get proTipsDesc =>
+      '• Skab et komfortabelt, distraktionsfrit miljø\n• Lyt aktivt og vær til stede\n• Del ærligt og opfordr andre til at gøre det samme\n• Respekter grænser - spring spørgsmål over hvis nødvendigt\n• Hav det sjovt og nyd at skabe forbindelse!';
 
   @override
   String get personal => 'Personligt';
@@ -353,20 +378,20 @@ class AppLocalizationsDa extends AppLocalizations {
   String get personalDesc => 'Opret dine egne tilpassede spørgsmålskort';
 
   @override
-  String get gameComplete => 'Spillet er fuldført!';
+  String get gameComplete => 'Spil Fuldført!';
 
   @override
   String get noMoreQuestions =>
       'Du har gennemgået alle spørgsmålene i denne bunke!';
 
   @override
-  String get playAgain => 'Spil igen';
+  String get playAgain => 'Spil Igen';
 
   @override
   String get mainMenu => 'Hovedmenu';
 
   @override
-  String get thanksForPlaying => 'Tak for at spille!';
+  String get thanksForPlaying => 'Tak For at Spille!';
 
   @override
   String get hopeYouHadFun => 'Håber du havde det sjovt! 🎉';
@@ -379,7 +404,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get leaveGameMessage =>
-      'Er du sikker på, at du vil forlade? Spillet fortsætter for de andre spillere.';
+      'Er du sikker på, at du vil forlade? Spillet fortsætter for andre spillere.';
 
   @override
   String get leave => 'Forlade';
@@ -397,28 +422,21 @@ class AppLocalizationsDa extends AppLocalizations {
   String get tapToPlay => 'Tryk for at Spille';
 
   @override
-  String get coupleBundle => 'Par Bundle';
-
-  @override
-  String get friendsBundle => 'Venner Bundle';
-
-  @override
-  String get familyBundle => 'Familie Bundle';
-
-  @override
   String get favorites => 'Favoritter';
 
   @override
   String get pandoraHostCreatePin => 'Værten opretter session og deler PIN';
 
   @override
-  String get pandoraPlayersJoinMax => 'Spillere deltager (maks 15 min)';
+  String get pandoraPlayersJoinMax =>
+      'Spillere deltager (maks 6 gratis, ubegrænset premium)';
 
   @override
   String get pandoraHostSetsTimer => 'Værten sætter spørgsmålstimer (1-15 min)';
 
   @override
-  String get pandoraEveryoneSubmits => 'Alle indsender spørgsmål';
+  String get pandoraEveryoneSubmits =>
+      'Alle indsender spørgsmål (maks 12 gratis)';
 
   @override
   String get pandoraHostControls => 'Værten styrer spillets progression';
@@ -430,10 +448,10 @@ class AppLocalizationsDa extends AppLocalizations {
   String get pandoraHost => 'Vært';
 
   @override
-  String get pandoraJoinGame => 'Deltag i spil';
+  String get pandoraJoinGame => 'Deltag i Spil';
 
   @override
-  String get pandoraPandoraBox => 'Pandoraæske';
+  String get pandoraPandoraBox => 'Pandora Boks';
 
   @override
   String get pleaseEnterName => 'Indtast venligst dit navn';
@@ -445,190 +463,36 @@ class AppLocalizationsDa extends AppLocalizations {
   String get playersJoinWithNames => 'Spillere deltager med deres navne';
 
   @override
-  String get everyoneSubmitsMin5 => 'Alle indsender spørgsmål (min. 5)';
+  String get everyoneSubmitsMin5 =>
+      'Alle indsender spørgsmål (min 5, maks 12 gratis)';
 
   @override
-  String get createSession => 'Opret session';
+  String get createSession => 'Opret Session';
 
   @override
   String get creating => 'Opretter...';
 
   @override
-  String get yourName => 'Dit navn';
+  String get yourName => 'Dit Navn';
 
   @override
   String get enterDisplayName => 'Indtast dit visningsnavn';
 
   @override
-  String get howItWorks => 'Sådan fungerer det';
+  String get howItWorks => 'Sådan Fungerer Det';
 
   @override
   String get pinCopied => 'PIN kopieret til udklipsholderen!';
 
   @override
-  String get endSession => 'Afslut session?';
+  String get endSession => 'Afslut Session?';
 
   @override
   String get endSessionConfirm =>
       'Er du sikker på, at du vil afslutte denne Pandora-session?';
 
   @override
-  String get end => 'Afslut';
-
-  @override
-  String get sessionPin => 'Session PIN';
-
-  @override
-  String get sharePin => 'Del denne PIN med spillerne';
-
-  @override
-  String get waitingForPlayers => 'Venter på spillere...';
-
-  @override
-  String get startGame => 'Start spil';
-
-  @override
-  String get lobby => 'Lobby';
-
-  @override
-  String get hostLabel => '(Vært)';
-
-  @override
-  String get selectTimer => 'Vælg timer';
-
-  @override
-  String get timerQuestion =>
-      'Hvor lang tid skal spillerne have til at indsende spørgsmål?';
-
-  @override
-  String get minutes => 'minutter';
-
-  @override
-  String get startCollectingQuestions => 'Begynd at samle spørgsmål';
-
-  @override
-  String get sessionCancelled => 'Session annulleret';
-
-  @override
-  String get questionCannotBeEmpty => 'Spørgsmålet kan ikke være tomt';
-
-  @override
-  String get questionSubmitted => 'Spørgsmål indsendt!';
-
-  @override
-  String get failedToSubmit => 'Kunne ikke indsende spørgsmål';
-
-  @override
-  String notEnoughQuestions(Object count) {
-    return 'Ikke nok spørgsmål. Minimum 5 kræves. (Aktuelt: $count)';
-  }
-
-  @override
-  String get submitQuestions => 'Indsend spørgsmål';
-
-  @override
-  String get submitMinimum5 =>
-      'Indsend mindst 5 spørgsmål for at starte spillet';
-
-  @override
-  String get yourQuestion => 'Dit spørgsmål';
-
-  @override
-  String get enterQuestionHere => 'Indtast dit spørgsmål her...';
-
-  @override
-  String get forEveryone => 'For Alle';
-
-  @override
-  String get forSpecificPerson => 'For En Bestemt Person';
-
-  @override
-  String get submit => 'Indsend';
-
-  @override
-  String questionsRemaining(Object count) {
-    return '$count spørgsmål tilbage';
-  }
-
-  @override
-  String questionRemaining(Object count) {
-    return '$count spørgsmål tilbage';
-  }
-
-  @override
-  String get startGameExclamation => 'Start Spillet!';
-
-  @override
-  String get cancelSession => 'Afbryd Session';
-
-  @override
-  String get timeRemaining => 'Tid tilbage';
-
-  @override
-  String get pleaseEnterPin => 'Indtast venligst en PIN';
-
-  @override
-  String get sessionNotFound => 'Session ikke fundet';
-
-  @override
-  String get sessionEnded => 'Sessionen er slut';
-
-  @override
-  String get sessionStarted => 'Sessionen er allerede startet';
-
-  @override
-  String get failedToJoin => 'Kunne ikke deltage i sessionen';
-
-  @override
-  String get joinSession => 'Deltag i session';
-
-  @override
-  String get joining => 'Deltager...';
-
-  @override
-  String get enterPin => 'Indtast 6-cifret PIN';
-
-  @override
-  String get join => 'Deltag';
-
-  @override
-  String get reactionBreakdown => 'Reaktionsanalyse';
-
-  @override
-  String get laugh => 'Grin';
-
-  @override
-  String get shock => 'Chok';
-
-  @override
-  String get heart => 'Hjerte';
-
-  @override
-  String get fire => 'Ild';
-
-  @override
-  String get mostLaughs => 'Flest grin';
-
-  @override
-  String get mostShocked => 'Flest chokerede';
-
-  @override
-  String get mostHearts => 'Flest hjerter';
-
-  @override
-  String get sessionComplete => 'Session afsluttet!';
-
-  @override
-  String get thanksForPlayingPandora => 'Tak for at spille Pandora Box!';
-
-  @override
-  String get returnToMenu => 'Tilbage til menuen';
-
-  @override
-  String get failedToCreateDeck => 'Kunne ikke oprette kortsæt';
-
-  @override
-  String get createNewDeck => 'Opret nyt kortsæt';
+  String get createCustomDeck => 'Opret Tilpasset Kortsæt';
 
   @override
   String get deckName => 'Kortsætnavn';
@@ -640,11 +504,17 @@ class AppLocalizationsDa extends AppLocalizations {
   String get create => 'Opret';
 
   @override
-  String get deleteDeck => 'Slet kortsæt';
+  String get deckCreated => 'Kortsæt oprettet!';
+
+  @override
+  String get failedToCreateDeck => 'Kunne ikke oprette kortsæt';
+
+  @override
+  String get deleteDeck => 'Slet Kortsæt?';
 
   @override
   String deleteDeckConfirm(Object name) {
-    return 'Er du sikker på, at du vil slette \"$name\"? Dette vil slette alle spørgsmål i dette kortsæt.';
+    return 'Dette vil slette alle spørgsmål i dette kortsæt.';
   }
 
   @override
@@ -654,10 +524,10 @@ class AppLocalizationsDa extends AppLocalizations {
   String get deckDeleted => 'Kortsæt slettet';
 
   @override
-  String get failedToDeleteDeck => 'Kunne ikke slette kortsættet';
+  String get failedToDeleteDeck => 'Kunne ikke slette kortsæt';
 
   @override
-  String get myDecks => 'Mine kortsæt';
+  String get myDecks => 'Mine Kortsæt';
 
   @override
   String get noDecksYet => 'Ingen kortsæt endnu';
@@ -682,7 +552,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get failedToAddQuestion => 'Kunne ikke tilføje spørgsmål';
 
   @override
-  String get editQuestion => 'Rediger spørgsmål';
+  String get editQuestion => 'Rediger Spørgsmål';
 
   @override
   String get enterYourQuestion => 'Indtast dit spørgsmål';
@@ -694,10 +564,10 @@ class AppLocalizationsDa extends AppLocalizations {
   String get questionUpdated => 'Spørgsmål opdateret!';
 
   @override
-  String get failedToUpdateQuestion => 'Kunne ikke opdatere spørgsmålet';
+  String get failedToUpdateQuestion => 'Kunne ikke opdatere spørgsmål';
 
   @override
-  String get deleteQuestion => 'Slet spørgsmål';
+  String get deleteQuestion => 'Slet Spørgsmål';
 
   @override
   String get deleteQuestionConfirm =>
@@ -707,10 +577,10 @@ class AppLocalizationsDa extends AppLocalizations {
   String get questionDeleted => 'Spørgsmål slettet';
 
   @override
-  String get failedToDeleteQuestion => 'Kunne ikke slette spørgsmålet';
+  String get failedToDeleteQuestion => 'Kunne ikke slette spørgsmål';
 
   @override
-  String get addQuestion => 'Tilføj spørgsmål';
+  String get addQuestion => 'Tilføj Spørgsmål';
 
   @override
   String get typeQuestionHere => 'Skriv dit spørgsmål her...';
@@ -753,38 +623,59 @@ class AppLocalizationsDa extends AppLocalizations {
       'Perfekt til roadtrips – disse kort gør køreturen til en sjov samtale. Forvent sjove, kreative og nostalgiske spørgsmål om rejser, eventyr og små særheder.';
 
   @override
-  String get deckDescUnpopularOpinions =>
-      'Sættet der udfordrer dig til at sige, hvad alle tænker, men ingen indrømmer. Fra influencer-kultur til sociale normer – disse kort skaber ærlige debatter og overraskende perspektiver.';
-
-  @override
-  String get deckDescPlotTwists =>
-      'Denne bunke kaster dig direkte ind i livets sjoveste og sværeste \"hvad ville du gøre?\"-øjeblikke. Hurtig tænkning, mavefornemmelser og latter venter! Perfekt til gruppenætter fulde af overraskelser og grin.';
-
-  @override
-  String get deckDescAfterDark =>
-      'Gå ind i samtalens mørke side med spørgsmål, der får det til at løbe koldt ned ad ryggen. Fra uhyggelige sammenfald til overlevelsesscenarier – perfekt til sene aftener med et gys.';
-
-  @override
-  String get deckDescHistoryTalks =>
-      'En nostalgisk blanding af personlige minder og familieøjeblikke. Disse spørgsmål inspirerer til historier, latter og genopdagelse af rødder. Perfekt til familiesammenkomster eller hyggelige aftener.';
-
-  @override
-  String get deckDescTinyTalks =>
-      'Lavet til forældre og deres små! Disse enkle, sjove spørgsmål hjælper børn med at udtrykke sig, mens forældrene lærer mere om, hvordan de tænker. Perfekt til alderen 3-9 år.';
-
-  @override
-  String get deckDescGoodOldDays =>
-      'En nostalgisk rejse gennem fortiden — fra barndomsminder til livets forandringer. Disse kort inspirerer til historier, grin og taknemmelighed. Perfekt for bedsteforældre til at dele minder.';
-
-  @override
-  String get deckDescWouldYouRather =>
-      'En familievenlig version af det klassiske \"Vil du helst…\"-spil. Fyldt med sjove og fantasifulde valg, der får alle til at tænke, grine og forsvare deres valg.';
-
-  @override
   String get deckDescCozyTalks =>
-      'Varme og afslappede spørgsmål, der får dig til at føle dig hjemme. De skaber trøstende samtaler om små glæder, minder og hvad der får dig til at smile.';
+      'Varme, afslappede samtaler perfekt til hyggelige aftener. Disse spørgsmål skaber behagelige, hjertevarme øjeblikke af forbindelse.';
 
   @override
   String get deckDescPartyNight =>
-      'Dit go-to spil til sjove aftener med venner! Disse livlige spørgsmål fremkalder latter, historier og legende debatter — fra festfiaskoer til hvem der er den største flirt på dansegulvet. Perfekt til at løsne stemningen og holde gang i festen.';
+      'Højenergi spørgsmål designet til sjove gruppesituationer. Perfekt til fester og sociale sammenkomster med venner.';
+
+  @override
+  String get deckDescUnpopularOpinions =>
+      'Sættet der udfordrer dig til at sige, hvad alle tænker, men ingen indrømmer. Fra influencer-kultur til sociale normer – disse kort skaber ærlige debatter og overraskende perspektiver. Perfekt til venner med meninger.';
+
+  @override
+  String get deckDescPlotTwists =>
+      'Denne bunke kaster dig direkte ind i livets sjoveste og sværeste \"hvad ville du gøre?\"-øjeblikke. Hurtig tænkning, mavefornemmelser og latter garanteret! Perfekt til gruppeaftener fulde af overraskelser og grin.';
+
+  @override
+  String get deckDescAfterDark =>
+      'Træd ind i samtalens mørke side med spørgsmål, der sender kuldegysninger ned ad ryggen. Fra uhyggelige tilfældigheder til overlevelsesscenarier – perfekt til sene nætter med spænding.';
+
+  @override
+  String get deckDescHistoryTalks =>
+      'En nostalgisk blanding af personlige minder og familiemomenter. Disse spørgsmål inspirerer historier, latter og genopdagelse af dine rødder. Perfekt til familiesammenkomster eller hyggelige aftener.';
+
+  @override
+  String get deckDescTinyTalks =>
+      'Designet til forældre og deres små! Disse enkle, legende spørgsmål hjælper børn med at udtrykke sig, mens forældre lærer, hvordan de tænker. Perfekt til 3-9 år.';
+
+  @override
+  String get deckDescGoodOldDays =>
+      'Rejs tilbage i tiden med spørgsmål om elskede minder, tidligere oplevelser og hvordan tingene plejede at være. Perfekt for alle aldre.';
+
+  @override
+  String get deckDescWouldYouRather =>
+      'Klassiske dilemma-spørgsmål, der skaber debatter og afslører præferencer. Vælg mellem to muligheder og opdag, hvad der betyder mest.';
+
+  @override
+  String get createNewDeck => 'Opret Nyt Kortsæt';
+
+  @override
+  String get sessionPin => 'Session PIN';
+
+  @override
+  String get joinSession => 'Deltag i Session';
+
+  @override
+  String get questionSubmitted => 'Spørgsmål Indsendt';
+
+  @override
+  String get sessionCancelled => 'Session Annulleret';
+
+  @override
+  String get yourQuestion => 'Dit Spørgsmål';
+
+  @override
+  String get reactionBreakdown => 'Reaktionsanalyse';
 }

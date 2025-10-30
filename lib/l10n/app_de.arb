@@ -38,7 +38,7 @@
   "removeAdsForever": "Werbung für immer entfernen",
   "chooseOneBundle": "Wähle 1 Paket aus, um es freizuschalten und alle Anzeigen zu entfernen",
   "noAdsForever": "Keine Werbung für immer",
-  "premiumActivated": "Premium aktiviert! Werbung entfernt. {bundle} Paket freigeschaltet.",
+  "premiumActivated": "Premium aktiviert! Werbung entfernt. Paket freigeschaltet.",
   "adNotReady": "Anzeige nicht bereit. Fortfahren ohne Anzeige.",
   "adLoadingContinue": "Anzeige wird geladen... Fortfahren",
   "pricePerMonth": "59 DKK/Monat",

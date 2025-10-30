@@ -168,4 +168,19 @@ class AuthService {
 
     return List<String>.from(subscription['unlocked_bundles'] ?? []);
   }
+
+  // Get subscription tier
+  Future<String> getSubscriptionTier() async {
+    if (!isLoggedIn) return 'free';
+    
+    try {
+      final subscription = await getUserSubscription();
+      if (subscription == null) return 'free';
+      
+      return subscription['subscription_tier'] ?? 'free';
+    } catch (e) {
+      debugPrint('Error getting subscription tier: $e');
+      return 'free';
+    }
+  }
 }

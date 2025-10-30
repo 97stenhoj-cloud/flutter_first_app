@@ -43,52 +43,71 @@ class AppLocalizationsFr extends AppLocalizations {
       'Cette catégorie est verrouillée. Passez à premium pour débloquer toutes les catégories !';
 
   @override
+  String get previewAvailable => 'Preview: First 5 questions available';
+
+  @override
+  String get upgradeNow => 'Upgrade Now';
+
+  @override
   String get ok => 'OK';
 
   @override
   String get mayBeLater => 'Peut-être plus tard';
 
   @override
-  String get chooseSubscription => 'Choisissez votre abonnement';
+  String get getPremium => 'Get Premium';
 
   @override
-  String get subscriptionDescription =>
-      'Débloquez les catégories premium et accédez à des packs de questions exclusifs';
+  String get premiumTitle => 'Unlock Everything';
 
   @override
-  String get chooseBundleOne => 'Choisissez 1 pack de catégories';
+  String get premiumDescription =>
+      'Get unlimited access to all categories across all modes, remove ads, and enjoy unlimited Pandora sessions.';
 
   @override
-  String get chooseBundleTwo => 'Choisissez 2 packs de catégories';
+  String get premiumPriceMonthly => '49 DKK/month';
 
   @override
-  String get chooseBundleThree => 'Les 3 packs de catégories';
+  String get premiumPriceYearly => '399 DKK/year';
 
   @override
-  String get perMonth => '/mois';
+  String get saveWithYearly => 'Save 189 DKK with yearly!';
 
   @override
-  String get bestValue => 'MEILLEURE OFFRE';
+  String get monthly => 'Monthly';
 
   @override
-  String get unlockAllBundles => 'Débloquer tous les packs';
+  String get yearly => 'Yearly';
 
   @override
-  String get selectYourBundle => 'Sélectionnez votre pack';
+  String get billedMonthly => 'Billed monthly';
 
   @override
-  String selectBundles(Object count, Object plural) {
-    return 'Sélectionnez $count pack$plural';
-  }
+  String get billedYearly => 'Billed annually';
 
   @override
-  String get premiumCategories => '4 catégories premium';
+  String get premiumFeature1 => '✓ All 21 premium categories unlocked';
 
   @override
-  String get cancel => 'Annuler';
+  String get premiumFeature2 => '✓ No ads forever';
+
+  @override
+  String get premiumFeature3 => '✓ Unlimited questions in all categories';
+
+  @override
+  String get premiumFeature4 => '✓ Pandora: Unlimited players & questions';
+
+  @override
+  String get premiumFeature5 => '✓ Support ongoing development';
+
+  @override
+  String get subscribePremium => 'Subscribe to Premium';
 
   @override
   String get subscribe => 'S\'abonner';
+
+  @override
+  String get cancel => 'Annuler';
 
   @override
   String subscriptionActivated(Object bundles) {
@@ -96,8 +115,48 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get premiumActivated =>
+      'Premium activé ! Publicités supprimées. Pack débloqué.';
+
+  @override
   String get demoNote =>
       'Démo : Les déverrouillages seront réinitialisés au redémarrage de l\'application';
+
+  @override
+  String get freeTier => 'Free Tier';
+
+  @override
+  String get freeTierDesc =>
+      '3 categories per mode (30 questions each)\n5-question previews of premium categories\nAds every 7 questions';
+
+  @override
+  String get currentPlan => 'Current Plan';
+
+  @override
+  String get limitReached => 'Limit Reached';
+
+  @override
+  String get freeCategoryLimit =>
+      'You\'ve reached the 30-question limit for free categories. Upgrade to Premium for unlimited access!';
+
+  @override
+  String get previewLimit =>
+      'You\'ve seen all 5 preview questions. Upgrade to Premium to continue!';
+
+  @override
+  String get pandoraFreeLimit => 'Free Limit';
+
+  @override
+  String get pandoraFreeLimitMessage =>
+      'Free hosts can have max 6 players and 12 questions. Upgrade to Premium for unlimited!';
+
+  @override
+  String get pandoraUpgradeMessage =>
+      'You\'ve reached 12 questions. Upgrade to Premium to continue playing!';
+
+  @override
+  String get pandoraMaxPlayers =>
+      'Maximum 6 players reached (Free limit). Upgrade to Premium for unlimited players!';
 
   @override
   String get swipeOrTap => 'Glisser ou toucher les flèches';
@@ -123,18 +182,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get removeAdsForever => 'Supprimer les pubs pour toujours';
-
-  @override
-  String get chooseOneBundle =>
-      'Choisissez 1 pack à débloquer et supprimez toutes les publicités';
-
-  @override
-  String get noAdsForever => 'Aucune publicité pour toujours';
-
-  @override
-  String premiumActivated(Object bundle) {
-    return 'Premium activé ! Publicités supprimées. Pack $bundle débloqué.';
-  }
 
   @override
   String get adNotReady => 'Publicité non prête. Continuer sans publicité.';
@@ -223,17 +270,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get unknown => 'Inconnu';
 
   @override
-  String get activeSubscriptions => 'Abonnements actifs';
-
-  @override
-  String bundlesUnlocked(Object count, Object plural) {
-    return '$count pack$plural débloqué';
-  }
-
-  @override
-  String bundle(Object name) {
-    return 'Pack $name';
-  }
+  String get subscriptionStatus => 'Subscription Status';
 
   @override
   String get premiumMember => 'Membre Premium';
@@ -267,20 +304,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get noCategoriesFound => 'Aucune catégorie trouvée';
-
-  @override
-  String selectBundlePlural(Object plural) {
-    return 'Sélectionnez le$plural pack$plural de catégories que vous souhaitez débloquer';
-  }
-
-  @override
-  String get getAccessAllBundles =>
-      'Accédez à toutes les catégories premium dans les 3 packs !';
-
-  @override
-  String subscriptionActivatedFull(Object bundles) {
-    return 'Abonnement activé ! $bundles débloqué.';
-  }
 
   @override
   String get aboutCredits => 'À propos / Crédits';
@@ -403,15 +426,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get tapToPlay => 'Toucher pour jouer';
 
   @override
-  String get coupleBundle => 'Pack Couple';
-
-  @override
-  String get friendsBundle => 'Pack Amis';
-
-  @override
-  String get familyBundle => 'Pack Famille';
-
-  @override
   String get favorites => 'Favoris';
 
   @override
@@ -482,163 +496,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Êtes-vous sûr de vouloir terminer cette session Pandora ?';
 
   @override
-  String get end => 'Terminer';
-
-  @override
-  String get sessionPin => 'PIN de session';
-
-  @override
-  String get sharePin => 'Partagez ce PIN avec les joueurs';
-
-  @override
-  String get waitingForPlayers => 'En attente de joueurs...';
-
-  @override
-  String get startGame => 'Démarrer le jeu';
-
-  @override
-  String get lobby => 'Salon';
-
-  @override
-  String get hostLabel => ' (Hôte)';
-
-  @override
-  String get selectTimer => 'Sélectionner le minuteur';
-
-  @override
-  String get timerQuestion =>
-      'Combien de temps les joueurs doivent-ils avoir pour soumettre des questions ?';
-
-  @override
-  String get minutes => 'minutes';
-
-  @override
-  String get startCollectingQuestions => 'Commencer à collecter les questions';
-
-  @override
-  String get sessionCancelled => 'Session annulée';
-
-  @override
-  String get questionCannotBeEmpty => 'La question ne peut pas être vide';
-
-  @override
-  String get questionSubmitted => 'Question soumise !';
-
-  @override
-  String get failedToSubmit => 'Échec de la soumission de la question';
-
-  @override
-  String notEnoughQuestions(Object count) {
-    return 'Pas assez de questions. Minimum 5 requis. (Actuellement : $count)';
-  }
-
-  @override
-  String get submitQuestions => 'Soumettre des questions';
-
-  @override
-  String get submitMinimum5 =>
-      'Soumettez au moins 5 questions pour commencer le jeu';
-
-  @override
-  String get yourQuestion => 'Votre question';
-
-  @override
-  String get enterQuestionHere => 'Entrez votre question ici...';
-
-  @override
-  String get forEveryone => 'Pour tout le monde';
-
-  @override
-  String get forSpecificPerson => 'Pour une personne spécifique';
-
-  @override
-  String get submit => 'Soumettre';
-
-  @override
-  String questionsRemaining(Object count) {
-    return '$count questions restantes';
-  }
-
-  @override
-  String questionRemaining(Object count) {
-    return '$count question restante';
-  }
-
-  @override
-  String get startGameExclamation => 'Démarrer le jeu !';
-
-  @override
-  String get cancelSession => 'Annuler la session';
-
-  @override
-  String get timeRemaining => 'Temps restant';
-
-  @override
-  String get pleaseEnterPin => 'Veuillez entrer un PIN';
-
-  @override
-  String get sessionNotFound => 'Session non trouvée';
-
-  @override
-  String get sessionEnded => 'La session est terminée';
-
-  @override
-  String get sessionStarted => 'La session a déjà commencé';
-
-  @override
-  String get failedToJoin => 'Échec de la connexion à la session';
-
-  @override
-  String get joinSession => 'Rejoindre la session';
-
-  @override
-  String get joining => 'Connexion...';
-
-  @override
-  String get enterPin => 'Entrez le PIN à 6 chiffres';
-
-  @override
-  String get join => 'Rejoindre';
-
-  @override
-  String get reactionBreakdown => 'Répartition des réactions';
-
-  @override
-  String get laugh => 'Rire';
-
-  @override
-  String get shock => 'Choc';
-
-  @override
-  String get heart => 'Cœur';
-
-  @override
-  String get fire => 'Feu';
-
-  @override
-  String get mostLaughs => 'Le plus de rires';
-
-  @override
-  String get mostShocked => 'Le plus choqué';
-
-  @override
-  String get mostHearts => 'Le plus de cœurs';
-
-  @override
-  String get sessionComplete => 'Session terminée !';
-
-  @override
-  String get thanksForPlayingPandora =>
-      'Merci d\'avoir joué à la Boîte de Pandore !';
-
-  @override
-  String get returnToMenu => 'Retour au menu';
-
-  @override
-  String get failedToCreateDeck => 'Échec de la création du deck';
-
-  @override
-  String get createNewDeck => 'Créer un nouveau deck';
+  String get createCustomDeck => 'Create Custom Deck';
 
   @override
   String get deckName => 'Nom du deck';
@@ -648,6 +506,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get create => 'Créer';
+
+  @override
+  String get deckCreated => 'Deck created!';
+
+  @override
+  String get failedToCreateDeck => 'Échec de la création du deck';
 
   @override
   String get deleteDeck => 'Supprimer le deck';
@@ -763,6 +627,14 @@ class AppLocalizationsFr extends AppLocalizations {
       'Parfaites pour les road trips — ces cartes transforment le temps de conduite en super conversations. Des questions amusantes, créatives et nostalgiques sur les voyages et les aventures.';
 
   @override
+  String get deckDescCozyTalks =>
+      'Des questions douces et réconfortantes qui te font sentir bien chez toi. Elles inspirent des conversations apaisantes sur les petits plaisirs et souvenirs.';
+
+  @override
+  String get deckDescPartyNight =>
+      'Ton jeu idéal pour des soirées amusantes entre amis ! Ces questions pleines d\'énergie déclenchent rires, histoires et débats ludiques – de petits ratés de fête à \"qui flirte le plus ?\". Parfait pour détendre l\'ambiance.';
+
+  @override
   String get deckDescUnpopularOpinions =>
       'Le jeu qui t\'encourage à dire tout haut ce que tout le monde pense tout bas. De la culture des influenceurs aux valeurs modernes — ces cartes suscitent des débats francs et des réflexions surprenantes.';
 
@@ -791,10 +663,23 @@ class AppLocalizationsFr extends AppLocalizations {
       'Une version familiale du classique \"Tu préfères…\". Remplie de choix drôles et imaginatifs qui font réfléchir et rire tout le monde.';
 
   @override
-  String get deckDescCozyTalks =>
-      'Des questions douces et réconfortantes qui te font sentir bien chez toi. Elles inspirent des conversations apaisantes sur les petits plaisirs et souvenirs.';
+  String get createNewDeck => 'Créer un nouveau deck';
 
   @override
-  String get deckDescPartyNight =>
-      'Ton jeu idéal pour des soirées amusantes entre amis ! Ces questions pleines d\'énergie déclenchent rires, histoires et débats ludiques – de petits ratés de fête à \"qui flirte le plus ?\". Parfait pour détendre l\'ambiance.';
+  String get sessionPin => 'PIN de session';
+
+  @override
+  String get joinSession => 'Rejoindre la session';
+
+  @override
+  String get questionSubmitted => 'Question soumise !';
+
+  @override
+  String get sessionCancelled => 'Session annulée';
+
+  @override
+  String get yourQuestion => 'Votre question';
+
+  @override
+  String get reactionBreakdown => 'Répartition des réactions';
 }
