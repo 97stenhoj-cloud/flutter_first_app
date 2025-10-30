@@ -26,14 +26,16 @@
   "yearly": "Yearly",
   "billedMonthly": "Billed monthly",
   "billedYearly": "Billed annually",
-  "premiumFeature1": "✓ All 24 premium categories unlocked",
+  "premiumFeature1": "✓ All 21 premium categories unlocked",
   "premiumFeature2": "✓ No ads forever",
   "premiumFeature3": "✓ Unlimited questions in all categories",
   "premiumFeature4": "✓ Pandora: Unlimited players & questions",
   "premiumFeature5": "✓ Support ongoing development",
   "subscribePremium": "Subscribe to Premium",
+  "subscribe": "Subscribe",
   "cancel": "Cancel",
   "subscriptionActivated": "Premium activated! All categories unlocked.",
+  "premiumActivated": "Premium Activated!",
   "demoNote": "Demo: Subscription will reset on app restart",
   
   "freeTier": "Free Tier",
@@ -56,6 +58,7 @@
   "watchAdMessage": "Watch a short ad to continue, or go ad-free with premium!",
   "watchAd": "Watch Ad",
   "goAdFree": "Go Ad-Free with Premium",
+  "removeAdsForever": "Remove Ads Forever",
   "adNotReady": "Ad not ready. Continuing without ad.",
   "adLoadingContinue": "Ad Loading... Continue",
   "pricePerMonth": "49 DKK/month or 399 DKK/year",
@@ -215,5 +218,13 @@
   "deckDescHistoryTalks": "A nostalgic blend of personal memories and family moments. These questions inspire stories, laughter, and rediscovering your roots. Perfect for family gatherings or cozy evenings.",
   "deckDescTinyTalks": "Designed for parents and little ones! These simple, playful questions help children express themselves while parents learn how they think. Perfect for ages 3–9.",
   "deckDescGoodOldDays": "Journey back in time with questions about cherished memories, past experiences, and how things used to be. Perfect for all ages.",
-  "deckDescWouldYouRather": "Classic dilemma questions that spark debates and reveal preferences. Choose between two options and discover what matters most."
+  "deckDescWouldYouRather": "Classic dilemma questions that spark debates and reveal preferences. Choose between two options and discover what matters most.",
+
+  "createNewDeck": "Create New Deck",
+"sessionPin": "Session PIN",
+"joinSession": "Join Session",
+"questionSubmitted": "Question Submitted",
+"sessionCancelled": "Session Cancelled",
+"yourQuestion": "Your Question",
+"reactionBreakdown": "Reaction Breakdown"
 }

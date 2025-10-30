@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
-import '../services/auth_service.dart';
+import '../../core/services/auth_service.dart';
 
 class UnlockManager extends ChangeNotifier {
   static final UnlockManager _instance = UnlockManager._internal();
   factory UnlockManager() => _instance;
   UnlockManager._internal();
 
-  final authService = AuthService();
+  final _authService = AuthService();
   
   // Single premium status
   bool _isPremium = false;
@@ -14,9 +14,9 @@ class UnlockManager extends ChangeNotifier {
 
   // Initialize from Supabase
   Future<void> initialize() async {
-    if (authService.isLoggedIn) {
+    if (_authService.isLoggedIn) {
       // Check if user has premium tier
-      final tier = await authService.getSubscriptionTier();
+      final tier = await _authService.getSubscriptionTier();
       _isPremium = tier == 'premium';
       notifyListeners();
     }
@@ -29,8 +29,8 @@ class UnlockManager extends ChangeNotifier {
   Future<void> unlockPremium() async {
     _isPremium = true;
     
-    if (authService.isLoggedIn) {
-      await authService.updateSubscription(
+    if (_authService.isLoggedIn) {
+      await _authService.updateSubscription(
         unlockedBundles: [],
         tier: 'premium',
       );
