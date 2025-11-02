@@ -6,6 +6,7 @@ import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/pandora_service.dart';
 import 'pandora_question_submission_page.dart';
+import '../../../../l10n/app_localizations.dart';
 class PandoraTimerSelectionPage extends StatefulWidget {
   final String sessionId;
   final bool isDarkMode;
@@ -119,6 +120,7 @@ class _PandoraTimerSelectionPageState extends State<PandoraTimerSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
         decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode),
@@ -183,10 +185,10 @@ class _PandoraTimerSelectionPageState extends State<PandoraTimerSelectionPage> {
                 
                 const SizedBox(height: 40),
                 
-                // Title
+               // Title
                 Center(
                   child: Text(
-                    '⏱️ Set Question Timer',
+                    '⏱️ ${l10n.setQuestionTimer}',
                     style: GoogleFonts.poppins(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -200,7 +202,7 @@ class _PandoraTimerSelectionPageState extends State<PandoraTimerSelectionPage> {
                 
                 // Timer selection
                 Text(
-                  'Question Collection Time',
+                  l10n.questionCollectionTime,
                   style: GoogleFonts.poppins(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -222,13 +224,13 @@ class _PandoraTimerSelectionPageState extends State<PandoraTimerSelectionPage> {
                   child: Column(
                     children: [
                       Text(
-                        '$selectedMinutes minutes',
-                        style: GoogleFonts.poppins(
-                          fontSize: 48,
-                          fontWeight: FontWeight.bold,
-                          color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                          '$selectedMinutes minutes',
+                          style: GoogleFonts.poppins(
+                            fontSize: 48,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFFFF6B9D),
+                          ),
                         ),
-                      ),
                       const SizedBox(height: 20),
                       Slider(
                         value: selectedMinutes.toDouble(),
@@ -268,7 +270,7 @@ class _PandoraTimerSelectionPageState extends State<PandoraTimerSelectionPage> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          'Session will end automatically if you don\'t continue within 5 minutes',
+                          '⚠️ ${l10n.sessionWillEnd}',
                           style: GoogleFonts.poppins(
                             fontSize: 14,
                             color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
@@ -298,7 +300,7 @@ class _PandoraTimerSelectionPageState extends State<PandoraTimerSelectionPage> {
                     child: isStarting
                         ? const CircularProgressIndicator(color: Colors.white)
                         : Text(
-                            'Start Question Collection',
+                            l10n.startQuestionCollection,
                             style: GoogleFonts.poppins(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,

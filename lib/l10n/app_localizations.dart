@@ -1517,6 +1517,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue to Timer Setup'**
   String get continueToTimerSetup;
+
+  /// No description provided for @setQuestionTimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Set Question Timer'**
+  String get setQuestionTimer;
+
+  /// No description provided for @questionCollectionTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Question Collection Time'**
+  String get questionCollectionTime;
+
+  /// No description provided for @minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'minutes'**
+  String get minutes;
+
+  /// No description provided for @sessionWillEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Session will end automatically if you don\'t continue within 5 minutes'**
+  String get sessionWillEnd;
+
+  /// No description provided for @startQuestionCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Question Collection'**
+  String get startQuestionCollection;
+
+  /// No description provided for @questionsSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} questions submitted'**
+  String questionsSubmitted(int count);
+
+  /// No description provided for @writeQuestionHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your question here...'**
+  String get writeQuestionHere;
+
+  /// No description provided for @whoIsThisFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is this for?'**
+  String get whoIsThisFor;
+
+  /// No description provided for @everyone.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone'**
+  String get everyone;
+
+  /// No description provided for @specific.
+  ///
+  /// In en, this message translates to:
+  /// **'Specific'**
+  String get specific;
+
+  /// No description provided for @submitQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Question'**
+  String get submitQuestion;
+
+  /// No description provided for @needMoreQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Need {count} more questions'**
+  String needMoreQuestions(int count);
+
+  /// No description provided for @startGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Game'**
+  String get startGame;
+
+  /// No description provided for @selectPlayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a player'**
+  String get selectPlayer;
 }
 
 class _AppLocalizationsDelegate

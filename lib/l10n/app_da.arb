@@ -257,6 +257,35 @@
   "participants": "Deltagere",
   "loading": "Indlæser...",
 "needAtLeastPlayers": "Mindst 2 spillere nødvendige ({current}/2)",
-"continueToTimerSetup": "Fortsæt til Timer Opsætning"
- 
+"continueToTimerSetup": "Fortsæt til Timer Opsætning",
+"setQuestionTimer": "Indstil spørgsmålstimer",
+  "questionCollectionTime": "Tid til indsamling af spørgsmål",
+  "minutes": "minutter",
+  "sessionWillEnd": "Sessionen afsluttes automatisk, hvis du ikke fortsætter inden for 5 minutter",
+  "startQuestionCollection": "Start indsamling af spørgsmål",
+  "hostQuestionCollection": "Vært - Indsamling af spørgsmål",
+  "questionsSubmitted": "{count} spørgsmål indsendt",
+  "@questionsSubmitted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "yourQuestion": "Dit spørgsmål",
+  "writeQuestionHere": "Skriv dit spørgsmål her...",
+  "whoIsThisFor": "Hvem er dette til?",
+  "everyone": "Alle",
+  "specific": "Specifik",
+  "submitQuestion": "Indsend spørgsmål",
+  "needMoreQuestions": "Mangler {count} flere spørgsmål",
+  "@needMoreQuestions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "startGame": "Start spil",
+ "selectPlayer": "Vælg en spiller"
 }

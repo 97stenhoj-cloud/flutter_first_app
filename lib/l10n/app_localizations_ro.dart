@@ -680,7 +680,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get sessionCancelled => 'Sesiune Anulată';
 
   @override
-  String get yourQuestion => 'Întrebarea Ta';
+  String get yourQuestion => 'Întrebarea ta';
 
   @override
   String get reactionBreakdown => 'Analiza Reacțiilor';
@@ -705,7 +705,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get yesCancel => 'Da, Anulează';
 
   @override
-  String get hostQuestionCollection => 'Gazdă - Colectare Întrebări';
+  String get hostQuestionCollection => 'Gazdă - Colectarea întrebărilor';
 
   @override
   String get questionCollection => 'Colectare Întrebări';
@@ -782,4 +782,51 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get continueToTimerSetup => 'Continuă la Configurarea Cronometrului';
+
+  @override
+  String get setQuestionTimer => 'Setează cronometrul pentru întrebări';
+
+  @override
+  String get questionCollectionTime => 'Timp pentru colectarea întrebărilor';
+
+  @override
+  String get minutes => 'minute';
+
+  @override
+  String get sessionWillEnd =>
+      'Sesiunea se va încheia automat dacă nu continui în 5 minute';
+
+  @override
+  String get startQuestionCollection => 'Începe colectarea întrebărilor';
+
+  @override
+  String questionsSubmitted(int count) {
+    return '$count întrebări trimise';
+  }
+
+  @override
+  String get writeQuestionHere => 'Scrie întrebarea ta aici...';
+
+  @override
+  String get whoIsThisFor => 'Pentru cine este?';
+
+  @override
+  String get everyone => 'Toată lumea';
+
+  @override
+  String get specific => 'Specific';
+
+  @override
+  String get submitQuestion => 'Trimite întrebarea';
+
+  @override
+  String needMoreQuestions(int count) {
+    return 'Mai sunt necesare $count întrebări';
+  }
+
+  @override
+  String get startGame => 'Începe jocul';
+
+  @override
+  String get selectPlayer => 'Selectează un jucător';
 }

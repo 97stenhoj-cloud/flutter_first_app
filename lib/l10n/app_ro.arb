@@ -256,6 +256,35 @@
   "participants": "Participanți",
   "loading": "Se încarcă...",
 "needAtLeastPlayers": "Sunt necesari cel puțin 2 jucători ({current}/2)",
-"continueToTimerSetup": "Continuă la Configurarea Cronometrului"
-
+"continueToTimerSetup": "Continuă la Configurarea Cronometrului",
+ "setQuestionTimer": "Setează cronometrul pentru întrebări",
+  "questionCollectionTime": "Timp pentru colectarea întrebărilor",
+  "minutes": "minute",
+  "sessionWillEnd": "Sesiunea se va încheia automat dacă nu continui în 5 minute",
+  "startQuestionCollection": "Începe colectarea întrebărilor",
+  "hostQuestionCollection": "Gazdă - Colectarea întrebărilor",
+  "questionsSubmitted": "{count} întrebări trimise",
+  "@questionsSubmitted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "yourQuestion": "Întrebarea ta",
+  "writeQuestionHere": "Scrie întrebarea ta aici...",
+  "whoIsThisFor": "Pentru cine este?",
+  "everyone": "Toată lumea",
+  "specific": "Specific",
+  "submitQuestion": "Trimite întrebarea",
+  "needMoreQuestions": "Mai sunt necesare {count} întrebări",
+  "@needMoreQuestions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "startGame": "Începe jocul",
+  "selectPlayer": "Selectează un jucător"
 }

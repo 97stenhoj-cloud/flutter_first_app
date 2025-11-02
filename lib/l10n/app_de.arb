@@ -256,5 +256,35 @@
   "participants": "Teilnehmer",
   "loading": "Wird geladen...",
 "needAtLeastPlayers": "Mindestens 2 Spieler erforderlich ({current}/2)",
-"continueToTimerSetup": "Weiter zur Timer-Einrichtung"
+"continueToTimerSetup": "Weiter zur Timer-Einrichtung",
+ "setQuestionTimer": "Fragen-Timer einstellen",
+  "questionCollectionTime": "Fragensammlungszeit",
+  "minutes": "Minuten",
+  "sessionWillEnd": "Die Sitzung endet automatisch, wenn du nicht innerhalb von 5 Minuten fortfährst",
+  "startQuestionCollection": "Fragensammlung starten",
+  "hostQuestionCollection": "Host – Fragensammlung",
+  "questionsSubmitted": "{count} Fragen eingereicht",
+  "@questionsSubmitted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "yourQuestion": "Deine Frage",
+  "writeQuestionHere": "Schreibe deine Frage hier...",
+  "whoIsThisFor": "Für wen ist das?",
+  "everyone": "Alle",
+  "specific": "Spezifisch",
+  "submitQuestion": "Frage einreichen",
+  "needMoreQuestions": "Benötigt noch {count} weitere Fragen",
+  "@needMoreQuestions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "startGame": "Spiel starten",
+  "selectPlayer": "Wähle einen Spieler"
 }

@@ -673,7 +673,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get sessionCancelled => 'Session Annulleret';
 
   @override
-  String get yourQuestion => 'Dit Spørgsmål';
+  String get yourQuestion => 'Dit spørgsmål';
 
   @override
   String get reactionBreakdown => 'Reaktionsanalyse';
@@ -698,7 +698,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get yesCancel => 'Ja, afbryd';
 
   @override
-  String get hostQuestionCollection => 'Vært - Spørgsmålsindsamling';
+  String get hostQuestionCollection => 'Vært - Indsamling af spørgsmål';
 
   @override
   String get questionCollection => 'Spørgsmålsindsamling';
@@ -774,4 +774,51 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get continueToTimerSetup => 'Fortsæt til Timer Opsætning';
+
+  @override
+  String get setQuestionTimer => 'Indstil spørgsmålstimer';
+
+  @override
+  String get questionCollectionTime => 'Tid til indsamling af spørgsmål';
+
+  @override
+  String get minutes => 'minutter';
+
+  @override
+  String get sessionWillEnd =>
+      'Sessionen afsluttes automatisk, hvis du ikke fortsætter inden for 5 minutter';
+
+  @override
+  String get startQuestionCollection => 'Start indsamling af spørgsmål';
+
+  @override
+  String questionsSubmitted(int count) {
+    return '$count spørgsmål indsendt';
+  }
+
+  @override
+  String get writeQuestionHere => 'Skriv dit spørgsmål her...';
+
+  @override
+  String get whoIsThisFor => 'Hvem er dette til?';
+
+  @override
+  String get everyone => 'Alle';
+
+  @override
+  String get specific => 'Specifik';
+
+  @override
+  String get submitQuestion => 'Indsend spørgsmål';
+
+  @override
+  String needMoreQuestions(int count) {
+    return 'Mangler $count flere spørgsmål';
+  }
+
+  @override
+  String get startGame => 'Start spil';
+
+  @override
+  String get selectPlayer => 'Vælg en spiller';
 }

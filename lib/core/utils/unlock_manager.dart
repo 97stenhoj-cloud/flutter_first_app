@@ -14,12 +14,22 @@ class UnlockManager extends ChangeNotifier {
 
   // Initialize from Supabase
   Future<void> initialize() async {
+    debugPrint('🔐 UnlockManager initializing...');
+    debugPrint('   Is logged in: ${_authService.isLoggedIn}');
+    
     if (_authService.isLoggedIn) {
       // Check if user has premium tier
       final tier = await _authService.getSubscriptionTier();
       _isPremium = tier == 'premium';
+      debugPrint('   Subscription tier: $tier');
+      debugPrint('   Is Premium: $_isPremium');
       notifyListeners();
+    } else {
+      debugPrint('   Not logged in - defaulting to free tier');
+      _isPremium = false;
     }
+    
+    debugPrint('✅ UnlockManager initialized');
   }
 
   // Check if user has premium
@@ -57,11 +67,27 @@ class UnlockManager extends ChangeNotifier {
   List<String> _getFreeCategoriesForMode(String gameMode) {
     switch (gameMode.toLowerCase()) {
       case 'couple':
-        return ['Love Talks', 'Deep Talks', 'Silly Talks'];
+        return [
+          'Love Talks',
+          'Deep Talks',
+          'Silly Talks',
+          'Car Talks', // adventure/travel talks
+          
+        ];
       case 'friends':
-        return ['Cozy Talks', 'Silly Talks', 'Car Talks'];
+        return [
+          'Party Night Talks',
+          'Cozy Talks',
+          'Silly Talks',
+          'Car Talks',
+        ];
       case 'family':
-        return ['Cozy Talks', 'History Talks', 'Silly Talks'];
+        return [
+          'Cozy Talks',
+          'History Talks',
+          'Silly Talks',
+          'Car Talks',
+        ];
       default:
         return [];
     }

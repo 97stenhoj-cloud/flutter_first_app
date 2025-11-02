@@ -530,7 +530,9 @@ class _PandoraQuestionSubmissionPageState
                 )
               : null,
           title: Text(
-            widget.isHost ? 'Host - Question Collection' : 'Question Collection',
+            widget.isHost 
+                ? l10n.hostQuestionCollection 
+                : l10n.questionCollectionTime,
             style: GoogleFonts.poppins(
               color: widget.isDarkMode ? Colors.white : Colors.black87,
               fontWeight: FontWeight.w600,
@@ -588,7 +590,7 @@ class _PandoraQuestionSubmissionPageState
                       ),
                       const SizedBox(width: 12),
                       Text(
-                        '${questions.length} questions submitted',
+                        l10n.questionsSubmitted(questions.length),
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -645,7 +647,7 @@ class _PandoraQuestionSubmissionPageState
                         
                         // Target selection
                         Text(
-                          'Who is this for?',
+                          l10n.whoIsThisFor,
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -659,11 +661,11 @@ class _PandoraQuestionSubmissionPageState
                         Row(
                           children: [
                             Expanded(
-                              child: _buildTargetButton('Everyone', 'all', Icons.groups),
+                              child: _buildTargetButton(l10n.everyone, 'all', Icons.groups),
                             ),
                             const SizedBox(width: 12),
                             Expanded(
-                              child: _buildTargetButton('Specific', 'specific', Icons.person),
+                              child: _buildTargetButton(l10n.specific, 'specific', Icons.person),
                             ),
                           ],
                         ),
@@ -688,7 +690,7 @@ class _PandoraQuestionSubmissionPageState
                                 borderSide: BorderSide.none,
                               ),
                             ),
-                            hint: Text('Select a player'),
+                            hint: Text(l10n.selectPlayer),
                             items: participants
                                 .where((p) => p['id'] != myParticipantId)
                                 .map((p) => DropdownMenuItem<String>(
@@ -727,7 +729,7 @@ class _PandoraQuestionSubmissionPageState
                                     ),
                                   )
                                 : Text(
-                                    'Submit Question',
+                                    l10n.submitQuestion,
                                     style: GoogleFonts.poppins(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -763,8 +765,9 @@ class _PandoraQuestionSubmissionPageState
                           ? const CircularProgressIndicator(color: Colors.white)
                           : Text(
                               questions.length < 5
-                                  ? 'Need ${5 - questions.length} more questions'
-                                  : 'Start Game Now',
+                                  ? l10n.needMoreQuestions(5 - questions.length)
+                                  : l10n.startGame,
+
                               style: GoogleFonts.poppins(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,

@@ -101,12 +101,20 @@ List<TextSpan> _buildDescriptionSpans(String description) {
   @override
   void initState() {
     super.initState();
+    _initializeUnlockManager();
     if (widget.gameMode.toLowerCase() != 'personal') {
       _loadCategories();
     } else {
       setState(() {
         isLoading = false;
       });
+    }
+  }
+
+  Future<void> _initializeUnlockManager() async {
+    await unlockManager.initialize();
+    if (mounted) {
+      setState(() {}); // Trigger rebuild to show correct lock states
     }
   }
 
@@ -132,18 +140,8 @@ List<TextSpan> _buildDescriptionSpans(String description) {
   }
 
   bool _isCategoryLocked(String categoryName) {
-    final gameModeCategories = AppConstants.gameCategories[widget.gameMode];
-    if (gameModeCategories == null) return false;
-    
-    final categoryData = gameModeCategories.firstWhere(
-      (cat) => cat['name'] == categoryName,
-      orElse: () => {'name': categoryName, 'locked': false},
-    );
-    
-    final isMarkedAsLocked = categoryData['locked'] as bool;
-    final isCategoryUnlocked = !unlockManager.isCategoryLocked(widget.gameMode, categoryName);
-    
-    return isMarkedAsLocked && !isCategoryUnlocked;
+    // Simply use UnlockManager to check if category is locked
+    return unlockManager.isCategoryLocked(widget.gameMode, categoryName);
   }
 
   // Get translated category description

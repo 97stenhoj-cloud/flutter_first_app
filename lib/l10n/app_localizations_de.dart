@@ -704,7 +704,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get yesCancel => 'Ja, abbrechen';
 
   @override
-  String get hostQuestionCollection => 'Gastgeber - Fragensammlung';
+  String get hostQuestionCollection => 'Host – Fragensammlung';
 
   @override
   String get questionCollection => 'Fragensammlung';
@@ -781,4 +781,51 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get continueToTimerSetup => 'Weiter zur Timer-Einrichtung';
+
+  @override
+  String get setQuestionTimer => 'Fragen-Timer einstellen';
+
+  @override
+  String get questionCollectionTime => 'Fragensammlungszeit';
+
+  @override
+  String get minutes => 'Minuten';
+
+  @override
+  String get sessionWillEnd =>
+      'Die Sitzung endet automatisch, wenn du nicht innerhalb von 5 Minuten fortfährst';
+
+  @override
+  String get startQuestionCollection => 'Fragensammlung starten';
+
+  @override
+  String questionsSubmitted(int count) {
+    return '$count Fragen eingereicht';
+  }
+
+  @override
+  String get writeQuestionHere => 'Schreibe deine Frage hier...';
+
+  @override
+  String get whoIsThisFor => 'Für wen ist das?';
+
+  @override
+  String get everyone => 'Alle';
+
+  @override
+  String get specific => 'Spezifisch';
+
+  @override
+  String get submitQuestion => 'Frage einreichen';
+
+  @override
+  String needMoreQuestions(int count) {
+    return 'Benötigt noch $count weitere Fragen';
+  }
+
+  @override
+  String get startGame => 'Spiel starten';
+
+  @override
+  String get selectPlayer => 'Wähle einen Spieler';
 }

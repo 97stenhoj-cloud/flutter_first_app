@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'dart:io' show Platform;
-import '../config/env.dart'; // ADD THIS
+import '../config/env.dart';
 
 class AuthService {
   static final AuthService _instance = AuthService._internal();
@@ -14,7 +14,7 @@ class AuthService {
   final SupabaseClient _supabase = Supabase.instance.client;
   
   // Use secure environment variable
-  static final String _googleWebClientId = Env.googleWebClientId; // CHANGED
+  static final String _googleWebClientId = Env.googleWebClientId;
   
   // Get current user
   User? get currentUser => _supabase.auth.currentUser;
@@ -138,18 +138,41 @@ class AuthService {
     return response;
   }
 
-  // Update user subscription
+  // Update user subscription (FIXED: Uses is_premium instead of subscription_tier)
   Future<void> updateSubscription({
     required List<String> unlockedBundles,
     required String tier,
   }) async {
     if (!isLoggedIn) return;
 
-    await _supabase.from('user_subscriptions').update({
-      'unlocked_bundles': unlockedBundles,
-      'subscription_tier': tier,
-      'is_premium': unlockedBundles.isNotEmpty,
-    }).eq('user_id', currentUser!.id);
+    try {
+      final isPremium = tier == 'premium';
+      
+      // Try to update first - only set is_premium, not subscription_tier
+      final result = await _supabase
+          .from('user_subscriptions')
+          .update({
+            'unlocked_bundles': unlockedBundles,
+            'is_premium': isPremium,
+          })
+          .eq('user_id', currentUser!.id)
+          .select();
+
+      // If no rows were updated, insert a new one
+      if (result.isEmpty) {
+        debugPrint('🆕 Creating new subscription row for user');
+        await _supabase.from('user_subscriptions').insert({
+          'user_id': currentUser!.id,
+          'unlocked_bundles': unlockedBundles,
+          'is_premium': isPremium,
+        });
+      }
+      
+      debugPrint('✅ Subscription updated: is_premium=$isPremium');
+    } catch (e) {
+      debugPrint('❌ Error updating subscription: $e');
+      rethrow;
+    }
   }
 
   // Check if bundle is unlocked
@@ -169,17 +192,27 @@ class AuthService {
     return List<String>.from(subscription['unlocked_bundles'] ?? []);
   }
 
-  // Get subscription tier
+  // Get subscription tier (FIXED: Uses is_premium boolean)
   Future<String> getSubscriptionTier() async {
     if (!isLoggedIn) return 'free';
     
     try {
       final subscription = await getUserSubscription();
-      if (subscription == null) return 'free';
+      if (subscription == null) {
+        debugPrint('   No subscription row found - user is free tier');
+        return 'free';
+      }
       
-      return subscription['subscription_tier'] ?? 'free';
+      // Check is_premium boolean instead of subscription_tier string
+      final isPremium = subscription['is_premium'] as bool? ?? false;
+      final tier = isPremium ? 'premium' : 'free';
+      
+      debugPrint('   Subscription data: $subscription');
+      debugPrint('   Determined tier: $tier');
+      
+      return tier;
     } catch (e) {
-      debugPrint('Error getting subscription tier: $e');
+      debugPrint('❌ Error getting subscription tier: $e');
       return 'free';
     }
   }

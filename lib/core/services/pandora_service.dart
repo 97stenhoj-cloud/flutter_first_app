@@ -373,7 +373,7 @@ class PandoraService {
     }
   }
 
-  /// Get reactions for a specific question (REMOVED 'hundred')
+/// Get reactions for a specific question (REMOVED 'hundred')
   Future<Map<String, int>> getReactionsForQuestion(
     String sessionId,
     int questionIndex,
@@ -401,6 +401,29 @@ class PandoraService {
     } catch (e) {
       debugPrint('❌ Error fetching reactions: $e');
       return {};
+    }
+  }
+
+  /// Get the current user's reaction for a specific question
+  Future<String?> getMyReaction({
+    required String sessionId,
+    required int questionIndex,
+    required String participantId,
+  }) async {
+    try {
+      final response = await _supabase
+          .from('pandora_reactions')
+          .select('reaction_type')
+          .eq('session_id', sessionId)
+          .eq('question_index', questionIndex)
+          .eq('participant_id', participantId)
+          .maybeSingle();
+
+      if (response == null) return null;
+      return response['reaction_type'] as String;
+    } catch (e) {
+      debugPrint('❌ Error fetching my reaction: $e');
+      return null;
     }
   }
 

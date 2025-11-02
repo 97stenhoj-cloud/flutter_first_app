@@ -265,5 +265,35 @@
     }
   }
 },
-"continueToTimerSetup": "Continue to Timer Setup"
+"continueToTimerSetup": "Continue to Timer Setup",
+"setQuestionTimer": "Set Question Timer",
+  "questionCollectionTime": "Question Collection Time",
+  "minutes": "minutes",
+  "sessionWillEnd": "Session will end automatically if you don't continue within 5 minutes",
+  "startQuestionCollection": "Start Question Collection",
+  "hostQuestionCollection": "Host - Question Collection",
+  "questionsSubmitted": "{count} questions submitted",
+  "@questionsSubmitted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "yourQuestion": "Your Question",
+  "writeQuestionHere": "Write your question here...",
+  "whoIsThisFor": "Who is this for?",
+  "everyone": "Everyone",
+  "specific": "Specific",
+  "submitQuestion": "Submit Question",
+  "needMoreQuestions": "Need {count} more questions",
+  "@needMoreQuestions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "startGame": "Start Game",
+  "selectPlayer": "Select a player"
 }

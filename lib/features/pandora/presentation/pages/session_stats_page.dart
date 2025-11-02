@@ -176,18 +176,6 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
                         ),
                       ],
                       
-                      // Most questions by
-                      if (stats?['most_questions_by_id'] != null) ...[
-                        const SizedBox(height: 16),
-                        _buildAwardCard(
-                          icon: '🏆',
-                          title: 'Most Questions Asked',
-                          winner: _getParticipantName(stats!['most_questions_by_id']),
-                          count: '${stats!['most_questions_count']} questions',
-                          color: const Color(0xFFFF9800),
-                        ),
-                      ],
-                      
                       // Most targeted
                       if (stats?['most_targeted_id'] != null) ...[
                         const SizedBox(height: 16),

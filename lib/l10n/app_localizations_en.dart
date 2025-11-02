@@ -773,4 +773,51 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get continueToTimerSetup => 'Continue to Timer Setup';
+
+  @override
+  String get setQuestionTimer => 'Set Question Timer';
+
+  @override
+  String get questionCollectionTime => 'Question Collection Time';
+
+  @override
+  String get minutes => 'minutes';
+
+  @override
+  String get sessionWillEnd =>
+      'Session will end automatically if you don\'t continue within 5 minutes';
+
+  @override
+  String get startQuestionCollection => 'Start Question Collection';
+
+  @override
+  String questionsSubmitted(int count) {
+    return '$count questions submitted';
+  }
+
+  @override
+  String get writeQuestionHere => 'Write your question here...';
+
+  @override
+  String get whoIsThisFor => 'Who is this for?';
+
+  @override
+  String get everyone => 'Everyone';
+
+  @override
+  String get specific => 'Specific';
+
+  @override
+  String get submitQuestion => 'Submit Question';
+
+  @override
+  String needMoreQuestions(int count) {
+    return 'Need $count more questions';
+  }
+
+  @override
+  String get startGame => 'Start Game';
+
+  @override
+  String get selectPlayer => 'Select a player';
 }

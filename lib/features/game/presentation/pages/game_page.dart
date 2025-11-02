@@ -49,8 +49,7 @@ class _GamePageState extends State<GamePage> {
   InterstitialAd? _interstitialAd;
   bool _isAdLoaded = false;
   
-  RealtimeChannel? sessionChannel;
-  RealtimeChannel? reactionsChannel;
+ 
   bool isPandoraMode = false;
   bool isHostMode = false;
   
@@ -60,6 +59,9 @@ class _GamePageState extends State<GamePage> {
     'heart': 0,
     'fire': 0,
   };
+  String? mySelectedReaction;
+  RealtimeChannel? sessionChannel;
+  RealtimeChannel? reactionsChannel;
   String? myParticipantId;
   
   Set<String> favoriteQuestions = {};
@@ -259,17 +261,30 @@ class _GamePageState extends State<GamePage> {
   }
   
   Future<void> _loadReactionsForCurrentQuestion() async {
-    if (!isPandoraMode) return;
+    if (!isPandoraMode || myParticipantId == null) return;
     
-    final reactions = await pandoraService.getReactionsForQuestion(
-      widget.sessionId!,
-      currentIndex,
-    );
-    
-    if (mounted) {
-      setState(() {
-        currentReactions = reactions;
-      });
+    try {
+      final reactions = await pandoraService.getReactionsForQuestion(
+        widget.sessionId!,
+        currentIndex,
+      );
+      
+      final myReaction = await pandoraService.getMyReaction(
+        sessionId: widget.sessionId!,
+        questionIndex: currentIndex,
+        participantId: myParticipantId!,
+      );
+      
+      debugPrint('📊 Loaded reactions: $reactions, my reaction: $myReaction');
+      
+      if (mounted) {
+        setState(() {
+          currentReactions = reactions;
+          mySelectedReaction = myReaction;
+        });
+      }
+    } catch (e) {
+      debugPrint('❌ Error loading reactions: $e');
     }
   }
   
@@ -282,6 +297,11 @@ class _GamePageState extends State<GamePage> {
       participantId: myParticipantId!,
       reactionType: reactionType,
     );
+    
+    // Update local state immediately
+    setState(() {
+      mySelectedReaction = reactionType;
+    });
   }
 
   @override
@@ -303,17 +323,23 @@ class _GamePageState extends State<GamePage> {
         final status = session['status'] as String?;
         
         if (status == 'ended' && mounted) {
-          debugPrint('🎮 [Player] Game ended by host');
-          _showGameEndDialog();
+          debugPrint('🎮 [Player] Game ended by host - navigating to stats');
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (mounted) _showGameEndDialog();
+          });
           return;
         }
         
         if (newIndex != null && mounted) {
           debugPrint('📡 [Player] DB update - question index: $newIndex (current: $currentIndex)');
           
-          if (newIndex >= displayedQuestions.length) {
-            debugPrint('🎮 [Player] All questions completed');
-            _showGameEndDialog();
+          // If host goes past the last question or back to 0 from the end, game is ending
+          if (newIndex >= displayedQuestions.length || 
+              (newIndex == 0 && currentIndex == displayedQuestions.length - 1)) {
+            debugPrint('🎮 [Player] Game ending detected');
+            Future.delayed(const Duration(milliseconds: 300), () {
+              if (mounted) _showGameEndDialog();
+            });
             return;
           }
           
@@ -322,6 +348,7 @@ class _GamePageState extends State<GamePage> {
             
             setState(() {
               currentIndex = newIndex;
+              mySelectedReaction = null;
             });
             
             controller.moveTo(newIndex);
@@ -428,14 +455,18 @@ class _GamePageState extends State<GamePage> {
         return;
       }
 
+      // Limit questions based on user's access level
+      final questionLimit = unlockManager.getQuestionLimitForCategory(widget.gameMode, widget.category);
+      final limitedQuestions = questions.take(questionLimit).toList();
+      
       setState(() {
-        allQuestions = questions;
-        displayedQuestions = List.from(allQuestions);
+        allQuestions = questions; // Keep all for reference
+        displayedQuestions = limitedQuestions; // Only show allowed questions
         isLoading = false;
         _loadedLanguageCode = languageCode;
       });
 
-      debugPrint('✅ Loaded ${questions.length} questions in $languageCode');
+      debugPrint('✅ Loaded ${questions.length} questions, displaying ${limitedQuestions.length} (limit: $questionLimit) in $languageCode');
     } catch (e) {
       debugPrint('Error loading questions: $e');
       
@@ -650,36 +681,33 @@ class _GamePageState extends State<GamePage> {
     CardSwiperDirection direction,
   ) {
     final newIndex = currentIndexNullable ?? previousIndex;
-    debugPrint('Swiped: prev=$previousIndex, new=$newIndex, dir=$direction');
+    debugPrint('🔄 Swiped: prev=$previousIndex, new=$newIndex, dir=$direction, total=${displayedQuestions.length}');
     
     if (isPandoraMode && !isHostMode) {
       debugPrint('🚫 [Player] Manual swiping blocked');
       return false;
     }
     
-    if (newIndex >= displayedQuestions.length - 1) {
-      debugPrint('🎮 Last question reached');
-      
-      setState(() {
-        currentIndex = displayedQuestions.length - 1;
-      });
+    // Check if we're ALREADY on the last question and swiping (any direction = forward)
+    if (previousIndex == displayedQuestions.length - 1) {
+      debugPrint('🎮 [Host] On last question ($previousIndex), swiping - ending game');
       
       if (isPandoraMode && isHostMode) {
-        _updateDatabaseIndex(displayedQuestions.length - 1);
+        pandoraService.endSession(widget.sessionId!).then((_) {
+          debugPrint('✅ [Host] Session ended, navigating to stats');
+          if (mounted) _showGameEndDialog();
+        });
+      } else {
+        _showGameEndDialog();
       }
       
-      Future.delayed(const Duration(milliseconds: 500), () {
-        if (isPandoraMode && isHostMode) {
-          pandoraService.endSession(widget.sessionId!);
-        }
-        _showGameEndDialog();
-      });
-      
-      return false;
+      return false; // Block the swipe
     }
     
+    // Normal swipe logic
     setState(() {
       currentIndex = newIndex;
+      mySelectedReaction = null; // Clear selection when question changes
     });
     
     if (isPandoraMode && isHostMode) {
@@ -714,6 +742,7 @@ class _GamePageState extends State<GamePage> {
     
     setState(() {
       currentIndex = currentIndexArg;
+      mySelectedReaction = null;
     });
     
     if (isPandoraMode && isHostMode) {
@@ -726,7 +755,9 @@ class _GamePageState extends State<GamePage> {
   void _showGameEndDialog() {
     if (!mounted) return;
     
+    // For Pandora mode, ALWAYS go to stats page (both host and players)
     if (isPandoraMode) {
+      debugPrint('🎉 [${isHostMode ? "Host" : "Player"}] Navigating to stats page');
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => SessionStatsPage(
@@ -1001,6 +1032,7 @@ class _GamePageState extends State<GamePage> {
                               cardsCount: displayedQuestions.length,
                               onSwipe: _onSwipe,
                               onUndo: _onUndo,
+                              isLoop: false,
                               numberOfCardsDisplayed: 2,
                               backCardOffset: const Offset(0, 40),
                               padding: const EdgeInsets.all(24.0),
@@ -1360,8 +1392,8 @@ class _GamePageState extends State<GamePage> {
               if (targetName != null)
                 Positioned(
                   bottom: 20,
-                  left: 0,
-                  right: 0,
+                  left: 16,
+                  right: 16,
                   child: Center(
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -1381,12 +1413,16 @@ class _GamePageState extends State<GamePage> {
                             size: 20,
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            targetName,
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                          Flexible(
+                            child: Text(
+                              targetName,
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
                             ),
                           ),
                         ],
@@ -1445,14 +1481,23 @@ class _GamePageState extends State<GamePage> {
           final type = reaction['type'] as String;
           final emoji = reaction['emoji'] as String;
           final count = currentReactions[type] ?? 0;
+          final isSelected = mySelectedReaction == type;
           
           return GestureDetector(
             onTap: () => _addReaction(type),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.9),
+                color: isSelected 
+                    ? const Color(0xFFFF6B9D).withValues(alpha: 0.3)
+                    : Colors.white.withValues(alpha: 0.9),
                 borderRadius: BorderRadius.circular(20),
+                border: isSelected
+                    ? Border.all(
+                        color: const Color(0xFFFF6B9D),
+                        width: 2,
+                      )
+                    : null,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.1),
@@ -1466,7 +1511,9 @@ class _GamePageState extends State<GamePage> {
                 children: [
                   Text(
                     emoji,
-                    style: const TextStyle(fontSize: 28),
+                    style: TextStyle(
+                      fontSize: isSelected ? 32 : 28,
+                    ),
                   ),
                   if (count > 0) ...[
                     const SizedBox(height: 4),

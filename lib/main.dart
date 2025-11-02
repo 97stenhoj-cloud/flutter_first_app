@@ -7,26 +7,30 @@ import 'l10n/app_localizations.dart';
 import 'core/utils/language_manager.dart';
 import 'core/utils/theme_notifier.dart';
 import 'core/config/env.dart';
-
+import 'core/utils/unlock_manager.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
-
+  
   // Initialize Supabase with Realtime configuration
   await Supabase.initialize(
-    url: Env.supabaseUrl, // CHANGED
-    anonKey: Env.supabaseAnonKey, // CHANGED
+    url: Env.supabaseUrl,              // CHANGED
+    anonKey: Env.supabaseAnonKey,      // CHANGED
     realtimeClientOptions: const RealtimeClientOptions(
       eventsPerSecond: 10,
       logLevel: RealtimeLogLevel.info,
     ),
   );
-
+  
   debugPrint('✅ Supabase initialized with Realtime enabled');
-
+  
   // Initialize LanguageManager to load saved language
   await LanguageManager().initialize();
-
+  
+  // Initialize UnlockManager to check premium status
+  await UnlockManager().initialize();
+  debugPrint('✅ UnlockManager initialized');
+  
   runApp(const TalkingGameApp());
 }
 

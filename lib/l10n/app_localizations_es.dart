@@ -682,7 +682,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get sessionCancelled => 'Sesión Cancelada';
 
   @override
-  String get yourQuestion => 'Tu Pregunta';
+  String get yourQuestion => 'Tu pregunta';
 
   @override
   String get reactionBreakdown => 'Desglose de Reacciones';
@@ -707,7 +707,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get yesCancel => 'Sí, Cancelar';
 
   @override
-  String get hostQuestionCollection => 'Anfitrión - Recolección de Preguntas';
+  String get hostQuestionCollection => 'Anfitrión - Recopilación de preguntas';
 
   @override
   String get questionCollection => 'Recolección de Preguntas';
@@ -784,4 +784,51 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get continueToTimerSetup =>
       'Continuar a Configuración del Temporizador';
+
+  @override
+  String get setQuestionTimer => 'Establecer temporizador de preguntas';
+
+  @override
+  String get questionCollectionTime => 'Tiempo de recopilación de preguntas';
+
+  @override
+  String get minutes => 'minutos';
+
+  @override
+  String get sessionWillEnd =>
+      'La sesión finalizará automáticamente si no continúas en 5 minutos';
+
+  @override
+  String get startQuestionCollection => 'Iniciar recopilación de preguntas';
+
+  @override
+  String questionsSubmitted(int count) {
+    return '$count preguntas enviadas';
+  }
+
+  @override
+  String get writeQuestionHere => 'Escribe tu pregunta aquí...';
+
+  @override
+  String get whoIsThisFor => '¿Para quién es esto?';
+
+  @override
+  String get everyone => 'Todos';
+
+  @override
+  String get specific => 'Específico';
+
+  @override
+  String get submitQuestion => 'Enviar pregunta';
+
+  @override
+  String needMoreQuestions(int count) {
+    return 'Necesita $count preguntas más';
+  }
+
+  @override
+  String get startGame => 'Iniciar juego';
+
+  @override
+  String get selectPlayer => 'Selecciona un jugador';
 }
