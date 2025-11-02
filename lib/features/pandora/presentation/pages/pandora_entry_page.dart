@@ -91,9 +91,9 @@ class PandoraEntryPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          'Collaborative Question Game',
+                          l10n.collaborativeQuestionGame,
                           style: GoogleFonts.poppins(
-                            fontSize: 16,
+                            fontSize: 18,
                             color: ThemeHelper.getBodyTextColor(isDarkMode),
                           ),
                         ),
@@ -128,7 +128,7 @@ class PandoraEntryPage extends StatelessWidget {
                             ),
                             const SizedBox(width: 12),
                             Text(
-                              'How it works',
+                              l10n.howItWorks,
                               style: GoogleFonts.poppins(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -177,7 +177,7 @@ class PandoraEntryPage extends StatelessWidget {
                           const Icon(Icons.add_circle_outline, size: 24),
                           const SizedBox(width: 12),
                           Text(
-                            'Host a Session',
+                            l10n.hostPandoraSession,
                             style: GoogleFonts.poppins(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -219,7 +219,7 @@ class PandoraEntryPage extends StatelessWidget {
                           const Icon(Icons.login, size: 24),
                           const SizedBox(width: 12),
                           Text(
-                            'Join a Session',
+                            l10n.joinSession,
                             style: GoogleFonts.poppins(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,

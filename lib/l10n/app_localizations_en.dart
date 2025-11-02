@@ -110,9 +110,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
-  String subscriptionActivated(Object bundles) {
-    return 'Premium activated! All categories unlocked.';
-  }
+  String get subscriptionActivated =>
+      'Premium activated! All categories unlocked.';
 
   @override
   String get premiumActivated => 'Premium Activated!';
@@ -512,8 +511,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteDeck => 'Delete Deck?';
 
   @override
-  String deleteDeckConfirm(Object name) {
-    return 'This will delete all questions in this deck.';
+  String deleteDeckConfirm(Object deckName) {
+    return 'Are you sure you want to delete \"$deckName\"? This will delete all questions in this deck.';
   }
 
   @override
@@ -677,4 +676,101 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reactionBreakdown => 'Reaction Breakdown';
+
+  @override
+  String get deckNameHint => 'Deck name';
+
+  @override
+  String get deckCreatedSuccess => 'Deck created!';
+
+  @override
+  String get cancelSession => 'Cancel Session?';
+
+  @override
+  String get cancelSessionConfirm =>
+      'This will cancel the session for all players. Are you sure?';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get yesCancel => 'Yes, Cancel';
+
+  @override
+  String get hostQuestionCollection => 'Host - Question Collection';
+
+  @override
+  String get questionCollection => 'Question Collection';
+
+  @override
+  String get endSessionButton => 'End Session';
+
+  @override
+  String get noActiveSubscription => 'No Active Subscription';
+
+  @override
+  String get premium => 'Premium';
+
+  @override
+  String notEnoughQuestions(Object count) {
+    return 'Not enough questions. Minimum 5 required. (Currently: $count)';
+  }
+
+  @override
+  String get premiumFeatureTitle => 'Premium Feature';
+
+  @override
+  String get questionNavigationPremium =>
+      'Question navigation is a premium feature. Subscribe to unlock the ability to jump to any question!';
+
+  @override
+  String get customDecks => 'Custom Decks';
+
+  @override
+  String get noDecksYetMessage => 'No decks yet';
+
+  @override
+  String get createFirstDeckMessage => 'Tap + to create your first deck';
+
+  @override
+  String get signInRequired => 'Sign In Required';
+
+  @override
+  String get signInToUsePersonal =>
+      'Please sign in to use Personal mode and create custom question decks.';
+
+  @override
+  String get collaborativeQuestionGame => 'Collaborative Question Game';
+
+  @override
+  String get hostPandoraSession => 'Host Pandora Session';
+
+  @override
+  String get joinPandoraGame => 'Join a Game';
+
+  @override
+  String get yourDisplayName => 'Your Display Name';
+
+  @override
+  String get enterYourName => 'Enter your name';
+
+  @override
+  String get selectQuestion => 'Select Question';
+
+  @override
+  String get joinTime => 'Time to Join';
+
+  @override
+  String get participants => 'Participants';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String needAtLeastPlayers(int current) {
+    return 'Need at least 2 players ($current/2)';
+  }
+
+  @override
+  String get continueToTimerSetup => 'Continue to Timer Setup';
 }

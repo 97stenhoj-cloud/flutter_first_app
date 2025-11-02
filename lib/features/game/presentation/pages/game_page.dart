@@ -1024,28 +1024,28 @@ class _GamePageState extends State<GamePage> {
   }
 
   void _showPremiumRequiredDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Row(
-          children: [
-            const Icon(Icons.lock, color: Color(0xFFFF6B9D)),
-            const SizedBox(width: 12),
-            Text(
-              'Premium Feature',
-              style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-        content: Text(
-          'Question navigation is a premium feature. Subscribe to unlock the ability to jump to any question!',
-          style: GoogleFonts.poppins(fontSize: 16),
+  final l10n = AppLocalizations.of(context)!;
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Row(
+        children: [
+          const Icon(Icons.lock, color: Color(0xFFFF6B9D)),
+          const SizedBox(width: 12),
+          Text(
+            l10n.premiumFeatureTitle,
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+      content: Text(
+        l10n.questionNavigationPremium,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              'Maybe Later',
+              l10n.mayBeLater,
               style: GoogleFonts.poppins(color: Colors.grey),
             ),
           ),
@@ -1058,7 +1058,7 @@ class _GamePageState extends State<GamePage> {
               foregroundColor: Colors.white,
             ),
             child: Text(
-              'Subscribe',
+              l10n.subscribe,
               style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
             ),
           ),
@@ -1068,6 +1068,7 @@ class _GamePageState extends State<GamePage> {
   }
 
   void _showQuestionPicker() {
+    final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -1095,7 +1096,7 @@ class _GamePageState extends State<GamePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Select Question',
+                    l10n.selectQuestion,
                     style: GoogleFonts.poppins(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

@@ -111,9 +111,8 @@ class AppLocalizationsDa extends AppLocalizations {
   String get cancel => 'Annuller';
 
   @override
-  String subscriptionActivated(Object bundles) {
-    return 'Premium aktiveret! Alle kategorier låst op.';
-  }
+  String get subscriptionActivated =>
+      'Premium aktiveret! Alle kategorier låst op.';
 
   @override
   String get premiumActivated => 'Premium Aktiveret!';
@@ -485,7 +484,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get pinCopied => 'PIN kopieret til udklipsholderen!';
 
   @override
-  String get endSession => 'Afslut Session?';
+  String get endSession => 'Afslut session';
 
   @override
   String get endSessionConfirm =>
@@ -513,8 +512,8 @@ class AppLocalizationsDa extends AppLocalizations {
   String get deleteDeck => 'Slet Kortsæt?';
 
   @override
-  String deleteDeckConfirm(Object name) {
-    return 'Dette vil slette alle spørgsmål i dette kortsæt.';
+  String deleteDeckConfirm(Object deckName) {
+    return 'Er du sikker på, at du vil slette \"$deckName\"? Dette vil slette alle spørgsmål i dette kortlæg.';
   }
 
   @override
@@ -678,4 +677,101 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get reactionBreakdown => 'Reaktionsanalyse';
+
+  @override
+  String get deckNameHint => 'Kortlæg navn';
+
+  @override
+  String get deckCreatedSuccess => 'Kortlæg oprettet!';
+
+  @override
+  String get cancelSession => 'Afbryd session?';
+
+  @override
+  String get cancelSessionConfirm =>
+      'Dette vil afbryde sessionen for alle spillere. Er du sikker?';
+
+  @override
+  String get no => 'Nej';
+
+  @override
+  String get yesCancel => 'Ja, afbryd';
+
+  @override
+  String get hostQuestionCollection => 'Vært - Spørgsmålsindsamling';
+
+  @override
+  String get questionCollection => 'Spørgsmålsindsamling';
+
+  @override
+  String get endSessionButton => 'Afslut session';
+
+  @override
+  String get noActiveSubscription => 'Intet aktivt abonnement';
+
+  @override
+  String get premium => 'Premium';
+
+  @override
+  String notEnoughQuestions(Object count) {
+    return 'Not enough questions. Minimum 5 required. (Currently: $count)';
+  }
+
+  @override
+  String get premiumFeatureTitle => 'Premium Funktion';
+
+  @override
+  String get questionNavigationPremium =>
+      'Spørgsmålsnavigation er en premium funktion. Abonner for at låse op for muligheden for at hoppe til ethvert spørgsmål!';
+
+  @override
+  String get customDecks => 'Tilpassede Bunker';
+
+  @override
+  String get noDecksYetMessage => 'Ingen bunker endnu';
+
+  @override
+  String get createFirstDeckMessage => 'Tryk + for at oprette din første bunke';
+
+  @override
+  String get signInRequired => 'Log Ind Påkrævet';
+
+  @override
+  String get signInToUsePersonal =>
+      'Log venligst ind for at bruge Personlig tilstand og oprette tilpassede spørgsmålsbunker.';
+
+  @override
+  String get collaborativeQuestionGame => 'Samarbejdsspil med Spørgsmål';
+
+  @override
+  String get hostPandoraSession => 'Vært Pandora Session';
+
+  @override
+  String get joinPandoraGame => 'Deltag i et Spil';
+
+  @override
+  String get yourDisplayName => 'Dit Visningsnavn';
+
+  @override
+  String get enterYourName => 'Indtast dit navn';
+
+  @override
+  String get selectQuestion => 'Vælg Spørgsmål';
+
+  @override
+  String get joinTime => 'Tid til at Deltage';
+
+  @override
+  String get participants => 'Deltagere';
+
+  @override
+  String get loading => 'Indlæser...';
+
+  @override
+  String needAtLeastPlayers(int current) {
+    return 'Mindst 2 spillere nødvendige ($current/2)';
+  }
+
+  @override
+  String get continueToTimerSetup => 'Fortsæt til Timer Opsætning';
 }

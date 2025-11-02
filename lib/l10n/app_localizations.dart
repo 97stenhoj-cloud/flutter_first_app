@@ -310,7 +310,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Premium activated! All categories unlocked.'**
-  String subscriptionActivated(Object bundles);
+  String get subscriptionActivated;
 
   /// No description provided for @premiumActivated.
   ///
@@ -1053,8 +1053,8 @@ abstract class AppLocalizations {
   /// No description provided for @deleteDeckConfirm.
   ///
   /// In en, this message translates to:
-  /// **'This will delete all questions in this deck.'**
-  String deleteDeckConfirm(Object name);
+  /// **'Are you sure you want to delete \"{deckName}\"? This will delete all questions in this deck.'**
+  String deleteDeckConfirm(Object deckName);
 
   /// No description provided for @delete.
   ///
@@ -1337,6 +1337,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reaction Breakdown'**
   String get reactionBreakdown;
+
+  /// No description provided for @deckNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Deck name'**
+  String get deckNameHint;
+
+  /// No description provided for @deckCreatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Deck created!'**
+  String get deckCreatedSuccess;
+
+  /// No description provided for @cancelSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Session?'**
+  String get cancelSession;
+
+  /// No description provided for @cancelSessionConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'This will cancel the session for all players. Are you sure?'**
+  String get cancelSessionConfirm;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// No description provided for @yesCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, Cancel'**
+  String get yesCancel;
+
+  /// No description provided for @hostQuestionCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Host - Question Collection'**
+  String get hostQuestionCollection;
+
+  /// No description provided for @questionCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Question Collection'**
+  String get questionCollection;
+
+  /// No description provided for @endSessionButton.
+  ///
+  /// In en, this message translates to:
+  /// **'End Session'**
+  String get endSessionButton;
+
+  /// No description provided for @noActiveSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'No Active Subscription'**
+  String get noActiveSubscription;
+
+  /// No description provided for @premium.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get premium;
+
+  /// No description provided for @notEnoughQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough questions. Minimum 5 required. (Currently: {count})'**
+  String notEnoughQuestions(Object count);
+
+  /// No description provided for @premiumFeatureTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Feature'**
+  String get premiumFeatureTitle;
+
+  /// No description provided for @questionNavigationPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Question navigation is a premium feature. Subscribe to unlock the ability to jump to any question!'**
+  String get questionNavigationPremium;
+
+  /// No description provided for @customDecks.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Decks'**
+  String get customDecks;
+
+  /// No description provided for @noDecksYetMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No decks yet'**
+  String get noDecksYetMessage;
+
+  /// No description provided for @createFirstDeckMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap + to create your first deck'**
+  String get createFirstDeckMessage;
+
+  /// No description provided for @signInRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In Required'**
+  String get signInRequired;
+
+  /// No description provided for @signInToUsePersonal.
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in to use Personal mode and create custom question decks.'**
+  String get signInToUsePersonal;
+
+  /// No description provided for @collaborativeQuestionGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Collaborative Question Game'**
+  String get collaborativeQuestionGame;
+
+  /// No description provided for @hostPandoraSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Host Pandora Session'**
+  String get hostPandoraSession;
+
+  /// No description provided for @joinPandoraGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Join a Game'**
+  String get joinPandoraGame;
+
+  /// No description provided for @yourDisplayName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Display Name'**
+  String get yourDisplayName;
+
+  /// No description provided for @enterYourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name'**
+  String get enterYourName;
+
+  /// No description provided for @selectQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Question'**
+  String get selectQuestion;
+
+  /// No description provided for @joinTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to Join'**
+  String get joinTime;
+
+  /// No description provided for @participants.
+  ///
+  /// In en, this message translates to:
+  /// **'Participants'**
+  String get participants;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// No description provided for @needAtLeastPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Need at least 2 players ({current}/2)'**
+  String needAtLeastPlayers(int current);
+
+  /// No description provided for @continueToTimerSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to Timer Setup'**
+  String get continueToTimerSetup;
 }
 
 class _AppLocalizationsDelegate

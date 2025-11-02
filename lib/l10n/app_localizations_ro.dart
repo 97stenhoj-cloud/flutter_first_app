@@ -18,7 +18,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settings => 'Setări';
 
   @override
-  String get howToPlay => 'Cum să joci';
+  String get howToPlay => 'Cum să Joci';
 
   @override
   String get chooseGameMode => 'Alege modul tău de joc';
@@ -33,75 +33,77 @@ class AppLocalizationsRo extends AppLocalizations {
   String get friends => 'Prieteni';
 
   @override
-  String get chooseCategory => 'Alege o categorie';
+  String get chooseCategory => 'Alege o Categorie';
 
   @override
-  String get locked => 'Categorie blocată';
+  String get locked => 'Categorie Premium';
 
   @override
   String get lockedMessage =>
-      'Această categorie este blocată. Upgradează la premium pentru a debloca toate categoriile!';
+      'Aceasta este o categorie premium. Actualizează pentru a debloca toate categoriile și a elimina reclamele!';
 
   @override
-  String get previewAvailable => 'Preview: First 5 questions available';
+  String get previewAvailable =>
+      'Previzualizare: Primele 5 întrebări disponibile';
 
   @override
-  String get upgradeNow => 'Upgrade Now';
+  String get upgradeNow => 'Actualizează Acum';
 
   @override
   String get ok => 'OK';
 
   @override
-  String get mayBeLater => 'Poate mai târziu';
+  String get mayBeLater => 'Poate Mai Târziu';
 
   @override
-  String get getPremium => 'Get Premium';
+  String get getPremium => 'Obține Premium';
 
   @override
-  String get premiumTitle => 'Unlock Everything';
+  String get premiumTitle => 'Deblochează Totul';
 
   @override
   String get premiumDescription =>
-      'Get unlimited access to all categories across all modes, remove ads, and enjoy unlimited Pandora sessions.';
+      'Obține acces nelimitat la toate categoriile din toate modurile, elimină reclamele și bucură-te de sesiuni Pandora nelimitate.';
 
   @override
-  String get premiumPriceMonthly => '49 DKK/month';
+  String get premiumPriceMonthly => '49 DKK/lună';
 
   @override
-  String get premiumPriceYearly => '399 DKK/year';
+  String get premiumPriceYearly => '399 DKK/an';
 
   @override
-  String get saveWithYearly => 'Save 189 DKK with yearly!';
+  String get saveWithYearly => 'Economisește 189 DKK cu planul anual!';
 
   @override
-  String get monthly => 'Monthly';
+  String get monthly => 'Lunar';
 
   @override
-  String get yearly => 'Yearly';
+  String get yearly => 'Anual';
 
   @override
-  String get billedMonthly => 'Billed monthly';
+  String get billedMonthly => 'Facturat lunar';
 
   @override
-  String get billedYearly => 'Billed annually';
+  String get billedYearly => 'Facturat anual';
 
   @override
-  String get premiumFeature1 => '✓ All 21 premium categories unlocked';
+  String get premiumFeature1 =>
+      '✓ Toate cele 21 de categorii premium deblocate';
 
   @override
-  String get premiumFeature2 => '✓ No ads forever';
+  String get premiumFeature2 => '✓ Fără reclame pentru totdeauna';
 
   @override
-  String get premiumFeature3 => '✓ Unlimited questions in all categories';
+  String get premiumFeature3 => '✓ Întrebări nelimitate în toate categoriile';
 
   @override
-  String get premiumFeature4 => '✓ Pandora: Unlimited players & questions';
+  String get premiumFeature4 => '✓ Pandora: Jucători și întrebări nelimitate';
 
   @override
-  String get premiumFeature5 => '✓ Support ongoing development';
+  String get premiumFeature5 => '✓ Sprijină dezvoltarea continuă';
 
   @override
-  String get subscribePremium => 'Subscribe to Premium';
+  String get subscribePremium => 'Abonează-te la Premium';
 
   @override
   String get subscribe => 'Abonează-te';
@@ -110,53 +112,51 @@ class AppLocalizationsRo extends AppLocalizations {
   String get cancel => 'Anulează';
 
   @override
-  String subscriptionActivated(Object bundles) {
-    return 'Abonamentul activat! $bundles deblocate.';
-  }
+  String get subscriptionActivated =>
+      'Premium activat! Toate categoriile deblocate.';
 
   @override
-  String get premiumActivated =>
-      'Premium activat! Reclamele au fost eliminate. Pachetul a fost deblocat.';
+  String get premiumActivated => 'Premium Activat!';
 
   @override
   String get demoNote =>
-      'Demo: Deblocările se vor reseta la repornirea aplicației';
+      'Demo: Abonamentul se va reseta la repornirea aplicației';
 
   @override
-  String get freeTier => 'Free Tier';
+  String get freeTier => 'Nivel Gratuit';
 
   @override
   String get freeTierDesc =>
-      '3 categories per mode (30 questions each)\n5-question previews of premium categories\nAds every 7 questions';
+      '3 categorii pe mod (30 de întrebări fiecare)\nPrevizualizări de 5 întrebări din categoriile premium\nReclame la fiecare 7 întrebări';
 
   @override
-  String get currentPlan => 'Current Plan';
+  String get currentPlan => 'Plan Curent';
 
   @override
-  String get limitReached => 'Limit Reached';
+  String get limitReached => 'Limită Atinsă';
 
   @override
   String get freeCategoryLimit =>
-      'You\'ve reached the 30-question limit for free categories. Upgrade to Premium for unlimited access!';
+      'Ai atins limita de 30 de întrebări pentru categoriile gratuite. Actualizează la Premium pentru acces nelimitat!';
 
   @override
   String get previewLimit =>
-      'You\'ve seen all 5 preview questions. Upgrade to Premium to continue!';
+      'Ai văzut toate cele 5 întrebări de previzualizare. Actualizează la Premium pentru a continua!';
 
   @override
-  String get pandoraFreeLimit => 'Free Limit';
+  String get pandoraFreeLimit => 'Limită Gratuită';
 
   @override
   String get pandoraFreeLimitMessage =>
-      'Free hosts can have max 6 players and 12 questions. Upgrade to Premium for unlimited!';
+      'Gazdele gratuite pot avea max. 6 jucători și 12 întrebări. Actualizează la Premium pentru nelimitat!';
 
   @override
   String get pandoraUpgradeMessage =>
-      'You\'ve reached 12 questions. Upgrade to Premium to continue playing!';
+      'Ai atins 12 întrebări. Actualizează la Premium pentru a continua să joci!';
 
   @override
   String get pandoraMaxPlayers =>
-      'Maximum 6 players reached (Free limit). Upgrade to Premium for unlimited players!';
+      'Maxim 6 jucători atins (limită gratuită). Actualizează la Premium pentru jucători nelimitați!';
 
   @override
   String get swipeOrTap => 'Glisează sau apasă pe săgeți';
@@ -172,16 +172,16 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get watchAdMessage =>
-      'Vizionați o reclamă scurtă pentru a continua sau treceți la versiunea fără reclame cu premium!';
+      'Vizionează o reclamă scurtă pentru a continua sau bucură-te fără reclame cu premium!';
 
   @override
-  String get watchAd => 'Vizionați reclamă';
+  String get watchAd => 'Vizionează Reclamă';
 
   @override
-  String get goAdFree => 'Treceți la versiunea fără reclame - 59 DKK/lună';
+  String get goAdFree => 'Fără Reclame cu Premium';
 
   @override
-  String get removeAdsForever => 'Îndepărtați reclamele pentru totdeauna';
+  String get removeAdsForever => 'Îndepărtează Reclamele Pentru Totdeauna';
 
   @override
   String get adNotReady => 'Reclama nu este gata. Continuăm fără reclamă.';
@@ -190,7 +190,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get adLoadingContinue => 'Încărcare anunț... Continuă';
 
   @override
-  String get pricePerMonth => '59 DKK/lună';
+  String get pricePerMonth => '49 DKK/lună sau 399 DKK/an';
 
   @override
   String noQuestionsFoundMessage(Object category, Object mode) {
@@ -239,14 +239,14 @@ class AppLocalizationsRo extends AppLocalizations {
   String get signOut => 'Deconectare';
 
   @override
-  String get notSignedIn => 'Nu ești conectat';
+  String get notSignedIn => 'Nu Ești Conectat';
 
   @override
   String get signInSignUp => 'Conectează-te / Înscrie-te';
 
   @override
   String get signInToSync =>
-      'Conectează-te pentru a sincroniza abonamentele pe dispozitive și a debloca conținut premium';
+      'Conectează-te pentru a sincroniza abonamentul pe dispozitive și a debloca conținut premium';
 
   @override
   String get signOutConfirm => 'Ești sigur că vrei să te deconectezi?';
@@ -255,13 +255,13 @@ class AppLocalizationsRo extends AppLocalizations {
   String get signedOutSuccess => 'Deconectare reușită';
 
   @override
-  String get accountInformation => 'Informații cont';
+  String get accountInformation => 'Informații Cont';
 
   @override
   String get email => 'Email';
 
   @override
-  String get memberSince => 'Membru din';
+  String get memberSince => 'Membru Din';
 
   @override
   String get notAvailable => 'Nedisponibil';
@@ -270,13 +270,13 @@ class AppLocalizationsRo extends AppLocalizations {
   String get unknown => 'Necunoscut';
 
   @override
-  String get subscriptionStatus => 'Subscription Status';
+  String get subscriptionStatus => 'Stare Abonament';
 
   @override
   String get premiumMember => 'Membru Premium';
 
   @override
-  String get freeAccount => 'Cont gratuit';
+  String get freeAccount => 'Cont Gratuit';
 
   @override
   String get welcomeToConnect => 'Bine ai venit la Connect!';
@@ -288,7 +288,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get continueWithGoogle => 'Continuă cu Google';
 
   @override
-  String get skipForNow => 'Sari peste pentru acum';
+  String get skipForNow => 'Sari Peste Pentru Acum';
 
   @override
   String get byContining =>
@@ -309,13 +309,13 @@ class AppLocalizationsRo extends AppLocalizations {
   String get aboutCredits => 'Despre / Credite';
 
   @override
-  String get welcomeBack => 'Bine ai revenit!';
+  String get welcomeBack => 'Bine Ai Revenit!';
 
   @override
-  String get createAccount => 'Creează un cont';
+  String get createAccount => 'Creează un Cont';
 
   @override
-  String get displayName => 'Nume de afișare';
+  String get displayName => 'Nume de Afișare';
 
   @override
   String get password => 'Parolă';
@@ -337,14 +337,14 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get chooseYourModeDesc =>
-      'Selectează din trei stiluri de conversație:';
+      'Selectează din trei stiluri de conversație:\n\n• Familie - Conversații calde și sănătoase perfecte pentru toate vârstele\n• Cuplu - Întrebări intime și romantice pentru a aprofunda conexiunea\n• Prieteni - Subiecte distractive și distractive pentru grupul tău';
 
   @override
   String get pickCategory => '2. Alege o Categorie';
 
   @override
   String get pickCategoryDesc =>
-      'Fiecare mod are mai multe categorii cu pachete unice de întrebări. Categoriile gratuite sunt deblocate, în timp ce categoriile premium necesită un abonament.';
+      'Fiecare mod are mai multe categorii cu pachete unice de întrebări. 3 categorii gratuite pe mod (30 de întrebări fiecare), cu previzualizări de 5 întrebări din categoriile premium.';
 
   @override
   String get startTalking => '3. Începe Să Vorbești';
@@ -358,20 +358,21 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get navigateQuestionsDesc =>
-      '• Glisează spre dreapta sau apasă \"Următorul\" pentru următoarea întrebare';
+      '• Glisează spre dreapta sau apasă \"Următorul\" pentru următoarea întrebare\n• Glisează spre stânga sau apasă \"Anterior\" pentru a revedea întrebări\n• Apasă butonul de acasă pentru a reveni la meniul principal oricând';
 
   @override
   String get premiumFeatures => '5. Funcții Premium';
 
   @override
   String get premiumFeaturesDesc =>
-      'Deblochează categorii exclusive de întrebări cu un abonament:';
+      'Deblochează toate cele 24 de categorii cu Premium:\n\n• Lunar: 49 DKK/lună\n• Anual: 399 DKK/an (economisește 189 DKK!)\n\n✓ Toate categoriile deblocate\n✓ Fără reclame\n✓ Întrebări nelimitate\n✓ Sesiuni Pandora nelimitate';
 
   @override
   String get proTips => 'Sfaturi Pro';
 
   @override
-  String get proTipsDesc => '• Creează un mediu confortabil, fără distrageri';
+  String get proTipsDesc =>
+      '• Creează un mediu confortabil, fără distrageri\n• Ascultă activ și fii prezent\n• Împărtășește sincer și încurajează pe alții să facă la fel\n• Respectă limitele - sari peste întrebări dacă este necesar\n• Distrează-te și bucură-te de conexiune!';
 
   @override
   String get personal => 'Personal';
@@ -381,20 +382,20 @@ class AppLocalizationsRo extends AppLocalizations {
       'Creează-ți propriile pachete de întrebări personalizate';
 
   @override
-  String get gameComplete => 'Joc complet!';
+  String get gameComplete => 'Joc Complet!';
 
   @override
   String get noMoreQuestions =>
       'Ai parcurs toate întrebările din acest pachet!';
 
   @override
-  String get playAgain => 'Joacă din nou';
+  String get playAgain => 'Joacă Din Nou';
 
   @override
-  String get mainMenu => 'Meniu principal';
+  String get mainMenu => 'Meniu Principal';
 
   @override
-  String get thanksForPlaying => 'Mulțumim că ai jucat!';
+  String get thanksForPlaying => 'Mulțumim că Ai Jucat!';
 
   @override
   String get hopeYouHadFun => 'Sper că te-ai distrat! 🎉';
@@ -403,7 +404,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get backToMenu => 'Înapoi la Meniu';
 
   @override
-  String get leaveGame => 'Părăsești jocul?';
+  String get leaveGame => 'Părăsești Jocul?';
 
   @override
   String get leaveGameMessage =>
@@ -416,13 +417,13 @@ class AppLocalizationsRo extends AppLocalizations {
   String get noQuestionsAvailable => 'Nu sunt întrebări disponibile';
 
   @override
-  String get showLess => 'Arată mai puțin';
+  String get showLess => 'Arată Mai Puțin';
 
   @override
-  String get readMore => 'Citește mai mult';
+  String get readMore => 'Citește Mai Mult';
 
   @override
-  String get tapToPlay => 'Apasă pentru a juca';
+  String get tapToPlay => 'Apasă pentru a Juca';
 
   @override
   String get favorites => 'Preferate';
@@ -432,14 +433,16 @@ class AppLocalizationsRo extends AppLocalizations {
       'Gazda creează sesiunea și împărtășește PIN-ul';
 
   @override
-  String get pandoraPlayersJoinMax => 'Jucătorii se alătură (max 15 min)';
+  String get pandoraPlayersJoinMax =>
+      'Jucătorii se alătură (max 6 gratuit, nelimitat premium)';
 
   @override
   String get pandoraHostSetsTimer =>
       'Gazda setează cronometrul pentru întrebări (1-15 min)';
 
   @override
-  String get pandoraEveryoneSubmits => 'Toată lumea trimite întrebările';
+  String get pandoraEveryoneSubmits =>
+      'Toată lumea trimite întrebări (max 12 gratuit)';
 
   @override
   String get pandoraHostControls => 'Gazda controlează progresul jocului';
@@ -448,7 +451,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get pandoraQuestionsDeleted => 'Întrebările sunt șterse după joc';
 
   @override
-  String get pandoraHost => 'Gazda';
+  String get pandoraHost => 'Gazdă';
 
   @override
   String get pandoraJoinGame => 'Alătură-te Jocului';
@@ -466,35 +469,36 @@ class AppLocalizationsRo extends AppLocalizations {
   String get playersJoinWithNames => 'Jucătorii se alătură cu numele lor';
 
   @override
-  String get everyoneSubmitsMin5 => 'Toată lumea trimite întrebări (minim 5)';
+  String get everyoneSubmitsMin5 =>
+      'Toată lumea trimite întrebări (min 5, max 12 gratuit)';
 
   @override
-  String get createSession => 'Creează sesiune';
+  String get createSession => 'Creează Sesiune';
 
   @override
-  String get creating => 'Se creează...';
+  String get creating => 'Se Creează...';
 
   @override
-  String get yourName => 'Numele tău';
+  String get yourName => 'Numele Tău';
 
   @override
   String get enterDisplayName => 'Introdu numele tău de afișare';
 
   @override
-  String get howItWorks => 'Cum funcționează';
+  String get howItWorks => 'Cum Funcționează';
 
   @override
   String get pinCopied => 'PIN copiat în clipboard!';
 
   @override
-  String get endSession => 'Încheie sesiunea?';
+  String get endSession => 'Încheie Sesiunea?';
 
   @override
   String get endSessionConfirm =>
       'Ești sigur că vrei să închei această sesiune Pandora?';
 
   @override
-  String get createCustomDeck => 'Create Custom Deck';
+  String get createCustomDeck => 'Creează Pachet Personalizat';
 
   @override
   String get deckName => 'Numele Pachetului';
@@ -506,17 +510,17 @@ class AppLocalizationsRo extends AppLocalizations {
   String get create => 'Creează';
 
   @override
-  String get deckCreated => 'Deck created!';
+  String get deckCreated => 'Pachet creat!';
 
   @override
   String get failedToCreateDeck => 'Nu s-a reușit crearea pachetului';
 
   @override
-  String get deleteDeck => 'Șterge Pachetul';
+  String get deleteDeck => 'Șterge Pachetul?';
 
   @override
-  String deleteDeckConfirm(Object name) {
-    return 'Ești sigur că vrei să ștergi \"$name\"? Aceasta va șterge toate întrebările din acest pachet.';
+  String deleteDeckConfirm(Object deckName) {
+    return 'Ești sigur că vrei să ștergi \"$deckName\"? Aceasta va șterge toate întrebările din acest pachet.';
   }
 
   @override
@@ -529,10 +533,10 @@ class AppLocalizationsRo extends AppLocalizations {
   String get failedToDeleteDeck => 'Nu s-a reușit ștergerea pachetului';
 
   @override
-  String get myDecks => 'Pachetele mele';
+  String get myDecks => 'Pachetele Mele';
 
   @override
-  String get noDecksYet => 'Încă nu ai pachete';
+  String get noDecksYet => 'Încă Nu Ai Pachete';
 
   @override
   String get createFirstDeck => 'Creează-ți primul pachet personalizat!';
@@ -554,7 +558,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get failedToAddQuestion => 'Nu s-a reușit adăugarea întrebării';
 
   @override
-  String get editQuestion => 'Editează întrebare';
+  String get editQuestion => 'Editează Întrebare';
 
   @override
   String get enterYourQuestion => 'Introdu întrebarea ta';
@@ -569,7 +573,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get failedToUpdateQuestion => 'Nu s-a putut actualiza întrebarea';
 
   @override
-  String get deleteQuestion => 'Șterge întrebarea';
+  String get deleteQuestion => 'Șterge Întrebarea';
 
   @override
   String get deleteQuestionConfirm =>
@@ -582,7 +586,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get failedToDeleteQuestion => 'Nu s-a putut șterge întrebarea';
 
   @override
-  String get addQuestion => 'Adaugă întrebare';
+  String get addQuestion => 'Adaugă Întrebare';
 
   @override
   String get typeQuestionHere => 'Scrie întrebarea ta aici...';
@@ -591,7 +595,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get add => 'Adaugă';
 
   @override
-  String get noQuestionsYet => 'Încă nu sunt întrebări';
+  String get noQuestionsYet => 'Încă Nu Sunt Întrebări';
 
   @override
   String get addFirstQuestion => 'Adaugă-ți prima întrebare!';
@@ -606,11 +610,11 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get deckDescSpicyTalks =>
-      'Îndrăznețe, pasionale și intime — aceste cărți invită cuplurile să exploreze dorința, fanteziile și pasiunea împreună. Fiecare întrebare provoacă conversații sincere și incitante care apropie partenerii.';
+      'Îndrăznețe, audace și intime — aceste cărți invită cuplurile să exploreze dorința, fanteziile și pasiunea împreună. Fiecare întrebare provoacă conversații sincere și incitante care apropie partenerii.';
 
   @override
   String get deckDescDoYouDareTalks =>
-      'Un set curajos care combină onestitatea emoțională cu subiecte sensibile precum încrederea, religia, banii și limitele personale — totul pentru a descoperi ce contează cu adevărat. *Avertisment:* Unele întrebări sunt directe — abordați-le cu empatie și respect.';
+      'Un set curajos care combină onestitatea emoțională cu subiecte sensibile precum încrederea, religia, banii și limitele personale — totul conceput pentru a descoperi ce contează cu adevărat. *Notă:* Unele întrebări sunt directe și nefiltrate — abordați-le cu deschidere, empatie și respect.';
 
   @override
   String get deckDescLoveLanguagesTalks =>
@@ -618,7 +622,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get deckDescSillyTalks =>
-      'Distracție și râsete! Aceste întrebări amuzante dezvăluie obiceiurile și gândurile tale cele mai ciudate. Perfecte pentru prieteni, familie sau cupluri care iau viața cu umor.';
+      'Distracție pură și râsete! Aceste întrebări amuzante și ușoare dezvăluie obiceiurile și gândurile tale cele mai ciudate. Perfecte pentru prieteni, familie sau cupluri care nu iau viața prea în serios.';
 
   @override
   String get deckDescCarTalks =>
@@ -626,58 +630,156 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get deckDescCozyTalks =>
-      'Întrebări calde și relaxante care te fac să te simți acasă. Ele inspiră discuții liniștitoare despre bucurii mărunte și amintiri frumoase.';
+      'Conversații calde și relaxate perfecte pentru seri confortabile. Aceste întrebări creează momente confortabile și sincere de conexiune.';
 
   @override
   String get deckDescPartyNight =>
-      'Pachetul tău perfect pentru seri amuzante cu prietenii! Aceste întrebări pline de viață provoacă râsete, povești și dezbateri jucăușe — de la eșecuri la petreceri la cine e cel mai mare flirt. Ideal pentru a anima atmosfera.';
+      'Întrebări pline de energie concepute pentru ambianțe de grup distractive. Perfecte pentru petreceri și întâlniri sociale cu prieteni.';
 
   @override
   String get deckDescUnpopularOpinions =>
-      'Setul care te provoacă să spui ceea ce toți gândesc, dar nimeni nu recunoaște. De la cultura influencerilor la valorile moderne — aceste cărți stârnesc dezbateri oneste și perspective surprinzătoare.';
+      'Setul care te provoacă să spui ceea ce toți gândesc, dar nimeni nu recunoaște. De la cultura influencerilor la valorile moderne — aceste cărți stârnesc dezbateri oneste și perspective surprinzătoare. Perfect pentru prieteni cu opinie.';
 
   @override
   String get deckDescPlotTwists =>
-      'Acest set te aruncă în cele mai amuzante și dificile momente \"ce ai face dacă…\". Perfect pentru seri de grup pline de râsete, surprize și reacții neașteptate.';
+      'Acest set te aruncă în cele mai amuzante și dificile momente \"ce ai face dacă…\". Gândire rapidă, instincte și râsete garantate! Perfect pentru seri de grup pline de surprize și râsete.';
 
   @override
   String get deckDescAfterDark =>
-      'Intră în latura întunecată a conversației cu întrebări care îți dau fiori. Perfect pentru nopți târzii și momente de suspans.';
+      'Intră în latura întunecată a conversației cu întrebări care îți dau fiori. De la coincidențe înfiorătoare la scenarii de supraviețuire — perfect pentru nopți târzii cu emoții tari.';
 
   @override
   String get deckDescHistoryTalks =>
-      'Un amestec nostalgic de amintiri personale și momente de familie. Aceste întrebări inspiră povești și redescoperirea rădăcinilor.';
+      'Un amestec nostalgic de amintiri personale și momente de familie. Aceste întrebări inspiră povești, râsete și redescoperirea rădăcinilor. Perfecte pentru reuniuni de familie sau seri confortabile.';
 
   @override
   String get deckDescTinyTalks =>
-      'Creat pentru părinți și micuții lor! Întrebări simple și jucăușe care îi ajută pe copii să se exprime și pe părinți să îi înțeleagă mai bine. Ideal pentru 3–9 ani.';
+      'Creat pentru părinți și micuții lor! Aceste întrebări simple și jucăușe îi ajută pe copii să se exprime în timp ce părinții învață cum gândesc. Ideal pentru 3-9 ani.';
 
   @override
   String get deckDescGoodOldDays =>
-      'O călătorie nostalgică în trecut — de la amintiri din copilărie la cum s-a schimbat viața. Perfect pentru bunici să-și împărtășească poveștile.';
+      'Călătorește în timp cu întrebări despre amintiri dragi, experiențe trecute și cum obișnuiau să fie lucrurile. Perfect pentru toate vârstele.';
 
   @override
   String get deckDescWouldYouRather =>
-      'O versiune de familie a clasicului joc \"Ai prefera…?\". Plin de alegeri amuzante și creative care aduc zâmbete și discuții.';
+      'Întrebări clasice de dilemă care provoacă dezbateri și dezvăluie preferințe. Alege între două opțiuni și descoperă ce contează cel mai mult.';
 
   @override
-  String get createNewDeck => 'Creează un Pachet Nou';
+  String get createNewDeck => 'Creează Pachet Nou';
 
   @override
-  String get sessionPin => 'PIN-ul sesiunii';
+  String get sessionPin => 'PIN-ul Sesiunii';
 
   @override
-  String get joinSession => 'Alătură-te sesiunii';
+  String get joinSession => 'Alătură-te Sesiunii';
 
   @override
-  String get questionSubmitted => 'Întrebarea a fost trimisă!';
+  String get questionSubmitted => 'Întrebare Trimisă';
 
   @override
-  String get sessionCancelled => 'Sesiunea a fost anulată';
+  String get sessionCancelled => 'Sesiune Anulată';
 
   @override
-  String get yourQuestion => 'Întrebarea ta';
+  String get yourQuestion => 'Întrebarea Ta';
 
   @override
-  String get reactionBreakdown => 'Analiza reacțiilor';
+  String get reactionBreakdown => 'Analiza Reacțiilor';
+
+  @override
+  String get deckNameHint => 'Numele pachetului';
+
+  @override
+  String get deckCreatedSuccess => 'Pachet creat!';
+
+  @override
+  String get cancelSession => 'Anulează Sesiunea?';
+
+  @override
+  String get cancelSessionConfirm =>
+      'Aceasta va anula sesiunea pentru toți jucătorii. Ești sigur?';
+
+  @override
+  String get no => 'Nu';
+
+  @override
+  String get yesCancel => 'Da, Anulează';
+
+  @override
+  String get hostQuestionCollection => 'Gazdă - Colectare Întrebări';
+
+  @override
+  String get questionCollection => 'Colectare Întrebări';
+
+  @override
+  String get endSessionButton => 'Încheie Sesiunea';
+
+  @override
+  String get noActiveSubscription => 'Niciun Abonament Activ';
+
+  @override
+  String get premium => 'Premium';
+
+  @override
+  String notEnoughQuestions(Object count) {
+    return 'Not enough questions. Minimum 5 required. (Currently: $count)';
+  }
+
+  @override
+  String get premiumFeatureTitle => 'Caracteristică Premium';
+
+  @override
+  String get questionNavigationPremium =>
+      'Navigarea între întrebări este o caracteristică premium. Abonează-te pentru a debloca posibilitatea de a sări la orice întrebare!';
+
+  @override
+  String get customDecks => 'Pachete Personalizate';
+
+  @override
+  String get noDecksYetMessage => 'Încă nu există pachete';
+
+  @override
+  String get createFirstDeckMessage =>
+      'Apasă + pentru a crea primul tău pachet';
+
+  @override
+  String get signInRequired => 'Autentificare Necesară';
+
+  @override
+  String get signInToUsePersonal =>
+      'Te rugăm să te autentifici pentru a utiliza modul Personal și a crea pachete de întrebări personalizate.';
+
+  @override
+  String get collaborativeQuestionGame => 'Joc Colaborativ cu Întrebări';
+
+  @override
+  String get hostPandoraSession => 'Găzduiește Sesiune Pandora';
+
+  @override
+  String get joinPandoraGame => 'Alătură-te unui Joc';
+
+  @override
+  String get yourDisplayName => 'Numele Tău de Afișare';
+
+  @override
+  String get enterYourName => 'Introdu numele tău';
+
+  @override
+  String get selectQuestion => 'Selectează Întrebarea';
+
+  @override
+  String get joinTime => 'Timp pentru Alăturare';
+
+  @override
+  String get participants => 'Participanți';
+
+  @override
+  String get loading => 'Se încarcă...';
+
+  @override
+  String needAtLeastPlayers(int current) {
+    return 'Sunt necesari cel puțin 2 jucători ($current/2)';
+  }
+
+  @override
+  String get continueToTimerSetup => 'Continuă la Configurarea Cronometrului';
 }

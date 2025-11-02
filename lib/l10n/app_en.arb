@@ -226,5 +226,44 @@
 "questionSubmitted": "Question Submitted",
 "sessionCancelled": "Session Cancelled",
 "yourQuestion": "Your Question",
-"reactionBreakdown": "Reaction Breakdown"
+"reactionBreakdown": "Reaction Breakdown",
+  "cancel": "Cancel",
+  "deckNameHint": "Deck name",  
+  "deckCreatedSuccess": "Deck created!",
+  "deleteDeckConfirm": "Are you sure you want to delete \"{deckName}\"? This will delete all questions in this deck.",
+  "cancelSession": "Cancel Session?",
+  "cancelSessionConfirm": "This will cancel the session for all players. Are you sure?",
+  "no": "No",
+  "yesCancel": "Yes, Cancel",
+  "hostQuestionCollection": "Host - Question Collection",
+  "questionCollection": "Question Collection",
+  "endSessionButton": "End Session",
+  "noActiveSubscription": "No Active Subscription",
+  "premium": "Premium",
+  "notEnoughQuestions": "Not enough questions. Minimum 5 required. (Currently: {count})",
+    "premiumFeatureTitle": "Premium Feature",
+  "questionNavigationPremium": "Question navigation is a premium feature. Subscribe to unlock the ability to jump to any question!",
+  "customDecks": "Custom Decks",
+  "noDecksYetMessage": "No decks yet",
+  "createFirstDeckMessage": "Tap + to create your first deck",
+  "signInRequired": "Sign In Required",
+  "signInToUsePersonal": "Please sign in to use Personal mode and create custom question decks.",
+  "collaborativeQuestionGame": "Collaborative Question Game",
+  "hostPandoraSession": "Host Pandora Session",
+  "joinPandoraGame": "Join a Game",
+  "yourDisplayName": "Your Display Name",
+  "enterYourName": "Enter your name",
+  "selectQuestion": "Select Question",
+  "joinTime": "Time to Join",
+  "participants": "Participants",
+  "loading": "Loading...",
+"needAtLeastPlayers": "Need at least 2 players ({current}/2)",
+"@needAtLeastPlayers": {
+  "placeholders": {
+    "current": {
+      "type": "int"
+    }
+  }
+},
+"continueToTimerSetup": "Continue to Timer Setup"
 }

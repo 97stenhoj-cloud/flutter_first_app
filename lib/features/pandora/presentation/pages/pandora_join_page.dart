@@ -134,7 +134,7 @@ class _PandoraJoinPageState extends State<PandoraJoinPage> {
                   // Title
                   Center(
                     child: Text(
-                      '🔮 Join Pandora Session',
+                      l10n.joinPandoraGame,
                       style: GoogleFonts.poppins(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -185,7 +185,7 @@ class _PandoraJoinPageState extends State<PandoraJoinPage> {
                   
                   // Name selection
                   Text(
-                    'Display Name',
+                    l10n.yourDisplayName,
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -239,7 +239,7 @@ class _PandoraJoinPageState extends State<PandoraJoinPage> {
                         color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
                       ),
                       decoration: InputDecoration(
-                        hintText: 'Enter your name',
+                        hintText: l10n.enterYourName,
                         filled: true,
                         fillColor: widget.isDarkMode
                             ? Colors.white.withValues(alpha: 0.1)

@@ -36,72 +36,74 @@ class AppLocalizationsPt extends AppLocalizations {
   String get chooseCategory => 'Escolha uma Categoria';
 
   @override
-  String get locked => 'Categoria Bloqueada';
+  String get locked => 'Categoria Premium';
 
   @override
   String get lockedMessage =>
-      'Esta categoria está bloqueada. Faça um upgrade para premium para desbloquear todas as categorias!';
+      'Esta é uma categoria premium. Faça upgrade para desbloquear todas as categorias e remover anúncios!';
 
   @override
-  String get previewAvailable => 'Preview: First 5 questions available';
+  String get previewAvailable =>
+      'Pré-visualização: Primeiras 5 perguntas disponíveis';
 
   @override
-  String get upgradeNow => 'Upgrade Now';
+  String get upgradeNow => 'Atualizar Agora';
 
   @override
   String get ok => 'OK';
 
   @override
-  String get mayBeLater => 'Talvez mais tarde';
+  String get mayBeLater => 'Talvez Mais Tarde';
 
   @override
-  String get getPremium => 'Get Premium';
+  String get getPremium => 'Obter Premium';
 
   @override
-  String get premiumTitle => 'Unlock Everything';
+  String get premiumTitle => 'Desbloquear Tudo';
 
   @override
   String get premiumDescription =>
-      'Get unlimited access to all categories across all modes, remove ads, and enjoy unlimited Pandora sessions.';
+      'Obtenha acesso ilimitado a todas as categorias em todos os modos, remova anúncios e desfrute de sessões ilimitadas do Pandora.';
 
   @override
-  String get premiumPriceMonthly => '49 DKK/month';
+  String get premiumPriceMonthly => '49 DKK/mês';
 
   @override
-  String get premiumPriceYearly => '399 DKK/year';
+  String get premiumPriceYearly => '399 DKK/ano';
 
   @override
-  String get saveWithYearly => 'Save 189 DKK with yearly!';
+  String get saveWithYearly => 'Economize 189 DKK com o plano anual!';
 
   @override
-  String get monthly => 'Monthly';
+  String get monthly => 'Mensal';
 
   @override
-  String get yearly => 'Yearly';
+  String get yearly => 'Anual';
 
   @override
-  String get billedMonthly => 'Billed monthly';
+  String get billedMonthly => 'Cobrado mensalmente';
 
   @override
-  String get billedYearly => 'Billed annually';
+  String get billedYearly => 'Cobrado anualmente';
 
   @override
-  String get premiumFeature1 => '✓ All 21 premium categories unlocked';
+  String get premiumFeature1 =>
+      '✓ Todas as 21 categorias premium desbloqueadas';
 
   @override
-  String get premiumFeature2 => '✓ No ads forever';
+  String get premiumFeature2 => '✓ Sem anúncios para sempre';
 
   @override
-  String get premiumFeature3 => '✓ Unlimited questions in all categories';
+  String get premiumFeature3 => '✓ Perguntas ilimitadas em todas as categorias';
 
   @override
-  String get premiumFeature4 => '✓ Pandora: Unlimited players & questions';
+  String get premiumFeature4 => '✓ Pandora: Jogadores e perguntas ilimitados';
 
   @override
-  String get premiumFeature5 => '✓ Support ongoing development';
+  String get premiumFeature5 => '✓ Apoie o desenvolvimento contínuo';
 
   @override
-  String get subscribePremium => 'Subscribe to Premium';
+  String get subscribePremium => 'Assinar Premium';
 
   @override
   String get subscribe => 'Assinar';
@@ -110,53 +112,51 @@ class AppLocalizationsPt extends AppLocalizations {
   String get cancel => 'Cancelar';
 
   @override
-  String subscriptionActivated(Object bundles) {
-    return 'Assinatura ativada! $bundles desbloqueados.';
-  }
+  String get subscriptionActivated =>
+      'Premium ativado! Todas as categorias desbloqueadas.';
 
   @override
-  String get premiumActivated =>
-      'Premium ativado! Anúncios removidos. Pacote desbloqueado.';
+  String get premiumActivated => 'Premium Ativado!';
 
   @override
   String get demoNote =>
-      'Demonstração: os desbloqueios serão redefinidos ao reiniciar o app';
+      'Demo: A assinatura será redefinida ao reiniciar o aplicativo';
 
   @override
-  String get freeTier => 'Free Tier';
+  String get freeTier => 'Nível Gratuito';
 
   @override
   String get freeTierDesc =>
-      '3 categories per mode (30 questions each)\n5-question previews of premium categories\nAds every 7 questions';
+      '3 categorias por modo (30 perguntas cada)\nPré-visualizações de 5 perguntas das categorias premium\nAnúncios a cada 7 perguntas';
 
   @override
-  String get currentPlan => 'Current Plan';
+  String get currentPlan => 'Plano Atual';
 
   @override
-  String get limitReached => 'Limit Reached';
+  String get limitReached => 'Limite Atingido';
 
   @override
   String get freeCategoryLimit =>
-      'You\'ve reached the 30-question limit for free categories. Upgrade to Premium for unlimited access!';
+      'Você atingiu o limite de 30 perguntas para categorias gratuitas. Atualize para Premium para acesso ilimitado!';
 
   @override
   String get previewLimit =>
-      'You\'ve seen all 5 preview questions. Upgrade to Premium to continue!';
+      'Você viu todas as 5 perguntas de pré-visualização. Atualize para Premium para continuar!';
 
   @override
-  String get pandoraFreeLimit => 'Free Limit';
+  String get pandoraFreeLimit => 'Limite Gratuito';
 
   @override
   String get pandoraFreeLimitMessage =>
-      'Free hosts can have max 6 players and 12 questions. Upgrade to Premium for unlimited!';
+      'Anfitriões gratuitos podem ter máx. 6 jogadores e 12 perguntas. Atualize para Premium para acesso ilimitado!';
 
   @override
   String get pandoraUpgradeMessage =>
-      'You\'ve reached 12 questions. Upgrade to Premium to continue playing!';
+      'Você atingiu 12 perguntas. Atualize para Premium para continuar jogando!';
 
   @override
   String get pandoraMaxPlayers =>
-      'Maximum 6 players reached (Free limit). Upgrade to Premium for unlimited players!';
+      'Máximo de 6 jogadores atingido (limite gratuito). Atualize para Premium para jogadores ilimitados!';
 
   @override
   String get swipeOrTap => 'Deslize ou toque nas setas';
@@ -172,13 +172,13 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get watchAdMessage =>
-      'Assista a um anúncio curto para continuar, ou fique sem anúncios com o premium!';
+      'Assista a um anúncio curto para continuar, ou fique sem anúncios com premium!';
 
   @override
   String get watchAd => 'Assistir Anúncio';
 
   @override
-  String get goAdFree => 'Fique sem Anúncios - 59 DKK/mês';
+  String get goAdFree => 'Sem Anúncios com Premium';
 
   @override
   String get removeAdsForever => 'Remover Anúncios Para Sempre';
@@ -190,7 +190,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get adLoadingContinue => 'Carregando anúncio... Continue';
 
   @override
-  String get pricePerMonth => '59 DKK/mês';
+  String get pricePerMonth => '49 DKK/mês ou 399 DKK/ano';
 
   @override
   String noQuestionsFoundMessage(Object category, Object mode) {
@@ -239,14 +239,14 @@ class AppLocalizationsPt extends AppLocalizations {
   String get signOut => 'Sair';
 
   @override
-  String get notSignedIn => 'Não conectado';
+  String get notSignedIn => 'Não Conectado';
 
   @override
-  String get signInSignUp => 'Entrar / Criar conta';
+  String get signInSignUp => 'Entrar / Criar Conta';
 
   @override
   String get signInToSync =>
-      'Entre para sincronizar suas assinaturas entre dispositivos e desbloquear conteúdo premium';
+      'Entre para sincronizar sua assinatura entre dispositivos e desbloquear conteúdo premium';
 
   @override
   String get signOutConfirm => 'Você tem certeza que deseja sair?';
@@ -270,7 +270,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get unknown => 'Desconhecido';
 
   @override
-  String get subscriptionStatus => 'Subscription Status';
+  String get subscriptionStatus => 'Status da Assinatura';
 
   @override
   String get premiumMember => 'Membro Premium';
@@ -288,7 +288,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get continueWithGoogle => 'Continuar com o Google';
 
   @override
-  String get skipForNow => 'Pular por enquanto';
+  String get skipForNow => 'Pular por Enquanto';
 
   @override
   String get byContining =>
@@ -309,7 +309,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get aboutCredits => 'Sobre / Créditos';
 
   @override
-  String get welcomeBack => 'Bem-vindo de volta!';
+  String get welcomeBack => 'Bem-vindo de Volta!';
 
   @override
   String get createAccount => 'Criar Conta';
@@ -336,41 +336,43 @@ class AppLocalizationsPt extends AppLocalizations {
   String get chooseYourMode => '1. Escolha Seu Modo';
 
   @override
-  String get chooseYourModeDesc => 'Selecione entre três estilos de conversa:';
+  String get chooseYourModeDesc =>
+      'Selecione entre três estilos de conversa:\n\n• Família - Conversas calorosas e saudáveis perfeitas para todas as idades\n• Casal - Perguntas íntimas e românticas para aprofundar sua conexão\n• Amigos - Tópicos divertidos e divertidos para seu grupo';
 
   @override
   String get pickCategory => '2. Escolha uma Categoria';
 
   @override
   String get pickCategoryDesc =>
-      'Cada modo tem várias categorias com pacotes de perguntas únicos. As categorias gratuitas são desbloqueadas, enquanto as categorias premium requerem uma assinatura.';
+      'Cada modo tem várias categorias com pacotes de perguntas únicos. 3 categorias gratuitas por modo (30 perguntas cada), com pré-visualizações de 5 perguntas das categorias premium.';
 
   @override
   String get startTalking => '3. Comece a Conversar';
 
   @override
   String get startTalkingDesc =>
-      'As perguntas aparecem em tela cheia. Alternem-se para ler e responder honestamente. Não há respostas erradas - o objetivo é uma conversa significativa!';
+      'As perguntas aparecem em tela cheia. Revezem-se para ler e responder honestamente. Não há respostas erradas - o objetivo é uma conversa significativa!';
 
   @override
   String get navigateQuestions => '4. Navegue pelas Perguntas';
 
   @override
   String get navigateQuestionsDesc =>
-      '• Deslize para a direita ou toque em \"Próxima\" para a próxima pergunta';
+      '• Deslize para a direita ou toque em \"Próxima\" para a próxima pergunta\n• Deslize para a esquerda ou toque em \"Anterior\" para revisitar perguntas\n• Toque no botão inicial para retornar ao menu principal a qualquer momento';
 
   @override
   String get premiumFeatures => '5. Recursos Premium';
 
   @override
   String get premiumFeaturesDesc =>
-      'Desbloqueie categorias de perguntas exclusivas com uma assinatura:';
+      'Desbloqueie todas as 24 categorias com Premium:\n\n• Mensal: 49 DKK/mês\n• Anual: 399 DKK/ano (economize 189 DKK!)\n\n✓ Todas as categorias desbloqueadas\n✓ Sem anúncios\n✓ Perguntas ilimitadas\n✓ Sessões ilimitadas do Pandora';
 
   @override
   String get proTips => 'Dicas Profissionais';
 
   @override
-  String get proTipsDesc => '• Crie um ambiente confortável e sem distrações';
+  String get proTipsDesc =>
+      '• Crie um ambiente confortável e sem distrações\n• Ouça ativamente e esteja presente\n• Compartilhe honestamente e incentive outros a fazer o mesmo\n• Respeite os limites - pule perguntas se necessário\n• Divirta-se e aproveite a conexão!';
 
   @override
   String get personal => 'Pessoal';
@@ -431,14 +433,16 @@ class AppLocalizationsPt extends AppLocalizations {
       'Anfitrião cria a sessão e compartilha o PIN';
 
   @override
-  String get pandoraPlayersJoinMax => 'Jogadores entram (máx. 15 min)';
+  String get pandoraPlayersJoinMax =>
+      'Jogadores entram (máx. 6 grátis, ilimitado premium)';
 
   @override
   String get pandoraHostSetsTimer =>
       'Anfitrião define o tempo para a pergunta (1-15 min)';
 
   @override
-  String get pandoraEveryoneSubmits => 'Todos enviam perguntas';
+  String get pandoraEveryoneSubmits =>
+      'Todos enviam perguntas (máx. 12 grátis)';
 
   @override
   String get pandoraHostControls => 'Anfitrião controla o progresso do jogo';
@@ -465,7 +469,8 @@ class AppLocalizationsPt extends AppLocalizations {
   String get playersJoinWithNames => 'Os jogadores entram com seus nomes';
 
   @override
-  String get everyoneSubmitsMin5 => 'Todo mundo envia perguntas (mínimo 5)';
+  String get everyoneSubmitsMin5 =>
+      'Todo mundo envia perguntas (mín 5, máx 12 grátis)';
 
   @override
   String get createSession => 'Criar Sessão';
@@ -486,14 +491,14 @@ class AppLocalizationsPt extends AppLocalizations {
   String get pinCopied => 'PIN copiado para a área de transferência!';
 
   @override
-  String get endSession => 'Encerrar sessão?';
+  String get endSession => 'Encerrar Sessão?';
 
   @override
   String get endSessionConfirm =>
       'Você tem certeza de que deseja encerrar esta sessão do Pandora?';
 
   @override
-  String get createCustomDeck => 'Create Custom Deck';
+  String get createCustomDeck => 'Criar Baralho Personalizado';
 
   @override
   String get deckName => 'Nome do Baralho';
@@ -505,17 +510,17 @@ class AppLocalizationsPt extends AppLocalizations {
   String get create => 'Criar';
 
   @override
-  String get deckCreated => 'Deck created!';
+  String get deckCreated => 'Baralho criado!';
 
   @override
   String get failedToCreateDeck => 'Falha ao criar o baralho';
 
   @override
-  String get deleteDeck => 'Excluir Baralho';
+  String get deleteDeck => 'Excluir Baralho?';
 
   @override
-  String deleteDeckConfirm(Object name) {
-    return 'Você tem certeza que deseja excluir \"$name\"? Isso irá deletar todas as perguntas deste baralho.';
+  String deleteDeckConfirm(Object deckName) {
+    return 'Você tem certeza que deseja excluir \"$deckName\"? Isso irá deletar todas as perguntas deste baralho.';
   }
 
   @override
@@ -597,7 +602,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get deckDescLoveTalks =>
-      'Explore o romance, a química e a conexão através de perguntas sinceras que celebram o vosso relacionamento. Desde \"como nos conhecemos\" até ao que te faz sentir mais amado — estas cartas aprofundam a intimidade emocional.';
+      'Explore o romance, a química e a conexão através de perguntas sinceras que celebram o seu relacionamento. Desde \"como nos conhecemos\" até ao que te faz sentir mais amado — estas cartas aprofundam a intimidade emocional.';
 
   @override
   String get deckDescDeepTalks =>
@@ -609,7 +614,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get deckDescDoYouDareTalks =>
-      'Um baralho destemido que combina honestidade emocional com temas delicados como confiança, religião, dinheiro e limites pessoais — tudo para revelar o que realmente importa. *Nota:* Algumas perguntas são diretas — joguem com empatia e respeito.';
+      'Um baralho destemido que combina honestidade emocional com temas delicados como confiança, religião, dinheiro e limites pessoais — tudo projetado para revelar o que realmente importa. *Nota:* Algumas perguntas são diretas e sem filtros — joguem com abertura, empatia e respeito.';
 
   @override
   String get deckDescLoveLanguagesTalks =>
@@ -617,66 +622,165 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get deckDescSillyTalks =>
-      'Diversão e gargalhadas! Estas perguntas leves e engraçadas revelam os teus hábitos mais estranhos e pensamentos mais divertidos. Perfeitas para amigos, família ou casais que gostam de rir juntos.';
+      'Diversão e gargalhadas! Estas perguntas leves e engraçadas revelam os seus hábitos mais estranhos e pensamentos mais divertidos. Perfeitas para amigos, família ou casais que não se levam muito a sério.';
 
   @override
   String get deckDescCarTalks =>
-      'Perfeito para viagens de carro — estas cartas transformam o tempo de condução em ótimas conversas. Espera perguntas engraçadas, criativas e nostálgicas sobre viagens, aventuras e peculiaridades.';
+      'Perfeito para viagens de carro — estas cartas transformam o tempo de condução em ótimas conversas. Espere perguntas engraçadas, criativas e nostálgicas sobre viagens, aventuras e peculiaridades.';
 
   @override
   String get deckDescCozyTalks =>
-      'Perguntas quentes e acolhedoras que te fazem sentir em casa. Inspiram conversas reconfortantes sobre pequenas alegrias e memórias.';
+      'Conversas calorosas e relaxadas perfeitas para noites aconchegantes. Estas perguntas criam momentos confortáveis e sinceros de conexão.';
 
   @override
   String get deckDescPartyNight =>
-      'O teu baralho ideal para noites divertidas com amigos! Estas perguntas animadas trazem risadas, histórias e debates divertidos — de falhas em festas a quem é o maior flirt da noite. Perfeito para manter o bom humor.';
+      'Perguntas de alta energia projetadas para ambientes de grupo divertidos. Perfeitas para festas e encontros sociais com amigos.';
 
   @override
   String get deckDescUnpopularOpinions =>
-      'O baralho que te desafia a dizer o que todos pensam, mas ninguém admite. Da cultura dos influenciadores às regras sociais — estas cartas despertam debates honestos e perspetivas inesperadas. Perfeito para conversas fortes.';
+      'O baralho que te desafia a dizer o que todos pensam, mas ninguém admite. Da cultura dos influenciadores às regras sociais — estas cartas despertam debates honestos e perspetivas inesperadas. Perfeito para amigos com opinião.';
 
   @override
   String get deckDescPlotTwists =>
-      'Este baralho coloca-te no centro dos momentos mais engraçados e difíceis da vida — \"O que farias se…?\". Ideal para noites de grupo cheias de gargalhadas e surpresas.';
+      'Este baralho coloca-te no centro dos momentos mais engraçados e difíceis da vida — \"O que farias se…?\". Pensamento rápido, instintos e gargalhadas garantidas! Ideal para noites de grupo cheias de surpresas e gargalhadas.';
 
   @override
   String get deckDescAfterDark =>
-      'Entra no lado sombrio da conversa com perguntas que dão arrepios. Perfeito para noites tardias cheias de mistério.';
+      'Entre no lado sombrio da conversa com perguntas que dão arrepios. De coincidências assustadoras a cenários de sobrevivência — perfeito para noites tardias com emoção.';
 
   @override
   String get deckDescHistoryTalks =>
-      'Uma mistura nostálgica de memórias pessoais e momentos familiares. Estas perguntas inspiram histórias e risadas em família.';
+      'Uma mistura nostálgica de memórias pessoais e momentos familiares. Estas perguntas inspiram histórias, gargalhadas e redescoberta de suas raízes. Perfeito para reuniões de família ou noites aconchegantes.';
 
   @override
   String get deckDescTinyTalks =>
-      'Feito para pais e os seus pequenos! Perguntas simples e divertidas que ajudam as crianças a expressar-se e os pais a compreendê-las. Ideal dos 3 aos 9 anos.';
+      'Feito para pais e os seus pequenos! Perguntas simples e divertidas que ajudam as crianças a expressar-se enquanto os pais aprendem como pensam. Ideal dos 3 aos 9 anos.';
 
   @override
   String get deckDescGoodOldDays =>
-      'Uma viagem nostálgica ao passado — da infância até às mudanças da vida. Perfeito para avós que querem partilhar histórias.';
+      'Viaje no tempo com perguntas sobre memórias queridas, experiências passadas e como as coisas costumavam ser. Perfeito para todas as idades.';
 
   @override
   String get deckDescWouldYouRather =>
-      'Uma versão familiar do clássico jogo \"Preferias...?\". Repleta de escolhas engraçadas e criativas que fazem todos rir e pensar.';
+      'Perguntas clássicas de dilemas que provocam debates e revelam preferências. Escolha entre duas opções e descubra o que importa mais.';
 
   @override
   String get createNewDeck => 'Criar Novo Baralho';
 
   @override
-  String get sessionPin => 'PIN da sessão';
+  String get sessionPin => 'PIN da Sessão';
 
   @override
   String get joinSession => 'Entrar na Sessão';
 
   @override
-  String get questionSubmitted => 'Pergunta enviada!';
+  String get questionSubmitted => 'Pergunta Enviada';
 
   @override
-  String get sessionCancelled => 'Sessão cancelada';
+  String get sessionCancelled => 'Sessão Cancelada';
 
   @override
   String get yourQuestion => 'Sua Pergunta';
 
   @override
   String get reactionBreakdown => 'Análise de Reação';
+
+  @override
+  String get deckNameHint => 'Nome do baralho';
+
+  @override
+  String get deckCreatedSuccess => 'Baralho criado!';
+
+  @override
+  String get cancelSession => 'Cancelar Sessão?';
+
+  @override
+  String get cancelSessionConfirm =>
+      'Isso cancelará a sessão para todos os jogadores. Você tem certeza?';
+
+  @override
+  String get no => 'Não';
+
+  @override
+  String get yesCancel => 'Sim, Cancelar';
+
+  @override
+  String get hostQuestionCollection => 'Anfitrião - Coleta de Perguntas';
+
+  @override
+  String get questionCollection => 'Coleta de Perguntas';
+
+  @override
+  String get endSessionButton => 'Encerrar Sessão';
+
+  @override
+  String get noActiveSubscription => 'Sem Assinatura Ativa';
+
+  @override
+  String get premium => 'Premium';
+
+  @override
+  String notEnoughQuestions(Object count) {
+    return 'Not enough questions. Minimum 5 required. (Currently: $count)';
+  }
+
+  @override
+  String get premiumFeatureTitle => 'Recurso Premium';
+
+  @override
+  String get questionNavigationPremium =>
+      'A navegação de perguntas é um recurso premium. Assine para desbloquear a capacidade de pular para qualquer pergunta!';
+
+  @override
+  String get customDecks => 'Baralhos Personalizados';
+
+  @override
+  String get noDecksYetMessage => 'Ainda não há baralhos';
+
+  @override
+  String get createFirstDeckMessage =>
+      'Toque em + para criar seu primeiro baralho';
+
+  @override
+  String get signInRequired => 'Login Necessário';
+
+  @override
+  String get signInToUsePersonal =>
+      'Por favor, faça login para usar o modo Pessoal e criar baralhos de perguntas personalizados.';
+
+  @override
+  String get collaborativeQuestionGame => 'Jogo Colaborativo de Perguntas';
+
+  @override
+  String get hostPandoraSession => 'Hospedar Sessão Pandora';
+
+  @override
+  String get joinPandoraGame => 'Entrar em um Jogo';
+
+  @override
+  String get yourDisplayName => 'Seu Nome de Exibição';
+
+  @override
+  String get enterYourName => 'Digite seu nome';
+
+  @override
+  String get selectQuestion => 'Selecionar Pergunta';
+
+  @override
+  String get joinTime => 'Tempo para Entrar';
+
+  @override
+  String get participants => 'Participantes';
+
+  @override
+  String get loading => 'Carregando...';
+
+  @override
+  String needAtLeastPlayers(int current) {
+    return 'São necessários pelo menos 2 jogadores ($current/2)';
+  }
+
+  @override
+  String get continueToTimerSetup =>
+      'Continuar para Configuração do Temporizador';
 }

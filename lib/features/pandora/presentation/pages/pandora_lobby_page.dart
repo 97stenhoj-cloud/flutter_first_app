@@ -328,7 +328,7 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
                       ),
                       const SizedBox(width: 12),
                       Text(
-                        'Join time: ${_formatTime(remainingTime)}',
+                        '${l10n.joinTime}: ${_formatTime(remainingTime)}',
                         style: GoogleFonts.poppins(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -407,7 +407,7 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
                   
                   // Participants section
                   Text(
-                    'Participants (${participants.length})',
+                    '${l10n.participants} (${participants.length})',
                     style: GoogleFonts.poppins(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -525,10 +525,10 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
                         ),
                         child: Text(
                           isLoading 
-                              ? 'Loading...'
-                              : participants.length < 2
-                                  ? 'Need at least 2 players (${participants.length}/2)'
-                                  : 'Continue to Timer Setup',
+                            ? l10n.loading
+                            : participants.length < 2
+                              ? l10n.needAtLeastPlayers(participants.length)
+                              : l10n.continueToTimerSetup,
                           style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,

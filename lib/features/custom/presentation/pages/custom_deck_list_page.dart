@@ -68,8 +68,8 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
         title: Text(l10n.createNewDeck, style: GoogleFonts.poppins()),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(
-            hintText: 'Deck name',
+          decoration: InputDecoration(
+            hintText: l10n.deckNameHint,
             border: OutlineInputBorder(),
           ),
           autofocus: true,
@@ -77,7 +77,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: GoogleFonts.poppins()),
+            child: Text(l10n.cancel, style: GoogleFonts.poppins()),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, controller.text),
@@ -94,7 +94,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Deck created!', style: GoogleFonts.poppins()),
+              content: Text(l10n.deckCreatedSuccess, style: GoogleFonts.poppins()),
               backgroundColor: Colors.green,
             ),
           );
@@ -125,7 +125,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Cancel', style: GoogleFonts.poppins()),
+            child: Text(l10n.cancel, style: GoogleFonts.poppins()),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
@@ -183,7 +183,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
                       ),
                     ),
                     Text(
-                      'Custom Decks',
+                      l10n.customDecks,
                       style: GoogleFonts.poppins(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -231,7 +231,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    'Tap + to create your first deck',
+                                    l10n.createFirstDeckMessage,
                                     style: GoogleFonts.poppins(
                                       fontSize: 14,
                                       color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
@@ -263,7 +263,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
   final deckId = deck['id'] as String;
   final deckName = deck['deck_name'] as String;
   final isFavorites = customDeckService.isFavoritesDeck(deck);
-
+  final l10n = AppLocalizations.of(context)!;
   // Determine gradient colors based on deck type
   final List<Color> gradientColors = isFavorites
     ? (widget.isDarkMode
@@ -292,18 +292,18 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
           final questionTexts = questions.map((q) => q['question_text'] as String).toList();
 
           if (questionTexts.length < 5) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  'This deck needs at least 5 questions to play.\nCurrently: ${questions.length}/5',
-                  style: GoogleFonts.poppins(),
-                ),
-                backgroundColor: Colors.orange,
-                action: isFavorites ? null : SnackBarAction(
-                  label: 'Add More',
-                  textColor: Colors.white,
-                  onPressed: () {
-                    Navigator.push(
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        l10n.notEnoughQuestions(questionTexts.length.toString()),
+        style: GoogleFonts.poppins(),
+      ),
+      backgroundColor: Colors.orange,
+      action: isFavorites ? null : SnackBarAction(
+        label: 'Add More',
+        textColor: Colors.white,
+        onPressed: () {
+          Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => QuestionEditorPage(

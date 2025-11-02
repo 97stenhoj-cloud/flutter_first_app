@@ -45,7 +45,7 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
 
     try {
       // Add "(Host)" suffix to display name
-      final hostDisplayName = '$displayName (Host)';
+      final hostDisplayName = '$displayName ${l10n.hostSuffix}';
       
       final session = await pandoraService.createSession(
         timerMinutes: 5,
@@ -112,7 +112,7 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
                           
                           // Title
                           Text(
-                            '🔮 Host Pandora Session',
+                            l10n.hostPandoraSession,
                             style: GoogleFonts.poppins(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
@@ -124,7 +124,7 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
                           
                           // Name input
                           Text(
-                            'Your Display Name',
+                            l10n.yourDisplayName,
                             style: GoogleFonts.poppins(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -135,7 +135,7 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
                           TextField(
                             controller: nameController,
                             decoration: InputDecoration(
-                              hintText: 'Enter your name',
+                              hintText: l10n.enterYourName,
                               hintStyle: GoogleFonts.poppins(
                                 color: widget.isDarkMode 
                                     ? Colors.white.withValues(alpha: 0.5)
@@ -196,7 +196,7 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
                                     const SizedBox(width: 16),
                                     Expanded(
                                       child: Text(
-                                        'How it works',
+                                        l10n.howItWorks,
                                         style: GoogleFonts.poppins(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,

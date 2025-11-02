@@ -114,7 +114,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: GoogleFonts.poppins()),
+            child: Text(l10n.cancel, style: GoogleFonts.poppins()),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, controller.text),
@@ -169,7 +169,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: GoogleFonts.poppins()),
+            child: Text(l10n.cancel, style: GoogleFonts.poppins()),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, controller.text),
@@ -218,7 +218,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Cancel', style: GoogleFonts.poppins()),
+            child: Text(l10n.cancel, style: GoogleFonts.poppins()),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
