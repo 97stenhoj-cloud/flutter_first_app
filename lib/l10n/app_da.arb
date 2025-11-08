@@ -287,5 +287,16 @@
     }
   },
   "startGame": "Start spil",
- "selectPlayer": "Vælg en spiller"
+ "selectPlayer": "Vælg en spiller",
+ "unsubscribe": "Afmeld",
+"unsubscribeConfirm": "Opsig Premium-abonnement?",
+"unsubscribeWarning": "Du mister adgang til alle premiumfunktioner, inklusive ubegrænsede spørgsmål, alle kategorier, reklamefri oplevelse og ubegrænsede Pandora-spillere. Du kan tilmelde dig igen når som helst.",
+"yesUnsubscribe": "Ja, afmeld",
+"unsubscribeSuccess": "Afmeldt med succes. Premiumfunktioner er deaktiveret.",
+"unsubscribeError": "Kunne ikke afmelde",
+"questions": "spørgsmål",
+"preview": "forhåndsvisning",
+"premiumFeature3": "✓ 75 spørgsmål i alle kategorier",
+"freeTierDesc": "3 kategorier pr. tilstand (30 spørgsmål hver)\n5-spørgsmåls forhåndsvisning af premiumkategorier\nReklamer for hver 7. spørgsmål"
+
 }

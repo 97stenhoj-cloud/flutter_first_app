@@ -94,7 +94,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get premiumFeature2 => '✓ Fără reclame pentru totdeauna';
 
   @override
-  String get premiumFeature3 => '✓ Întrebări nelimitate în toate categoriile';
+  String get premiumFeature3 => '✓ 75 de întrebări în toate categoriile';
 
   @override
   String get premiumFeature4 => '✓ Pandora: Jucători și întrebări nelimitate';
@@ -127,7 +127,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get freeTierDesc =>
-      '3 categorii pe mod (30 de întrebări fiecare)\nPrevizualizări de 5 întrebări din categoriile premium\nReclame la fiecare 7 întrebări';
+      '3 categorii per mod (30 de întrebări fiecare)\nPrevizualizări de 5 întrebări din categoriile premium\nReclame la fiecare 7 întrebări';
 
   @override
   String get currentPlan => 'Plan Curent';
@@ -829,4 +829,48 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get selectPlayer => 'Selectează un jucător';
+
+  @override
+  String get unsubscribe => 'Dezabonare';
+
+  @override
+  String get unsubscribeConfirm => 'Anulați abonamentul Premium?';
+
+  @override
+  String get unsubscribeWarning =>
+      'Veți pierde accesul la toate funcțiile premium, inclusiv întrebări nelimitate, toate categoriile, experiență fără reclame și jucători Pandora nelimitați. Vă puteți reabona oricând.';
+
+  @override
+  String get yesUnsubscribe => 'Da, dezabonează-mă';
+
+  @override
+  String get unsubscribeSuccess =>
+      'Dezabonare reușită. Funcțiile premium au fost dezactivate.';
+
+  @override
+  String get unsubscribeError => 'Dezabonarea a eșuat';
+
+  @override
+  String get questions => 'întrebări';
+
+  @override
+  String get preview => 'previzualizare';
+
+  @override
+  String get userId => 'User ID';
+
+  @override
+  String get subscription => 'Subscription';
+
+  @override
+  String get questionsCount75 => '75 questions';
+
+  @override
+  String get questionsCount30 => '30 questions';
+
+  @override
+  String get questionsCount5Preview => '5 questions preview';
+
+  @override
+  String get unlockFullDeck => 'Unlock 75 questions';
 }

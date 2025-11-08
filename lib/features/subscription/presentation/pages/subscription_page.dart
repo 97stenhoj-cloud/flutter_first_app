@@ -227,7 +227,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    '3 categories per mode (30 questions each)\n5-question previews of premium categories\nAds every 7 questions',
+                    l10n.freeTierDesc,
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       color: ThemeHelper.getBodyTextColor(widget.isDarkMode),

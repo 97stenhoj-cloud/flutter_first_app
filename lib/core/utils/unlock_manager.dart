@@ -11,14 +11,27 @@ class UnlockManager extends ChangeNotifier {
   // Single premium status
   bool _isPremium = false;
   int _questionCount = 0;
+  String? _lastCheckedUserId; // Track which user we last checked
 
   // Initialize from Supabase
   Future<void> initialize() async {
+    final currentUserId = _authService.currentUser?.id;
+    
     debugPrint('🔐 UnlockManager initializing...');
+    debugPrint('   Current User ID: $currentUserId');
+    debugPrint('   Last Checked User ID: $_lastCheckedUserId');
     debugPrint('   Is logged in: ${_authService.isLoggedIn}');
     
+    // Always reset if user changed or no user
+    if (currentUserId != _lastCheckedUserId) {
+      debugPrint('   🔄 User changed! Resetting premium status...');
+      _isPremium = false;
+      _questionCount = 0;
+      _lastCheckedUserId = currentUserId;
+    }
+    
     if (_authService.isLoggedIn) {
-      // Check if user has premium tier
+      // Always fetch fresh subscription status from database
       final tier = await _authService.getSubscriptionTier();
       _isPremium = tier == 'premium';
       debugPrint('   Subscription tier: $tier');
@@ -27,6 +40,8 @@ class UnlockManager extends ChangeNotifier {
     } else {
       debugPrint('   Not logged in - defaulting to free tier');
       _isPremium = false;
+      _lastCheckedUserId = null;
+      notifyListeners();
     }
     
     debugPrint('✅ UnlockManager initialized');
@@ -55,6 +70,15 @@ class UnlockManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Reset state (call on sign out)
+  void reset() {
+    debugPrint('🔄 Resetting UnlockManager state');
+    _isPremium = false;
+    _questionCount = 0;
+    _lastCheckedUserId = null;
+    notifyListeners();
+  }
+
   // Check if category is locked
   bool isCategoryLocked(String gameMode, String categoryName) {
     if (_isPremium) return false;
@@ -71,8 +95,7 @@ class UnlockManager extends ChangeNotifier {
           'Love Talks',
           'Deep Talks',
           'Silly Talks',
-          'Car Talks', // adventure/travel talks
-          
+          'Car Talks',
         ];
       case 'friends':
         return [

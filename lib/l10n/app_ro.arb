@@ -286,5 +286,16 @@
     }
   },
   "startGame": "Începe jocul",
-  "selectPlayer": "Selectează un jucător"
+  "selectPlayer": "Selectează un jucător",
+  "unsubscribe": "Dezabonare",
+"unsubscribeConfirm": "Anulați abonamentul Premium?",
+"unsubscribeWarning": "Veți pierde accesul la toate funcțiile premium, inclusiv întrebări nelimitate, toate categoriile, experiență fără reclame și jucători Pandora nelimitați. Vă puteți reabona oricând.",
+"yesUnsubscribe": "Da, dezabonează-mă",
+"unsubscribeSuccess": "Dezabonare reușită. Funcțiile premium au fost dezactivate.",
+"unsubscribeError": "Dezabonarea a eșuat",
+"questions": "întrebări",
+"preview": "previzualizare",
+"premiumFeature3": "✓ 75 de întrebări în toate categoriile",
+"freeTierDesc": "3 categorii per mod (30 de întrebări fiecare)\nPrevizualizări de 5 întrebări din categoriile premium\nReclame la fiecare 7 întrebări"
+
 }

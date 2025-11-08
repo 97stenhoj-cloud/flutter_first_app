@@ -286,5 +286,16 @@
     }
   },
   "startGame": "Commencer le jeu",
-  "selectPlayer": "Sélectionnez un joueur"
+  "selectPlayer": "Sélectionnez un joueur",
+  "unsubscribe": "Se désabonner",
+"unsubscribeConfirm": "Annuler l’abonnement Premium ?",
+"unsubscribeWarning": "Vous perdrez l’accès à toutes les fonctionnalités premium, y compris les questions illimitées, toutes les catégories, une expérience sans publicité et des lecteurs Pandora illimités. Vous pouvez vous réabonner à tout moment.",
+"yesUnsubscribe": "Oui, se désabonner",
+"unsubscribeSuccess": "Désabonnement réussi. Les fonctionnalités premium ont été désactivées.",
+"unsubscribeError": "Échec du désabonnement",
+"questions": "questions",
+"preview": "aperçu",
+"premiumFeature3": "✓ 75 questions dans toutes les catégories",
+"freeTierDesc": "3 catégories par mode (30 questions chacune)\nAperçus de 5 questions des catégories premium\nPublicités toutes les 7 questions"
+
 }

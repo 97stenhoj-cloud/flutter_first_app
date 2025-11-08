@@ -295,5 +295,21 @@
     }
   },
   "startGame": "Start Game",
-  "selectPlayer": "Select a player"
+  "selectPlayer": "Select a player",
+  "unsubscribe": "Unsubscribe",
+"unsubscribeConfirm": "Cancel Premium Subscription?",
+"unsubscribeWarning": "You will lose access to all premium features including unlimited questions, all categories, ad-free experience, and unlimited Pandora players. You can resubscribe anytime.",
+"yesUnsubscribe": "Yes, Unsubscribe",
+"unsubscribeSuccess": "Successfully unsubscribed. Premium features have been disabled.",
+"unsubscribeError": "Failed to unsubscribe",
+"questions": "questions",
+"preview": "preview",
+"premiumFeature3": "✓ 75 questions in all categories",
+"freeTierDesc": "3 categories per mode (30 questions each)\n5-question previews of premium categories\nAds every 7 questions",
+"userId": "User ID",
+"subscription": "Subscription",
+"questionsCount75": "75 questions",
+"questionsCount30": "30 questions",
+"questionsCount5Preview": "5 questions preview",
+"unlockFullDeck": "Unlock 75 questions"
 }

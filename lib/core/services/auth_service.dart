@@ -3,8 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'dart:io' show Platform;
 import '../config/env.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
+import '../utils/unlock_manager.dart';
 
 class AuthService {
   static final AuthService _instance = AuthService._internal();
@@ -25,63 +27,84 @@ class AuthService {
   // Stream of auth state changes
   Stream<AuthState> get authStateChanges => _supabase.auth.onAuthStateChange;
 
-  // Sign in with Google
-  Future<AuthResponse?> signInWithGoogle() async {
-    try {
-      final GoogleSignIn googleSignIn = GoogleSignIn(
-        serverClientId: _googleWebClientId,
-      );
+// Sign in with Google
+Future<AuthResponse?> signInWithGoogle() async {
+  try {
+    final GoogleSignIn googleSignIn = GoogleSignIn(
+      serverClientId: _googleWebClientId,
+    );
 
-      final googleUser = await googleSignIn.signIn();
-      if (googleUser == null) return null; // User cancelled
+    final googleUser = await googleSignIn.signIn();
+    if (googleUser == null) return null; // User cancelled
 
-      final googleAuth = await googleUser.authentication;
-      final accessToken = googleAuth.accessToken;
-      final idToken = googleAuth.idToken;
+    final googleAuth = await googleUser.authentication;
+    final idToken = googleAuth.idToken;
 
-      if (accessToken == null || idToken == null) {
-        throw 'No Access Token or ID Token found.';
-      }
-
-      return await _supabase.auth.signInWithIdToken(
-        provider: OAuthProvider.google,
-        idToken: idToken,
-        accessToken: accessToken,
-      );
-    } catch (e) {
-      debugPrint('Google Sign In Error: $e');
-      rethrow;
+    if (idToken == null) {
+      throw 'No ID Token found.';
     }
+
+    return await _supabase.auth.signInWithIdToken(
+      provider: OAuthProvider.google,
+      idToken: idToken,
+    );
+  } catch (e) {
+    debugPrint('Google Sign In Error: $e');
+    rethrow;
   }
+}
 
-  // Sign in with Apple
-  Future<AuthResponse?> signInWithApple() async {
-    try {
-      if (!Platform.isIOS && !Platform.isMacOS) {
-        throw 'Apple Sign In is only available on iOS and macOS';
-      }
-
-      final credential = await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName,
-        ],
-      );
-
-      final idToken = credential.identityToken;
-      if (idToken == null) {
-        throw 'No ID Token received from Apple';
-      }
-
-      return await _supabase.auth.signInWithIdToken(
-        provider: OAuthProvider.apple,
-        idToken: idToken,
-      );
-    } catch (e) {
-      debugPrint('Apple Sign In Error: $e');
-      rethrow;
+/// Performs Apple sign in on iOS or macOS
+Future<AuthResponse?> signInWithApple() async {
+  try {
+    final rawNonce = _supabase.auth.generateRawNonce();
+    final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
+    
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+      nonce: hashedNonce,
+    );
+    
+    final idToken = credential.identityToken;
+    if (idToken == null) {
+      throw const AuthException(
+          'Could not find ID Token from generated credential.');
     }
+    
+    final authResponse = await _supabase.auth.signInWithIdToken(
+      provider: OAuthProvider.apple,
+      idToken: idToken,
+      nonce: rawNonce,
+    );
+    
+    // Apple only provides the user's full name on the first sign-in
+    // Save it to user metadata if available
+    if (credential.givenName != null || credential.familyName != null) {
+      final nameParts = <String>[];
+      if (credential.givenName != null) nameParts.add(credential.givenName!);
+      if (credential.familyName != null) nameParts.add(credential.familyName!);
+      final fullName = nameParts.join(' ');
+      
+      await _supabase.auth.updateUser(
+        UserAttributes(
+          data: {
+            'full_name': fullName,
+            'given_name': credential.givenName,
+            'family_name': credential.familyName,
+          },
+        ),
+      );
+    }
+    
+    return authResponse;
+  } catch (e) {
+    debugPrint('Apple Sign In Error: $e');
+    rethrow;
   }
+}
 
   // Sign up with email and password (fallback)
   Future<AuthResponse> signUp({
@@ -108,17 +131,20 @@ class AuthService {
   }
 
   // Sign out
-  Future<void> signOut() async {
-    // Sign out from Google if signed in with Google
-    try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
-      await googleSignIn.signOut();
-    } catch (e) {
-      // Ignore if not signed in with Google
-    }
-    
-    await _supabase.auth.signOut();
+Future<void> signOut() async {
+  // Sign out from Google if signed in with Google
+  try {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    await googleSignIn.signOut();
+  } catch (e) {
+    // Ignore if not signed in with Google
   }
+  
+  await _supabase.auth.signOut();
+  
+  // Reset UnlockManager to clear cached premium status
+  UnlockManager().reset();
+}
 
   // Reset password
   Future<void> resetPassword(String email) async {

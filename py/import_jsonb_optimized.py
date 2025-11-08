@@ -5,10 +5,19 @@ OPTIMAL FORMAT: One row per question with all translations in JSONB
 
 import openpyxl
 from supabase import create_client, Client
+from dotenv import load_dotenv
+import os
 
-# Your Supabase credentials
-SUPABASE_URL = "https://tpjsebutbieghpmvpktv.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRwanNlYnV0YmllZ2hwbXZwa3R2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTY0NTgwOSwiZXhwIjoyMDc1MjIxODA5fQ.fUb9e9K7zT-2PlPtSsY5aoGG8xLRVSudLtTBzZa4e-I"
+# Load environment variables from .env file
+load_dotenv()
+
+# Get Supabase credentials from environment variables
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_ANON_KEY")  # or "SUPABASE_SERVICE_KEY" depending on your .env
+
+# Validate that credentials were loaded
+if not SUPABASE_URL or not SUPABASE_KEY:
+    raise ValueError("Missing Supabase credentials! Make sure SUPABASE_URL and SUPABASE_ANON_KEY are set in your .env file")
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
@@ -77,7 +86,7 @@ def import_questions(excel_file: str):
     
     print("📖 Loading Excel file...")
     wb = openpyxl.load_workbook(excel_file)
-    ws = wb['Sheet v2.0']
+    ws = wb['Sheet v3.0']
     
     print("🌍 Importing questions with JSONB translations...")
     print("📦 Format: One row per question, all languages in JSONB\n")

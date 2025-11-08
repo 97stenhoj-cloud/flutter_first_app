@@ -92,7 +92,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get premiumFeature2 => '✓ Keine Werbung für immer';
 
   @override
-  String get premiumFeature3 => '✓ Unbegrenzte Fragen in allen Kategorien';
+  String get premiumFeature3 => '✓ 75 Fragen in allen Kategorien';
 
   @override
   String get premiumFeature4 => '✓ Pandora: Unbegrenzte Spieler & Fragen';
@@ -125,7 +125,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get freeTierDesc =>
-      '3 Kategorien pro Modus (je 30 Fragen)\n5-Fragen-Vorschauen von Premium-Kategorien\nWerbung alle 7 Fragen';
+      '3 Kategorien pro Modus (je 30 Fragen)\n5-Fragen-Vorschau für Premium-Kategorien\nWerbung alle 7 Fragen';
 
   @override
   String get currentPlan => 'Aktueller Plan';
@@ -828,4 +828,48 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get selectPlayer => 'Wähle einen Spieler';
+
+  @override
+  String get unsubscribe => 'Abbestellen';
+
+  @override
+  String get unsubscribeConfirm => 'Premium-Abonnement kündigen?';
+
+  @override
+  String get unsubscribeWarning =>
+      'Sie verlieren den Zugriff auf alle Premium-Funktionen, einschließlich unbegrenzter Fragen, aller Kategorien, werbefreier Nutzung und unbegrenzter Pandora-Spieler. Sie können sich jederzeit wieder anmelden.';
+
+  @override
+  String get yesUnsubscribe => 'Ja, abbestellen';
+
+  @override
+  String get unsubscribeSuccess =>
+      'Erfolgreich abgemeldet. Premium-Funktionen wurden deaktiviert.';
+
+  @override
+  String get unsubscribeError => 'Abmeldung fehlgeschlagen';
+
+  @override
+  String get questions => 'Fragen';
+
+  @override
+  String get preview => 'Vorschau';
+
+  @override
+  String get userId => 'User ID';
+
+  @override
+  String get subscription => 'Subscription';
+
+  @override
+  String get questionsCount75 => '75 questions';
+
+  @override
+  String get questionsCount30 => '30 questions';
+
+  @override
+  String get questionsCount5Preview => '5 questions preview';
+
+  @override
+  String get unlockFullDeck => 'Unlock 75 questions';
 }

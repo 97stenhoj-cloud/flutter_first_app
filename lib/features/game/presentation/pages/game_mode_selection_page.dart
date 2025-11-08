@@ -2,7 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/theme_helper.dart';
-
+import '../../../../core/services/auth_service.dart';
+import '../../../../core/utils/unlock_manager.dart';
+import '../../../subscription/presentation/pages/subscription_page.dart';
+import '../../../auth/presentation/pages/social_auth_page.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'category_selection_page.dart';
 import '../../../pandora/presentation/pages/pandora_entry_page.dart';
@@ -25,11 +28,120 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
     initialPage: 1,
   );
   int currentPage = 0;
+  final authService = AuthService();
+  final unlockManager = UnlockManager();
 
   @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
+  }
+
+  void _handlePersonalMode(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
+    // Check if user is signed in
+    if (!authService.isLoggedIn) {
+      _showSignInRequiredDialog(context);
+      return;
+    }
+    
+    // Check if user is premium
+    if (!unlockManager.isPremium) {
+      _showPremiumRequiredDialog(context);
+      return;
+    }
+    
+    // User is signed in and premium - allow access
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CategorySelectionPage(
+          gameMode: 'personal',
+          isDarkMode: widget.isDarkMode,
+        ),
+      ),
+    );
+  }
+
+  void _showSignInRequiredDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          l10n.signInRequired,
+          style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+        ),
+        content: Text(
+          l10n.signInToUsePersonal,
+          style: GoogleFonts.poppins(),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.cancel, style: GoogleFonts.poppins()),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              // Navigate to sign in page
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SocialAuthPage(isDarkMode: widget.isDarkMode),
+                ),
+              );
+            },
+            child: Text(
+              l10n.signInSignUp,
+              style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showPremiumRequiredDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          l10n.premiumFeatureTitle,
+          style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+        ),
+        content: Text(
+          'Personal mode with custom decks is a premium feature. Upgrade to Premium to create and play your own custom question decks!',
+          style: GoogleFonts.poppins(),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.cancel, style: GoogleFonts.poppins()),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              // Navigate to subscription page
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+                ),
+              );
+            },
+            child: Text(
+              l10n.getPremium,
+              style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   List<Map<String, dynamic>> getGameModes(BuildContext context) {
@@ -39,6 +151,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
         'text': l10n.couple,
         'imageUrl': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/couple.png',
         'gameMode': 'couple',
+        'isPremium': false,
         'onPressed': () => Navigator.push(
           context,
           MaterialPageRoute(
@@ -53,6 +166,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
         'text': l10n.friends,
         'imageUrl': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/friends.png',
         'gameMode': 'friends',
+        'isPremium': false,
         'onPressed': () => Navigator.push(
           context,
           MaterialPageRoute(
@@ -67,6 +181,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
         'text': l10n.family,
         'imageUrl': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/family.png',
         'gameMode': 'family',
+        'isPremium': false,
         'onPressed': () => Navigator.push(
           context,
           MaterialPageRoute(
@@ -81,20 +196,14 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
         'text': l10n.personal,
         'imageUrl': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/personal.png',
         'gameMode': 'personal',
-        'onPressed': () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CategorySelectionPage(
-              gameMode: 'personal',
-              isDarkMode: widget.isDarkMode,
-            ),
-          ),
-        ),
+        'isPremium': true,
+        'onPressed': () => _handlePersonalMode(context),
       },
       {
         'text': 'Pandora',
         'imageUrl': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/pandora.png',
         'gameMode': 'pandora',
+        'isPremium': false,
         'onPressed': () => Navigator.push(
           context,
           MaterialPageRoute(
@@ -131,6 +240,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
                     text: mode['text'],
                     imageUrl: mode['imageUrl'],
                     gameMode: mode['gameMode'],
+                    isPremium: mode['isPremium'] ?? false,
                     onPressed: mode['onPressed'],
                     index: index,
                   );
@@ -164,6 +274,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
     required String text,
     required String imageUrl,
     required String gameMode,
+    required bool isPremium,
     required VoidCallback onPressed,
     required int index,
   }) {
@@ -207,35 +318,59 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
                     ),
                   ],
                 ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Image instead of emoji
-                      Image.network(
-                        imageUrl,
-                        width: 120,
-                        height: 120,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Icon(
-                            Icons.image_not_supported,
-                            size: 120,
-                            color: Colors.white.withValues(alpha: 0.5),
-                          );
-                        },
+                child: Stack(
+                  children: [
+                    // Main content
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Image instead of emoji
+                          Image.network(
+                            imageUrl,
+                            width: 120,
+                            height: 120,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Icon(
+                                Icons.image_not_supported,
+                                size: 120,
+                                color: Colors.white.withValues(alpha: 0.5),
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 24),
+                          Text(
+                            text,
+                            style: GoogleFonts.poppins(
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 24),
-                      Text(
-                        text,
-                        style: GoogleFonts.poppins(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                    ),
+                    
+                    // Lock icon for premium modes
+                    if (isPremium && !unlockManager.isPremium)
+                      Positioned(
+                        top: 20,
+                        right: 20,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: 0.3),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.lock,
+                            color: Colors.white,
+                            size: 24,
+                          ),
                         ),
                       ),
-                    ],
-                  ),
+                  ],
                 ),
               ),
             ),

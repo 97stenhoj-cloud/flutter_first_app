@@ -93,8 +93,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get premiumFeature2 => '✓ Sans publicités pour toujours';
 
   @override
-  String get premiumFeature3 =>
-      '✓ Questions illimitées dans toutes les catégories';
+  String get premiumFeature3 => '✓ 75 questions dans toutes les catégories';
 
   @override
   String get premiumFeature4 => '✓ Pandora : Joueurs et questions illimités';
@@ -829,4 +828,48 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get selectPlayer => 'Sélectionnez un joueur';
+
+  @override
+  String get unsubscribe => 'Se désabonner';
+
+  @override
+  String get unsubscribeConfirm => 'Annuler l’abonnement Premium ?';
+
+  @override
+  String get unsubscribeWarning =>
+      'Vous perdrez l’accès à toutes les fonctionnalités premium, y compris les questions illimitées, toutes les catégories, une expérience sans publicité et des lecteurs Pandora illimités. Vous pouvez vous réabonner à tout moment.';
+
+  @override
+  String get yesUnsubscribe => 'Oui, se désabonner';
+
+  @override
+  String get unsubscribeSuccess =>
+      'Désabonnement réussi. Les fonctionnalités premium ont été désactivées.';
+
+  @override
+  String get unsubscribeError => 'Échec du désabonnement';
+
+  @override
+  String get questions => 'questions';
+
+  @override
+  String get preview => 'aperçu';
+
+  @override
+  String get userId => 'User ID';
+
+  @override
+  String get subscription => 'Subscription';
+
+  @override
+  String get questionsCount75 => '75 questions';
+
+  @override
+  String get questionsCount30 => '30 questions';
+
+  @override
+  String get questionsCount5Preview => '5 questions preview';
+
+  @override
+  String get unlockFullDeck => 'Unlock 75 questions';
 }

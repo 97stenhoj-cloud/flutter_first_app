@@ -2,6 +2,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/foundation.dart'; // ADDED: For debugPrint
 
+
 class CustomDeckService {
   final supabase = Supabase.instance.client;
   

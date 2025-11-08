@@ -51,7 +51,6 @@ class CategorySelectionPage extends StatefulWidget {
 
   @override
   State<CategorySelectionPage> createState() => _CategorySelectionPageState();
-  
 }
 
 class _CategorySelectionPageState extends State<CategorySelectionPage> {
@@ -62,42 +61,42 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
   List<String> categories = [];
   bool isLoading = true;
   int currentPage = 0;
-  Map<String, bool> expandedStates = {}; // Track which cards are expanded
-List<TextSpan> _buildDescriptionSpans(String description) {
-  // Handle "Disclaimer:" pattern
-  if (description.contains('Disclaimer:')) {
-    final parts = description.split('Disclaimer:');
-    return [
-      TextSpan(text: parts[0]),
-      TextSpan(text: '\n\n'),
-      TextSpan(
-        text: 'Disclaimer:${parts[1]}',
-        style: const TextStyle(
-          fontWeight: FontWeight.w900,
-          fontSize: 15.5,
+  Map<String, bool> expandedStates = {};
+
+  List<TextSpan> _buildDescriptionSpans(String description) {
+    if (description.contains('Disclaimer:')) {
+      final parts = description.split('Disclaimer:');
+      return [
+        TextSpan(text: parts[0]),
+        const TextSpan(text: '\n\n'),
+        TextSpan(
+          text: 'Disclaimer:${parts[1]}',
+          style: const TextStyle(
+            fontWeight: FontWeight.w900,
+            fontSize: 15.5,
+          ),
         ),
-      ),
-    ];
-  }
-  
-  // Handle "*Note:*" pattern (from translations)
-  if (description.contains('*Note:*')) {
-    final parts = description.split('*Note:*');
-    return [
-      TextSpan(text: parts[0]),
-      TextSpan(text: '\n\n'),
-      TextSpan(
-        text: 'Note:${parts[1]}',
-        style: const TextStyle(
-          fontWeight: FontWeight.w900,
-          fontSize: 15.5,
+      ];
+    }
+    
+    if (description.contains('*Note:*')) {
+      final parts = description.split('*Note:*');
+      return [
+        TextSpan(text: parts[0]),
+        const TextSpan(text: '\n\n'),
+        TextSpan(
+          text: 'Note:${parts[1]}',
+          style: const TextStyle(
+            fontWeight: FontWeight.w900,
+            fontSize: 15.5,
+          ),
         ),
-      ),
-    ];
+      ];
+    }
+    
+    return [TextSpan(text: description)];
   }
-  
-  return [TextSpan(text: description)];
-}
+
   @override
   void initState() {
     super.initState();
@@ -114,7 +113,7 @@ List<TextSpan> _buildDescriptionSpans(String description) {
   Future<void> _initializeUnlockManager() async {
     await unlockManager.initialize();
     if (mounted) {
-      setState(() {}); // Trigger rebuild to show correct lock states
+      setState(() {});
     }
   }
 
@@ -140,11 +139,9 @@ List<TextSpan> _buildDescriptionSpans(String description) {
   }
 
   bool _isCategoryLocked(String categoryName) {
-    // Simply use UnlockManager to check if category is locked
     return unlockManager.isCategoryLocked(widget.gameMode, categoryName);
   }
 
-  // Get translated category description
   String _getCategoryDescription(String category) {
     final l10n = AppLocalizations.of(context)!;
     
@@ -188,6 +185,24 @@ List<TextSpan> _buildDescriptionSpans(String description) {
     }
   }
 
+  String _getQuestionCountText(String categoryName) {
+    final l10n = AppLocalizations.of(context)!;
+    final isFree = !_isCategoryLocked(categoryName);
+    
+    if (unlockManager.isPremium) {
+      return l10n.questionsCount75;
+    } else if (isFree) {
+      return l10n.questionsCount30;
+    } else {
+      return l10n.questionsCount5Preview;
+    }
+  }
+
+  String _getPremiumUpgradeText() {
+    final l10n = AppLocalizations.of(context)!;
+    return l10n.unlockFullDeck;
+  }
+
   void _showLockedDialog(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     showDialog(
@@ -209,19 +224,16 @@ List<TextSpan> _buildDescriptionSpans(String description) {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     
-    // CHECK FOR PERSONAL MODE - Show custom decks instead
     if (widget.gameMode.toLowerCase() == 'personal') {
       return CustomDeckListPage(isDarkMode: widget.isDarkMode);
     }
     
-    // Regular category selection for other game modes
     return Scaffold(
       body: Container(
         decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode),
         child: SafeArea(
           child: Column(
             children: [
-              // Header
               Padding(
                 padding: const EdgeInsets.all(AppConstants.defaultPadding),
                 child: Row(
@@ -251,7 +263,6 @@ List<TextSpan> _buildDescriptionSpans(String description) {
                 ),
               ),
               
-              // Carousel
               Expanded(
                 child: isLoading
                     ? Center(
@@ -271,7 +282,6 @@ List<TextSpan> _buildDescriptionSpans(String description) {
                           )
                         : Column(
                             children: [
-                              // Carousel
                               Expanded(
                                 child: PageView.builder(
                                   controller: _pageController,
@@ -293,7 +303,6 @@ List<TextSpan> _buildDescriptionSpans(String description) {
                                 ),
                               ),
                               
-                              // Page indicators
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 40),
                                 child: Row(
@@ -326,215 +335,262 @@ List<TextSpan> _buildDescriptionSpans(String description) {
   }
 
   Widget _buildCarouselCard({
-  required String category,
-  required bool isLocked,
-  required int index,
-}) {
-  final colors = ThemeHelper.getGameModeGradient(widget.gameMode, widget.isDarkMode);
-  final isCurrentPage = currentPage == index;
-  final isExpanded = expandedStates[category] ?? false;
-  final description = _getCategoryDescription(category);
-  final imageKey = '${widget.gameMode.toLowerCase()}_$category';
-  final imageUrl = categoryImages[imageKey];
-  final l10n = AppLocalizations.of(context)!;
-  
-  return AnimatedBuilder(
-    animation: _pageController,
-    builder: (context, child) {
-      double scale = 1.0;
-      double opacity = 1.0;
-      
-      if (_pageController.position.haveDimensions) {
-        final page = _pageController.page ?? currentPage.toDouble();
-        final distanceFromCenter = (page - index).abs();
+    required String category,
+    required bool isLocked,
+    required int index,
+  }) {
+    final colors = ThemeHelper.getGameModeGradient(widget.gameMode, widget.isDarkMode);
+    final isCurrentPage = currentPage == index;
+    final isExpanded = expandedStates[category] ?? false;
+    final description = _getCategoryDescription(category);
+    final imageKey = '${widget.gameMode.toLowerCase()}_$category';
+    final imageUrl = categoryImages[imageKey];
+    final l10n = AppLocalizations.of(context)!;
+    
+    return AnimatedBuilder(
+      animation: _pageController,
+      builder: (context, child) {
+        double scale = 1.0;
+        double opacity = 1.0;
         
-        scale = (1.0 - (distanceFromCenter * 0.15)).clamp(0.85, 1.0);
-        opacity = (1.0 - (distanceFromCenter * 0.3)).clamp(0.5, 1.0);
-      }
-      
-      return Transform.scale(
-        scale: scale,
-        child: Opacity(
-          opacity: opacity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
-            child: GestureDetector(
-              onTap: () {
-                if (isLocked) {
-                  _showLockedDialog(context);
-                } else {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GamePage(
-                        gameMode: widget.gameMode,
-                        category: category,
-                        isDarkMode: widget.isDarkMode,
+        if (_pageController.position.haveDimensions) {
+          final page = _pageController.page ?? currentPage.toDouble();
+          final distanceFromCenter = (page - index).abs();
+          
+          scale = (1.0 - (distanceFromCenter * 0.15)).clamp(0.85, 1.0);
+          opacity = (1.0 - (distanceFromCenter * 0.3)).clamp(0.5, 1.0);
+        }
+        
+        return Transform.scale(
+          scale: scale,
+          child: Opacity(
+            opacity: opacity,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+              child: GestureDetector(
+                onTap: () {
+                  if (isLocked) {
+                    _showLockedDialog(context);
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GamePage(
+                          gameMode: widget.gameMode,
+                          category: category,
+                          isDarkMode: widget.isDarkMode,
+                        ),
                       ),
+                    );
+                  }
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: colors,
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                  );
-                }
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: colors,
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: widget.isDarkMode ? 0.4 : 0.2),
+                        blurRadius: isCurrentPage ? 20 : 10,
+                        offset: Offset(0, isCurrentPage ? 10 : 5),
+                      ),
+                    ],
                   ),
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: widget.isDarkMode ? 0.4 : 0.2),
-                      blurRadius: isCurrentPage ? 20 : 10,
-                      offset: Offset(0, isCurrentPage ? 10 : 5),
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(24),
-                  child: Stack(
-                    children: [
-                      // Background Image
-                      if (imageUrl != null)
-                        Positioned.fill(
-                          child: Opacity(
-                            opacity: 0.15,
-                            child: Image.network(
-                              imageUrl,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return const SizedBox.shrink();
-                              },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: Stack(
+                      children: [
+                        if (imageUrl != null)
+                          Positioned.fill(
+                            child: Opacity(
+                              opacity: 0.15,
+                              child: Image.network(
+                                imageUrl,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const SizedBox.shrink();
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                      
-                      // Content
-                      Padding(
-                        padding: const EdgeInsets.all(24),
-                        child: Column(
-                          children: [
-                            // Top Section
-                            // Top Section - Perfectly Centered
-                            Expanded(
-                              child: Center(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                  
-                                  // Lock Icon
-                                  if (isLocked)
-                                    const Icon(
-                                      Icons.lock,
-                                      size: 48,
-                                      color: Colors.white,
-                                    ),
-                                  if (isLocked) const SizedBox(height: 16),
-                                  
-                                  // Category Name
-                                  Flexible(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                                      child: Text(
-                                        category,
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 28,
-                                          fontWeight: FontWeight.bold,
+                        
+                        Padding(
+                          padding: const EdgeInsets.all(24),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Center(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      if (isLocked)
+                                        const Icon(
+                                          Icons.lock,
+                                          size: 48,
                                           color: Colors.white,
-                                          height: 1.2,
                                         ),
-                                        textAlign: TextAlign.center,
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
+                                      if (isLocked) const SizedBox(height: 16),
+                                      
+                                      Flexible(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                category,
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 28,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  height: 1.2,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                                maxLines: 3,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              const SizedBox(height: 8),
+                                              
+                                              // Question count badge
+                                              Container(
+                                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white.withValues(alpha: 0.2),
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  border: Border.all(
+                                                    color: Colors.white.withValues(alpha: 0.3),
+                                                    width: 1.5,
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  _getQuestionCountText(category),
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              
+                                              // Premium upgrade badge for locked categories
+                                              if (isLocked && !unlockManager.isPremium) ...[
+                                                const SizedBox(height: 8),
+                                                Container(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                                  decoration: BoxDecoration(
+                                                    color: const Color(0xFFD4A574),
+                                                    borderRadius: BorderRadius.circular(20),
+                                                    border: Border.all(
+                                                      color: Colors.white.withValues(alpha: 0.5),
+                                                      width: 1.5,
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: [
+                                                      const Icon(Icons.lock_open, color: Colors.white, size: 14),
+                                                      const SizedBox(width: 6),
+                                                      Text(
+                                                        _getPremiumUpgradeText(),
+                                                        style: GoogleFonts.poppins(
+                                                          fontSize: 12,
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      
+                                      if (isExpanded) ...[
+                                        const SizedBox(height: 16),
+                                        Flexible(
+                                          child: SingleChildScrollView(
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                                              child: Text.rich(
+                                                TextSpan(
+                                                  children: _buildDescriptionSpans(description),
+                                                ),
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 14,
+                                                  color: Colors.white.withValues(alpha: 0.9),
+                                                  height: 1.4,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ],
                                   ),
-                                  
-                                  // Expanded Description
-                                if (isExpanded) ...[
-                                  const SizedBox(height: 16),
-                                  Flexible(
-                                    child: SingleChildScrollView(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                                        child: Text.rich(
-                                        TextSpan(
-                                          children: _buildDescriptionSpans(description),
-                                        ),
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 14,
-                                          color: Colors.white.withValues(alpha: 0.9),
-                                          height: 1.4,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                          
-                                        ),
-                                      ),
-                                    ),
-                                  
-                                ],
-                            // Bottom Section - Buttons
-                            Column(
-                              children: [
-                                // Read More / Read Less Button
-                                TextButton.icon(
-                                  onPressed: () {
-                                    setState(() {
-                                      expandedStates[category] = !isExpanded;
-                                    });
-                                  },
-                                  icon: Icon(
-                                    isExpanded ? Icons.expand_less : Icons.expand_more,
-                                    color: Colors.white,
-                                  ),
-                                  label: Text(
-                                    isExpanded ? l10n.showLess : l10n.readMore,
-                                    style: GoogleFonts.poppins(
+                                ),
+                              ),
+                              
+                              Column(
+                                children: [
+                                  TextButton.icon(
+                                    onPressed: () {
+                                      setState(() {
+                                        expandedStates[category] = !isExpanded;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      isExpanded ? Icons.expand_less : Icons.expand_more,
                                       color: Colors.white,
-                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    label: Text(
+                                      isExpanded ? l10n.showLess : l10n.readMore,
+                                      style: GoogleFonts.poppins(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: Colors.white.withValues(alpha: 0.2),
+                                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
                                     ),
                                   ),
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: Colors.white.withValues(alpha: 0.2),
-                                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
+                                  
+                                  const SizedBox(height: 12),
+                                  
+                                  Text(
+                                    isLocked ? 'Premium' : l10n.tapToPlay,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      color: Colors.white.withValues(alpha: 0.7),
                                     ),
                                   ),
-                                ),
-                                
-                                const SizedBox(height: 12),
-                                
-                                // Tap to Play Text
-                                Text(
-                                  isLocked ? 'Premium' : l10n.tapToPlay,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14,
-                                    color: Colors.white.withValues(alpha: 0.7),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                        ),],
-
+                      ],
+                    ),
                   ),
                 ),
-              ],),
+              ),
             ),
           ),
-        ),
-      ),
-  ),
-  );
-  },
-  );
-}
+        );
+      },
+    );
+  }
 }

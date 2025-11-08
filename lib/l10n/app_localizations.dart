@@ -273,7 +273,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumFeature3.
   ///
   /// In en, this message translates to:
-  /// **'✓ Unlimited questions in all categories'**
+  /// **'✓ 75 questions in all categories'**
   String get premiumFeature3;
 
   /// No description provided for @premiumFeature4.
@@ -1601,6 +1601,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select a player'**
   String get selectPlayer;
+
+  /// No description provided for @unsubscribe.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsubscribe'**
+  String get unsubscribe;
+
+  /// No description provided for @unsubscribeConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Premium Subscription?'**
+  String get unsubscribeConfirm;
+
+  /// No description provided for @unsubscribeWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'You will lose access to all premium features including unlimited questions, all categories, ad-free experience, and unlimited Pandora players. You can resubscribe anytime.'**
+  String get unsubscribeWarning;
+
+  /// No description provided for @yesUnsubscribe.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, Unsubscribe'**
+  String get yesUnsubscribe;
+
+  /// No description provided for @unsubscribeSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully unsubscribed. Premium features have been disabled.'**
+  String get unsubscribeSuccess;
+
+  /// No description provided for @unsubscribeError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to unsubscribe'**
+  String get unsubscribeError;
+
+  /// No description provided for @questions.
+  ///
+  /// In en, this message translates to:
+  /// **'questions'**
+  String get questions;
+
+  /// No description provided for @preview.
+  ///
+  /// In en, this message translates to:
+  /// **'preview'**
+  String get preview;
+
+  /// No description provided for @userId.
+  ///
+  /// In en, this message translates to:
+  /// **'User ID'**
+  String get userId;
+
+  /// No description provided for @subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription'**
+  String get subscription;
+
+  /// No description provided for @questionsCount75.
+  ///
+  /// In en, this message translates to:
+  /// **'75 questions'**
+  String get questionsCount75;
+
+  /// No description provided for @questionsCount30.
+  ///
+  /// In en, this message translates to:
+  /// **'30 questions'**
+  String get questionsCount30;
+
+  /// No description provided for @questionsCount5Preview.
+  ///
+  /// In en, this message translates to:
+  /// **'5 questions preview'**
+  String get questionsCount5Preview;
+
+  /// No description provided for @unlockFullDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock 75 questions'**
+  String get unlockFullDeck;
 }
 
 class _AppLocalizationsDelegate

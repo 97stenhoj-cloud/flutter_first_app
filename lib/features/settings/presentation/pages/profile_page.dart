@@ -6,7 +6,9 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/utils/unlock_manager.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../auth/presentation/pages/social_auth_page.dart';  // ADD THIS IMPORT
+import '../../../auth/presentation/pages/social_auth_page.dart';
+import '../../../subscription/presentation/pages/subscription_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfilePage extends StatefulWidget {
   final bool isDarkMode;
@@ -21,6 +23,30 @@ class _ProfilePageState extends State<ProfilePage> {
   final authService = AuthService();
   final unlockManager = UnlockManager();
   
+Future<void> _unsubscribe() async {
+  final user = Supabase.instance.client.auth.currentUser;
+  if (user == null) return;
+
+  try {
+    // Update the user's subscription status in Supabase
+    await Supabase.instance.client
+        .from('user_subscriptions')
+        .update({
+          'is_premium': false,
+          'updated_at': DateTime.now().toIso8601String(),
+        })
+        .eq('user_id', user.id);
+    
+    // Update UnlockManager state
+    unlockManager.lockPremium();
+    
+    debugPrint('✅ Successfully unsubscribed user');
+  } catch (e) {
+    debugPrint('❌ Error unsubscribing: $e');
+    rethrow;
+  }
+}
+
   Widget _buildInfoCard({
     required IconData icon,
     required String title,
@@ -194,13 +220,13 @@ class _ProfilePageState extends State<ProfilePage> {
                               // User Info
                               _buildInfoCard(
                                 icon: Icons.email,
-                                title: 'Email',
+                                title: l10n.email,
                                 value: user.email!,
                                 iconColor: const Color(0xFF4285F4),
                               ),
                               _buildInfoCard(
                                 icon: Icons.person,
-                                title: 'User ID',
+                                title: l10n.userId,
                                 value: '${user.id.substring(0, 8)}...',
                                 iconColor: const Color(0xFF34A853),
                               ),
@@ -209,7 +235,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                               // Subscription Status
                               Text(
-                                'Subscription',
+                                l10n.subscription,
                                 style: GoogleFonts.poppins(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -218,8 +244,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               const SizedBox(height: 16),
 
-                              // Check if user has any unlocked bundles
-                              if (!unlockManager.isPremium)
+                              // Check if user has premium
+                              if (!unlockManager.isPremium) ...[
                                 Container(
                                   padding: const EdgeInsets.all(16),
                                   decoration: BoxDecoration(
@@ -235,7 +261,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       const SizedBox(width: 12),
                                       Expanded(
                                         child: Text(
-                                          'No Active Subscription',
+                                          l10n.noActiveSubscription,
                                           style: GoogleFonts.poppins(
                                             fontSize: 14,
                                             color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
@@ -244,14 +270,120 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                     ],
                                   ),
-                                )
-                              else
-                                Wrap(
-                                  spacing: 8,
-                                  runSpacing: 8,
+                                ),
+                                const SizedBox(height: 16),
+                                // Get Premium Button
+                                ThemeHelper.buildLayeredButton(
+                                  text: l10n.getPremium,
+                                  icon: Icons.workspace_premium,
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+                                      ),
+                                    ).then((_) {
+                                      setState(() {}); // Refresh after returning
+                                    });
+                                  },
+                                  isPrimary: true,
+                                  isDarkMode: widget.isDarkMode,
+                                ),
+                              ] else
+                                Column(
                                   children: [
-                                    if (unlockManager.isPremium)
-                                      _buildSubscriptionCard('Premium')
+                                    Wrap(
+                                      spacing: 8,
+                                      runSpacing: 8,
+                                      children: [
+                                        if (unlockManager.isPremium)
+                                          _buildSubscriptionCard('Premium')
+                                      ],
+                                    ),
+                                    const SizedBox(height: 16),
+                                    
+                                    // Unsubscribe Button
+                                    ThemeHelper.buildLayeredButton(
+                                      text: l10n.unsubscribe,
+                                      icon: Icons.cancel_outlined,
+                                      isPrimary: false,
+                                      onPressed: () async {
+                                        final confirmed = await showDialog<bool>(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            title: Text(
+                                              l10n.unsubscribeConfirm,
+                                              style: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            content: Text(
+                                              l10n.unsubscribeWarning,
+                                              style: GoogleFonts.poppins(),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(context, false),
+                                                child: Text(
+                                                  l10n.cancel,
+                                                  style: GoogleFonts.poppins(),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(context, true),
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.red,
+                                                ),
+                                                child: Text(
+                                                  l10n.yesUnsubscribe,
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+
+                                        if (confirmed == true) {
+                                          if (!mounted) return;
+                                          
+                                          try {
+                                            // Call unsubscribe function
+                                            await _unsubscribe();
+                                            
+                                            if (!mounted) return;
+                                            
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  l10n.unsubscribeSuccess,
+                                                  style: GoogleFonts.poppins(),
+                                                ),
+                                                backgroundColor: Colors.green,
+                                              ),
+                                            );
+                                            
+                                            // Refresh the page
+                                            setState(() {});
+                                          } catch (e) {
+                                            if (!mounted) return;
+                                            
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  '${l10n.unsubscribeError}: $e',
+                                                  style: GoogleFonts.poppins(),
+                                                ),
+                                                backgroundColor: Colors.red,
+                                              ),
+                                            );
+                                          }
+                                        }
+                                      },
+                                      width: double.infinity,
+                                      isDarkMode: widget.isDarkMode,
+                                    ),
                                   ],
                                 ),
 

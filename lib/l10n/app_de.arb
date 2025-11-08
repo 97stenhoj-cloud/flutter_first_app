@@ -286,5 +286,16 @@
     }
   },
   "startGame": "Spiel starten",
-  "selectPlayer": "Wähle einen Spieler"
+  "selectPlayer": "Wähle einen Spieler",
+  "unsubscribe": "Abbestellen",
+"unsubscribeConfirm": "Premium-Abonnement kündigen?",
+"unsubscribeWarning": "Sie verlieren den Zugriff auf alle Premium-Funktionen, einschließlich unbegrenzter Fragen, aller Kategorien, werbefreier Nutzung und unbegrenzter Pandora-Spieler. Sie können sich jederzeit wieder anmelden.",
+"yesUnsubscribe": "Ja, abbestellen",
+"unsubscribeSuccess": "Erfolgreich abgemeldet. Premium-Funktionen wurden deaktiviert.",
+"unsubscribeError": "Abmeldung fehlgeschlagen",
+"questions": "Fragen",
+"preview": "Vorschau",
+"premiumFeature3": "✓ 75 Fragen in allen Kategorien",
+"freeTierDesc": "3 Kategorien pro Modus (je 30 Fragen)\n5-Fragen-Vorschau für Premium-Kategorien\nWerbung alle 7 Fragen"
+
 }

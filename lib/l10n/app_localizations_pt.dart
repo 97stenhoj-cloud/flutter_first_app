@@ -94,7 +94,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get premiumFeature2 => '✓ Sem anúncios para sempre';
 
   @override
-  String get premiumFeature3 => '✓ Perguntas ilimitadas em todas as categorias';
+  String get premiumFeature3 => '✓ 75 perguntas em todas as categorias';
 
   @override
   String get premiumFeature4 => '✓ Pandora: Jogadores e perguntas ilimitados';
@@ -127,7 +127,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get freeTierDesc =>
-      '3 categorias por modo (30 perguntas cada)\nPré-visualizações de 5 perguntas das categorias premium\nAnúncios a cada 7 perguntas';
+      '3 categorias por modo (30 perguntas cada)\nPré-visualizações de 5 perguntas de categorias premium\nAnúncios a cada 7 perguntas';
 
   @override
   String get currentPlan => 'Plano Atual';
@@ -830,4 +830,48 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get selectPlayer => 'Selecione um jogador';
+
+  @override
+  String get unsubscribe => 'Cancelar subscrição';
+
+  @override
+  String get unsubscribeConfirm => 'Cancelar a assinatura Premium?';
+
+  @override
+  String get unsubscribeWarning =>
+      'Perderá o acesso a todos os recursos premium, incluindo perguntas ilimitadas, todas as categorias, experiência sem anúncios e jogadores Pandora ilimitados. Pode reinscrever-se a qualquer momento.';
+
+  @override
+  String get yesUnsubscribe => 'Sim, cancelar';
+
+  @override
+  String get unsubscribeSuccess =>
+      'Subscrição cancelada com sucesso. Recursos premium desativados.';
+
+  @override
+  String get unsubscribeError => 'Falha ao cancelar subscrição';
+
+  @override
+  String get questions => 'perguntas';
+
+  @override
+  String get preview => 'pré-visualização';
+
+  @override
+  String get userId => 'User ID';
+
+  @override
+  String get subscription => 'Subscription';
+
+  @override
+  String get questionsCount75 => '75 questions';
+
+  @override
+  String get questionsCount30 => '30 questions';
+
+  @override
+  String get questionsCount5Preview => '5 questions preview';
+
+  @override
+  String get unlockFullDeck => 'Unlock 75 questions';
 }
