@@ -8,6 +8,7 @@ import '../../../../core/services/supabase_service.dart';
 import 'game_page.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../custom/presentation/pages/custom_deck_list_page.dart';
+import '../../../subscription/presentation/pages/subscription_page.dart';
 
 // Category image URLs - keyed by "gameMode_categoryName"
 const Map<String, String> categoryImages = {
@@ -124,19 +125,33 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
   }
 
   Future<void> _loadCategories() async {
-    try {
-      final fetchedCategories = await supabaseService.getCategories(widget.gameMode);
-      setState(() {
-        categories = fetchedCategories;
-        isLoading = false;
-      });
-    } catch (e) {
-      debugPrint('Error loading categories: $e');
-      setState(() {
-        isLoading = false;
-      });
-    }
+  try {
+    final fetchedCategories = await supabaseService.getCategories(widget.gameMode);
+    
+    // Sort categories: Free categories first, then locked/premium categories
+    fetchedCategories.sort((a, b) {
+      final aIsLocked = _isCategoryLocked(a);
+      final bIsLocked = _isCategoryLocked(b);
+      
+      // Free categories (not locked) come first
+      if (!aIsLocked && bIsLocked) return -1;
+      if (aIsLocked && !bIsLocked) return 1;
+      
+      // If both are the same lock status, keep original order
+      return 0;
+    });
+    
+    setState(() {
+      categories = fetchedCategories;
+      isLoading = false;
+    });
+  } catch (e) {
+    debugPrint('Error loading categories: $e');
+    setState(() {
+      isLoading = false;
+    });
   }
+}
 
   bool _isCategoryLocked(String categoryName) {
     return unlockManager.isCategoryLocked(widget.gameMode, categoryName);
@@ -369,20 +384,17 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
               child: GestureDetector(
                 onTap: () {
-                  if (isLocked) {
-                    _showLockedDialog(context);
-                  } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => GamePage(
-                          gameMode: widget.gameMode,
-                          category: category,
-                          isDarkMode: widget.isDarkMode,
-                        ),
+                  // Always allow navigation - GamePage will handle the preview logic
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GamePage(
+                        gameMode: widget.gameMode,
+                        category: category,
+                        isDarkMode: widget.isDarkMode,
                       ),
-                    );
-                  }
+                    ),
+                  );
                 },
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
@@ -479,36 +491,46 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
                                                 ),
                                               ),
                                               
-                                              // Premium upgrade badge for locked categories
-                                              if (isLocked && !unlockManager.isPremium) ...[
-                                                const SizedBox(height: 8),
-                                                Container(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                                  decoration: BoxDecoration(
-                                                    color: const Color(0xFFD4A574),
-                                                    borderRadius: BorderRadius.circular(20),
-                                                    border: Border.all(
-                                                      color: Colors.white.withValues(alpha: 0.5),
-                                                      width: 1.5,
-                                                    ),
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    children: [
-                                                      const Icon(Icons.lock_open, color: Colors.white, size: 14),
-                                                      const SizedBox(width: 6),
-                                                      Text(
-                                                        _getPremiumUpgradeText(),
-                                                        style: GoogleFonts.poppins(
-                                                          fontSize: 12,
-                                                          fontWeight: FontWeight.bold,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
+                                              // Premium upgrade badge for ALL categories if not premium
+if (!unlockManager.isPremium) ...[
+  const SizedBox(height: 8),
+  GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+        ),
+      );
+    },
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: const Color(0xFFD4A574),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.5),
+          width: 1.5,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.lock_open, color: Colors.white, size: 14),
+          const SizedBox(width: 6),
+          Text(
+            _getPremiumUpgradeText(),
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    ),
+  ),
+],
                                             ],
                                           ),
                                         ),

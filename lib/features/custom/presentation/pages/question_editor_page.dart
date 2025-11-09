@@ -25,6 +25,7 @@ class QuestionEditorPage extends StatefulWidget {
 }
 
 class _QuestionEditorPageState extends State<QuestionEditorPage> {
+
   final customDeckService = CustomDeckService();
   List<Map<String, dynamic>> questions = [];
   bool isLoading = true;
@@ -57,6 +58,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
 
   // ADDED: Shuffle questions
   void _shuffleQuestions() {
+    final l10n = AppLocalizations.of(context)!;
     setState(() {
       questions.shuffle();
       isShuffled = true;
@@ -64,7 +66,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
     
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Questions shuffled!', style: GoogleFonts.poppins()),
+        content: Text(l10n.questionsShuffled, style: GoogleFonts.poppins()),
         backgroundColor: Colors.green,
         duration: const Duration(seconds: 2),
       ),
@@ -74,10 +76,10 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
   // ADDED: Reset to original order
   void _resetOrder() {
     _loadQuestions(); // Reload from database to get original order
-    
+      final l10n = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Order reset to original', style: GoogleFonts.poppins()),
+        content: Text(l10n.orderReset, style: GoogleFonts.poppins()),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -359,7 +361,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
-                                        'Ready to play',
+                                       l10n.readyToPlay,
                                         style: GoogleFonts.poppins(
                                           fontSize: 11,
                                           fontWeight: FontWeight.w600,
@@ -383,7 +385,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
                           color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
                           size: 24,
                         ),
-                        tooltip: isShuffled ? 'Reset Order' : 'Shuffle Questions',
+                        tooltip: isShuffled ? l10n.resetOrder : l10n.shuffleQuestions,
                       ),
                   ],
                 ),
@@ -417,8 +419,8 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
                         Expanded(
                           child: Text(
                             widget.isFavorites // ADDED
-                                ? 'Heart questions during gameplay to add them to your Favorites!'
-                                : 'Add at least $minimumQuestions questions to play this deck',
+                                ? l10n.heartQuestionsInfo
+                                : l10n.addAtLeastQuestionsToPlay(minimumQuestions.toString()),
                             style: GoogleFonts.poppins(
                               fontSize: 13,
                               color: widget.isDarkMode 
@@ -435,7 +437,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
                 // Add Question Button - HIDDEN for Favorites
                 if (!widget.isFavorites)
                   ThemeHelper.buildLayeredButton(
-                    text: '+ Add Question',
+                    text: '${l10n.addQuestion}',
                     icon: Icons.add,
                     onPressed: _addQuestion,
                     isPrimary: true,
@@ -456,7 +458,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          'Long press and drag to reorder questions',
+                          l10n.longPressReorder,
                           style: GoogleFonts.poppins(
                             fontSize: 12,
                             color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
@@ -487,7 +489,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
                                   ),
                                   const SizedBox(height: 20),
                                   Text(
-                                    widget.isFavorites ? 'No favorites yet' : l10n.noQuestionsYet, // ADDED
+                                    widget.isFavorites ? l10n.noFavoritesYet : l10n.noQuestionsYet, // ADDED
                                     style: GoogleFonts.poppins(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w600,
@@ -497,8 +499,8 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
                                   const SizedBox(height: 8),
                                   Text(
                                     widget.isFavorites // ADDED
-                                        ? 'Tap the heart ❤️ on question cards during gameplay to save them here!'
-                                        : 'Add at least $minimumQuestions questions to start playing!',
+                                            ? l10n.heartQuestionsDuringGameplay
+                                           : l10n.addAtLeastQuestions(minimumQuestions.toString()),
                                     style: GoogleFonts.poppins(
                                       fontSize: 14,
                                       color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
@@ -532,6 +534,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
   Widget _buildQuestionCard(Map<String, dynamic> question, int number) {
     final questionId = question['id'] as String;
     final questionText = question['question_text'] as String;
+    final l10n = AppLocalizations.of(context)!;
 
     return Container(
       decoration: BoxDecoration(
@@ -601,7 +604,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
                 size: 20,
                 color: widget.isDarkMode ? Colors.white70 : Colors.black54,
               ),
-              tooltip: widget.isFavorites ? 'Remove from favorites' : 'Delete question',
+              tooltip: widget.isFavorites ? l10n.removeFromFavorites : l10n.deleteQuestion,
             ),
           ],
         ),

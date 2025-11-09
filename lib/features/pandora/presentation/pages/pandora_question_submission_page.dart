@@ -6,6 +6,7 @@ import '../../../../core/services/pandora_service.dart';
 import '../../../game/presentation/pages/game_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../core/utils/unlock_manager.dart';
 
 class PandoraQuestionSubmissionPage extends StatefulWidget {
   final String sessionId;
@@ -30,7 +31,7 @@ class _PandoraQuestionSubmissionPageState
     extends State<PandoraQuestionSubmissionPage> {
   final pandoraService = PandoraService();
   final questionController = TextEditingController();
-  
+  final unlockManager = UnlockManager();
   List<Map<String, dynamic>> participants = [];
   List<Map<String, dynamic>> questions = [];
   String? myParticipantId;
@@ -252,7 +253,28 @@ class _PandoraQuestionSubmissionPageState
       );
       return;
     }
-
+// Check question limit for freemium users
+if (!unlockManager.isPremium) {
+  final myQuestions = questions.where((q) => q['participant_id'] == myParticipantId).length;
+  if (myQuestions >= 12) {
+    final l10n = AppLocalizations.of(context)!;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(l10n.freemiumQuestionLimit),
+        backgroundColor: Colors.orange,
+        duration: const Duration(seconds: 4),
+        action: SnackBarAction(
+          label: l10n.getPremium,
+          textColor: Colors.white,
+          onPressed: () {
+            // Navigate to subscription page
+          },
+        ),
+      ),
+    );
+    return;
+  }
+}
     setState(() => isSubmitting = true);
 
     try {
@@ -454,81 +476,94 @@ class _PandoraQuestionSubmissionPageState
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return PopScope(
-      canPop: !widget.isHost,
-      onPopInvokedWithResult: (bool didPop, dynamic result) async {
-        if (didPop) return;
-        
-        // Host confirms cancellation
-        if (widget.isHost) {
-          final shouldCancel = await showDialog<bool>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Cancel Session?'),
-              content: const Text(
-                'This will cancel the session for all players. Are you sure?',
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: const Text('No'),
-                ),
-                ElevatedButton(
-                  onPressed: () => Navigator.pop(context, true),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                  ),
-                  child: const Text('Yes, Cancel'),
-                ),
-              ],
+  canPop: false, // Changed from !widget.isHost to false - always prevent default back
+  onPopInvokedWithResult: (bool didPop, dynamic result) async {
+    if (didPop) return;
+    
+    
+    // Host confirms cancellation, players just leave
+    if (widget.isHost) {
+      final shouldCancel = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(l10n.cancelSession, style: GoogleFonts.poppins()),
+          content: Text(
+            l10n.cancelSessionForAll,
+            style: GoogleFonts.poppins(),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(l10n.no, style: GoogleFonts.poppins()),
             ),
-          );
-          
-          if (shouldCancel == true) {
-            await _cancelSession();
-          }
-        }
-      },
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: Text(l10n.yesCancel, style: GoogleFonts.poppins()),
+            ),
+          ],
+        ),
+      );
+      
+      if (shouldCancel == true && mounted) {
+        await _cancelSession();
+      }
+    } else {
+      // Players can leave without confirmation
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
+    }
+  },
       child: Scaffold(
         backgroundColor: widget.isDarkMode ? const Color(0xFF2D1B2E) : const Color(0xFFF5F5F5),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: widget.isHost
-              ? IconButton(
-                  icon: Icon(
-                    Icons.close,
-                    color: widget.isDarkMode ? Colors.white : Colors.black87,
-                  ),
-                  onPressed: () async {
-                    final shouldCancel = await showDialog<bool>(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Cancel Session?'),
-                        content: const Text(
-                          'This will cancel the session for all players. Are you sure?',
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, false),
-                            child: const Text('No'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => Navigator.pop(context, true),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                            ),
-                            child: const Text('Yes, Cancel'),
-                          ),
-                        ],
-                      ),
-                    );
-                    
-                    if (shouldCancel == true) {
-                      await _cancelSession();
-                    }
-                  },
-                )
-              : null,
+          leading: IconButton(
+  icon: Icon(
+    widget.isHost ? Icons.close : Icons.arrow_back,
+    color: widget.isDarkMode ? Colors.white : Colors.black87,
+  ),
+  onPressed: () async {
+    final l10n = AppLocalizations.of(context)!;
+    
+    if (widget.isHost) {
+      final shouldCancel = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(l10n.cancelSession, style: GoogleFonts.poppins()),
+          content: Text(
+            l10n.cancelSessionForAll,
+            style: GoogleFonts.poppins(),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(l10n.no, style: GoogleFonts.poppins()),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: Text(l10n.yesCancel, style: GoogleFonts.poppins()),
+            ),
+          ],
+        ),
+      );
+      
+      if (shouldCancel == true && mounted) {
+        await _cancelSession();
+      }
+    } else {
+      // Players can leave without confirmation
+      Navigator.of(context).pop();
+    }
+  },
+),
           title: Text(
             widget.isHost 
                 ? l10n.hostQuestionCollection 
@@ -589,14 +624,34 @@ class _PandoraQuestionSubmissionPageState
                         color: const Color(0xFFFF6B9D),
                       ),
                       const SizedBox(width: 12),
-                      Text(
-                        l10n.questionsSubmitted(questions.length),
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: widget.isDarkMode ? Colors.white70 : Colors.black87,
-                        ),
-                      ),
+                      Column(
+  children: [
+    Text(
+      l10n.questionsSubmitted(questions.length),
+      style: GoogleFonts.poppins(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+        color: widget.isDarkMode ? Colors.white70 : Colors.black87,
+      ),
+    ),
+    if (!unlockManager.isPremium && myParticipantId != null) ...[
+      const SizedBox(height: 4),
+      Builder(
+        builder: (context) {
+          final myQuestions = questions.where((q) => q['participant_id'] == myParticipantId).length;
+          return Text(
+            '${l10n.yourQuestions}: $myQuestions/12',
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              color: myQuestions >= 12 ? Colors.orange : (widget.isDarkMode ? Colors.white54 : Colors.black54),
+              fontWeight: myQuestions >= 12 ? FontWeight.bold : FontWeight.normal,
+            ),
+          );
+        },
+      ),
+    ],
+  ],
+),
                     ],
                   ),
                 ),

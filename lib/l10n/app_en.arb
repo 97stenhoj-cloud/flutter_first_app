@@ -311,5 +311,111 @@
 "questionsCount75": "75 questions",
 "questionsCount30": "30 questions",
 "questionsCount5Preview": "5 questions preview",
-"unlockFullDeck": "Unlock 75 questions"
+"unlockFullDeck": "Unlock 75 questions",
+"renameDeck": "Rename Deck",
+"deckRenamed": "Deck renamed successfully",
+"failedToRenameDeck": "Failed to rename deck",
+"shuffleQuestions": "Shuffle Questions",
+"resetOrder": "Reset Order",
+"questionsShuffled": "Questions shuffled!",
+"orderReset": "Order reset to original",
+"readyToPlay": "Ready to play",
+"longPressReorder": "Long press and drag to reorder questions",
+"noFavoritesYet": "No favorites yet",
+"heartQuestionsDuringGameplay": "Tap the heart ❤️ on question cards during gameplay to save them here!",
+"addAtLeastQuestions": "Add at least {count} questions to start playing!",
+"heartQuestionsInfo": "Heart questions during gameplay to add them to your Favorites!",
+"addAtLeastQuestionsToPlay": "Add at least {count} questions to play this deck",
+"removeFromFavorites": "Remove from favorites",
+"unlockEverything": "Unlock Everything",
+"premiumSubtitle": "Get unlimited access to all categories, remove ads forever, and unlock premium features",
+"monthly": "Monthly",
+"yearly": "Yearly",
+"save32Percent": "SAVE 32%",
+"priceMonthly": "49 DKK/month",
+"priceYearly": "399 DKK/year",
+"billedMonthly": "Billed monthly",
+"billedAnnually": "Billed annually",
+"equivalentMonthly": "Only 33 DKK/month",
+"premium": "PREMIUM",
+"feature24Categories": "24+ premium categories unlocked across all modes",
+"feature75Questions": "75 questions per category (vs 30 in free tier)",
+"featureNoAds": "No ads forever - uninterrupted gameplay",
+"featureUnlimitedPlayers": "Pandora mode: Unlimited players & questions",
+"featureQuestionNavigation": "Navigate & jump to any question during play",
+"featureSupportDevelopment": "Support ongoing development & new features",
+"freeTier": "Free Tier",
+"error": "Error",
+"premiumActivatedMessage": "Premium activated! All categories unlocked.",
+"featurePersonalDecks": "Personal mode: Create unlimited custom decks with your own questions",
+"premiumPersonal": "Personal mode with custom decks is a premium feature. Upgrade to Premium to create and play your own custom question decks!",
+"deleteDeckConfirmation": "Are you sure you want to delete \"{deckName}\"? This will delete all questions in this deck.",
+"@deleteDeckConfirmation": {
+  "placeholders": {
+    "deckName": {
+      "type": "String"
+    }
+  }
+},
+"needMore": "Need {count}",
+"@needMore": {
+  "placeholders": {
+    "count": {
+      "type": "int"
+    }
+  }
+},
+"editQuestions": "Edit Questions",
+"questionCount": "{count, plural, =0{0 questions} =1{1 question} other{{count} questions}}",
+"@questionCount": {
+  "placeholders": {
+    "count": {
+      "type": "int"
+    }
+  }
+},
+"addMore": "Add More",
+"useMyConnectEmail": "Use my Connect email: {email}",
+"@useMyConnectEmail": {
+  "placeholders": {
+    "email": {
+      "type": "String"
+    }
+  }
+},
+"freemiumPlayerLimit": "Free users can have max 6 players. Upgrade to Premium for unlimited players!",
+"freemiumQuestionLimit": "Free users can submit max 12 questions. Upgrade to Premium for unlimited questions!",
+"yourQuestions": "Your questions",
+"waitingForHost": "Waiting for host... ({count} players)",
+"@waitingForHost": {
+  "placeholders": {
+    "count": {
+      "type": "int"
+    }
+  }
+},
+"upgradeForUnlimitedPlayers": "Upgrade to Premium for Unlimited Players",
+"kickPlayer": "Kick Player",
+"kickPlayerConfirm": "Are you sure you want to kick \"{playerName}\" from the session?",
+"@kickPlayerConfirm": {
+  "placeholders": {
+    "playerName": {
+      "type": "String"
+    }
+  }
+},
+"kick": "Kick",
+"playerKicked": "{playerName} has been kicked from the session",
+"@playerKicked": {
+  "placeholders": {
+    "playerName": {
+      "type": "String"
+    }
+  }
+},
+"failedToKickPlayer": "Failed to kick player",
+"cancelSession": "Cancel Session?",
+"cancelSessionForAll": "This will cancel the session for all players. Are you sure?",
+"no": "No",
+"yesCancel": "Yes, Cancel"
 }

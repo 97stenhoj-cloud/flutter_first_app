@@ -9,7 +9,8 @@ import '../../../../core/utils/unlock_manager.dart';
 import '../../../../core/services/supabase_service.dart';
 import '../../../../core/services/pandora_service.dart';
 import '../../../pandora/presentation/pages/session_stats_page.dart';
-
+import '../../../subscription/presentation/pages/subscription_page.dart';
+import '../../../../core/utils/theme_helper.dart';
 
 class GamePage extends StatefulWidget {
   final String gameMode;
@@ -493,18 +494,20 @@ class _GamePageState extends State<GamePage> {
   }
 
   void _showAdOrPurchaseOption() {
-    if (isPandoraMode) return;
-    if (unlockManager.isPremium) return;
+  if (isPandoraMode) return;
+  if (unlockManager.isPremium) return;
 
-    if (unlockManager.shouldShowAd()) {
-      if (!mounted) return;
-      
-      final l10n = AppLocalizations.of(context)!;
-      
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
+  if (unlockManager.shouldShowAd()) {
+    if (!mounted) return;
+    
+    final l10n = AppLocalizations.of(context)!;
+    
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => PopScope(  // <-- ADD THIS
+        canPop: false,  // <-- Blocks back button
+        child: AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -561,7 +564,12 @@ class _GamePageState extends State<GamePage> {
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  _showAdFreePurchaseDialog();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFAD1457),
@@ -576,9 +584,10 @@ class _GamePageState extends State<GamePage> {
             ],
           ),
         ),
-      );
-    }
+      ),  // <-- Close PopScope here
+    );
   }
+}
 
   void _showAdFreePurchaseDialog() {
     if (!mounted) return;
@@ -691,7 +700,13 @@ class _GamePageState extends State<GamePage> {
     // Check if we're ALREADY on the last question and swiping (any direction = forward)
     if (previousIndex == displayedQuestions.length - 1) {
       debugPrint('🎮 [Host] On last question ($previousIndex), swiping - ending game');
-      
+      // Check if this is a preview limit for locked category
+        if (!isPandoraMode && !unlockManager.isPremium && 
+            unlockManager.isCategoryLocked(widget.gameMode, widget.category)) {
+          debugPrint('🔒 Free user reached end of preview questions - showing premium dialog');
+          _showPremiumCategoryDialog();
+          return false;
+        }
       if (isPandoraMode && isHostMode) {
         pandoraService.endSession(widget.sessionId!).then((_) {
           debugPrint('✅ [Host] Session ended, navigating to stats');
@@ -834,7 +849,106 @@ class _GamePageState extends State<GamePage> {
       ),
     );
   }
-
+void _showPremiumCategoryDialog() {
+  final l10n = AppLocalizations.of(context)!;
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Row(
+        children: [
+          const Icon(Icons.lock_open, color: Color(0xFFFF6B9D), size: 32),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              l10n.locked,
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+              ),
+            ),
+          ),
+        ],
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            l10n.lockedMessage,
+            style: GoogleFonts.poppins(fontSize: 15),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFF6B9D).withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: const Color(0xFFFF6B9D).withValues(alpha: 0.3),
+              ),
+            ),
+            child: Column(
+              children: [
+                const Icon(
+                  Icons.stars,
+                  color: Color(0xFFFF6B9D),
+                  size: 48,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  l10n.unlockFullDeck,
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFFFF6B9D),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          },
+          child: Text(
+            l10n.mayBeLater,
+            style: GoogleFonts.poppins(color: Colors.grey),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+              ),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFFFF6B9D),
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          ),
+          child: Text(
+            l10n.subscribe,
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
+    ),
+  );
+}
   Map<String, String?> _parseQuestion(String question) {
     final regex = RegExp(r'^\[(.+?)\]\s*(.+)$');
     final match = regex.firstMatch(question);
@@ -1082,9 +1196,15 @@ class _GamePageState extends State<GamePage> {
             ),
           ),
           ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
+  onPressed: () {
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+      ),
+    );
+  },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFFF6B9D),
               foregroundColor: Colors.white,
@@ -1260,54 +1380,30 @@ class _GamePageState extends State<GamePage> {
     final questionText = parsed['questionText'] ?? question;
     
     List<Color> cardGradient;
-    Color textColor;
+    const Color textColor = Colors.white;;
     String? emoji;
-    
-    if (widget.gameMode.toLowerCase() == 'pandora') {
-      cardGradient = widget.isDarkMode
-          ? [const Color(0xFFC25483), const Color(0xFF9E4069)]
-          : [const Color(0xFFFF80B5), const Color(0xFFFF5592)];
-      textColor = Colors.white;
-      emoji = '🔮';
-    } else {
-      switch (widget.gameMode.toLowerCase()) {
-        case 'family':
-          cardGradient = widget.isDarkMode
-              ? [const Color(0xFFC99850), const Color(0xFFA96E4B)]
-              : [const Color(0xFFFFD97A), const Color(0xFFFFAC5F)];
-          textColor = Colors.white;
-          break;
-        case 'couple':
-          cardGradient = widget.isDarkMode
-              ? [const Color(0xFFC7697D), const Color(0xFF9E5168)]
-              : [const Color(0xFFFF9DAF), const Color(0xFFFF6F91)];
-          textColor = Colors.white;
-          break;
-        case 'friends':
-            cardGradient = widget.isDarkMode
-                ? [const Color(0xFF7E72A9), const Color(0xFF665E93)]
-                : [const Color(0xFFC4B4E3), const Color(0xFFB2A4DB)];
-            textColor = Colors.white;
-            break;
-        case 'personal':
-          final isFavoritesDeck = widget.category.toLowerCase() == 'favorites';
-          
-          if (isFavoritesDeck) {
-            cardGradient = widget.isDarkMode
-                ? [const Color(0xFFD85E72), const Color(0xFFC4405A)]
-                : [const Color(0xFFFF9BA8), const Color(0xFFFF6B85)];
-          } else {
-            cardGradient = widget.isDarkMode
-                ? [const Color(0xFF6C92A3), const Color(0xFF547A8D)]
-                : [const Color(0xFFB9D9E8), const Color(0xFFA4C8E0)];
-          }
-          textColor = Colors.white;
-          break;
-        default:
-          cardGradient = [const Color(0xFFE8D6D0), const Color(0xFFD7B299)];
-          textColor = const Color(0xFF4A3A33);
-      }
-    }
+
+
+if (widget.gameMode.toLowerCase() == 'pandora') {
+  emoji = '🔮';
+  cardGradient = ThemeHelper.getGameModeGradient('pandora', widget.isDarkMode);
+} else if (widget.gameMode.toLowerCase() == 'personal') {
+  // Personal mode keeps its own logic
+  final isFavoritesDeck = widget.category.toLowerCase() == 'favorites';
+  
+  if (isFavoritesDeck) {
+    cardGradient = widget.isDarkMode
+        ? [const Color(0xFFD85E72), const Color(0xFFC4405A)]
+        : [const Color(0xFFFF9BA8), const Color(0xFFFF6B85)];
+  } else {
+    cardGradient = widget.isDarkMode
+        ? [const Color(0xFF6C92A3), const Color(0xFF547A8D)]
+        : [const Color(0xFFB9D9E8), const Color(0xFFA4C8E0)];
+  }
+} else {
+  // Use ThemeHelper for Family, Couple, and Friends modes
+  cardGradient = ThemeHelper.getGameModeGradient(widget.gameMode, widget.isDarkMode);
+}
     
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
@@ -1337,7 +1433,7 @@ class _GamePageState extends State<GamePage> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(32),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 60),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
           child: Stack(
             children: [
               if (emoji == null)
@@ -1373,21 +1469,24 @@ class _GamePageState extends State<GamePage> {
                   ),
                 ),
               
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Text(
-                    questionText,
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w600,
-                      color: textColor,
-                      height: 1.4,
-                    ),
-                  ),
-                ),
-              ),
+Center(
+  child: Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16),  // Reduced from 32 to 16
+    child: Text(
+      questionText,
+      textAlign: TextAlign.center,
+      style: GoogleFonts.poppins(
+        fontSize: 24,
+        fontWeight: FontWeight.w600,
+        color: textColor,
+        height: 1.5,
+        letterSpacing: 0.3,
+      ),
+      softWrap: true,
+      overflow: TextOverflow.visible,
+    ),
+  ),
+),
               
               if (targetName != null)
                 Positioned(

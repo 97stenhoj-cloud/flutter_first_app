@@ -115,7 +115,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
           style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
         ),
         content: Text(
-          'Personal mode with custom decks is a premium feature. Upgrade to Premium to create and play your own custom question decks!',
+          l10n.premiumPersonal,
           style: GoogleFonts.poppins(),
         ),
         actions: [

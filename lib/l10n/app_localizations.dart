@@ -1101,8 +1101,8 @@ abstract class AppLocalizations {
   /// No description provided for @questionCount.
   ///
   /// In en, this message translates to:
-  /// **'{count} question'**
-  String questionCount(Object count);
+  /// **'{count, plural, =0{0 questions} =1{1 question} other{{count} questions}}'**
+  String questionCount(int count);
 
   /// No description provided for @questionAdded.
   ///
@@ -1401,7 +1401,7 @@ abstract class AppLocalizations {
   /// No description provided for @premium.
   ///
   /// In en, this message translates to:
-  /// **'Premium'**
+  /// **'PREMIUM'**
   String get premium;
 
   /// No description provided for @notEnoughQuestions.
@@ -1685,6 +1685,294 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unlock 75 questions'**
   String get unlockFullDeck;
+
+  /// No description provided for @renameDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename Deck'**
+  String get renameDeck;
+
+  /// No description provided for @deckRenamed.
+  ///
+  /// In en, this message translates to:
+  /// **'Deck renamed successfully'**
+  String get deckRenamed;
+
+  /// No description provided for @failedToRenameDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to rename deck'**
+  String get failedToRenameDeck;
+
+  /// No description provided for @shuffleQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Shuffle Questions'**
+  String get shuffleQuestions;
+
+  /// No description provided for @resetOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Order'**
+  String get resetOrder;
+
+  /// No description provided for @questionsShuffled.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions shuffled!'**
+  String get questionsShuffled;
+
+  /// No description provided for @orderReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Order reset to original'**
+  String get orderReset;
+
+  /// No description provided for @readyToPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to play'**
+  String get readyToPlay;
+
+  /// No description provided for @longPressReorder.
+  ///
+  /// In en, this message translates to:
+  /// **'Long press and drag to reorder questions'**
+  String get longPressReorder;
+
+  /// No description provided for @noFavoritesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No favorites yet'**
+  String get noFavoritesYet;
+
+  /// No description provided for @heartQuestionsDuringGameplay.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the heart ❤️ on question cards during gameplay to save them here!'**
+  String get heartQuestionsDuringGameplay;
+
+  /// No description provided for @addAtLeastQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least {count} questions to start playing!'**
+  String addAtLeastQuestions(Object count);
+
+  /// No description provided for @heartQuestionsInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Heart questions during gameplay to add them to your Favorites!'**
+  String get heartQuestionsInfo;
+
+  /// No description provided for @addAtLeastQuestionsToPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least {count} questions to play this deck'**
+  String addAtLeastQuestionsToPlay(Object count);
+
+  /// No description provided for @removeFromFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from favorites'**
+  String get removeFromFavorites;
+
+  /// No description provided for @unlockEverything.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Everything'**
+  String get unlockEverything;
+
+  /// No description provided for @premiumSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get unlimited access to all categories, remove ads forever, and unlock premium features'**
+  String get premiumSubtitle;
+
+  /// No description provided for @save32Percent.
+  ///
+  /// In en, this message translates to:
+  /// **'SAVE 32%'**
+  String get save32Percent;
+
+  /// No description provided for @priceMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'49 DKK/month'**
+  String get priceMonthly;
+
+  /// No description provided for @priceYearly.
+  ///
+  /// In en, this message translates to:
+  /// **'399 DKK/year'**
+  String get priceYearly;
+
+  /// No description provided for @billedAnnually.
+  ///
+  /// In en, this message translates to:
+  /// **'Billed annually'**
+  String get billedAnnually;
+
+  /// No description provided for @equivalentMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Only 33 DKK/month'**
+  String get equivalentMonthly;
+
+  /// No description provided for @feature24Categories.
+  ///
+  /// In en, this message translates to:
+  /// **'24+ premium categories unlocked across all modes'**
+  String get feature24Categories;
+
+  /// No description provided for @feature75Questions.
+  ///
+  /// In en, this message translates to:
+  /// **'75 questions per category (vs 30 in free tier)'**
+  String get feature75Questions;
+
+  /// No description provided for @featureNoAds.
+  ///
+  /// In en, this message translates to:
+  /// **'No ads forever - uninterrupted gameplay'**
+  String get featureNoAds;
+
+  /// No description provided for @featureUnlimitedPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Pandora mode: Unlimited players & questions'**
+  String get featureUnlimitedPlayers;
+
+  /// No description provided for @featureQuestionNavigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Navigate & jump to any question during play'**
+  String get featureQuestionNavigation;
+
+  /// No description provided for @featureSupportDevelopment.
+  ///
+  /// In en, this message translates to:
+  /// **'Support ongoing development & new features'**
+  String get featureSupportDevelopment;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// No description provided for @premiumActivatedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium activated! All categories unlocked.'**
+  String get premiumActivatedMessage;
+
+  /// No description provided for @featurePersonalDecks.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal mode: Create unlimited custom decks with your own questions'**
+  String get featurePersonalDecks;
+
+  /// No description provided for @premiumPersonal.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal mode with custom decks is a premium feature. Upgrade to Premium to create and play your own custom question decks!'**
+  String get premiumPersonal;
+
+  /// No description provided for @deleteDeckConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete \"{deckName}\"? This will delete all questions in this deck.'**
+  String deleteDeckConfirmation(String deckName);
+
+  /// No description provided for @needMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Need {count}'**
+  String needMore(int count);
+
+  /// No description provided for @editQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Questions'**
+  String get editQuestions;
+
+  /// No description provided for @addMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Add More'**
+  String get addMore;
+
+  /// No description provided for @useMyConnectEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Use my Connect email: {email}'**
+  String useMyConnectEmail(String email);
+
+  /// No description provided for @freemiumPlayerLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Free users can have max 6 players. Upgrade to Premium for unlimited players!'**
+  String get freemiumPlayerLimit;
+
+  /// No description provided for @freemiumQuestionLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Free users can submit max 12 questions. Upgrade to Premium for unlimited questions!'**
+  String get freemiumQuestionLimit;
+
+  /// No description provided for @yourQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Your questions'**
+  String get yourQuestions;
+
+  /// No description provided for @waitingForHost.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for host... ({count} players)'**
+  String waitingForHost(int count);
+
+  /// No description provided for @upgradeForUnlimitedPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium for Unlimited Players'**
+  String get upgradeForUnlimitedPlayers;
+
+  /// No description provided for @kickPlayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Kick Player'**
+  String get kickPlayer;
+
+  /// No description provided for @kickPlayerConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to kick \"{playerName}\" from the session?'**
+  String kickPlayerConfirm(String playerName);
+
+  /// No description provided for @kick.
+  ///
+  /// In en, this message translates to:
+  /// **'Kick'**
+  String get kick;
+
+  /// No description provided for @playerKicked.
+  ///
+  /// In en, this message translates to:
+  /// **'{playerName} has been kicked from the session'**
+  String playerKicked(String playerName);
+
+  /// No description provided for @failedToKickPlayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to kick player'**
+  String get failedToKickPlayer;
+
+  /// No description provided for @cancelSessionForAll.
+  ///
+  /// In en, this message translates to:
+  /// **'This will cancel the session for all players. Are you sure?'**
+  String get cancelSessionForAll;
 }
 
 class _AppLocalizationsDelegate

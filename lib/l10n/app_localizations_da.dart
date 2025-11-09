@@ -81,7 +81,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get yearly => 'Årligt';
 
   @override
-  String get billedMonthly => 'Faktureret månedligt';
+  String get billedMonthly => 'Faktureres månedligt';
 
   @override
   String get billedYearly => 'Faktureret årligt';
@@ -121,11 +121,11 @@ class AppLocalizationsDa extends AppLocalizations {
   String get demoNote => 'Demo: Abonnement nulstilles ved genstart af app';
 
   @override
-  String get freeTier => 'Gratis Niveau';
+  String get freeTier => 'Gratis version';
 
   @override
   String get freeTierDesc =>
-      '3 kategorier pr. tilstand (30 spørgsmål hver)\n5-spørgsmåls forhåndsvisning af premiumkategorier\nReklamer for hver 7. spørgsmål';
+      '3 kategorier pr. tilstand (30 spørgsmål hver)\n5-spørgsmåls forhåndsvisninger af premiumkategorier\nReklamer hver 7. spørgsmål';
 
   @override
   String get currentPlan => 'Nuværende Plan';
@@ -540,8 +540,15 @@ class AppLocalizationsDa extends AppLocalizations {
   }
 
   @override
-  String questionCount(Object count) {
-    return '$count spørgsmål';
+  String questionCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count spørgsmål',
+      one: '1 spørgsmål',
+      zero: '0 spørgsmål',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -685,7 +692,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get deckCreatedSuccess => 'Kortlæg oprettet!';
 
   @override
-  String get cancelSession => 'Afbryd session?';
+  String get cancelSession => 'Annuller session?';
 
   @override
   String get cancelSessionConfirm =>
@@ -695,7 +702,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get no => 'Nej';
 
   @override
-  String get yesCancel => 'Ja, afbryd';
+  String get yesCancel => 'Ja, annuller';
 
   @override
   String get hostQuestionCollection => 'Vært - Indsamling af spørgsmål';
@@ -710,11 +717,11 @@ class AppLocalizationsDa extends AppLocalizations {
   String get noActiveSubscription => 'Intet aktivt abonnement';
 
   @override
-  String get premium => 'Premium';
+  String get premium => 'PREMIUM';
 
   @override
   String notEnoughQuestions(Object count) {
-    return 'Not enough questions. Minimum 5 required. (Currently: $count)';
+    return 'Ikke nok spørgsmål. Minimum 5 kræves. (Nuværende: $count)';
   }
 
   @override
@@ -826,21 +833,21 @@ class AppLocalizationsDa extends AppLocalizations {
   String get unsubscribe => 'Afmeld';
 
   @override
-  String get unsubscribeConfirm => 'Opsig Premium-abonnement?';
+  String get unsubscribeConfirm => 'Annuller Premium-abonnement?';
 
   @override
   String get unsubscribeWarning =>
-      'Du mister adgang til alle premiumfunktioner, inklusive ubegrænsede spørgsmål, alle kategorier, reklamefri oplevelse og ubegrænsede Pandora-spillere. Du kan tilmelde dig igen når som helst.';
+      'Du mister adgang til alle premiumfunktioner, herunder ubegrænsede spørgsmål, alle kategorier, reklamefri oplevelse og ubegrænsede Pandora-spillere. Du kan tilmelde dig igen når som helst.';
 
   @override
-  String get yesUnsubscribe => 'Ja, afmeld';
+  String get yesUnsubscribe => 'Ja, annuller abonnement';
 
   @override
   String get unsubscribeSuccess =>
-      'Afmeldt med succes. Premiumfunktioner er deaktiveret.';
+      'Abonnementet blev annulleret. Premiumfunktioner er deaktiveret.';
 
   @override
-  String get unsubscribeError => 'Kunne ikke afmelde';
+  String get unsubscribeError => 'Kunne ikke annullere abonnementet';
 
   @override
   String get questions => 'spørgsmål';
@@ -849,20 +856,197 @@ class AppLocalizationsDa extends AppLocalizations {
   String get preview => 'forhåndsvisning';
 
   @override
-  String get userId => 'User ID';
+  String get userId => 'Bruger-ID';
 
   @override
-  String get subscription => 'Subscription';
+  String get subscription => 'Abonnement';
 
   @override
-  String get questionsCount75 => '75 questions';
+  String get questionsCount75 => '75 spørgsmål';
 
   @override
-  String get questionsCount30 => '30 questions';
+  String get questionsCount30 => '30 spørgsmål';
 
   @override
-  String get questionsCount5Preview => '5 questions preview';
+  String get questionsCount5Preview => '5 spørgsmål forhåndsvisning';
 
   @override
-  String get unlockFullDeck => 'Unlock 75 questions';
+  String get unlockFullDeck => 'Lås op for 75 spørgsmål';
+
+  @override
+  String get renameDeck => 'Omdøb kortsæt';
+
+  @override
+  String get deckRenamed => 'Kortsæt omdøbt med succes';
+
+  @override
+  String get failedToRenameDeck => 'Kunne ikke omdøbe kortsæt';
+
+  @override
+  String get shuffleQuestions => 'Bland spørgsmål';
+
+  @override
+  String get resetOrder => 'Nulstil rækkefølge';
+
+  @override
+  String get questionsShuffled => 'Spørgsmål blandet!';
+
+  @override
+  String get orderReset => 'Rækkefølge nulstillet til original';
+
+  @override
+  String get readyToPlay => 'Klar til at spille';
+
+  @override
+  String get longPressReorder =>
+      'Tryk og hold for at ændre rækkefølgen af spørgsmål';
+
+  @override
+  String get noFavoritesYet => 'Ingen favoritter endnu';
+
+  @override
+  String get heartQuestionsDuringGameplay =>
+      'Tryk på hjertet ❤️ på spørgsmålskort under spillet for at gemme dem her!';
+
+  @override
+  String addAtLeastQuestions(Object count) {
+    return 'Tilføj mindst $count spørgsmål for at begynde at spille!';
+  }
+
+  @override
+  String get heartQuestionsInfo =>
+      'Markér spørgsmål som favoritter under spillet for at tilføje dem her!';
+
+  @override
+  String addAtLeastQuestionsToPlay(Object count) {
+    return 'Tilføj mindst $count spørgsmål for at spille dette kortsæt';
+  }
+
+  @override
+  String get removeFromFavorites => 'Fjern fra favoritter';
+
+  @override
+  String get unlockEverything => 'Lås alt op';
+
+  @override
+  String get premiumSubtitle =>
+      'Få ubegrænset adgang til alle kategorier, fjern reklamer for altid og lås op for premiumfunktioner';
+
+  @override
+  String get save32Percent => 'SPAR 32%';
+
+  @override
+  String get priceMonthly => '49 DKK/måned';
+
+  @override
+  String get priceYearly => '399 DKK/år';
+
+  @override
+  String get billedAnnually => 'Faktureres årligt';
+
+  @override
+  String get equivalentMonthly => 'Kun 33 DKK/måned';
+
+  @override
+  String get feature24Categories =>
+      '24+ premiumkategorier låst op i alle tilstande';
+
+  @override
+  String get feature75Questions =>
+      '75 spørgsmål pr. kategori (mod 30 i gratis version)';
+
+  @override
+  String get featureNoAds =>
+      'Ingen reklamer nogensinde – uafbrudt spiloplevelse';
+
+  @override
+  String get featureUnlimitedPlayers =>
+      'Pandora-tilstand: Ubegrænsede spillere og spørgsmål';
+
+  @override
+  String get featureQuestionNavigation =>
+      'Navigér og hop til ethvert spørgsmål under spillet';
+
+  @override
+  String get featureSupportDevelopment =>
+      'Støt løbende udvikling og nye funktioner';
+
+  @override
+  String get error => 'Fejl';
+
+  @override
+  String get premiumActivatedMessage =>
+      'Premium aktiveret! Alle kategorier låst op.';
+
+  @override
+  String get featurePersonalDecks =>
+      'Personlig tilstand: Opret ubegrænsede tilpassede decks med dine egne spørgsmål';
+
+  @override
+  String get premiumPersonal =>
+      'Personlig tilstand med egne kortsæt er en premiumfunktion. Opgrader til Premium for at oprette og spille dine egne tilpassede spørgsmålssæt!';
+
+  @override
+  String deleteDeckConfirmation(String deckName) {
+    return 'Er du sikker på, at du vil slette \"$deckName\"? Dette vil slette alle spørgsmål i dette deck.';
+  }
+
+  @override
+  String needMore(int count) {
+    return 'Mangler $count';
+  }
+
+  @override
+  String get editQuestions => 'Rediger spørgsmål';
+
+  @override
+  String get addMore => 'Tilføj flere';
+
+  @override
+  String useMyConnectEmail(String email) {
+    return 'Brug min Connect e-mail: $email';
+  }
+
+  @override
+  String get freemiumPlayerLimit =>
+      'Gratis brugere kan have maks 6 spillere. Opgrader til Premium for ubegrænsede spillere!';
+
+  @override
+  String get freemiumQuestionLimit =>
+      'Gratis brugere kan indsende maks 12 spørgsmål. Opgrader til Premium for ubegrænsede spørgsmål!';
+
+  @override
+  String get yourQuestions => 'Dine spørgsmål';
+
+  @override
+  String waitingForHost(int count) {
+    return 'Venter på vært... ($count spillere)';
+  }
+
+  @override
+  String get upgradeForUnlimitedPlayers =>
+      'Opgrader til Premium for ubegrænsede spillere';
+
+  @override
+  String get kickPlayer => 'Smid spiller ud';
+
+  @override
+  String kickPlayerConfirm(String playerName) {
+    return 'Er du sikker på, at du vil smide \"$playerName\" ud af sessionen?';
+  }
+
+  @override
+  String get kick => 'Smid ud';
+
+  @override
+  String playerKicked(String playerName) {
+    return '$playerName er blevet smidt ud af sessionen';
+  }
+
+  @override
+  String get failedToKickPlayer => 'Kunne ikke smide spiller ud';
+
+  @override
+  String get cancelSessionForAll =>
+      'Dette vil annullere sessionen for alle spillere. Er du sikker?';
 }

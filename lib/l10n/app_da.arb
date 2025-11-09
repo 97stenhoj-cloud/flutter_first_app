@@ -297,6 +297,127 @@
 "questions": "spørgsmål",
 "preview": "forhåndsvisning",
 "premiumFeature3": "✓ 75 spørgsmål i alle kategorier",
-"freeTierDesc": "3 kategorier pr. tilstand (30 spørgsmål hver)\n5-spørgsmåls forhåndsvisning af premiumkategorier\nReklamer for hver 7. spørgsmål"
-
+"freeTierDesc": "3 kategorier pr. tilstand (30 spørgsmål hver)\n5-spørgsmåls forhåndsvisning af premiumkategorier\nReklamer for hver 7. spørgsmål",
+"unsubscribeConfirm": "Annuller Premium-abonnement?",
+"unsubscribeWarning": "Du mister adgang til alle premiumfunktioner, herunder ubegrænsede spørgsmål, alle kategorier, reklamefri oplevelse og ubegrænsede Pandora-spillere. Du kan tilmelde dig igen når som helst.",
+"yesUnsubscribe": "Ja, annuller abonnement",
+"unsubscribeSuccess": "Abonnementet blev annulleret. Premiumfunktioner er deaktiveret.",
+"unsubscribeError": "Kunne ikke annullere abonnementet",
+"questions": "spørgsmål",
+"preview": "forhåndsvisning",
+"premiumFeature3": "✓ 75 spørgsmål i alle kategorier",
+"freeTierDesc": "3 kategorier pr. tilstand (30 spørgsmål hver)\n5-spørgsmåls forhåndsvisninger af premiumkategorier\nReklamer hver 7. spørgsmål",
+"userId": "Bruger-ID",
+"subscription": "Abonnement",
+"questionsCount75": "75 spørgsmål",
+"questionsCount30": "30 spørgsmål",
+"questionsCount5Preview": "5 spørgsmål forhåndsvisning",
+"unlockFullDeck": "Lås op for 75 spørgsmål",
+"renameDeck": "Omdøb kortsæt",
+"deckRenamed": "Kortsæt omdøbt med succes",
+"failedToRenameDeck": "Kunne ikke omdøbe kortsæt",
+"shuffleQuestions": "Bland spørgsmål",
+"resetOrder": "Nulstil rækkefølge",
+"questionsShuffled": "Spørgsmål blandet!",
+"orderReset": "Rækkefølge nulstillet til original",
+"readyToPlay": "Klar til at spille",
+"longPressReorder": "Tryk og hold for at ændre rækkefølgen af spørgsmål",
+"noFavoritesYet": "Ingen favoritter endnu",
+"heartQuestionsDuringGameplay": "Tryk på hjertet ❤️ på spørgsmålskort under spillet for at gemme dem her!",
+"addAtLeastQuestions": "Tilføj mindst {count} spørgsmål for at begynde at spille!",
+"heartQuestionsInfo": "Markér spørgsmål som favoritter under spillet for at tilføje dem her!",
+"addAtLeastQuestionsToPlay": "Tilføj mindst {count} spørgsmål for at spille dette kortsæt",
+"removeFromFavorites": "Fjern fra favoritter",
+"unlockEverything": "Lås alt op",
+"premiumSubtitle": "Få ubegrænset adgang til alle kategorier, fjern reklamer for altid og lås op for premiumfunktioner",
+"monthly": "Månedligt",
+"yearly": "Årligt",
+"save32Percent": "SPAR 32%",
+"priceMonthly": "49 DKK/måned",
+"priceYearly": "399 DKK/år",
+"billedMonthly": "Faktureres månedligt",
+"billedAnnually": "Faktureres årligt",
+"equivalentMonthly": "Kun 33 DKK/måned",
+"premium": "PREMIUM",
+"feature24Categories": "24+ premiumkategorier låst op i alle tilstande",
+"feature75Questions": "75 spørgsmål pr. kategori (mod 30 i gratis version)",
+"featureNoAds": "Ingen reklamer nogensinde – uafbrudt spiloplevelse",
+"featureUnlimitedPlayers": "Pandora-tilstand: Ubegrænsede spillere og spørgsmål",
+"featureQuestionNavigation": "Navigér og hop til ethvert spørgsmål under spillet",
+"featureSupportDevelopment": "Støt løbende udvikling og nye funktioner",
+"freeTier": "Gratis version",
+"error": "Fejl",
+"premiumActivatedMessage": "Premium aktiveret! Alle kategorier låst op.",
+"featurePersonalDecks": "Personlig tilstand: Opret ubegrænsede tilpassede decks med dine egne spørgsmål",
+"premiumPersonal": "Personlig tilstand med egne kortsæt er en premiumfunktion. Opgrader til Premium for at oprette og spille dine egne tilpassede spørgsmålssæt!",
+"deleteDeckConfirmation": "Er du sikker på, at du vil slette \"{deckName}\"? Dette vil slette alle spørgsmål i dette deck.",
+"@deleteDeckConfirmation": {
+  "placeholders": {
+    "deckName": {
+      "type": "String"
+    }
+  }
+},
+"needMore": "Mangler {count}",
+"@needMore": {
+  "placeholders": {
+    "count": {
+      "type": "int"
+    }
+  }
+},
+"editQuestions": "Rediger spørgsmål",
+"questionCount": "{count, plural, =0{0 spørgsmål} =1{1 spørgsmål} other{{count} spørgsmål}}",
+"@questionCount": {
+  "placeholders": {
+    "count": {
+      "type": "int"
+    }
+  }
+},
+"addMore": "Tilføj flere",
+"notEnoughQuestions": "Ikke nok spørgsmål. Minimum 5 kræves. (Nuværende: {count})",
+"useMyConnectEmail": "Brug min Connect e-mail: {email}",
+"@useMyConnectEmail": {
+  "placeholders": {
+    "email": {
+      "type": "String"
+    }
+  }
+},
+"freemiumPlayerLimit": "Gratis brugere kan have maks 6 spillere. Opgrader til Premium for ubegrænsede spillere!",
+"freemiumQuestionLimit": "Gratis brugere kan indsende maks 12 spørgsmål. Opgrader til Premium for ubegrænsede spørgsmål!",
+"yourQuestions": "Dine spørgsmål",
+"waitingForHost": "Venter på vært... ({count} spillere)",
+"@waitingForHost": {
+  "placeholders": {
+    "count": {
+      "type": "int"
+    }
+  }
+},
+"upgradeForUnlimitedPlayers": "Opgrader til Premium for ubegrænsede spillere",
+"kickPlayer": "Smid spiller ud",
+"kickPlayerConfirm": "Er du sikker på, at du vil smide \"{playerName}\" ud af sessionen?",
+"@kickPlayerConfirm": {
+  "placeholders": {
+    "playerName": {
+      "type": "String"
+    }
+  }
+},
+"kick": "Smid ud",
+"playerKicked": "{playerName} er blevet smidt ud af sessionen",
+"@playerKicked": {
+  "placeholders": {
+    "playerName": {
+      "type": "String"
+    }
+  }
+},
+"failedToKickPlayer": "Kunne ikke smide spiller ud",
+"cancelSession": "Annuller session?",
+"cancelSessionForAll": "Dette vil annullere sessionen for alle spillere. Er du sikker?",
+"no": "Nej",
+"yesCancel": "Ja, annuller"
 }

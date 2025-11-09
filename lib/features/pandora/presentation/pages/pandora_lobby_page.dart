@@ -10,6 +10,8 @@ import 'pandora_timer_selection_page.dart';
 import 'pandora_question_submission_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../core/utils/unlock_manager.dart';
+import '../../../subscription/presentation/pages/subscription_page.dart';
 
 class PandoraLobbyPage extends StatefulWidget {
   final String sessionId;
@@ -36,6 +38,7 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
   RealtimeChannel? sessionChannel;
   bool isLoading = true;
   bool _hasNavigated = false;
+  final unlockManager = UnlockManager();
   
   Timer? lobbyTimer;
   late DateTime lobbyEndTime;
@@ -160,13 +163,26 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
     debugPrint('🔌 [Lobby] Setting up real-time subscriptions');
     
     // Subscribe to participants changes
-    participantsChannel = pandoraService.subscribeToParticipants(
-      widget.sessionId,
-      () {
-        debugPrint('👥 [Lobby] Participants changed - reloading');
-        _loadParticipants();
-      },
-    );
+    // Subscribe to participants changes
+participantsChannel = pandoraService.subscribeToParticipants(
+  widget.sessionId,
+  () async {
+    debugPrint('👥 [Lobby] Participants changed - reloading');
+    await _loadParticipants();
+    
+    // Check player limit for freemium hosts
+    if (widget.isHost && !unlockManager.isPremium && participants.length > 6) {
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.freemiumPlayerLimit),
+          backgroundColor: Colors.orange,
+          duration: const Duration(seconds: 4),
+        ),
+      );
+    }
+  },
+);
 
     // Subscribe to session status changes
     sessionChannel = pandoraService.subscribeToSession(
@@ -223,7 +239,54 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
       ),
     );
   }
+  Future<void> _kickParticipant(String participantId, String displayName) async {
+  final l10n = AppLocalizations.of(context)!;
+  
+  final confirmed = await showDialog<bool>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(l10n.kickPlayer, style: GoogleFonts.poppins()),
+      content: Text(
+        l10n.kickPlayerConfirm(displayName),
+        style: GoogleFonts.poppins(),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          child: Text(l10n.cancel, style: GoogleFonts.poppins()),
+        ),
+        ElevatedButton(
+          onPressed: () => Navigator.pop(context, true),
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          child: Text(l10n.kick, style: GoogleFonts.poppins()),
+        ),
+      ],
+    ),
+  );
 
+  if (confirmed == true) {
+    try {
+      await pandoraService.kickParticipant(participantId);
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.playerKicked(displayName), style: GoogleFonts.poppins()),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.failedToKickPlayer, style: GoogleFonts.poppins()),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+}
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -491,13 +554,28 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
                                             ],
                                           ),
                                         ),
-                                        Icon(
-                                          Icons.check_circle,
-                                          color: const Color(0xFF4CAF50),
-                                        ),
-                                      ],
-                                    ),
-                                  );
+                                        // Kick button (only show for host, and not for themselves)
+      if (widget.isHost && !isHost)
+        IconButton(
+          onPressed: () => _kickParticipant(
+            participant['id'],
+            participant['display_name'],
+          ),
+          icon: const Icon(
+            Icons.remove_circle_outline,
+            color: Colors.red,
+            size: 24,
+          ),
+          tooltip: l10n.kickPlayer,
+        )
+      else
+        const Icon(
+          Icons.check_circle,
+          color: Color(0xFF4CAF50),
+        ),
+    ],
+  ),
+);
                                 },
                               ),
                   ),
@@ -506,55 +584,96 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
                   
                   // Start button (only for host)
                   if (widget.isHost)
-                    SizedBox(
-                      width: double.infinity,
-                      height: AppConstants.buttonHeight,
-                      child: ElevatedButton(
-                        onPressed: isLoading || participants.length < 2
-                            ? null
-                            : _proceedToTimerSelection,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFFF6B9D),
-                          foregroundColor: Colors.white,
-                          disabledBackgroundColor: Colors.grey,
-                          disabledForegroundColor: Colors.white70,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 4,
-                        ),
-                        child: Text(
-                          isLoading 
-                            ? l10n.loading
-                            : participants.length < 2
-                              ? l10n.needAtLeastPlayers(participants.length)
-                              : l10n.continueToTimerSetup,
-                          style: GoogleFonts.poppins(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    )
-                  else
-                    Container(
-                      width: double.infinity,
-                      height: AppConstants.buttonHeight,
-                      decoration: BoxDecoration(
-                        color: widget.isDarkMode
-                            ? Colors.white.withValues(alpha: 0.1)
-                            : Colors.black.withValues(alpha: 0.05),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Waiting for host... (${participants.length} players)',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
-                        ),
-                      ),
-                    ),
+  // Check if over player limit
+  !unlockManager.isPremium && participants.length > 6
+    ? SizedBox(
+        width: double.infinity,
+        height: AppConstants.buttonHeight,
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+              ),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFFD4A574),
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            elevation: 4,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.lock_open, size: 24),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  l10n.upgradeForUnlimitedPlayers,
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
+      )
+    : SizedBox(
+        width: double.infinity,
+        height: AppConstants.buttonHeight,
+        child: ElevatedButton(
+          onPressed: isLoading || participants.length < 2
+              ? null
+              : _proceedToTimerSelection,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFFFF6B9D),
+            foregroundColor: Colors.white,
+            disabledBackgroundColor: Colors.grey,
+            disabledForegroundColor: Colors.white70,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            elevation: 4,
+          ),
+          child: Text(
+            isLoading 
+              ? l10n.loading
+              : participants.length < 2
+                ? l10n.needAtLeastPlayers(participants.length)
+                : l10n.continueToTimerSetup,
+            style: GoogleFonts.poppins(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      )
+else
+  Container(
+    width: double.infinity,
+    height: AppConstants.buttonHeight,
+    decoration: BoxDecoration(
+      color: widget.isDarkMode
+          ? Colors.white.withValues(alpha: 0.1)
+          : Colors.black.withValues(alpha: 0.05),
+      borderRadius: BorderRadius.circular(12),
+    ),
+    alignment: Alignment.center,
+    child: Text(
+      l10n.waitingForHost(participants.length),
+      style: GoogleFonts.poppins(
+        fontSize: 16,
+        color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
+      ),
+    ),
+  ),
                 ],
               ),
             ),

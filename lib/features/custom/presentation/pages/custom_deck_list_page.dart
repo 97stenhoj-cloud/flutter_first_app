@@ -119,7 +119,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
       builder: (context) => AlertDialog(
         title: Text(l10n.deleteDeck, style: GoogleFonts.poppins()),
         content: Text(
-          'Are you sure you want to delete "$deckName"? This will delete all questions in this deck.',
+          l10n.deleteDeckConfirmation(deckName),
           style: GoogleFonts.poppins(),
         ),
         actions: [
@@ -159,7 +159,59 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
       }
     }
   }
+Future<void> _renameDeck(String deckId, String currentName) async {
+  final l10n = AppLocalizations.of(context)!;
+  final controller = TextEditingController(text: currentName);
 
+  final newName = await showDialog<String>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(l10n.renameDeck, style: GoogleFonts.poppins()),
+      content: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          hintText: l10n.deckNameHint,
+          border: const OutlineInputBorder(),
+        ),
+        autofocus: true,
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(l10n.cancel, style: GoogleFonts.poppins()),
+        ),
+        ElevatedButton(
+          onPressed: () => Navigator.pop(context, controller.text),
+          child: Text(l10n.save, style: GoogleFonts.poppins()),
+        ),
+      ],
+    ),
+  );
+
+  if (newName != null && newName.isNotEmpty && newName != currentName) {
+    try {
+      await customDeckService.renameDeck(deckId, newName);
+      _loadDecks();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.deckRenamed, style: GoogleFonts.poppins()),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.failedToRenameDeck, style: GoogleFonts.poppins()),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+}
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -300,7 +352,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
       ),
       backgroundColor: Colors.orange,
       action: isFavorites ? null : SnackBarAction(
-        label: 'Add More',
+        label: l10n.addMore,
         textColor: Colors.white,
         onPressed: () {
           Navigator.push(
@@ -371,7 +423,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
                           children: [
                             Flexible(
                               child: Text(
-                                '$count question${count != 1 ? 's' : ''}',
+                                l10n.questionCount(count),
                                 style: GoogleFonts.poppins(
                                   fontSize: 12, // Reduced from 13
                                   color: Colors.white.withValues(alpha: 0.9),
@@ -389,7 +441,7 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
-                                    'Need ${5 - count}',
+                                    l10n.needMore(5 - count),
                                     style: GoogleFonts.poppins(
                                       fontSize: 10, // Reduced from 11
                                       fontWeight: FontWeight.w600,
@@ -416,27 +468,52 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
               ),
               const SizedBox(width: 4), // Space between content and buttons
               if (!isFavorites) ...[
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => QuestionEditorPage(
-                          deckId: deckId,
-                          deckName: deckName,
-                          isDarkMode: widget.isDarkMode,
-                        ),
-                      ),
-                    ).then((_) => setState(() {}));
-                  },
-                  icon: Icon(
-                    Icons.edit,
-                    size: 20, // Reduced from 22
-                    color: Colors.white,
-                  ),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                ),
+                PopupMenuButton<String>(
+  onSelected: (value) {
+    if (value == 'edit') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => QuestionEditorPage(
+            deckId: deckId,
+            deckName: deckName,
+            isDarkMode: widget.isDarkMode,
+          ),
+        ),
+      ).then((_) => setState(() {}));
+    } else if (value == 'rename') {
+      _renameDeck(deckId, deckName);
+    }
+  },
+  icon: const Icon(
+    Icons.more_vert,
+    size: 20,
+    color: Colors.white,
+  ),
+  padding: EdgeInsets.zero,
+  itemBuilder: (context) => [
+    PopupMenuItem(
+      value: 'edit',
+      child: Row(
+        children: [
+          const Icon(Icons.edit, size: 20),
+          const SizedBox(width: 12),
+          Text(l10n.editQuestions, style: GoogleFonts.poppins()),
+        ],
+      ),
+    ),
+    PopupMenuItem(
+      value: 'rename',
+      child: Row(
+        children: [
+          const Icon(Icons.drive_file_rename_outline, size: 20),
+          const SizedBox(width: 12),
+          Text('Rename Deck', style: GoogleFonts.poppins()),
+        ],
+      ),
+    ),
+  ],
+),
                 const SizedBox(width: 4),
                 IconButton(
                   onPressed: () => _deleteDeck(deckId, deckName),

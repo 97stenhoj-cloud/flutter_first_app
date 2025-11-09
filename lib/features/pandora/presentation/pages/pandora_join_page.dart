@@ -215,7 +215,7 @@ class _PandoraJoinPageState extends State<PandoraJoinPage> {
                           ),
                           Expanded(
                             child: Text(
-                              'Use my Connect email: ${authService.currentUser?.email}',
+                              l10n.useMyConnectEmail(authService.currentUser?.email ?? ''),
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 color: ThemeHelper.getBodyTextColor(widget.isDarkMode),

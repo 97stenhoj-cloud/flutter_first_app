@@ -547,7 +547,7 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String questionCount(Object count) {
+  String questionCount(int count) {
     return '$count întrebare';
   }
 
@@ -873,4 +873,179 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get unlockFullDeck => 'Unlock 75 questions';
+
+  @override
+  String get renameDeck => 'Rename Deck';
+
+  @override
+  String get deckRenamed => 'Deck renamed successfully';
+
+  @override
+  String get failedToRenameDeck => 'Failed to rename deck';
+
+  @override
+  String get shuffleQuestions => 'Shuffle Questions';
+
+  @override
+  String get resetOrder => 'Reset Order';
+
+  @override
+  String get questionsShuffled => 'Questions shuffled!';
+
+  @override
+  String get orderReset => 'Order reset to original';
+
+  @override
+  String get readyToPlay => 'Ready to play';
+
+  @override
+  String get longPressReorder => 'Long press and drag to reorder questions';
+
+  @override
+  String get noFavoritesYet => 'No favorites yet';
+
+  @override
+  String get heartQuestionsDuringGameplay =>
+      'Tap the heart ❤️ on question cards during gameplay to save them here!';
+
+  @override
+  String addAtLeastQuestions(Object count) {
+    return 'Add at least $count questions to start playing!';
+  }
+
+  @override
+  String get heartQuestionsInfo =>
+      'Heart questions during gameplay to add them to your Favorites!';
+
+  @override
+  String addAtLeastQuestionsToPlay(Object count) {
+    return 'Add at least $count questions to play this deck';
+  }
+
+  @override
+  String get removeFromFavorites => 'Remove from favorites';
+
+  @override
+  String get unlockEverything => 'Unlock Everything';
+
+  @override
+  String get premiumSubtitle =>
+      'Get unlimited access to all categories, remove ads forever, and unlock premium features';
+
+  @override
+  String get save32Percent => 'SAVE 32%';
+
+  @override
+  String get priceMonthly => '49 DKK/month';
+
+  @override
+  String get priceYearly => '399 DKK/year';
+
+  @override
+  String get billedAnnually => 'Billed annually';
+
+  @override
+  String get equivalentMonthly => 'Only 33 DKK/month';
+
+  @override
+  String get feature24Categories =>
+      '24+ premium categories unlocked across all modes';
+
+  @override
+  String get feature75Questions =>
+      '75 questions per category (vs 30 in free tier)';
+
+  @override
+  String get featureNoAds => 'No ads forever - uninterrupted gameplay';
+
+  @override
+  String get featureUnlimitedPlayers =>
+      'Pandora mode: Unlimited players & questions';
+
+  @override
+  String get featureQuestionNavigation =>
+      'Navigate & jump to any question during play';
+
+  @override
+  String get featureSupportDevelopment =>
+      'Support ongoing development & new features';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get premiumActivatedMessage =>
+      'Premium activated! All categories unlocked.';
+
+  @override
+  String get featurePersonalDecks =>
+      'Personal mode: Create unlimited custom decks with your own questions';
+
+  @override
+  String get premiumPersonal =>
+      'Personal mode with custom decks is a premium feature. Upgrade to Premium to create and play your own custom question decks!';
+
+  @override
+  String deleteDeckConfirmation(String deckName) {
+    return 'Are you sure you want to delete \"$deckName\"? This will delete all questions in this deck.';
+  }
+
+  @override
+  String needMore(int count) {
+    return 'Need $count';
+  }
+
+  @override
+  String get editQuestions => 'Edit Questions';
+
+  @override
+  String get addMore => 'Add More';
+
+  @override
+  String useMyConnectEmail(String email) {
+    return 'Use my Connect email: $email';
+  }
+
+  @override
+  String get freemiumPlayerLimit =>
+      'Free users can have max 6 players. Upgrade to Premium for unlimited players!';
+
+  @override
+  String get freemiumQuestionLimit =>
+      'Free users can submit max 12 questions. Upgrade to Premium for unlimited questions!';
+
+  @override
+  String get yourQuestions => 'Your questions';
+
+  @override
+  String waitingForHost(int count) {
+    return 'Waiting for host... ($count players)';
+  }
+
+  @override
+  String get upgradeForUnlimitedPlayers =>
+      'Upgrade to Premium for Unlimited Players';
+
+  @override
+  String get kickPlayer => 'Kick Player';
+
+  @override
+  String kickPlayerConfirm(String playerName) {
+    return 'Are you sure you want to kick \"$playerName\" from the session?';
+  }
+
+  @override
+  String get kick => 'Kick';
+
+  @override
+  String playerKicked(String playerName) {
+    return '$playerName has been kicked from the session';
+  }
+
+  @override
+  String get failedToKickPlayer => 'Failed to kick player';
+
+  @override
+  String get cancelSessionForAll =>
+      'This will cancel the session for all players. Are you sure?';
 }

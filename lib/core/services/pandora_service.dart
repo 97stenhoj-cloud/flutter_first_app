@@ -53,7 +53,19 @@ class PandoraService {
       rethrow;
     }
   }
-
+  Future<void> kickParticipant(String participantId) async {
+  try {
+    await Supabase.instance.client
+        .from('pandora_participants')
+        .delete()
+        .eq('id', participantId);
+    
+    debugPrint('✅ Kicked participant: $participantId');
+  } catch (e) {
+    debugPrint('❌ Error kicking participant: $e');
+    rethrow;
+  }
+}
   Future<Map<String, dynamic>> joinSession({
     required String pin,
     required String displayName,

@@ -26,7 +26,16 @@ class CustomDeckService {
       throw Exception('Failed to load decks: $e');
     }
   }
+Future<void> renameDeck(String deckId, String newName) async {
+  final userId = Supabase.instance.client.auth.currentUser?.id;
+  if (userId == null) throw Exception('User not authenticated');
 
+  await Supabase.instance.client
+      .from('custom_decks')
+      .update({'deck_name': newName})
+      .eq('id', deckId)
+      .eq('user_id', userId);
+}
   // Ensure Favorites deck exists for the user
   Future<String> ensureFavoritesDeck() async {
     try {
