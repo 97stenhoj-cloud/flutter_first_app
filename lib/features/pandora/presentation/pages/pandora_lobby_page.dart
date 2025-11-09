@@ -58,6 +58,12 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
         timer.cancel();
         return;
       }
+      
+      // For non-hosts, check if kicked BEFORE loading participants
+      if (!widget.isHost) {
+        _checkIfKicked();
+      }
+      
       _loadParticipants();
       
       // Also check session status as fallback
@@ -133,7 +139,46 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
       debugPrint('❌ [Lobby] Error checking status: $e');
     }
   }
-
+Future<void> _checkIfKicked() async {
+    try {
+      final userEmail = Supabase.instance.client.auth.currentUser?.email;
+      debugPrint('📧 [Polling] Checking with email: $userEmail');
+      
+      final currentParticipants = await pandoraService.getParticipants(widget.sessionId);
+      debugPrint('📋 [Polling] Current participants count: ${currentParticipants.length}');
+      
+      // Check if I'm still in the session
+      final myParticipant = currentParticipants.firstWhere(
+        (p) => p['user_email'] == userEmail,
+        orElse: () => <String, dynamic>{},
+      );
+      
+      final stillInSession = myParticipant.isNotEmpty;
+      debugPrint('✅ [Polling] Still in session: $stillInSession');
+      
+      if (!stillInSession && mounted) {
+        debugPrint('🚫🚫🚫 [Polling] Player was KICKED - leaving lobby NOW!');
+        
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.youWereKicked),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        
+        // Navigate back to home
+        await Future.delayed(const Duration(milliseconds: 100));
+        if (mounted) {
+          debugPrint('🚪 [Polling] Navigating to home...');
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        }
+      }
+    } catch (e) {
+      debugPrint('❌ [Polling] Error checking if kicked: $e');
+    }
+  }
   void _handleStatusChange(Map<String, dynamic> session) {
     if (_hasNavigated) return;
     
@@ -160,31 +205,84 @@ class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
   }
 
   void _subscribeToChanges() {
-    debugPrint('🔌 [Lobby] Setting up real-time subscriptions');
+    debugPrint('🔌 [Lobby] Setting up real-time subscriptions for session: ${widget.sessionId}');
+    debugPrint('🔌 [Lobby] isHost: ${widget.isHost}');
     
     // Subscribe to participants changes
-    // Subscribe to participants changes
-participantsChannel = pandoraService.subscribeToParticipants(
-  widget.sessionId,
-  () async {
-    debugPrint('👥 [Lobby] Participants changed - reloading');
-    await _loadParticipants();
-    
-    // Check player limit for freemium hosts
-    if (widget.isHost && !unlockManager.isPremium && participants.length > 6) {
-      final l10n = AppLocalizations.of(context)!;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.freemiumPlayerLimit),
-          backgroundColor: Colors.orange,
-          duration: const Duration(seconds: 4),
-        ),
-      );
-    }
-  },
-);
+    debugPrint('🔌 [Lobby] Creating participants subscription...');
+    participantsChannel = pandoraService.subscribeToParticipants(
+      widget.sessionId,
+      () async {
+        debugPrint('🔥🔥🔥 [Lobby] PARTICIPANTS CALLBACK FIRED! 🔥🔥🔥');
+        debugPrint('👥 [Lobby] Participants changed - checking for kicks');
+        debugPrint('👤 [Lobby] isHost: ${widget.isHost}');
+        
+        // Check if current user was kicked (only for non-hosts)
+        if (!widget.isHost) {
+          debugPrint('🔍 [Lobby] Non-host detected - checking if kicked');
+          final userEmail = Supabase.instance.client.auth.currentUser?.email;
+          debugPrint('📧 [Lobby] User email: $userEmail');
+          
+          final newParticipants = await pandoraService.getParticipants(widget.sessionId);
+          debugPrint('📋 [Lobby] Fetched ${newParticipants.length} participants from DB');
+          
+          // Find current user's participant
+          final myParticipant = newParticipants.firstWhere(
+            (p) => p['user_email'] == userEmail,
+            orElse: () => <String, dynamic>{},
+          );
+          
+          final stillInSession = myParticipant.isNotEmpty;
+          
+          debugPrint('🔍 Email: $userEmail, Still in session: $stillInSession');
+          debugPrint('🔍 Current participants: ${newParticipants.map((p) => "${p["display_name"]} (${p["user_email"]})").join(", ")}');
+          
+          if (!stillInSession && mounted) {
+            debugPrint('🚫🚫🚫 Player was KICKED - leaving lobby NOW!');
+            
+            // Immediately show message and leave
+            final l10n = AppLocalizations.of(context)!;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(l10n.youWereKicked),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 2),
+              ),
+            );
+            
+            // Navigate back immediately
+            await Future.delayed(const Duration(milliseconds: 100));
+            if (mounted) {
+              debugPrint('🚪 [Lobby] Navigating back to home...');
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            }
+            return;
+          } else {
+            debugPrint('✅ [Lobby] Player still in session - continuing normally');
+          }
+        } else {
+          debugPrint('👑 [Lobby] Host detected - skipping kick check');
+        }
+        
+        await _loadParticipants();
+        
+        // Check player limit for freemium hosts
+        if (widget.isHost && !unlockManager.isPremium && participants.length > 6) {
+          final l10n = AppLocalizations.of(context)!;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(l10n.freemiumPlayerLimit),
+              backgroundColor: Colors.orange,
+              duration: const Duration(seconds: 4),
+            ),
+          );
+        }
+      },
+    );
+    debugPrint('✅ [Lobby] Participants subscription created');
 
     // Subscribe to session status changes
+    debugPrint('🔌 [Lobby] Creating session subscription...');
     sessionChannel = pandoraService.subscribeToSession(
       widget.sessionId,
       (session) {
@@ -212,6 +310,7 @@ participantsChannel = pandoraService.subscribeToParticipants(
         }
       },
     );
+    debugPrint('✅ [Lobby] Session subscription created');
   }
   
   void _proceedToTimerSelection() {
@@ -264,22 +363,40 @@ participantsChannel = pandoraService.subscribeToParticipants(
     ),
   );
 
-  if (confirmed == true) {
+  if (confirmed == true && mounted) {
     try {
+      debugPrint('🚨 Attempting to kick participant: $participantId');
+      
+      // Temporarily unsubscribe to force refresh
+      await participantsChannel?.unsubscribe();
+      
+      // Kick the participant
       await pandoraService.kickParticipant(participantId);
+      debugPrint('✅ Kick request sent');
+      
+      // Wait a moment for database to update
+      await Future.delayed(const Duration(milliseconds: 500));
+      
+      // Force reload
+      await _loadParticipants();
+      debugPrint('🔄 Participants reloaded after kick');
+      
+      // Resubscribe to changes
+      _subscribeToChanges();
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n.playerKicked(displayName), style: GoogleFonts.poppins()),
+            content: Text(l10n.playerKicked(displayName)),
           ),
         );
       }
     } catch (e) {
+      debugPrint('❌ Error kicking participant: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n.failedToKickPlayer, style: GoogleFonts.poppins()),
+            content: Text('${l10n.failedToKickPlayer}: $e'),
             backgroundColor: Colors.red,
           ),
         );

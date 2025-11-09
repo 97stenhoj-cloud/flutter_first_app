@@ -55,12 +55,15 @@ class PandoraService {
   }
   Future<void> kickParticipant(String participantId) async {
   try {
-    await Supabase.instance.client
-        .from('pandora_participants')
-        .delete()
-        .eq('id', participantId);
+    debugPrint('🚨 Kicking participant via RPC function: $participantId');
     
-    debugPrint('✅ Kicked participant: $participantId');
+    await Supabase.instance.client.rpc(
+      'kick_participant',
+      params: {'p_participant_id': participantId},
+    );
+    
+    debugPrint('✅ Participant kicked successfully');
+    
   } catch (e) {
     debugPrint('❌ Error kicking participant: $e');
     rethrow;

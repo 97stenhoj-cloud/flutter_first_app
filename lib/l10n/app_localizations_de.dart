@@ -1030,7 +1030,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String kickPlayerConfirm(String playerName) {
-    return 'Are you sure you want to kick \"$playerName\" from the session?';
+    return 'Are you sure you want to kick $playerName?';
   }
 
   @override
@@ -1038,7 +1038,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String playerKicked(String playerName) {
-    return '$playerName has been kicked from the session';
+    return '$playerName has been kicked';
   }
 
   @override
@@ -1047,4 +1047,20 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get cancelSessionForAll =>
       'This will cancel the session for all players. Are you sure?';
+
+  @override
+  String get youWereKicked => 'You were removed from the session';
+
+  @override
+  String get you => 'You';
+
+  @override
+  String get loginRequiredForPandora => 'Login required to play Pandora';
+
+  @override
+  String get login => 'Login';
+
+  @override
+  String get loginRequiredNote =>
+      'Login required to play Pandora (track players properly)';
 }

@@ -419,5 +419,29 @@
 "cancelSession": "Annuller session?",
 "cancelSessionForAll": "Dette vil annullere sessionen for alle spillere. Er du sikker?",
 "no": "Nej",
-"yesCancel": "Ja, annuller"
+"yesCancel": "Ja, annuller",
+"youWereKicked": "Du blev fjernet fra sessionen",
+  "you": "Dig",
+  "kickPlayer": "Smid spiller ud",
+  "kickPlayerConfirm": "Er du sikker på, at du vil smide {playerName} ud?",
+  "@kickPlayerConfirm": {
+    "placeholders": {
+      "playerName": {
+        "type": "String"
+      }
+    }
+  },
+  "kick": "Smid ud",
+  "playerKicked": "{playerName} er blevet smidt ud",
+  "@playerKicked": {
+    "placeholders": {
+      "playerName": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToKickPlayer": "Kunne ikke smide spilleren ud",
+  "loginRequiredForPandora": "Log ind for at spille Pandora",
+  "login": "Log ind",
+  "loginRequiredNote": "Log ind påkrævet for at spille Pandora (spor spillere korrekt)"
 }

@@ -1947,7 +1947,7 @@ abstract class AppLocalizations {
   /// No description provided for @kickPlayerConfirm.
   ///
   /// In en, this message translates to:
-  /// **'Are you sure you want to kick \"{playerName}\" from the session?'**
+  /// **'Are you sure you want to kick {playerName}?'**
   String kickPlayerConfirm(String playerName);
 
   /// No description provided for @kick.
@@ -1959,7 +1959,7 @@ abstract class AppLocalizations {
   /// No description provided for @playerKicked.
   ///
   /// In en, this message translates to:
-  /// **'{playerName} has been kicked from the session'**
+  /// **'{playerName} has been kicked'**
   String playerKicked(String playerName);
 
   /// No description provided for @failedToKickPlayer.
@@ -1973,6 +1973,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This will cancel the session for all players. Are you sure?'**
   String get cancelSessionForAll;
+
+  /// No description provided for @youWereKicked.
+  ///
+  /// In en, this message translates to:
+  /// **'You were removed from the session'**
+  String get youWereKicked;
+
+  /// No description provided for @you.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get you;
+
+  /// No description provided for @loginRequiredForPandora.
+  ///
+  /// In en, this message translates to:
+  /// **'Login required to play Pandora'**
+  String get loginRequiredForPandora;
+
+  /// No description provided for @login.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login;
+
+  /// No description provided for @loginRequiredNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Login required to play Pandora (track players properly)'**
+  String get loginRequiredNote;
 }
 
 class _AppLocalizationsDelegate

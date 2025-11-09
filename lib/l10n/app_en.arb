@@ -417,5 +417,29 @@
 "cancelSession": "Cancel Session?",
 "cancelSessionForAll": "This will cancel the session for all players. Are you sure?",
 "no": "No",
-"yesCancel": "Yes, Cancel"
+"yesCancel": "Yes, Cancel",
+"youWereKicked": "You were removed from the session",
+  "you": "You",
+  "kickPlayer": "Kick Player",
+  "kickPlayerConfirm": "Are you sure you want to kick {playerName}?",
+  "@kickPlayerConfirm": {
+    "placeholders": {
+      "playerName": {
+        "type": "String"
+      }
+    }
+  },
+  "kick": "Kick",
+  "playerKicked": "{playerName} has been kicked",
+  "@playerKicked": {
+    "placeholders": {
+      "playerName": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToKickPlayer": "Failed to kick player",
+  "loginRequiredForPandora": "Login required to play Pandora",
+  "login": "Login",
+  "loginRequiredNote": "Login required to play Pandora (track players properly)"
 }

@@ -1032,7 +1032,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String kickPlayerConfirm(String playerName) {
-    return 'Er du sikker på, at du vil smide \"$playerName\" ud af sessionen?';
+    return 'Er du sikker på, at du vil smide $playerName ud?';
   }
 
   @override
@@ -1040,13 +1040,29 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String playerKicked(String playerName) {
-    return '$playerName er blevet smidt ud af sessionen';
+    return '$playerName er blevet smidt ud';
   }
 
   @override
-  String get failedToKickPlayer => 'Kunne ikke smide spiller ud';
+  String get failedToKickPlayer => 'Kunne ikke smide spilleren ud';
 
   @override
   String get cancelSessionForAll =>
       'Dette vil annullere sessionen for alle spillere. Er du sikker?';
+
+  @override
+  String get youWereKicked => 'Du blev fjernet fra sessionen';
+
+  @override
+  String get you => 'Dig';
+
+  @override
+  String get loginRequiredForPandora => 'Log ind for at spille Pandora';
+
+  @override
+  String get login => 'Log ind';
+
+  @override
+  String get loginRequiredNote =>
+      'Log ind påkrævet for at spille Pandora (spor spillere korrekt)';
 }

@@ -27,6 +27,8 @@ class PandoraQuestionSubmissionPage extends StatefulWidget {
       _PandoraQuestionSubmissionPageState();
 }
 
+
+
 class _PandoraQuestionSubmissionPageState
     extends State<PandoraQuestionSubmissionPage> {
   final pandoraService = PandoraService();
@@ -49,6 +51,8 @@ class _PandoraQuestionSubmissionPageState
   bool isSubmitting = false;
   bool isStartingGame = false;
   bool hasNavigatedToGame = false;
+  RealtimeChannel? participantsChannel;
+  bool _hasBeenKicked = false;
 
   @override
   void initState() {
@@ -84,6 +88,7 @@ class _PandoraQuestionSubmissionPageState
     statusPollTimer?.cancel();
     questionsChannel?.unsubscribe();
     sessionChannel?.unsubscribe();
+    participantsChannel?.unsubscribe();
     super.dispose();
   }
 
@@ -122,17 +127,37 @@ class _PandoraQuestionSubmissionPageState
     try {
       final loadedParticipants = await pandoraService.getParticipants(widget.sessionId);
       if (mounted) {
+        // Find my participant ID BEFORE setState
+        final userEmail = Supabase.instance.client.auth.currentUser?.email;
+        
+        // Try to find by email first, then by host status as fallback
+        Map<String, dynamic>? myParticipant;
+        if (userEmail != null) {
+          myParticipant = loadedParticipants.firstWhere(
+            (p) => p['user_email'] == userEmail,
+            orElse: () => loadedParticipants.firstWhere(
+              (p) => p['is_host'] == widget.isHost,
+              orElse: () => loadedParticipants.first,
+            ),
+          );
+        } else {
+          // No email - use host status or first participant
+          myParticipant = loadedParticipants.firstWhere(
+            (p) => p['is_host'] == widget.isHost,
+            orElse: () => loadedParticipants.first,
+          );
+        }
+        
+        final foundId = myParticipant['id'] as String;
+        
+        debugPrint('🔍 My participant ID: $foundId (email: $userEmail, isHost: ${widget.isHost})');
+        debugPrint('🔍 All participants: ${loadedParticipants.map((p) => '${p["display_name"]} (${p["id"]})').join(", ")}');
+        
         setState(() {
           participants = loadedParticipants;
-          
-          // Find my participant ID
-          final userEmail = Supabase.instance.client.auth.currentUser?.email;
-          myParticipantId = participants
-              .firstWhere(
-                (p) => p['user_email'] == userEmail || p['is_host'] == widget.isHost,
-                orElse: () => participants.first,
-              )['id'];
+          myParticipantId = foundId;
         });
+        
         debugPrint('👥 Loaded ${participants.length} participants');
       }
     } catch (e) {
@@ -204,6 +229,38 @@ class _PandoraQuestionSubmissionPageState
         _loadQuestions();
       },
     );
+
+    // Subscribe to participants to detect if kicked (non-hosts only)
+    RealtimeChannel? participantsChannel;
+    if (!widget.isHost) {
+      participantsChannel = pandoraService.subscribeToParticipants(
+        widget.sessionId,
+        () async {
+          if (_hasBeenKicked) return;
+          
+          debugPrint('👥 Participants changed - checking if kicked');
+          final newParticipants = await pandoraService.getParticipants(widget.sessionId);
+          final stillInSession = newParticipants.any((p) => p['id'] == myParticipantId);
+          
+          if (!stillInSession && mounted && !_hasBeenKicked) {
+            _hasBeenKicked = true;
+            debugPrint('🚫 Player was kicked during question submission');
+            
+            final l10n = AppLocalizations.of(context)!;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(l10n.youWereKicked),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 2),
+              ),
+            );
+            
+            // Navigate back to home
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          }
+        },
+      );
+    }
 
     sessionChannel = pandoraService.subscribeToSession(
       widget.sessionId,
@@ -555,12 +612,18 @@ if (!unlockManager.isPremium) {
         ),
       );
       
-      if (shouldCancel == true && mounted) {
-        await _cancelSession();
+      // Only cancel if user confirmed (true), otherwise do nothing
+      if (shouldCancel == true) {
+        if (mounted) {
+          await _cancelSession();
+        }
       }
+      // If shouldCancel is false or null, dialog was cancelled - do nothing (this is correct)
     } else {
       // Players can leave without confirmation
-      Navigator.of(context).pop();
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
     }
   },
 ),
@@ -727,34 +790,52 @@ if (!unlockManager.isPremium) {
                         
                         if (targetType == 'specific') ...[
                           const SizedBox(height: 16),
-                          DropdownButtonFormField<String>(
-                            initialValue: targetParticipantId,
-                            dropdownColor: widget.isDarkMode
-                                ? const Color(0xFF2D2D2D)
-                                : Colors.white,
-                            style: GoogleFonts.poppins(
-                              color: widget.isDarkMode ? Colors.white : Colors.black87,
-                            ),
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: widget.isDarkMode
-                                  ? Colors.white.withValues(alpha: 0.1)
-                                  : Colors.black.withValues(alpha: 0.05),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide.none,
-                              ),
-                            ),
-                            hint: Text(l10n.selectPlayer),
-                            items: participants
-                                .where((p) => p['id'] != myParticipantId)
-                                .map((p) => DropdownMenuItem<String>(
-                                      value: p['id'],
-                                      child: Text(p['display_name']),
-                                    ))
-                                .toList(),
-                            onChanged: (value) {
-                              setState(() => targetParticipantId = value);
+                          Builder(
+                            builder: (context) {
+                              debugPrint('🎯 Building dropdown - myParticipantId: $myParticipantId');
+                              
+                              return DropdownButtonFormField<String>(
+                                value: targetParticipantId,
+                                dropdownColor: widget.isDarkMode
+                                    ? const Color(0xFF2D2D2D)
+                                    : Colors.white,
+                                style: GoogleFonts.poppins(
+                                  color: widget.isDarkMode ? Colors.white : Colors.black87,
+                                ),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: widget.isDarkMode
+                                      ? Colors.white.withValues(alpha: 0.1)
+                                      : Colors.black.withValues(alpha: 0.05),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                                hint: Text(l10n.selectPlayer),
+                                items: participants.map((p) {
+                                  final participantId = p['id'] as String;
+                                  final isMe = participantId == myParticipantId;
+                                  final displayName = p['display_name'] as String;
+                                  final label = isMe ? '$displayName (${l10n.you})' : displayName;
+                                  
+                                  debugPrint('  - $displayName: id=$participantId, isMe=$isMe (comparing with $myParticipantId)');
+                                  
+                                  return DropdownMenuItem<String>(
+                                    value: participantId,
+                                    child: Text(
+                                      label,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: GoogleFonts.poppins(
+                                        color: widget.isDarkMode ? Colors.white : Colors.black87,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() => targetParticipantId = value);
+                                },
+                              );
                             },
                           ),
                         ],

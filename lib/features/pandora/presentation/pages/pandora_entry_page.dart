@@ -1,11 +1,13 @@
 // lib/features/pandora/presentation/pages/pandora_entry_page.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/constants/app_constants.dart';
 import 'pandora_host_page.dart';
 import 'pandora_join_page.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../auth/presentation/pages/social_auth_page.dart';
 
 class PandoraEntryPage extends StatelessWidget {
   final bool isDarkMode;
@@ -14,6 +16,40 @@ class PandoraEntryPage extends StatelessWidget {
     super.key,
     required this.isDarkMode,
   });
+
+  void _checkLoginAndNavigate(BuildContext context, Widget destination) {
+    final user = Supabase.instance.client.auth.currentUser;
+    final l10n = AppLocalizations.of(context)!;
+    
+    if (user == null) {
+      // User not logged in - show message and redirect to login
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.loginRequiredForPandora),
+          backgroundColor: Colors.orange,
+          duration: const Duration(seconds: 3),
+          action: SnackBarAction(
+            label: l10n.login,
+            textColor: Colors.white,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SocialAuthPage(isDarkMode: isDarkMode),
+                ),
+              );
+            },
+          ),
+        ),
+      );
+    } else {
+      // User is logged in - proceed
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => destination),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,6 +180,8 @@ class PandoraEntryPage extends StatelessWidget {
                         _buildInfoItem('4', l10n.pandoraEveryoneSubmits, pandoraColors[0]),
                         _buildInfoItem('5', l10n.pandoraHostControls, pandoraColors[0]),
                         _buildInfoItem('⚠️', l10n.pandoraQuestionsDeleted, pandoraColors[0]),
+                        const SizedBox(height: 12),
+                        _buildInfoItem('🔐', l10n.loginRequiredNote, pandoraColors[0]),
                       ],
                     ),
                   ),
@@ -156,11 +194,9 @@ class PandoraEntryPage extends StatelessWidget {
                     height: AppConstants.buttonHeight,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
+                        _checkLoginAndNavigate(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => PandoraHostPage(isDarkMode: isDarkMode),
-                          ),
+                          PandoraHostPage(isDarkMode: isDarkMode),
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -196,11 +232,9 @@ class PandoraEntryPage extends StatelessWidget {
                     height: AppConstants.buttonHeight,
                     child: OutlinedButton(
                       onPressed: () {
-                        Navigator.push(
+                        _checkLoginAndNavigate(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => PandoraJoinPage(isDarkMode: isDarkMode),
-                          ),
+                          PandoraJoinPage(isDarkMode: isDarkMode),
                         );
                       },
                       style: OutlinedButton.styleFrom(
@@ -275,8 +309,6 @@ class PandoraEntryPage extends StatelessWidget {
                 color: isDarkMode ? Colors.white : const Color(0xFF2D2D2D),
                 height: 1.4,
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

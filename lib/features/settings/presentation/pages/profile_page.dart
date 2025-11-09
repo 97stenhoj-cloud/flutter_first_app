@@ -283,7 +283,9 @@ Future<void> _unsubscribe() async {
                                         builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
                                       ),
                                     ).then((_) {
-                                      setState(() {}); // Refresh after returning
+                                      if (mounted) {
+                                        setState(() {}); // Refresh after returning
+                                      }
                                     });
                                   },
                                   isPrimary: true,
@@ -417,7 +419,9 @@ Future<void> _unsubscribe() async {
 
                                   if (confirmed == true) {
                                     await authService.signOut();
-                                    setState(() {});
+                                    if (mounted) {
+                                      setState(() {});
+                                    }
                                   }
                                 },
                                 isPrimary: false,
@@ -471,7 +475,9 @@ Future<void> _unsubscribe() async {
                                       builder: (context) => SocialAuthPage(isDarkMode: widget.isDarkMode),
                                     ),
                                   ).then((_) {
-                                    setState(() {});  // Refresh the page when coming back
+                                    if (mounted) {
+                                      setState(() {});  // Refresh the page when coming back
+                                    }
                                   });
                                 },
                                 isPrimary: true,

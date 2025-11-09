@@ -1,7 +1,7 @@
 // lib/features/auth/presentation/pages/social_auth_page.dart
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:io' show Platform;
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/utils/unlock_manager.dart';
@@ -22,6 +22,19 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
   
   bool _isLoading = false;
   String? _errorMessage;
+
+  // Check if Apple Sign-In should be shown
+  bool get _shouldShowAppleSignIn {
+    if (kIsWeb) return false; // Don't show on web
+    
+    // On mobile/desktop, check platform
+    try {
+      return Theme.of(context).platform == TargetPlatform.iOS ||
+             Theme.of(context).platform == TargetPlatform.macOS;
+    } catch (e) {
+      return false;
+    }
+  }
 
   Future<void> _handleGoogleSignIn() async {
     final l10n = AppLocalizations.of(context)!;
@@ -221,7 +234,8 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                         
                         const SizedBox(height: 48),
                         
-                        if (Platform.isIOS || Platform.isMacOS) ...[
+                        // Show Apple Sign-In only on iOS/macOS (not on web)
+                        if (_shouldShowAppleSignIn) ...[
                           _buildSocialButton(
                             text: l10n.continueWithApple,
                             onPressed: _handleAppleSignIn,
@@ -232,12 +246,14 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
                           const SizedBox(height: 16),
                         ],
                         
-                        _buildSocialButton(
-                          text: l10n.continueWithGoogle,
-                          onPressed: _handleGoogleSignIn,
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black87,
-                          icon: Image.asset(
+                        // Google Sign-In - hide on iOS since Apple Sign-In works better
+                        if (!_shouldShowAppleSignIn)
+                          _buildSocialButton(
+                            text: l10n.continueWithGoogle,
+                            onPressed: _handleGoogleSignIn,
+                            backgroundColor: Colors.white,
+                            textColor: Colors.black87,
+                            icon: Image.asset(
                             'assets/images/google_logo.png',
                             height: 24,
                             width: 24,
