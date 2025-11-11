@@ -399,42 +399,45 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   }
 
   Future<void> _handleSubscribe() async {
-    final l10n = AppLocalizations.of(context)!;
-    setState(() => isLoading = true);
+  final l10n = AppLocalizations.of(context)!;
+  setState(() => isLoading = true);
+  
+  try {
+    debugPrint('🔐 [Subscription] Calling unlockPremium...');
+    await unlockManager.unlockPremium();
+    debugPrint('✅ [Subscription] Premium unlocked! Status: ${unlockManager.isPremium}');
     
-    try {
-      await unlockManager.unlockPremium();
-      
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              l10n.premiumActivatedMessage,
-              style: GoogleFonts.poppins(),
-            ),
-            backgroundColor: const Color(0xFFD4A574),
-            behavior: SnackBarBehavior.floating,
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            l10n.premiumActivatedMessage,
+            style: GoogleFonts.poppins(),
           ),
-        );
-        Navigator.pop(context);
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              '${l10n.error}: $e',
-              style: GoogleFonts.poppins(),
-            ),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
+          backgroundColor: const Color(0xFFD4A574),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      Navigator.pop(context, true);
+    }
+  } catch (e) {
+    debugPrint('❌ [Subscription] Error: $e');
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '${l10n.error}: $e',
+            style: GoogleFonts.poppins(),
           ),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() => isLoading = false);
-      }
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  } finally {
+    if (mounted) {
+      setState(() => isLoading = false);
     }
   }
+}
 }

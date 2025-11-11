@@ -11,6 +11,9 @@ import '../../../../core/services/pandora_service.dart';
 import '../../../pandora/presentation/pages/session_stats_page.dart';
 import '../../../subscription/presentation/pages/subscription_page.dart';
 import '../../../../core/utils/theme_helper.dart';
+import '../../../../core/widgets/custom_dialog.dart';
+
+
 
 class GamePage extends StatefulWidget {
   final String gameMode;
@@ -41,6 +44,7 @@ class _GamePageState extends State<GamePage> {
   final CardSwiperController controller = CardSwiperController();
   String? _loadedLanguageCode;
   bool _favoritesLoaded = false;
+  bool _lastKnownPremiumStatus = false; // Track premium status
   List<String> allQuestions = [];
   List<String> displayedQuestions = [];
   int currentIndex = 0;
@@ -50,7 +54,6 @@ class _GamePageState extends State<GamePage> {
   InterstitialAd? _interstitialAd;
   bool _isAdLoaded = false;
   
- 
   bool isPandoraMode = false;
   bool isHostMode = false;
   
@@ -72,6 +75,8 @@ class _GamePageState extends State<GamePage> {
     super.initState();
     isPandoraMode = widget.gameMode.toLowerCase() == 'pandora' && widget.sessionId != null;
     isHostMode = widget.isHost ?? false;
+    
+    _lastKnownPremiumStatus = unlockManager.isPremium; // Initialize premium status
     
     _loadQuestions();
     _loadAd();
@@ -109,6 +114,22 @@ class _GamePageState extends State<GamePage> {
         !isLoading) {
       debugPrint('🌍 Language changed from $_loadedLanguageCode to $currentLanguageCode - reloading');
       _loadQuestions();
+    }
+    
+    // Check if we need to reload due to premium status change
+    _checkPremiumStatusChange();
+  }
+
+  void _checkPremiumStatusChange() {
+    final currentPremiumStatus = unlockManager.isPremium;
+    
+    // If premium status changed from free to premium, reload questions
+    if (!_lastKnownPremiumStatus && currentPremiumStatus && !isLoading) {
+      debugPrint('🎉 Premium status changed! Reloading questions to get all 75...');
+      _lastKnownPremiumStatus = currentPremiumStatus;
+      _loadQuestions();
+    } else {
+      _lastKnownPremiumStatus = currentPremiumStatus;
     }
   }
 
@@ -505,86 +526,125 @@ class _GamePageState extends State<GamePage> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => PopScope(  // <-- ADD THIS
-        canPop: false,  // <-- Blocks back button
-        child: AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: Text(
-            l10n.advertisement,
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
+      builder: (context) => PopScope(
+        canPop: false,
+        child: CustomDialog(
+          isDarkMode: widget.isDarkMode,
+          icon: Icons.play_circle_outline,
+          iconColor: const Color(0xFF9C27B0),
+          iconSize: 48,
+          title: l10n.advertisement,
+          contentWidget: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              l10n.watchAdMessage,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                height: 1.4,
+                color: widget.isDarkMode
+                    ? Colors.white.withValues(alpha: 0.85)
+                    : const Color(0xFF2D1B2E).withValues(alpha: 0.8),
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
             ),
-            textAlign: TextAlign.center,
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                l10n.watchAdMessage,
-                style: GoogleFonts.poppins(fontSize: 15),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  
-                  if (_isAdLoaded && _interstitialAd != null) {
-                    debugPrint('Showing ad...');
-                    _interstitialAd!.show();
-                    unlockManager.resetQuestionCount();
-                  } else {
-                    debugPrint('Ad not ready, continuing without ad');
-                    unlockManager.resetQuestionCount();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          l10n.adNotReady,
-                          style: GoogleFonts.poppins(),
-                        ),
-                        duration: const Duration(seconds: 2),
+          actions: [
+            DialogButton(
+              text: _isAdLoaded ? l10n.watchAd : l10n.adLoadingContinue,
+              onPressed: () {
+                Navigator.pop(context);
+                
+                if (_isAdLoaded && _interstitialAd != null) {
+                  debugPrint('Showing ad...');
+                  _interstitialAd!.show();
+                  unlockManager.resetQuestionCount();
+                } else {
+                  debugPrint('Ad not ready, continuing without ad');
+                  unlockManager.resetQuestionCount();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        l10n.adNotReady,
+                        style: GoogleFonts.poppins(),
                       ),
-                    );
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey[700],
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-                child: Text(
-                  _isAdLoaded ? l10n.watchAd : l10n.adLoadingContinue,
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-                ),
-              ),
-              const SizedBox(height: 12),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+                      duration: const Duration(seconds: 2),
                     ),
                   );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFAD1457),
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-                child: Text(
-                  l10n.goAdFree,
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-                ),
-              ),
-            ],
+                }
+              },
+              isPrimary: false,
+              isDarkMode: widget.isDarkMode,
+              icon: Icons.play_arrow,
+            ),
+            const SizedBox(height: 12),
+            DialogButton(
+              text: l10n.goAdFree,
+              onPressed: () async {
+  // Navigate to subscription page and wait for result
+  final result = await Navigator.push<bool>(
+    context,
+    MaterialPageRoute(
+      builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+    ),
+  );
+  
+  // CRITICAL: Always refresh unlock manager after returning
+  debugPrint('🔄 Returned from subscription page, refreshing unlock manager...');
+  await unlockManager.initialize();
+  debugPrint('📊 Premium status after refresh: ${unlockManager.isPremium}');
+  
+  // Check if user actually subscribed
+  if (mounted) {
+    if (result == true || unlockManager.isPremium) {
+      // User subscribed! Reload questions to get all 75
+      final savedIndex = currentIndex;
+      
+      debugPrint('🔄 User subscribed! Reloading questions...');
+      debugPrint('📊 Before reload: ${displayedQuestions.length} questions');
+      
+      await _loadQuestions(); // Now we have 75 questions
+      
+      debugPrint('📊 After reload: ${displayedQuestions.length} questions');
+      
+      // Close the dialog
+      if (mounted) {
+        Navigator.of(context).pop();
+        
+        // Update state
+        setState(() {
+          currentIndex = savedIndex;
+          _lastKnownPremiumStatus = true;
+        });
+        
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '🎉 ${l10n.premiumActivated} All ${displayedQuestions.length} questions unlocked!',
+              style: GoogleFonts.poppins(),
+            ),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 3),
           ),
+        );
+      }
+    } else {
+      // User didn't subscribe
+      if (mounted) {
+        Navigator.of(context).pop(); // Close dialog
+      }
+    }
+  }
+              },
+              isPrimary: true,
+              isDarkMode: widget.isDarkMode,
+              icon: Icons.stars,
+            ),
+          ],
         ),
-      ),  // <-- Close PopScope here
+      ),
     );
   }
 }
@@ -767,128 +827,260 @@ class _GamePageState extends State<GamePage> {
     return true;
   }
 
-  void _showGameEndDialog() {
-    if (!mounted) return;
-    
-    // For Pandora mode, ALWAYS go to stats page (both host and players)
-    if (isPandoraMode) {
-      debugPrint('🎉 [${isHostMode ? "Host" : "Player"}] Navigating to stats page');
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => SessionStatsPage(
-            sessionId: widget.sessionId!,
-            isDarkMode: widget.isDarkMode,
-          ),
-        ),
-      );
-      return;
-    }
-    
-    final l10n = AppLocalizations.of(context)!;
-    
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => PopScope(
-        canPop: false,
-        child: AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: Column(
-            children: [
-              const Icon(
-                Icons.emoji_events,
-                size: 64,
-                color: Color(0xFFFFD700),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                l10n.thanksForPlaying,
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          content: Text(
-            l10n.hopeYouHadFun,
-            style: GoogleFonts.poppins(
-              fontSize: 16,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          actions: [
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFAD1457),
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: Text(
-                  l10n.backToMenu,
-                  style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
-          ],
+void _showGameEndDialog() {
+  if (!mounted) return;
+  
+  // For Pandora mode, ALWAYS go to stats page (both host and players)
+  if (isPandoraMode) {
+    debugPrint('🎉 [${isHostMode ? "Host" : "Player"}] Navigating to stats page');
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => SessionStatsPage(
+          sessionId: widget.sessionId!,
+          isDarkMode: widget.isDarkMode,
         ),
       ),
     );
+    return;
   }
+  
+  final l10n = AppLocalizations.of(context)!;
+  final isPremium = unlockManager.isPremium;
+  
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => PopScope(
+      canPop: false,
+      child: CustomDialog(
+        isDarkMode: widget.isDarkMode,
+        icon: Icons.emoji_events,
+        iconColor: const Color(0xFFFFD700),
+        iconSize: 56,
+        title: l10n.thanksForPlaying,
+        contentWidget: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              l10n.hopeYouHadFun,
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                height: 1.5,
+                color: widget.isDarkMode
+                    ? Colors.white.withValues(alpha: 0.85)
+                    : const Color(0xFF2D1B2E).withValues(alpha: 0.8),
+              ),
+              textAlign: TextAlign.center,
+            ),
+            
+            // Premium upsell for freemium users
+            if (!isPremium) ...[
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      const Color(0xFFFF6B9D).withValues(alpha: 0.15),
+                      const Color(0xFFFFD700).withValues(alpha: 0.1),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: const Color(0xFFFF6B9D).withValues(alpha: 0.3),
+                    width: 1.5,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.stars,
+                      color: Color(0xFFFFD700),
+                      size: 32,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      l10n.removeAdsForever,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: widget.isDarkMode ? Colors.white : const Color(0xFF2D1B2E),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.premiumPriceMonthly,
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: widget.isDarkMode 
+                            ? Colors.white.withValues(alpha: 0.7)
+                            : const Color(0xFF2D1B2E).withValues(alpha: 0.7),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+        actions: [
+          DialogButton(
+            text: l10n.playAgain,
+            onPressed: () async {
+              Navigator.of(context).pop(); // Close dialog
+              
+              // Reload questions with full access if premium
+              await _loadQuestions();
+              
+              // Reset to start for fresh play
+              setState(() {
+                currentIndex = 0;
+              });
+              // No need to move controller - CardSwiper will rebuild with new data
+            },
+            isPrimary: false,
+            isDarkMode: widget.isDarkMode,
+            icon: Icons.replay,
+          ),
+          const SizedBox(height: 12),
+          
+          // Show premium button for freemium users, otherwise show main menu
+          if (!isPremium)
+            DialogButton(
+              text: l10n.getPremium,
+              onPressed: () async {
+                final result = await Navigator.push<bool>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+                  ),
+                );
+                
+                if (mounted) {
+                  // Refresh unlock manager to check current premium status
+                  await unlockManager.initialize();
+                  
+                  if (result == true || unlockManager.isPremium) {
+                    // User subscribed! Reload questions to get all 75
+                    final savedIndex = currentIndex;
+                    
+                    debugPrint('🔄 [Game End] User subscribed! Reloading questions...');
+                    debugPrint('📊 Before reload: ${displayedQuestions.length} questions');
+                    
+                    await _loadQuestions(); // Now we have 75 questions
+                    
+                    debugPrint('📊 After reload: ${displayedQuestions.length} questions');
+                    
+                    // Close the dialog FIRST
+                    if (mounted) {
+                      Navigator.of(context).pop();
+                      
+                      // Update state
+                      setState(() {
+                        currentIndex = savedIndex;
+                        _lastKnownPremiumStatus = true; // Update tracking
+                      });
+                      
+                      // Show success message
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            '🎉 ${l10n.premiumActivated} All ${displayedQuestions.length} questions unlocked!',
+                            style: GoogleFonts.poppins(),
+                          ),
+                          backgroundColor: Colors.green,
+                          duration: const Duration(seconds: 3),
+                        ),
+                      );
+                    }
+                  } else {
+                    // User didn't subscribe, close dialog and return to category
+                    if (mounted) {
+                      Navigator.of(context).pop(); // Close dialog
+                      Navigator.of(context).pop(true); // Close game page with refresh signal
+                    }
+                  }
+                }
+              },
+              isPrimary: true,
+              isDarkMode: widget.isDarkMode,
+              icon: Icons.workspace_premium,
+            )
+          else
+            DialogButton(
+              text: l10n.mainMenu,
+              onPressed: () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+              isPrimary: true,
+              isDarkMode: widget.isDarkMode,
+              icon: Icons.home,
+            ),
+          
+          // Additional main menu button for freemium (secondary position)
+          if (!isPremium) ...[
+            const SizedBox(height: 12),
+            DialogButton(
+              text: l10n.mainMenu,
+              onPressed: () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+              isPrimary: false,
+              isDarkMode: widget.isDarkMode,
+              icon: Icons.home,
+            ),
+          ],
+        ],
+      ),
+    ),
+  );
+}
+
 void _showPremiumCategoryDialog() {
   final l10n = AppLocalizations.of(context)!;
   showDialog(
     context: context,
     barrierDismissible: false,
-    builder: (context) => AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      title: Row(
-        children: [
-          const Icon(Icons.lock_open, color: Color(0xFFFF6B9D), size: 32),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              l10n.locked,
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-              ),
-            ),
-          ),
-        ],
-      ),
-      content: Column(
+    builder: (context) => CustomDialog(
+      isDarkMode: widget.isDarkMode,
+      icon: Icons.lock_open,
+      iconColor: const Color(0xFFFF6B9D),
+      iconSize: 56,
+      title: l10n.locked,
+      contentWidget: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             l10n.lockedMessage,
-            style: GoogleFonts.poppins(fontSize: 15),
+            style: GoogleFonts.poppins(
+              fontSize: 15,
+              height: 1.5,
+              color: widget.isDarkMode
+                  ? Colors.white.withValues(alpha: 0.85)
+                  : const Color(0xFF2D1B2E).withValues(alpha: 0.8),
+            ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: const Color(0xFFFF6B9D).withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  const Color(0xFFFF6B9D).withValues(alpha: 0.15),
+                  const Color(0xFFFF8FA3).withValues(alpha: 0.08),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: const Color(0xFFFF6B9D).withValues(alpha: 0.3),
+                width: 1.5,
               ),
             ),
             child: Column(
@@ -896,13 +1088,13 @@ void _showPremiumCategoryDialog() {
                 const Icon(
                   Icons.stars,
                   color: Color(0xFFFF6B9D),
-                  size: 48,
+                  size: 40,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 Text(
                   l10n.unlockFullDeck,
                   style: GoogleFonts.poppins(
-                    fontSize: 14,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600,
                     color: const Color(0xFFFF6B9D),
                   ),
@@ -914,19 +1106,20 @@ void _showPremiumCategoryDialog() {
         ],
       ),
       actions: [
-        TextButton(
+        DialogButton(
+          text: l10n.mayBeLater,
           onPressed: () {
             Navigator.pop(context);
-            Navigator.pop(context);
+            Navigator.of(context).pop(); // Go back to category selection
           },
-          child: Text(
-            l10n.mayBeLater,
-            style: GoogleFonts.poppins(color: Colors.grey),
-          ),
+          isPrimary: false,
+          isDarkMode: widget.isDarkMode,
+          icon: Icons.arrow_back,
         ),
-        ElevatedButton(
+        const SizedBox(height: 12),
+        DialogButton(
+          text: l10n.upgradeNow,
           onPressed: () {
-            Navigator.pop(context);
             Navigator.pop(context);
             Navigator.push(
               context,
@@ -935,15 +1128,9 @@ void _showPremiumCategoryDialog() {
               ),
             );
           },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFFF6B9D),
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          ),
-          child: Text(
-            l10n.subscribe,
-            style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
-          ),
+          isPrimary: true,
+          isDarkMode: widget.isDarkMode,
+          icon: Icons.workspace_premium,
         ),
       ],
     ),
@@ -1031,35 +1218,43 @@ void _showPremiumCategoryDialog() {
                     size: 28,
                   ),
                   onPressed: () {
-                    if (isPandoraMode) {
-                      final l10n = AppLocalizations.of(context)!;
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text(l10n.leaveGame),
-                          content: Text(l10n.leaveGameMessage),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text(l10n.cancel),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                Navigator.of(context).pop();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
-                              ),
-                              child: Text(l10n.leave),
-                            ),
-                          ],
-                        ),
-                      );
-                    } else {
-                      Navigator.of(context).pop();
-                    }
-                  },
+  if (isPandoraMode) {
+    final l10n = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (context) => CustomDialog(
+        isDarkMode: widget.isDarkMode,
+        icon: Icons.exit_to_app,
+        iconColor: Colors.orange,
+        title: l10n.leaveGame,
+        content: l10n.leaveGameMessage,
+        actions: [
+          DialogButton(
+            text: l10n.cancel,
+            onPressed: () => Navigator.pop(context),
+            isPrimary: false,
+            isDarkMode: widget.isDarkMode,
+          ),
+          const SizedBox(height: 12),
+          DialogButton(
+            text: l10n.leave,
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.of(context).pop(true); // Pass true to signal refresh
+            },
+            isPrimary: true,
+            isDarkMode: widget.isDarkMode,
+            customColor: Colors.red,
+            icon: Icons.exit_to_app,
+          ),
+        ],
+      ),
+    );
+  } else {
+    // Pop with true if premium (categories should refresh)
+    Navigator.of(context).pop(unlockManager.isPremium);
+  }
+},
                 ),
               ),
 
@@ -1142,19 +1337,21 @@ void _showPremiumCategoryDialog() {
                               ),
                             )
                           : CardSwiper(
-                              controller: controller,
-                              cardsCount: displayedQuestions.length,
-                              onSwipe: _onSwipe,
-                              onUndo: _onUndo,
-                              isLoop: false,
-                              numberOfCardsDisplayed: 2,
-                              backCardOffset: const Offset(0, 40),
-                              padding: const EdgeInsets.all(24.0),
-                              cardBuilder: (context, index, horizontalThresholdPercentage, verticalThresholdPercentage) {
-                                return _buildQuestionCard(displayedQuestions[index]);
-                              },
-                              isDisabled: isPandoraMode && !isHostMode,
-                            ),
+    key: ValueKey('card_swiper_${displayedQuestions.length}'), // Add unique key
+    controller: controller,
+    cardsCount: displayedQuestions.length,
+    initialIndex: currentIndex, // Add this line to set starting position
+    onSwipe: _onSwipe,
+    onUndo: _onUndo,
+    isLoop: false,
+    numberOfCardsDisplayed: 2,
+    backCardOffset: const Offset(0, 40),
+    padding: const EdgeInsets.all(24.0),
+    cardBuilder: (context, index, horizontalThresholdPercentage, verticalThresholdPercentage) {
+      return _buildQuestionCard(displayedQuestions[index]);
+    },
+    isDisabled: isPandoraMode && !isHostMode,
+  ),
                     ),
                     
                     if (isPandoraMode && myParticipantId != null)
@@ -1173,51 +1370,52 @@ void _showPremiumCategoryDialog() {
   final l10n = AppLocalizations.of(context)!;
   showDialog(
     context: context,
-    builder: (context) => AlertDialog(
-      title: Row(
-        children: [
-          const Icon(Icons.lock, color: Color(0xFFFF6B9D)),
-          const SizedBox(width: 12),
-          Text(
-            l10n.premiumFeatureTitle,
-            style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
-      content: Text(
-        l10n.questionNavigationPremium,
+    builder: (context) => CustomDialog(
+      isDarkMode: widget.isDarkMode,
+      icon: Icons.lock,
+      iconColor: const Color(0xFFFF6B9D),
+      title: l10n.premiumFeatureTitle,
+      content: l10n.questionNavigationPremium,
+      actions: [
+        DialogButton(
+          text: l10n.mayBeLater,
+          onPressed: () => Navigator.pop(context),
+          isPrimary: false,
+          isDarkMode: widget.isDarkMode,
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              l10n.mayBeLater,
-              style: GoogleFonts.poppins(color: Colors.grey),
-            ),
-          ),
-          ElevatedButton(
-  onPressed: () {
-    Navigator.pop(context);
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
-      ),
-    );
-  },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFF6B9D),
-              foregroundColor: Colors.white,
-            ),
-            child: Text(
-              l10n.subscribe,
-              style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+        const SizedBox(height: 12),
+        DialogButton(
+          text: l10n.subscribe,
+          onPressed: () async {
+            Navigator.pop(context);
+            
+            final result = await Navigator.push<bool>(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+              ),
+            );
+            
+            if (mounted) {
+              await unlockManager.initialize();
+              
+              if (result == true || unlockManager.isPremium) {
+                await _loadQuestions();
+                setState(() {
+                  _lastKnownPremiumStatus = true;
+                });
+              }
+            }
+          },
+          isPrimary: true,
+          isDarkMode: widget.isDarkMode,
+          icon: Icons.workspace_premium,
+        ),
+      ],
+    ),
+  );
+}
+
 
   void _showQuestionPicker() {
     final l10n = AppLocalizations.of(context)!;
@@ -1380,7 +1578,7 @@ void _showPremiumCategoryDialog() {
     final questionText = parsed['questionText'] ?? question;
     
     List<Color> cardGradient;
-    const Color textColor = Colors.white;;
+    const Color textColor = Colors.white;
     String? emoji;
 
 

@@ -39,6 +39,36 @@ const Map<String, String> categoryImages = {
   'family_The Good Old Days Talks': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/family.png',
   'family_Would You Rather Talks': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/family.png',
 };
+// Definitive category order for each game mode
+const Map<String, List<String>> categoryOrder = {
+  'couple': [
+    'Love Talks',
+    'Deep Talks',
+    'Silly Talks',
+    'Car Talks',
+    'Spicy Talks',
+    'Do-you-dare Talks',
+    'Love Languages Remix Talks',
+  ],
+  'friends': [
+    'Cozy Talks',
+    'Silly Talks',
+    'Car Talks',
+    'Party Night Talks',
+    'Unpopular Opinions XL ',
+    'After Dark Talks',
+    'Plot Twists & Dilemmas ',
+  ],
+  'family': [
+    'Silly Talks',
+    'Cozy Talks',
+    'History Talks',
+    'Tiny Talks',
+    'Car Talks',
+    'The Good Old Days Talks',
+    'Would You Rather Talks',
+  ],
+};
 
 class CategorySelectionPage extends StatefulWidget {
   final String gameMode;
@@ -110,7 +140,37 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
       });
     }
   }
-
+Future<void> _reloadCategoriesSilently() async {
+  try {
+    final fetchedCategories = await supabaseService.getCategories(widget.gameMode);
+    
+    // Get the definitive order for this game mode
+    final definitiveOrder = categoryOrder[widget.gameMode.toLowerCase()] ?? [];
+    
+    // Sort categories based on the definitive order
+    fetchedCategories.sort((a, b) {
+      final aIndex = definitiveOrder.indexOf(a);
+      final bIndex = definitiveOrder.indexOf(b);
+      
+      if (aIndex != -1 && bIndex != -1) {
+        return aIndex.compareTo(bIndex);
+      }
+      
+      if (aIndex != -1) return -1;
+      if (bIndex != -1) return 1;
+      
+      return 0;
+    });
+    
+    // Update categories WITHOUT setting isLoading
+    setState(() {
+      categories = fetchedCategories;
+      // isLoading stays false - no loading spinner
+    });
+  } catch (e) {
+    debugPrint('Error reloading categories: $e');
+  }
+}
   Future<void> _initializeUnlockManager() async {
     await unlockManager.initialize();
     if (mounted) {
@@ -128,16 +188,24 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
   try {
     final fetchedCategories = await supabaseService.getCategories(widget.gameMode);
     
-    // Sort categories: Free categories first, then locked/premium categories
+    // Get the definitive order for this game mode
+    final definitiveOrder = categoryOrder[widget.gameMode.toLowerCase()] ?? [];
+    
+    // Sort categories based on the definitive order
     fetchedCategories.sort((a, b) {
-      final aIsLocked = _isCategoryLocked(a);
-      final bIsLocked = _isCategoryLocked(b);
+      final aIndex = definitiveOrder.indexOf(a);
+      final bIndex = definitiveOrder.indexOf(b);
       
-      // Free categories (not locked) come first
-      if (!aIsLocked && bIsLocked) return -1;
-      if (aIsLocked && !bIsLocked) return 1;
+      // If both are in the definitive order, sort by that
+      if (aIndex != -1 && bIndex != -1) {
+        return aIndex.compareTo(bIndex);
+      }
       
-      // If both are the same lock status, keep original order
+      // If only one is in the order, prioritize it
+      if (aIndex != -1) return -1;
+      if (bIndex != -1) return 1;
+      
+      // If neither is in the order, keep original order
       return 0;
     });
     
@@ -383,19 +451,34 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
               child: GestureDetector(
-                onTap: () {
-                  // Always allow navigation - GamePage will handle the preview logic
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GamePage(
-                        gameMode: widget.gameMode,
-                        category: category,
-                        isDarkMode: widget.isDarkMode,
-                      ),
-                    ),
-                  );
-                },
+                onTap: () async {
+  // Save the category NAME before navigating
+  final savedCategoryName = category;
+  final savedIndex = index;
+  
+  debugPrint('🎯 Navigating FROM: $savedCategoryName at index $savedIndex');
+  
+  final needsRefresh = await Navigator.push<bool>(
+    context,
+    MaterialPageRoute(
+      builder: (context) => GamePage(
+        gameMode: widget.gameMode,
+        category: category,
+        isDarkMode: widget.isDarkMode,
+      ),
+    ),
+  );
+  
+  debugPrint('🔙 Returned from game. needsRefresh: $needsRefresh');
+  
+  // Reload categories if user subscribed
+  if (needsRefresh == true && mounted) {
+    debugPrint('🔄 Silently reloading categories...');
+    await unlockManager.initialize();
+    await _reloadCategoriesSilently(); // Use the silent reload method
+    debugPrint('✅ Categories reloaded, staying at index $currentPage');
+  }
+},
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,

@@ -9,6 +9,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../auth/presentation/pages/social_auth_page.dart';
 import '../../../subscription/presentation/pages/subscription_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../../core/widgets/custom_dialog.dart';
 
 class ProfilePage extends StatefulWidget {
   final bool isDarkMode;
@@ -311,41 +312,32 @@ Future<void> _unsubscribe() async {
                                       isPrimary: false,
                                       onPressed: () async {
                                         final confirmed = await showDialog<bool>(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                            title: Text(
-                                              l10n.unsubscribeConfirm,
-                                              style: GoogleFonts.poppins(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            content: Text(
-                                              l10n.unsubscribeWarning,
-                                              style: GoogleFonts.poppins(),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () => Navigator.pop(context, false),
-                                                child: Text(
-                                                  l10n.cancel,
-                                                  style: GoogleFonts.poppins(),
-                                                ),
-                                              ),
-                                              TextButton(
-                                                onPressed: () => Navigator.pop(context, true),
-                                                style: TextButton.styleFrom(
-                                                  foregroundColor: Colors.red,
-                                                ),
-                                                child: Text(
-                                                  l10n.yesUnsubscribe,
-                                                  style: GoogleFonts.poppins(
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
+  context: context,
+  builder: (context) => CustomDialog(
+    isDarkMode: widget.isDarkMode,
+    icon: Icons.warning_amber_rounded,
+    iconColor: Colors.orange,
+    title: l10n.unsubscribeConfirm,
+    content: l10n.unsubscribeWarning,
+    actions: [
+      DialogButton(
+        text: l10n.cancel,
+        onPressed: () => Navigator.pop(context, false),
+        isPrimary: false,
+        isDarkMode: widget.isDarkMode,
+      ),
+      const SizedBox(height: 12),
+      DialogButton(
+        text: l10n.yesUnsubscribe,
+        onPressed: () => Navigator.pop(context, true),
+        isPrimary: true,
+        isDarkMode: widget.isDarkMode,
+        customColor: Colors.red,
+        icon: Icons.cancel,
+      ),
+    ],
+  ),
+);
 
                                         if (confirmed == true) {
                                           if (!mounted) return;
@@ -396,26 +388,51 @@ Future<void> _unsubscribe() async {
                                 text: l10n.signOut,
                                 icon: Icons.logout,
                                 onPressed: () async {
-                                  final confirmed = await showDialog<bool>(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: Text(l10n.signOut),
-                                      content: Text(l10n.signOutConfirm),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(context, false),
-                                          child: Text(l10n.cancel),
-                                        ),
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(context, true),
-                                          style: TextButton.styleFrom(
-                                            foregroundColor: Colors.red,
-                                          ),
-                                          child: Text(l10n.signOut),
-                                        ),
-                                      ],
-                                    ),
-                                  );
+  final confirmed = await showDialog<bool>(
+    context: context,
+    builder: (context) => CustomDialog(
+      isDarkMode: widget.isDarkMode,
+      icon: Icons.logout,
+      iconColor: Colors.orange,
+      iconSize: 48,
+      title: l10n.signOut,
+      content: l10n.signOutConfirm,
+      actions: [
+        DialogButton(
+          text: l10n.cancel,
+          onPressed: () => Navigator.pop(context, false),
+          isPrimary: false,
+          isDarkMode: widget.isDarkMode,
+        ),
+        const SizedBox(height: 12),
+        DialogButton(
+          text: l10n.signOut,
+          onPressed: () => Navigator.pop(context, true),
+          isPrimary: true,
+          isDarkMode: widget.isDarkMode,
+          customColor: Colors.red,
+          icon: Icons.logout,
+        ),
+      ],
+    ),
+  );
+
+  if (confirmed == true) {
+    await authService.signOut();
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            l10n.signedOutSuccess,
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
+      setState(() {});
+    }
+  }
+
 
                                   if (confirmed == true) {
                                     await authService.signOut();
