@@ -464,5 +464,12 @@
     }
   }
 },
-"pleaseEnterQuestion": "Please enter a question"
+"pleaseEnterQuestion": "Please enter a question",
+"rateThisDeck": "Rate this deck",
+"yourRating": "Your rating",
+"skip": "Skip",
+"submit": "Submit",
+"thankYouForFeedback": "Thank you for your feedback!",
+"failedToSubmitRating": "Failed to submit rating",
+"tapStarsToRate": "Tap stars to rate"
 }

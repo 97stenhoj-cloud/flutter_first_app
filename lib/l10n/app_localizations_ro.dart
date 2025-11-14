@@ -1087,4 +1087,25 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get pleaseEnterQuestion => 'Please enter a question';
+
+  @override
+  String get rateThisDeck => 'Rate this deck';
+
+  @override
+  String get yourRating => 'Your rating';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get submit => 'Submit';
+
+  @override
+  String get thankYouForFeedback => 'Thank you for your feedback!';
+
+  @override
+  String get failedToSubmitRating => 'Failed to submit rating';
+
+  @override
+  String get tapStarsToRate => 'Tap stars to rate';
 }

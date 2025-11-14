@@ -12,6 +12,8 @@ import '../../../pandora/presentation/pages/session_stats_page.dart';
 import '../../../subscription/presentation/pages/subscription_page.dart';
 import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/widgets/custom_dialog.dart';
+import '../../../../core/widgets/rating_dialog.dart';
+import '../../../../core/services/feedback_service.dart';
 
 
 
@@ -1243,15 +1245,15 @@ void _showPremiumCategoryDialog() {
           child: Stack(
             children: [
               Positioned(
-                top: 16,
-                left: 16,
-                child: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: widget.isDarkMode ? Colors.white : Colors.black87,
-                    size: 28,
-                  ),
-                  onPressed: () {
+  top: 16,
+  left: 16,
+  child: IconButton(
+    icon: Icon(
+      Icons.arrow_back,
+      color: widget.isDarkMode ? Colors.white : Colors.black87,
+      size: 28,
+    ),
+    onPressed: () async {
   if (isPandoraMode) {
     final l10n = AppLocalizations.of(context)!;
     showDialog(
@@ -1274,7 +1276,7 @@ void _showPremiumCategoryDialog() {
             text: l10n.leave,
             onPressed: () {
               Navigator.pop(context);
-              Navigator.of(context).pop(true); // Pass true to signal refresh
+              Navigator.of(context).pop(true);
             },
             isPrimary: true,
             isDarkMode: widget.isDarkMode,
@@ -1285,12 +1287,44 @@ void _showPremiumCategoryDialog() {
       ),
     );
   } else {
-    // Pop with true if premium (categories should refresh)
+  // Use persistent counter from UnlockManager
+  unlockManager.incrementBackButtonCount();
+  final count = unlockManager.backButtonCount;
+  
+  // Show rating dialog every 5th back button press
+  if (count % 5 == 0) {
+    debugPrint('⭐ Checking if rating prompt needed (every 5th press)');
+    if (!mounted) return;
+    
+    // Check if this deck should be rated (never rated OR 30+ days since last rating)
+    final feedbackService = FeedbackService();
+    final shouldPrompt = await feedbackService.shouldPromptRating(
+      categoryName: widget.category,
+      gameMode: widget.gameMode,
+    );
+    
+    if (shouldPrompt) {
+      debugPrint('✅ Showing rating dialog');
+      await showRatingDialog(
+        context,
+        categoryName: widget.category,
+        gameMode: widget.gameMode,
+        isDarkMode: widget.isDarkMode,
+      );
+    } else {
+      debugPrint('⏭️ User rated this deck recently - skipping prompt');
+    }
+  } else {
+    debugPrint('⏭️ Skipping rating dialog (${5 - (count % 5)} more presses until next)');
+  }
+  
+  if (mounted) {
     Navigator.of(context).pop(unlockManager.isPremium);
   }
+}
 },
-                ),
-              ),
+  ),
+),
 
               Positioned(
                 top: 24,

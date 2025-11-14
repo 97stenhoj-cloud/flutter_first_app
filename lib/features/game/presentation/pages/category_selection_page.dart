@@ -10,6 +10,8 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../custom/presentation/pages/custom_deck_list_page.dart';
 import '../../../subscription/presentation/pages/subscription_page.dart';
 import '../../../../core/widgets/custom_dialog.dart';
+import '../../../../core/services/feedback_service.dart';
+import '../../../../core/widgets/rating_dialog.dart';
 
 // Category image URLs - keyed by "gameMode_categoryName"
 const Map<String, String> categoryImages = {
@@ -435,6 +437,7 @@ Future<void> _reloadCategoriesSilently() async {
     final imageKey = '${widget.gameMode.toLowerCase()}_$category';
     final imageUrl = categoryImages[imageKey];
     final l10n = AppLocalizations.of(context)!;
+    final feedbackService = FeedbackService(); // NEW: Add feedback service
     
     return AnimatedBuilder(
       animation: _pageController,
@@ -458,244 +461,305 @@ Future<void> _reloadCategoriesSilently() async {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
               child: GestureDetector(
                 onTap: () async {
-  // Save the category NAME before navigating
-  final savedCategoryName = category;
-  final savedIndex = index;
-  
-  debugPrint('🎯 Navigating FROM: $savedCategoryName at index $savedIndex');
-  
-  final needsRefresh = await Navigator.push<bool>(
-    context,
-    MaterialPageRoute(
-      builder: (context) => GamePage(
-        gameMode: widget.gameMode,
-        category: category,
-        isDarkMode: widget.isDarkMode,
-      ),
-    ),
-  );
-  
-  debugPrint('🔙 Returned from game. needsRefresh: $needsRefresh');
-  
-  // Reload categories if user subscribed
-  if (needsRefresh == true && mounted) {
-    debugPrint('🔄 Silently reloading categories...');
-    await unlockManager.initialize();
-    await _reloadCategoriesSilently(); // Use the silent reload method
-    debugPrint('✅ Categories reloaded, staying at index $currentPage');
-  }
-},
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: colors,
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(24),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: widget.isDarkMode ? 0.4 : 0.2),
-                        blurRadius: isCurrentPage ? 20 : 10,
-                        offset: Offset(0, isCurrentPage ? 10 : 5),
+                  // Save the category NAME before navigating
+                  final savedCategoryName = category;
+                  final savedIndex = index;
+                  
+                  debugPrint('🎯 Navigating FROM: $savedCategoryName at index $savedIndex');
+                  
+                  final needsRefresh = await Navigator.push<bool>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GamePage(
+                        gameMode: widget.gameMode,
+                        category: category,
+                        isDarkMode: widget.isDarkMode,
                       ),
-                    ],
+                    ),
+                  );
+                  
+                  debugPrint('🔙 Returned from game. needsRefresh: $needsRefresh');
+                  
+                  // Reload categories if user subscribed
+                  if (needsRefresh == true && mounted) {
+                    debugPrint('🔄 Silently reloading categories...');
+                    await unlockManager.initialize();
+                    await _reloadCategoriesSilently();
+                    debugPrint('✅ Categories reloaded, staying at index $currentPage');
+                  }
+                },
+                child: FutureBuilder<int?>( // NEW: Fetch user's own rating
+                  future: feedbackService.getMyDeckRating(
+                    categoryName: category,
+                    gameMode: widget.gameMode,
                   ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(24),
-                    child: Stack(
-                      children: [
-                        if (imageUrl != null)
-                          Positioned.fill(
-                            child: Opacity(
-                              opacity: 0.15,
-                              child: Image.network(
-                                imageUrl,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return const SizedBox.shrink();
-                                },
-                              ),
-                            ),
+                  builder: (context, ratingSnapshot) {
+                    final myRating = ratingSnapshot.data;
+                    
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: colors,
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: widget.isDarkMode ? 0.4 : 0.2),
+                            blurRadius: isCurrentPage ? 20 : 10,
+                            offset: Offset(0, isCurrentPage ? 10 : 5),
                           ),
-                        
-                        Padding(
-                          padding: const EdgeInsets.all(24),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      if (isLocked)
-                                        const Icon(
-                                          Icons.lock,
-                                          size: 48,
-                                          color: Colors.white,
-                                        ),
-                                      if (isLocked) const SizedBox(height: 16),
-                                      
-                                      Flexible(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Text(
-                                                category,
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 28,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                  height: 1.2,
-                                                ),
-                                                textAlign: TextAlign.center,
-                                                maxLines: 3,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                              const SizedBox(height: 8),
-                                              
-                                              // Question count badge
-                                              Container(
-                                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white.withValues(alpha: 0.2),
-                                                  borderRadius: BorderRadius.circular(20),
-                                                  border: Border.all(
-                                                    color: Colors.white.withValues(alpha: 0.3),
-                                                    width: 1.5,
-                                                  ),
-                                                ),
-                                                child: Text(
-                                                  _getQuestionCountText(category),
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                              
-                                              // Premium upgrade badge for ALL categories if not premium
-if (!unlockManager.isPremium) ...[
-  const SizedBox(height: 8),
-  GestureDetector(
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
-        ),
-      );
-    },
-    child: Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: const Color(0xFFD4A574),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.5),
-          width: 1.5,
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(24),
+                        child: Stack(
+  children: [
+    if (imageUrl != null)
+      Positioned.fill(
+        child: Opacity(
+          opacity: 0.15,
+          child: Image.network(
+            imageUrl,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return const SizedBox.shrink();
+            },
+          ),
         ),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.lock_open, color: Colors.white, size: 14),
-          const SizedBox(width: 6),
-          Text(
-            _getPremiumUpgradeText(),
-            style: GoogleFonts.poppins(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+    
+    // NEW: Rating badge in top-left corner (clickable to change rating)
+    // NEW: Rating badge in top-right corner (clickable to change rating)
+if (myRating != null)
+  Positioned(
+    top: 8,
+    right: 8,
+    child: GestureDetector(
+      onTap: () async {
+        // Show rating dialog to change rating
+        await showRatingDialog(
+          context,
+          categoryName: category,
+          gameMode: widget.gameMode,
+          isDarkMode: widget.isDarkMode,
+        );
+        // Refresh to show new rating
+        setState(() {});
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.star,
+              color: Colors.amber,
+              size: 20,
             ),
-          ),
-        ],
+            const SizedBox(width: 4),
+            Text(
+              myRating.toString(),
+              style: GoogleFonts.poppins(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
       ),
     ),
   ),
-],
-                                            ],
+    
+    Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+                                children: [
+                                  Expanded(
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          if (isLocked)
+                                            const Icon(
+                                              Icons.lock,
+                                              size: 48,
+                                              color: Colors.white,
+                                            ),
+                                          if (isLocked) const SizedBox(height: 16),
+                                          
+                                          Flexible(
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                    category,
+                                                    style: GoogleFonts.poppins(
+                                                      fontSize: 28,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.white,
+                                                      height: 1.2,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                    maxLines: 3,
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                  const SizedBox(height: 8),
+                                                  
+                                                  // Question count badge
+                                                  Container(
+                                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white.withValues(alpha: 0.2),
+                                                      borderRadius: BorderRadius.circular(20),
+                                                      border: Border.all(
+                                                        color: Colors.white.withValues(alpha: 0.3),
+                                                        width: 1.5,
+                                                      ),
+                                                    ),
+                                                    child: Text(
+                                                      _getQuestionCountText(category),
+                                                      style: GoogleFonts.poppins(
+                                                        fontSize: 13,
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  
+                                                  // NEW: User's own rating badge (clickable to change rating)
+
+                                                  
+                                                  // Premium upgrade badge for ALL categories if not premium
+                                                  if (!unlockManager.isPremium) ...[
+                                                    const SizedBox(height: 8),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+                                                          ),
+                                                        );
+                                                      },
+                                                      child: Container(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                                        decoration: BoxDecoration(
+                                                          color: const Color(0xFFD4A574),
+                                                          borderRadius: BorderRadius.circular(20),
+                                                          border: Border.all(
+                                                            color: Colors.white.withValues(alpha: 0.5),
+                                                            width: 1.5,
+                                                          ),
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisSize: MainAxisSize.min,
+                                                          children: [
+                                                            const Icon(Icons.lock_open, color: Colors.white, size: 14),
+                                                            const SizedBox(width: 6),
+                                                            Text(
+                                                              _getPremiumUpgradeText(),
+                                                              style: GoogleFonts.poppins(
+                                                                fontSize: 12,
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.white,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                  
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          
+                                          if (isExpanded) ...[
+                                            const SizedBox(height: 16),
+                                            Flexible(
+                                              child: SingleChildScrollView(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                                  child: Text.rich(
+                                                    TextSpan(
+                                                      children: _buildDescriptionSpans(description),
+                                                    ),
+                                                    style: GoogleFonts.poppins(
+                                                      fontSize: 14,
+                                                      color: Colors.white.withValues(alpha: 0.9),
+                                                      height: 1.4,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  
+                                  Column(
+                                    children: [
+                                      TextButton.icon(
+                                        onPressed: () {
+                                          setState(() {
+                                            expandedStates[category] = !isExpanded;
+                                          });
+                                        },
+                                        icon: Icon(
+                                          isExpanded ? Icons.expand_less : Icons.expand_more,
+                                          color: Colors.white,
+                                        ),
+                                        label: Text(
+                                          isExpanded ? l10n.showLess : l10n.readMore,
+                                          style: GoogleFonts.poppins(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: Colors.white.withValues(alpha: 0.2),
+                                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(20),
                                           ),
                                         ),
                                       ),
                                       
-                                      if (isExpanded) ...[
-                                        const SizedBox(height: 16),
-                                        Flexible(
-                                          child: SingleChildScrollView(
-                                            child: Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 16),
-                                              child: Text.rich(
-                                                TextSpan(
-                                                  children: _buildDescriptionSpans(description),
-                                                ),
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 14,
-                                                  color: Colors.white.withValues(alpha: 0.9),
-                                                  height: 1.4,
-                                                ),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ),
-                                          ),
+                                      const SizedBox(height: 12),
+                                      
+                                      Text(
+                                        isLocked ? 'Premium' : l10n.tapToPlay,
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14,
+                                          color: Colors.white.withValues(alpha: 0.7),
                                         ),
-                                      ],
+                                      ),
                                     ],
-                                  ),
-                                ),
-                              ),
-                              
-                              Column(
-                                children: [
-                                  TextButton.icon(
-                                    onPressed: () {
-                                      setState(() {
-                                        expandedStates[category] = !isExpanded;
-                                      });
-                                    },
-                                    icon: Icon(
-                                      isExpanded ? Icons.expand_less : Icons.expand_more,
-                                      color: Colors.white,
-                                    ),
-                                    label: Text(
-                                      isExpanded ? l10n.showLess : l10n.readMore,
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    style: TextButton.styleFrom(
-                                      backgroundColor: Colors.white.withValues(alpha: 0.2),
-                                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                    ),
-                                  ),
-                                  
-                                  const SizedBox(height: 12),
-                                  
-                                  Text(
-                                    isLocked ? 'Premium' : l10n.tapToPlay,
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 14,
-                                      color: Colors.white.withValues(alpha: 0.7),
-                                    ),
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),

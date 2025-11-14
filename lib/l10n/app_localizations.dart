@@ -2039,6 +2039,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter a question'**
   String get pleaseEnterQuestion;
+
+  /// No description provided for @rateThisDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate this deck'**
+  String get rateThisDeck;
+
+  /// No description provided for @yourRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Your rating'**
+  String get yourRating;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @submit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get submit;
+
+  /// No description provided for @thankYouForFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your feedback!'**
+  String get thankYouForFeedback;
+
+  /// No description provided for @failedToSubmitRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to submit rating'**
+  String get failedToSubmitRating;
+
+  /// No description provided for @tapStarsToRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap stars to rate'**
+  String get tapStarsToRate;
 }
 
 class _AppLocalizationsDelegate

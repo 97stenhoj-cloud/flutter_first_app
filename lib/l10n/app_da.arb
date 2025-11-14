@@ -449,5 +449,12 @@
 "sessionQuestionLimit": "Sessions Spørgsmålsgrænse Nået",
 "sessionQuestionLimitMessage": "Denne session har nået 12-spørgsmålsgrænsen (Gratis vært). Opgrader til Premium for ubegrænsede spørgsmål!",
 "sessionQuestionCount": "Session: {current}/12 spørgsmål",
-"pleaseEnterQuestion": "Indtast venligst et spørgsmål"
+"pleaseEnterQuestion": "Indtast venligst et spørgsmål",
+"rateThisDeck": "Bedøm dette kortlæg",
+"yourRating": "Din bedømmelse",
+"skip": "Spring over",
+"submit": "Indsend",
+"thankYouForFeedback": "Tak for din feedback!",
+"failedToSubmitRating": "Kunne ikke indsende bedømmelse",
+"tapStarsToRate": "Tryk på stjerner for at bedømme"
 }

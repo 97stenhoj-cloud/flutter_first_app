@@ -1088,4 +1088,25 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get pleaseEnterQuestion => 'Indtast venligst et spørgsmål';
+
+  @override
+  String get rateThisDeck => 'Bedøm dette kortlæg';
+
+  @override
+  String get yourRating => 'Din bedømmelse';
+
+  @override
+  String get skip => 'Spring over';
+
+  @override
+  String get submit => 'Indsend';
+
+  @override
+  String get thankYouForFeedback => 'Tak for din feedback!';
+
+  @override
+  String get failedToSubmitRating => 'Kunne ikke indsende bedømmelse';
+
+  @override
+  String get tapStarsToRate => 'Tryk på stjerner for at bedømme';
 }

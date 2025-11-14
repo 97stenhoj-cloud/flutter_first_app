@@ -11,6 +11,13 @@ class UnlockManager extends ChangeNotifier {
   // Single premium status
   bool _isPremium = false;
   int _questionCount = 0;
+  int _backButtonCount = 0;
+
+int get backButtonCount => _backButtonCount;
+void incrementBackButtonCount() {
+  _backButtonCount++;
+  debugPrint('📊 Total back button presses (lifetime): $_backButtonCount');
+}
   String? _lastCheckedUserId; // Track which user we last checked
 
   // Initialize from Supabase
