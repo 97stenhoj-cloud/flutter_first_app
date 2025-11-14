@@ -441,5 +441,28 @@
   "failedToKickPlayer": "Failed to kick player",
   "loginRequiredForPandora": "Login required to play Pandora",
   "login": "Login",
-  "loginRequiredNote": "Login required to play Pandora (track players properly)"
+  "loginRequiredNote": "Login required to play Pandora (track players properly)",
+  "timeIsUp": "Time's Up!",
+"notEnoughQuestionsSubmitted": "Not enough questions were submitted ({current}/{minimum} minimum).",
+"@notEnoughQuestionsSubmitted": {
+  "placeholders": {
+    "current": {
+      "type": "int"
+    },
+    "minimum": {
+      "type": "int"
+    }
+  }
+},
+"sessionQuestionLimit": "Session Question Limit Reached",
+"sessionQuestionLimitMessage": "This session has reached the 12-question limit (Free host). Upgrade to Premium for unlimited questions!",
+"sessionQuestionCount": "Session: {current}/12 questions",
+"@sessionQuestionCount": {
+  "placeholders": {
+    "current": {
+      "type": "int"
+    }
+  }
+},
+"pleaseEnterQuestion": "Please enter a question"
 }

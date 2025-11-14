@@ -2003,6 +2003,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Login required to play Pandora (track players properly)'**
   String get loginRequiredNote;
+
+  /// No description provided for @timeIsUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Time\'s Up!'**
+  String get timeIsUp;
+
+  /// No description provided for @notEnoughQuestionsSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough questions were submitted ({current}/{minimum} minimum).'**
+  String notEnoughQuestionsSubmitted(int current, int minimum);
+
+  /// No description provided for @sessionQuestionLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Session Question Limit Reached'**
+  String get sessionQuestionLimit;
+
+  /// No description provided for @sessionQuestionLimitMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This session has reached the 12-question limit (Free host). Upgrade to Premium for unlimited questions!'**
+  String get sessionQuestionLimitMessage;
+
+  /// No description provided for @sessionQuestionCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Session: {current}/12 questions'**
+  String sessionQuestionCount(int current);
+
+  /// No description provided for @pleaseEnterQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a question'**
+  String get pleaseEnterQuestion;
 }
 
 class _AppLocalizationsDelegate

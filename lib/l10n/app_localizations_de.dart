@@ -1063,4 +1063,27 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get loginRequiredNote =>
       'Login required to play Pandora (track players properly)';
+
+  @override
+  String get timeIsUp => 'Time\'s Up!';
+
+  @override
+  String notEnoughQuestionsSubmitted(int current, int minimum) {
+    return 'Not enough questions were submitted ($current/$minimum minimum).';
+  }
+
+  @override
+  String get sessionQuestionLimit => 'Session Question Limit Reached';
+
+  @override
+  String get sessionQuestionLimitMessage =>
+      'This session has reached the 12-question limit (Free host). Upgrade to Premium for unlimited questions!';
+
+  @override
+  String sessionQuestionCount(int current) {
+    return 'Session: $current/12 questions';
+  }
+
+  @override
+  String get pleaseEnterQuestion => 'Please enter a question';
 }

@@ -1065,4 +1065,27 @@ class AppLocalizationsDa extends AppLocalizations {
   @override
   String get loginRequiredNote =>
       'Log ind påkrævet for at spille Pandora (spor spillere korrekt)';
+
+  @override
+  String get timeIsUp => 'Tiden er Gået!';
+
+  @override
+  String notEnoughQuestionsSubmitted(int current, int minimum) {
+    return 'Ikke nok spørgsmål blev indsendt ($current/$minimum minimum).';
+  }
+
+  @override
+  String get sessionQuestionLimit => 'Sessions Spørgsmålsgrænse Nået';
+
+  @override
+  String get sessionQuestionLimitMessage =>
+      'Denne session har nået 12-spørgsmålsgrænsen (Gratis vært). Opgrader til Premium for ubegrænsede spørgsmål!';
+
+  @override
+  String sessionQuestionCount(int current) {
+    return 'Session: $current/12 spørgsmål';
+  }
+
+  @override
+  String get pleaseEnterQuestion => 'Indtast venligst et spørgsmål';
 }

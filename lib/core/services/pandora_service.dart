@@ -2,6 +2,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../utils/unlock_manager.dart';
 
 class PandoraService {
   static final PandoraService _instance = PandoraService._internal();
@@ -15,44 +16,46 @@ class PandoraService {
   String? _currentBroadcastSessionId;
 
   Future<Map<String, dynamic>> createSession({
-    required int timerMinutes,
-    required String hostDisplayName,
-  }) async {
-    try {
-      final userId = _supabase.auth.currentUser?.id;
-      
-      // Generate unique PIN
-      final pinResponse = await _supabase.rpc('generate_unique_pin');
-      final pin = pinResponse as String;
-      
-      // Create session
-      final sessionResponse = await _supabase
-          .from('pandora_sessions')
-          .insert({
-            'host_user_id': userId,
-            'session_pin': pin,
-            'timer_minutes': timerMinutes,
-            'status': 'waiting',
-            'current_question_index': 0,
-          })
-          .select()
-          .single();
+  required int timerMinutes,
+  required String hostDisplayName,
+}) async {
+  try {
+    final userId = _supabase.auth.currentUser?.id;
+    final unlockManager = UnlockManager();
+    
+    // Generate unique PIN
+    final pinResponse = await _supabase.rpc('generate_unique_pin');
+    final pin = pinResponse as String;
+    
+    // Create session with host premium status
+    final sessionResponse = await _supabase
+        .from('pandora_sessions')
+        .insert({
+          'host_user_id': userId,
+          'session_pin': pin,
+          'timer_minutes': timerMinutes,
+          'status': 'waiting',
+          'current_question_index': 0,
+          'host_is_premium': unlockManager.isPremium, // ← Add this
+        })
+        .select()
+        .single();
 
-      // Add host as participant with custom display name
-      await addParticipant(
-        sessionId: sessionResponse['id'],
-        displayName: hostDisplayName,
-        isHost: true,
-      );
+    // Add host as participant with custom display name
+    await addParticipant(
+      sessionId: sessionResponse['id'],
+      displayName: hostDisplayName,
+      isHost: true,
+    );
 
-      debugPrint('✅ Pandora session created: ${sessionResponse['session_pin']}');
-      return sessionResponse;
-    } catch (e, stackTrace) {
-      debugPrint('❌ Error creating Pandora session: $e');
-      debugPrint('📍 Stack trace: $stackTrace');
-      rethrow;
-    }
+    debugPrint('✅ Pandora session created: ${sessionResponse['session_pin']} (Premium: ${unlockManager.isPremium})');
+    return sessionResponse;
+  } catch (e, stackTrace) {
+    debugPrint('❌ Error creating Pandora session: $e');
+    debugPrint('📍 Stack trace: $stackTrace');
+    rethrow;
   }
+}
   Future<void> kickParticipant(String participantId) async {
   try {
     debugPrint('🚨 Kicking participant via RPC function: $participantId');
@@ -116,30 +119,35 @@ class PandoraService {
   }
 
   Future<Map<String, dynamic>> addParticipant({
-    required String sessionId,
-    required String displayName,
-    bool isHost = false,
-  }) async {
-    try {
-      final userEmail = _supabase.auth.currentUser?.email;
-      
-      final response = await _supabase
-          .from('pandora_participants')
-          .insert({
-            'session_id': sessionId,
-            'display_name': displayName,
-            'user_email': userEmail,
-            'is_host': isHost,
-          })
-          .select()
-          .single();
+  required String sessionId,
+  required String displayName,
+  bool isHost = false,
+}) async {
+  try {
+    final userEmail = _supabase.auth.currentUser?.email;
+    final userId = _supabase.auth.currentUser?.id; // ← Get user ID
+    
+    debugPrint('👤 Adding participant: $displayName (user_id: $userId)');
+    
+    final response = await _supabase
+        .from('pandora_participants')
+        .insert({
+          'session_id': sessionId,
+          'display_name': displayName,
+          'user_email': userEmail,
+          'user_id': userId, // ← Add user_id to insert
+          'is_host': isHost,
+        })
+        .select()
+        .single();
 
-      return response;
-    } catch (e) {
-      debugPrint('❌ Error adding participant: $e');
-      rethrow;
-    }
+    debugPrint('✅ Participant added with ID: ${response['id']}');
+    return response;
+  } catch (e) {
+    debugPrint('❌ Error adding participant: $e');
+    rethrow;
   }
+}
 
   Future<List<Map<String, dynamic>>> getParticipants(String sessionId) async {
     try {

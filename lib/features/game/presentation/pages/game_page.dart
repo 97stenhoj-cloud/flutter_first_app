@@ -256,22 +256,69 @@ class _GamePageState extends State<GamePage> {
   }
   
   Future<void> _getMyParticipantId() async {
-    try {
-      final userEmail = Supabase.instance.client.auth.currentUser?.email;
-      final participants = await pandoraService.getParticipants(widget.sessionId!);
-      
-      final myParticipant = participants.firstWhere(
-        (p) => p['user_email'] == userEmail || p['is_host'] == isHostMode,
-        orElse: () => participants.first,
+  try {
+    final userId = Supabase.instance.client.auth.currentUser?.id;
+    final userEmail = Supabase.instance.client.auth.currentUser?.email;
+    
+    debugPrint('🔍 Getting participant ID for user: $userId ($userEmail)');
+    
+    final participants = await pandoraService.getParticipants(widget.sessionId!);
+    debugPrint('👥 Total participants: ${participants.length}');
+    
+    // Find participant by user_id (most reliable) or email as fallback
+    final myParticipant = participants.firstWhere(
+      (p) {
+        // Try matching by user_id first (most reliable)
+        if (userId != null && p['user_id'] == userId) {
+          debugPrint('✅ Matched by user_id: ${p['display_name']}');
+          return true;
+        }
+        
+        // Fallback to email match
+        if (userEmail != null && p['user_email'] == userEmail) {
+          debugPrint('✅ Matched by email: ${p['display_name']}');
+          return true;
+        }
+        
+        // Fallback to host status
+        if (p['is_host'] == true && isHostMode) {
+          debugPrint('✅ Matched by host status: ${p['display_name']}');
+          return true;
+        }
+        
+        return false;
+      },
+      orElse: () {
+        debugPrint('❌ ERROR: No matching participant found!');
+        debugPrint('⚠️ User ID: $userId');
+        debugPrint('⚠️ Available participants:');
+        for (var p in participants) {
+          debugPrint('   - ${p['display_name']}: user_id=${p['user_id']}, email=${p['user_email']}');
+        }
+        throw Exception('Current user is not a participant in this session');
+      },
+    );
+    
+    setState(() {
+      myParticipantId = myParticipant['id'];
+    });
+    
+    debugPrint('✅ My participant ID: $myParticipantId (${myParticipant['display_name']})');
+  } catch (e) {
+    debugPrint('❌ Error getting participant ID: $e');
+    
+    // Show error to user
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: Could not identify player. Please rejoin the session.'),
+          backgroundColor: Colors.red,
+        ),
       );
-      
-      setState(() {
-        myParticipantId = myParticipant['id'];
-      });
-    } catch (e) {
-      debugPrint('Error getting participant ID: $e');
+      Navigator.of(context).pop();
     }
   }
+}
   
   void _subscribeToReactions() {
     reactionsChannel = pandoraService.subscribeToReactions(
@@ -580,8 +627,8 @@ class _GamePageState extends State<GamePage> {
             ),
             const SizedBox(height: 12),
             DialogButton(
-              text: l10n.goAdFree,
-              onPressed: () async {
+  text: l10n.goAdFree,
+  onPressed: () async {
   // Navigate to subscription page and wait for result
   final result = await Navigator.push<bool>(
     context,
@@ -631,17 +678,16 @@ class _GamePageState extends State<GamePage> {
         );
       }
     } else {
-      // User didn't subscribe
-      if (mounted) {
-        Navigator.of(context).pop(); // Close dialog
-      }
+      // User didn't subscribe - they must watch the ad or dialog stays open
+      debugPrint('⚠️ User did not subscribe - keeping dialog open');
+      // Dialog stays open - user must choose "Watch Ad" option
     }
   }
-              },
-              isPrimary: true,
-              isDarkMode: widget.isDarkMode,
-              icon: Icons.stars,
-            ),
+  },
+  isPrimary: true,
+  isDarkMode: widget.isDarkMode,
+  icon: Icons.stars,
+),
           ],
         ),
       ),
@@ -1044,89 +1090,77 @@ void _showPremiumCategoryDialog() {
   final l10n = AppLocalizations.of(context)!;
   showDialog(
     context: context,
-    barrierDismissible: false,
+    barrierDismissible: false,  // Prevent dismissing by tapping outside
     builder: (context) => CustomDialog(
       isDarkMode: widget.isDarkMode,
       icon: Icons.lock_open,
       iconColor: const Color(0xFFFF6B9D),
-      iconSize: 56,
-      title: l10n.locked,
-      contentWidget: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            l10n.lockedMessage,
-            style: GoogleFonts.poppins(
-              fontSize: 15,
-              height: 1.5,
-              color: widget.isDarkMode
-                  ? Colors.white.withValues(alpha: 0.85)
-                  : const Color(0xFF2D1B2E).withValues(alpha: 0.8),
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  const Color(0xFFFF6B9D).withValues(alpha: 0.15),
-                  const Color(0xFFFF8FA3).withValues(alpha: 0.08),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: const Color(0xFFFF6B9D).withValues(alpha: 0.3),
-                width: 1.5,
-              ),
-            ),
-            child: Column(
-              children: [
-                const Icon(
-                  Icons.stars,
-                  color: Color(0xFFFF6B9D),
-                  size: 40,
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  l10n.unlockFullDeck,
-                  style: GoogleFonts.poppins(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFFFF6B9D),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+      title: l10n.limitReached,
+      content: l10n.previewLimit,
       actions: [
         DialogButton(
           text: l10n.mayBeLater,
           onPressed: () {
-            Navigator.pop(context);
-            Navigator.of(context).pop(); // Go back to category selection
+            // Close dialog and return to category selection
+            Navigator.of(context).pop(); // Close dialog
+            Navigator.of(context).pop(true); // Close game page with refresh signal
           },
           isPrimary: false,
           isDarkMode: widget.isDarkMode,
-          icon: Icons.arrow_back,
         ),
         const SizedBox(height: 12),
         DialogButton(
-          text: l10n.upgradeNow,
-          onPressed: () {
-            Navigator.pop(context);
-            Navigator.push(
+          text: l10n.subscribe,
+          onPressed: () async {
+            // Navigate to subscription page
+            final result = await Navigator.push<bool>(
               context,
               MaterialPageRoute(
                 builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
               ),
             );
+            
+            if (mounted) {
+              // Refresh unlock manager to check current premium status
+              await unlockManager.initialize();
+              
+              if (result == true || unlockManager.isPremium) {
+                // User subscribed! Reload questions to get all 75
+                final savedIndex = currentIndex;
+                
+                debugPrint('🔄 [Preview Dialog] User subscribed! Reloading questions...');
+                debugPrint('📊 Before reload: ${displayedQuestions.length} questions');
+                
+                await _loadQuestions(); // Now we have 75 questions
+                
+                debugPrint('📊 After reload: ${displayedQuestions.length} questions');
+                
+                // Close the dialog
+                Navigator.of(context).pop();
+                
+                // Update state and continue playing
+                setState(() {
+                  currentIndex = savedIndex;
+                  _lastKnownPremiumStatus = true;
+                });
+                
+                // Show success message
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      '🎉 ${l10n.premiumActivated} All ${displayedQuestions.length} questions unlocked!',
+                      style: GoogleFonts.poppins(),
+                    ),
+                    backgroundColor: Colors.green,
+                    duration: const Duration(seconds: 3),
+                  ),
+                );
+              } else {
+                // User didn't subscribe, close dialog and return to category
+                Navigator.of(context).pop(); // Close dialog
+                Navigator.of(context).pop(true); // Close game page with refresh signal
+              }
+            }
           },
           isPrimary: true,
           isDarkMode: widget.isDarkMode,

@@ -7,6 +7,7 @@ import '../../../game/presentation/pages/game_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/utils/unlock_manager.dart';
+import '../../../subscription/presentation/pages/subscription_page.dart';
 
 class PandoraQuestionSubmissionPage extends StatefulWidget {
   final String sessionId;
@@ -51,7 +52,6 @@ class _PandoraQuestionSubmissionPageState
   bool isSubmitting = false;
   bool isStartingGame = false;
   bool hasNavigatedToGame = false;
-  RealtimeChannel? participantsChannel;
   bool _hasBeenKicked = false;
 
   @override
@@ -88,7 +88,7 @@ class _PandoraQuestionSubmissionPageState
     statusPollTimer?.cancel();
     questionsChannel?.unsubscribe();
     sessionChannel?.unsubscribe();
-    participantsChannel?.unsubscribe();
+// participantsChannel?.unsubscribe();  // Already covered by other channels
     super.dispose();
   }
 
@@ -180,27 +180,76 @@ class _PandoraQuestionSubmissionPageState
   }
 
   void _startCountdown() {
-    countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (!mounted) {
-        timer.cancel();
-        return;
-      }
+  countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    if (!mounted) {
+      timer.cancel();
+      return;
+    }
+    
+    setState(() {
+      remainingTime = endTime.difference(DateTime.now().toUtc());
       
-      setState(() {
-        remainingTime = endTime.difference(DateTime.now().toUtc());
+      if (remainingTime.isNegative) {
+        remainingTime = Duration.zero;
+        timer.cancel();
         
-        if (remainingTime.isNegative) {
-          remainingTime = Duration.zero;
-          timer.cancel();
-          if (widget.isHost && !isStartingGame && !hasNavigatedToGame) {
+        // Timer expired!
+        if (widget.isHost && !isStartingGame && !hasNavigatedToGame) {
+          debugPrint('⏰ Timer expired! Checking if we can start game...');
+          
+          // Check if we have enough questions (minimum 5)
+          if (questions.length >= 5) {
+            debugPrint('✅ Enough questions (${questions.length}) - starting game');
             _startGame();
+          } else {
+            debugPrint('❌ Not enough questions (${questions.length}/5) - ending session');
+            _timeoutSession();
           }
         }
-      });
+      }
     });
+  });
+  
+  debugPrint('✅ Question collection started with timer: ${widget.timerMinutes} minutes');
+}
+
+// Add this new method to handle timeout
+Future<void> _timeoutSession() async {
+  try {
+    final l10n = AppLocalizations.of(context)!;
     
-    debugPrint('✅ Question collection started with timer: ${widget.timerMinutes} minutes');
+    // End the session
+    await pandoraService.endSession(widget.sessionId);
+    
+    if (mounted) {
+      // Show dialog to all players
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          title: Text(
+            '⏰ ${l10n.timeIsUp}',
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+          ),
+          content: Text(
+            l10n.notEnoughQuestionsSubmitted(questions.length, 5),
+            style: GoogleFonts.poppins(),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+              child: Text('OK', style: GoogleFonts.poppins()),
+            ),
+          ],
+        ),
+      );
+    }
+  } catch (e) {
+    debugPrint('❌ Error timing out session: $e');
   }
+}
 
   String _formatTime(Duration duration) {
     final minutes = duration.inMinutes;
@@ -296,80 +345,167 @@ class _PandoraQuestionSubmissionPageState
   }
 
   Future<void> _submitQuestion() async {
-    final l10n = AppLocalizations.of(context)!;
-    if (questionController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a question')),
-      );
-      return;
-    }
-
-    if (targetType == 'specific' && targetParticipantId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a target player')),
-      );
-      return;
-    }
-// Check question limit for freemium users
-if (!unlockManager.isPremium) {
-  final myQuestions = questions.where((q) => q['participant_id'] == myParticipantId).length;
-  if (myQuestions >= 12) {
-    final l10n = AppLocalizations.of(context)!;
+  final l10n = AppLocalizations.of(context)!;
+  if (questionController.text.trim().isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(l10n.freemiumQuestionLimit),
-        backgroundColor: Colors.orange,
-        duration: const Duration(seconds: 4),
-        action: SnackBarAction(
-          label: l10n.getPremium,
-          textColor: Colors.white,
-          onPressed: () {
-            // Navigate to subscription page
-          },
-        ),
-      ),
+      SnackBar(content: Text(l10n.pleaseEnterQuestion)),
     );
     return;
   }
-}
-    setState(() => isSubmitting = true);
 
-    try {
-      await pandoraService.submitQuestion(
-        sessionId: widget.sessionId,
-        participantId: myParticipantId!,
-        questionText: questionController.text.trim(),
-        targetType: targetType,
-        targetParticipantId: targetParticipantId,
-      );
+  if (targetType == 'specific' && targetParticipantId == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(l10n.selectPlayer)),
+    );
+    return;
+  }
 
-      questionController.clear();
-      setState(() {
-        targetType = 'all';
-        targetParticipantId = null;
-      });
-
-      // Immediately reload questions
-      await _loadQuestions();
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.questionSubmitted),
-            duration: Duration(seconds: 1),
+  // NEW: Check SESSION-WIDE question limit for freemium hosts
+  final session = await pandoraService.getSession(widget.sessionId);
+  final hostIsPremium = session?['host_is_premium'] ?? false;
+  
+  if (!hostIsPremium) {
+    // Count TOTAL questions in the session (not per user)
+    final totalQuestions = questions.length;
+    
+    if (totalQuestions >= 12) {
+      debugPrint('❌ Session question limit reached: $totalQuestions/12');
+      
+      // Show premium dialog
+      if (!mounted) return;
+showDialog(
+  context: context,
+  builder: (context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
-        );
-      }
-    } finally {
-      setState(() => isSubmitting = false);
+          title: Row(
+            children: [
+              const Icon(Icons.lock, color: Color(0xFFFF6B9D), size: 28),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  l10n.sessionQuestionLimit,
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                l10n.sessionQuestionLimitMessage,
+                style: GoogleFonts.poppins(fontSize: 14),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFF6B9D).withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.workspace_premium,
+                      color: Color(0xFFFFD700),
+                      size: 40,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      l10n.getPremium,
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'Unlimited questions & players',
+                      style: GoogleFonts.poppins(fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                l10n.mayBeLater,
+                style: GoogleFonts.poppins(),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (!mounted) return;
+Navigator.pop(context);
+if (!mounted) return;
+Navigator.push(
+  context,
+  MaterialPageRoute(
+                    builder: (context) => SubscriptionPage(
+                      isDarkMode: widget.isDarkMode,
+                    ),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFFF6B9D),
+                foregroundColor: Colors.white,
+              ),
+              child: Text(
+                l10n.subscribe,
+                style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+              ),
+            ),
+          ],
+        ),
+      );
+      return;
     }
   }
+
+  // Continue with question submission...
+  setState(() => isSubmitting = true);
+
+  try {
+    await pandoraService.submitQuestion(
+      sessionId: widget.sessionId,
+      participantId: myParticipantId!,
+      questionText: questionController.text.trim(),
+      targetType: targetType,
+      targetParticipantId: targetParticipantId,
+    );
+
+    questionController.clear();
+    setState(() {
+      targetType = 'all';
+      targetParticipantId = null;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(l10n.questionSubmitted),
+        backgroundColor: Colors.green,
+      ),
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Error: $e'),
+        backgroundColor: Colors.red,
+      ),
+    );
+  } finally {
+    setState(() => isSubmitting = false);
+  }
+}
 
   Future<void> _startGame() async {
     if (isStartingGame || hasNavigatedToGame) return;
@@ -670,53 +806,87 @@ if (!unlockManager.isPremium) {
                 
                 const SizedBox(height: 20),
                 
-                // Questions count
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: widget.isDarkMode
-                        ? Colors.white.withValues(alpha: 0.1)
-                        : Colors.black.withValues(alpha: 0.05),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.question_answer,
-                        color: const Color(0xFFFF6B9D),
+                const SizedBox(height: 20),
+                
+                // Questions count with session-wide limit indicator
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: widget.isDarkMode
+                            ? Colors.white.withValues(alpha: 0.1)
+                            : Colors.black.withValues(alpha: 0.05),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      const SizedBox(width: 12),
-                      Column(
-  children: [
-    Text(
-      l10n.questionsSubmitted(questions.length),
-      style: GoogleFonts.poppins(
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-        color: widget.isDarkMode ? Colors.white70 : Colors.black87,
-      ),
-    ),
-    if (!unlockManager.isPremium && myParticipantId != null) ...[
-      const SizedBox(height: 4),
-      Builder(
-        builder: (context) {
-          final myQuestions = questions.where((q) => q['participant_id'] == myParticipantId).length;
-          return Text(
-            '${l10n.yourQuestions}: $myQuestions/12',
-            style: GoogleFonts.poppins(
-              fontSize: 12,
-              color: myQuestions >= 12 ? Colors.orange : (widget.isDarkMode ? Colors.white54 : Colors.black54),
-              fontWeight: myQuestions >= 12 ? FontWeight.bold : FontWeight.normal,
-            ),
-          );
-        },
-      ),
-    ],
-  ],
-),
-                    ],
-                  ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.question_answer,
+                            color: const Color(0xFFFF6B9D),
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            l10n.questionsSubmitted(questions.length),
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: widget.isDarkMode ? Colors.white70 : Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    
+                    // Show session-wide question limit for freemium hosts
+                    const SizedBox(height: 12),
+                    FutureBuilder<Map<String, dynamic>?>(
+                      future: pandoraService.getSession(widget.sessionId),
+                      builder: (context, snapshot) {
+                        final hostIsPremium = snapshot.data?['host_is_premium'] ?? false;
+                        
+                        if (!hostIsPremium) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: questions.length >= 12
+                                  ? Colors.red.withValues(alpha: 0.1)
+                                  : Colors.orange.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: questions.length >= 12
+                                    ? Colors.red.withValues(alpha: 0.3)
+                                    : Colors.orange.withValues(alpha: 0.3),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  questions.length >= 12 ? Icons.lock : Icons.info_outline,
+                                  color: questions.length >= 12 ? Colors.red : Colors.orange,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  l10n.sessionQuestionCount(questions.length),
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: widget.isDarkMode
+                                        ? Colors.white
+                                        : const Color(0xFF2D1B2E),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                  ],
                 ),
                 
                 const SizedBox(height: 24),
@@ -795,7 +965,7 @@ if (!unlockManager.isPremium) {
                               debugPrint('🎯 Building dropdown - myParticipantId: $myParticipantId');
                               
                               return DropdownButtonFormField<String>(
-                                value: targetParticipantId,
+                                initialValue: targetParticipantId,
                                 dropdownColor: widget.isDarkMode
                                     ? const Color(0xFF2D2D2D)
                                     : Colors.white,
@@ -919,3 +1089,8 @@ if (!unlockManager.isPremium) {
     );
   }
 }
+        
+          
+        
+  
+  

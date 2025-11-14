@@ -9,6 +9,7 @@ import 'game_page.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../custom/presentation/pages/custom_deck_list_page.dart';
 import '../../../subscription/presentation/pages/subscription_page.dart';
+import '../../../../core/widgets/custom_dialog.dart';
 
 // Category image URLs - keyed by "gameMode_categoryName"
 const Map<String, String> categoryImages = {
@@ -34,8 +35,8 @@ const Map<String, String> categoryImages = {
   'family_Silly Talks': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/family.png',
   'family_Cozy Talks': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/family.png',
   'family_History Talks': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/family.png',
-  'family_Tiny Talks': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/family.png',
   'family_Car Talks': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/family.png',
+  'family_Tiny Talks': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/family.png',
   'family_The Good Old Days Talks': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/family.png',
   'family_Would You Rather Talks': 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/category_icons/family.png',
 };
@@ -63,8 +64,8 @@ const Map<String, List<String>> categoryOrder = {
     'Silly Talks',
     'Cozy Talks',
     'History Talks',
-    'Tiny Talks',
     'Car Talks',
+    'Tiny Talks',
     'The Good Old Days Talks',
     'Would You Rather Talks',
   ],
@@ -287,21 +288,26 @@ Future<void> _reloadCategoriesSilently() async {
   }
 
   void _showLockedDialog(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.locked),
-        content: Text(l10n.lockedMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(l10n.ok),
-          ),
-        ],
-      ),
-    );
-  }
+  final l10n = AppLocalizations.of(context)!;
+  showDialog(
+    context: context,
+    builder: (context) => CustomDialog(
+      isDarkMode: widget.isDarkMode,
+      icon: Icons.lock,
+      iconColor: const Color(0xFFFF6B9D),
+      title: l10n.locked,
+      content: l10n.lockedMessage,
+      actions: [
+        DialogButton(
+          text: l10n.ok,
+          onPressed: () => Navigator.pop(context),
+          isPrimary: true,
+          isDarkMode: widget.isDarkMode,
+        ),
+      ],
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {

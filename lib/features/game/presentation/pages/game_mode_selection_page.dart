@@ -9,6 +9,7 @@ import '../../../auth/presentation/pages/social_auth_page.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'category_selection_page.dart';
 import '../../../pandora/presentation/pages/pandora_entry_page.dart';
+import '../../../../core/widgets/custom_dialog.dart';
 
 class GameModeSelectionPage extends StatefulWidget {
   final bool isDarkMode;
@@ -37,112 +38,134 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
     super.dispose();
   }
 
-  void _handlePersonalMode(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    
-    // Check if user is signed in
-    if (!authService.isLoggedIn) {
-      _showSignInRequiredDialog(context);
-      return;
-    }
-    
-    // Check if user is premium
-    if (!unlockManager.isPremium) {
-      _showPremiumRequiredDialog(context);
-      return;
-    }
-    
-    // User is signed in and premium - allow access
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CategorySelectionPage(
-          gameMode: 'personal',
-          isDarkMode: widget.isDarkMode,
-        ),
-      ),
-    );
+  Future<void> _handlePersonalMode(BuildContext context) async {
+  final l10n = AppLocalizations.of(context)!;
+  
+  // Check if user is signed in
+  if (!authService.isLoggedIn) {
+    _showSignInRequiredDialog(context);
+    return;
   }
+  
+  // Check if user is premium
+  if (!unlockManager.isPremium) {
+    await _showPremiumRequiredDialog(context);
+    return;
+  }
+  
+  // User is signed in and premium - allow access
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => CategorySelectionPage(
+        gameMode: 'personal',
+        isDarkMode: widget.isDarkMode,
+      ),
+    ),
+  );
+}
 
   void _showSignInRequiredDialog(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          l10n.signInRequired,
-          style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+  
+  showDialog(
+    context: context,
+    builder: (context) => CustomDialog(
+      isDarkMode: widget.isDarkMode,
+      icon: Icons.login,
+      iconColor: const Color(0xFFD4A574),
+      title: l10n.signInRequired,
+      content: l10n.signInToUsePersonal,
+      actions: [
+        DialogButton(
+          text: l10n.cancel,
+          onPressed: () => Navigator.pop(context),
+          isPrimary: false,
+          isDarkMode: widget.isDarkMode,
         ),
-        content: Text(
-          l10n.signInToUsePersonal,
-          style: GoogleFonts.poppins(),
+        const SizedBox(height: 12),
+        DialogButton(
+          text: l10n.signInSignUp,
+          onPressed: () {
+            Navigator.pop(context);
+            // Navigate to sign in page
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SocialAuthPage(isDarkMode: widget.isDarkMode),
+              ),
+            );
+          },
+          isPrimary: true,
+          isDarkMode: widget.isDarkMode,
+          icon: Icons.login,
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancel, style: GoogleFonts.poppins()),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // Navigate to sign in page
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SocialAuthPage(isDarkMode: widget.isDarkMode),
-                ),
-              );
-            },
-            child: Text(
-              l10n.signInSignUp,
-              style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+      ],
+    ),
+  );
+}
 
-  void _showPremiumRequiredDialog(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+  Future<void> _showPremiumRequiredDialog(BuildContext context) async {
+  final l10n = AppLocalizations.of(context)!;
+  
+  final result = await showDialog<bool>(
+    context: context,
+    builder: (context) => CustomDialog(
+      isDarkMode: widget.isDarkMode,
+      icon: Icons.workspace_premium,
+      iconColor: const Color(0xFFD4A574),
+      title: l10n.premiumFeatureTitle,
+      content: l10n.premiumPersonal,
+      actions: [
+        DialogButton(
+          text: l10n.cancel,
+          onPressed: () => Navigator.pop(context, false),
+          isPrimary: false,
+          isDarkMode: widget.isDarkMode,
+        ),
+        const SizedBox(height: 12),
+        DialogButton(
+          text: l10n.getPremium,
+          onPressed: () async {
+            // Navigate to subscription page
+            final subscribed = await Navigator.push<bool>(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+              ),
+            );
+            
+            if (mounted) {
+              Navigator.pop(context, subscribed);
+            }
+          },
+          isPrimary: true,
+          isDarkMode: widget.isDarkMode,
+          icon: Icons.workspace_premium,
+        ),
+      ],
+    ),
+  );
+  
+  // If user subscribed, refresh unlock manager and update UI
+  if (result == true && mounted) {
+    await unlockManager.initialize();
+    setState(() {}); // Refresh UI to remove lock icon
     
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          l10n.premiumFeatureTitle,
-          style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
-        ),
-        content: Text(
-          l10n.premiumPersonal,
-          style: GoogleFonts.poppins(),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancel, style: GoogleFonts.poppins()),
+    // Now navigate to Personal mode
+    if (unlockManager.isPremium) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CategorySelectionPage(
+            gameMode: 'personal',
+            isDarkMode: widget.isDarkMode,
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // Navigate to subscription page
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
-                ),
-              );
-            },
-            child: Text(
-              l10n.getPremium,
-              style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
-    );
+        ),
+      );
+    }
   }
+}
 
   List<Map<String, dynamic>> getGameModes(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;

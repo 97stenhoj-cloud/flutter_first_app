@@ -443,5 +443,11 @@
   "failedToKickPlayer": "Kunne ikke smide spilleren ud",
   "loginRequiredForPandora": "Log ind for at spille Pandora",
   "login": "Log ind",
-  "loginRequiredNote": "Log ind påkrævet for at spille Pandora (spor spillere korrekt)"
+  "loginRequiredNote": "Log ind påkrævet for at spille Pandora (spor spillere korrekt)",
+  "timeIsUp": "Tiden er Gået!",
+"notEnoughQuestionsSubmitted": "Ikke nok spørgsmål blev indsendt ({current}/{minimum} minimum).",
+"sessionQuestionLimit": "Sessions Spørgsmålsgrænse Nået",
+"sessionQuestionLimitMessage": "Denne session har nået 12-spørgsmålsgrænsen (Gratis vært). Opgrader til Premium for ubegrænsede spørgsmål!",
+"sessionQuestionCount": "Session: {current}/12 spørgsmål",
+"pleaseEnterQuestion": "Indtast venligst et spørgsmål"
 }

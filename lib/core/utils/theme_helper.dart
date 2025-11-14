@@ -223,47 +223,50 @@ class ThemeHelper {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: icon != null
-                  ? Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          icon,
-                          size: 24,
-                          color: isPrimary 
-                              ? Colors.white
-                              : getSecondaryButtonTextColor(isDarkMode),
-                        ),
-                        const SizedBox(width: 8),
-                        Flexible(
-                          child: Text(
-                            text,
-                            style: GoogleFonts.poppins(
-                              fontSize: isPrimary ? 18 : 16,
-                              fontWeight: isPrimary ? FontWeight.bold : FontWeight.w600,
-                              color: isPrimary 
-                                  ? Colors.white
-                                  : getSecondaryButtonTextColor(isDarkMode),
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    )
-                  : Center(
-                      child: Text(
-                        text,
-                        style: GoogleFonts.poppins(
-                          fontSize: isPrimary ? 18 : 16,
-                          fontWeight: isPrimary ? FontWeight.bold : FontWeight.w600,
-                          color: isPrimary 
-                              ? Colors.white
-                              : getSecondaryButtonTextColor(isDarkMode),
-                        ),
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
+    ? Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 24,
+            color: isPrimary 
+                ? Colors.white
+                : getSecondaryButtonTextColor(isDarkMode),
+          ),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(
+              text,
+              style: GoogleFonts.poppins(
+                fontSize: isPrimary ? 18 : 16,
+                fontWeight: isPrimary ? FontWeight.bold : FontWeight.w600,
+                color: isPrimary 
+                    ? Colors.white
+                    : getSecondaryButtonTextColor(isDarkMode),
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.visible,
+            ),
+          ),
+        ],
+      )
+    : Center(
+        child: Text(
+          text,
+          style: GoogleFonts.poppins(
+            fontSize: isPrimary ? 18 : 16,
+            fontWeight: isPrimary ? FontWeight.bold : FontWeight.w600,
+            color: isPrimary 
+                ? Colors.white
+                : getSecondaryButtonTextColor(isDarkMode),
+          ),
+          textAlign: TextAlign.center,
+          maxLines: 2,
+          overflow: TextOverflow.visible,
+        ),
+      ),
             ),
           ),
         ),

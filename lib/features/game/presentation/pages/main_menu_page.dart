@@ -10,6 +10,9 @@ import '../../../settings/presentation/pages/rules_page.dart';
 import '../../../settings/presentation/pages/profile_page.dart';
 import 'game_mode_selection_page.dart';
 import 'package:connect/core/utils/page_transitions.dart';
+import '../../../../core/services/auth_service.dart';
+import '../../../auth/presentation/pages/social_auth_page.dart';
+import '../../../../core/widgets/custom_dialog.dart';
 
 class MainMenuPage extends StatefulWidget {
   const MainMenuPage({super.key});
@@ -19,6 +22,62 @@ class MainMenuPage extends StatefulWidget {
 }
 
 class _MainMenuPageState extends State<MainMenuPage> {
+  final authService = AuthService();
+
+  void _showSignInRequiredDialog(bool isDarkMode) {
+    final l10n = AppLocalizations.of(context)!;
+    
+    showDialog(
+      context: context,
+      builder: (context) => CustomDialog(
+        isDarkMode: isDarkMode,
+        icon: Icons.login,
+        iconColor: const Color(0xFFD4A574),
+        title: l10n.signInRequired,
+        content: l10n.signInToSync,
+        actions: [
+          DialogButton(
+            text: l10n.cancel,
+            onPressed: () => Navigator.pop(context),
+            isPrimary: false,
+            isDarkMode: isDarkMode,
+          ),
+          const SizedBox(height: 12),
+          DialogButton(
+            text: l10n.signInSignUp,
+            onPressed: () async {
+              Navigator.pop(context); // Close dialog
+              
+              // Navigate to sign-in page
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SocialAuthPage(isDarkMode: isDarkMode),
+                ),
+              );
+              
+              // After returning from sign-in, check if user logged in
+              if (mounted && authService.isLoggedIn) {
+                // User signed in successfully, navigate to game mode selection
+                if (context.mounted) {
+                  Navigator.push(
+                    context,
+                    SlidePageRoute(
+                      builder: (context) => GameModeSelectionPage(isDarkMode: isDarkMode),
+                    ),
+                  );
+                }
+              }
+            },
+            isPrimary: true,
+            isDarkMode: isDarkMode,
+            icon: Icons.login,
+          ),
+        ],
+      ),
+    );
+  }
+  
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -151,13 +210,17 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                   ThemeHelper.buildLayeredButton(
                                     text: l10n.start,
                                     onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        SlidePageRoute(
-    builder: (context) => GameModeSelectionPage(isDarkMode: isDarkMode),
-  ),
-
-                                      );
+                                      // Check if user is logged in
+                                      if (!authService.isLoggedIn) {
+                                        _showSignInRequiredDialog(isDarkMode);
+                                      } else {
+                                        Navigator.push(
+                                          context,
+                                          SlidePageRoute(
+                                            builder: (context) => GameModeSelectionPage(isDarkMode: isDarkMode),
+                                          ),
+                                        );
+                                      }
                                     },
                                     isPrimary: true,
                                     isDarkMode: isDarkMode,
@@ -171,8 +234,8 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                       Navigator.push(
                                         context,
                                         SlidePageRoute(
-    builder: (context) => SettingsMainPage(isDarkMode: isDarkMode),
-  ),
+                                          builder: (context) => SettingsMainPage(isDarkMode: isDarkMode),
+                                        ),
                                       );
                                     },
                                     isPrimary: false,
@@ -187,8 +250,8 @@ class _MainMenuPageState extends State<MainMenuPage> {
                                       Navigator.push(
                                         context,
                                         SlidePageRoute(
-    builder: (context) => RulesPage(isDarkMode: isDarkMode),
-  ),
+                                          builder: (context) => RulesPage(isDarkMode: isDarkMode),
+                                        ),
                                       );
                                     },
                                     isPrimary: false,
