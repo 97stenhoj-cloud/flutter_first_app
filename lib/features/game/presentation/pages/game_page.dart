@@ -79,17 +79,31 @@ class _GamePageState extends ConsumerState<GamePage> {
     super.initState();
     isPandoraMode = widget.gameMode.toLowerCase() == 'pandora' && widget.sessionId != null;
     isHostMode = widget.isHost ?? false;
-    
+
     _lastKnownPremiumStatus = ref.read(unlockProvider).isPremium; // Initialize premium status
-    
+
+    // Listen for premium status changes and reload questions automatically
+    ref.listenManual(unlockProvider.select((state) => state.isPremium), (previous, next) {
+      if (previous == false && next == true && !isLoading) {
+        debugPrint('🎉 Premium status changed! Reloading questions to get all 75...');
+        _lastKnownPremiumStatus = true;
+        _loadQuestions();
+
+        // Reload the UI to remove lock icons, update limits, etc.
+        if (mounted) {
+          setState(() {});
+        }
+      }
+    });
+
     _loadQuestions();
     _loadAd();
     _loadLogo();
-    
+
     if (isPandoraMode && !isHostMode) {
       _subscribeToPandoraSync();
     }
-    
+
     if (isPandoraMode) {
       _getMyParticipantId();
       _subscribeToReactions();
@@ -100,40 +114,24 @@ class _GamePageState extends ConsumerState<GamePage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    
+
     if (!_favoritesLoaded && !isPandoraMode) {
       _favoritesLoaded = true;
       _loadFavoriteQuestions();
     }
-    
+
     String currentLanguageCode = 'en';
     try {
       currentLanguageCode = Localizations.localeOf(context).languageCode;
     } catch (e) {
       // Context not ready
     }
-    
-    if (_loadedLanguageCode != null && 
-        _loadedLanguageCode != currentLanguageCode && 
+
+    if (_loadedLanguageCode != null &&
+        _loadedLanguageCode != currentLanguageCode &&
         !isLoading) {
       debugPrint('🌍 Language changed from $_loadedLanguageCode to $currentLanguageCode - reloading');
       _loadQuestions();
-    }
-    
-    // Check if we need to reload due to premium status change
-    _checkPremiumStatusChange();
-  }
-
-  void _checkPremiumStatusChange() {
-    final currentPremiumStatus = ref.read(unlockProvider).isPremium;
-
-    // If premium status changed from free to premium, reload questions
-    if (!_lastKnownPremiumStatus && currentPremiumStatus && !isLoading) {
-      debugPrint('🎉 Premium status changed! Reloading questions to get all 75...');
-      _lastKnownPremiumStatus = currentPremiumStatus;
-      _loadQuestions();
-    } else {
-      _lastKnownPremiumStatus = currentPremiumStatus;
     }
   }
 
@@ -476,8 +474,9 @@ class _GamePageState extends ConsumerState<GamePage> {
       debugPrint('Pandora mode - skipping ads for multiplayer experience');
       return;
     }
-    
-    if (ref.read(unlockProvider).isPremium) {
+
+    final isPremiumNow = ref.read(unlockProvider).isPremium;
+    if (isPremiumNow) {
       debugPrint('User is premium, skipping ad load');
       return;
     }
@@ -606,7 +605,8 @@ class _GamePageState extends ConsumerState<GamePage> {
 
   void _showAdOrPurchaseOption() {
   if (isPandoraMode) return;
-  if (ref.read(unlockProvider).isPremium) return;
+  final isPremiumNow = ref.read(unlockProvider).isPremium;
+  if (isPremiumNow) return;
 
   if (ref.read(unlockProvider.notifier).shouldShowAd()) {
     if (!mounted) return;
@@ -716,7 +716,8 @@ class _GamePageState extends ConsumerState<GamePage> {
     if (previousIndex == displayedQuestions.length - 1) {
       debugPrint('🎮 [Host] On last question ($previousIndex), swiping - ending game');
       // Check if this is a preview limit for locked category
-        if (!isPandoraMode && !ref.read(unlockProvider).isPremium && 
+        final currentPremiumStatus = ref.read(unlockProvider).isPremium;
+        if (!isPandoraMode && !currentPremiumStatus &&
             ref.read(unlockProvider.notifier).isCategoryLocked(widget.gameMode, widget.category)) {
           debugPrint('🔒 Free user reached end of preview questions - showing premium dialog');
           _showPremiumCategoryDialog();
@@ -784,7 +785,7 @@ class _GamePageState extends ConsumerState<GamePage> {
 
 void _showGameEndDialog() {
   if (!mounted) return;
-  
+
   // For Pandora mode, ALWAYS go to stats page (both host and players)
   if (isPandoraMode) {
     debugPrint('🎉 [${isHostMode ? "Host" : "Player"}] Navigating to stats page');
@@ -798,10 +799,10 @@ void _showGameEndDialog() {
     );
     return;
   }
-  
+
   final l10n = AppLocalizations.of(context)!;
   final isPremium = ref.read(unlockProvider).isPremium;
-  
+
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -1024,6 +1025,9 @@ void _showPremiumCategoryDialog() {
   Widget build(BuildContext context) {
     // CRITICAL FIX: Removed addPostFrameCallback - language changes are already handled in didChangeDependencies
 
+    // Watch premium status for reactive UI updates
+    final isPremium = ref.watch(unlockProvider).isPremium;
+
     if (isLoading) {
       return Scaffold(
         backgroundColor: widget.isDarkMode ? const Color(0xFF2D1B2E) : const Color(0xFFF5F5F5),
@@ -1145,7 +1149,8 @@ void _showPremiumCategoryDialog() {
                 right: 24,
                 child: GestureDetector(
                   onTap: isPandoraMode ? null : () {
-                    if (ref.read(unlockProvider).isPremium) {
+                    final userPremiumStatus = ref.read(unlockProvider).isPremium;
+                    if (userPremiumStatus) {
                       _showQuestionPicker();
                     } else {
                       _showPremiumRequiredDialog();
@@ -1179,7 +1184,7 @@ void _showPremiumCategoryDialog() {
                         if (!isPandoraMode) ...[
                           const SizedBox(width: 6),
                           Icon(
-                            ref.read(unlockProvider).isPremium ? Icons.list : Icons.lock,
+                            isPremium ? Icons.list : Icons.lock,
                             size: 18,
                             color: widget.isDarkMode ? Colors.white : Colors.black87,
                           ),

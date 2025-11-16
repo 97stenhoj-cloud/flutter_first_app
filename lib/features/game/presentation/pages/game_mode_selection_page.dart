@@ -304,6 +304,7 @@ class _GameModeSelectionPageState extends ConsumerState<GameModeSelectionPage> {
   }) {
     final colors = ThemeHelper.getGameModeGradient(gameMode, widget.isDarkMode);
     final isCurrentPage = currentPage == index;
+    final userIsPremium = ref.watch(unlockProvider).isPremium; // Watch for reactivity
     
     return AnimatedBuilder(
       animation: _pageController,
@@ -377,7 +378,7 @@ class _GameModeSelectionPageState extends ConsumerState<GameModeSelectionPage> {
                     ),
                     
                     // Lock icon for premium modes
-                    if (isPremium && !ref.watch(unlockProvider).isPremium)
+                    if (isPremium && !userIsPremium)
                       Positioned(
                         top: 20,
                         right: 20,
