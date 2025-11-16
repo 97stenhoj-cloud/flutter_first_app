@@ -130,25 +130,25 @@ class UnlockNotifier extends StateNotifier<UnlockState> {
   bool isCategoryLocked(String gameMode, String category) {
     if (state.isPremium) return false;
 
-    // Free categories by game mode
+    // First 4 categories are free (30 questions), last 3 are locked (5 preview)
     const freeCategoriesByMode = {
-      'couple': ['communication', 'fun', 'deep'],
-      'friends': ['party', 'funny', 'deep'],
-      'family': ['kids', 'teens', 'deep'],
+      'couple': ['Love Talks', 'Deep Talks', 'Silly Talks', 'Car Talks'],
+      'friends': ['Cozy Talks', 'Silly Talks', 'Car Talks', 'Party Night Talks'],
+      'family': ['Silly Talks', 'Cozy Talks', 'History Talks', 'Car Talks'],
     };
 
     final freeCategories = freeCategoriesByMode[gameMode.toLowerCase()] ?? [];
-    return !freeCategories.contains(category.toLowerCase());
+    return !freeCategories.contains(category);
   }
 
   int getQuestionLimitForCategory(String gameMode, String category) {
     if (state.isPremium) return 75;
 
     if (isCategoryLocked(gameMode, category)) {
-      return 5; // Preview only
+      return 5; // Preview only for last 3 categories
     }
 
-    return 30; // Free tier limit
+    return 30; // Free tier limit for first 4 categories
   }
 
   // Getters for backward compatibility
