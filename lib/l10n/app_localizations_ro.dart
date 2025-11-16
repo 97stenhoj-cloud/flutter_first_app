@@ -207,15 +207,6 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get madeForWife => 'Creat pentru soția mea frumoasă';
-
-  @override
-  String get otiLia => 'Otilia Stenhøj';
-
-  @override
-  String get withLoveAndConversations => 'Cu dragoste și conversații';
-
-  @override
   String get howManyPlayers => 'Câți jucători?';
 
   @override
@@ -306,9 +297,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get noCategoriesFound => 'Nu au fost găsite categorii';
 
   @override
-  String get aboutCredits => 'Despre / Credite';
-
-  @override
   String get welcomeBack => 'Bine Ai Revenit!';
 
   @override
@@ -373,6 +361,21 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String get proTipsDesc =>
       '• Creează un mediu confortabil, fără distrageri\n• Ascultă activ și fii prezent\n• Împărtășește sincer și încurajează pe alții să facă la fel\n• Respectă limitele - sari peste întrebări dacă este necesar\n• Distrează-te și bucură-te de conexiune!';
+
+  @override
+  String get aboutCredits => 'Despre / Credite';
+
+  @override
+  String get developedBy => 'Developed by TechyKoala';
+
+  @override
+  String get learnMore => 'Learn more about us and upcoming apps';
+
+  @override
+  String get visitWebsite => 'Visit techykoala.com';
+
+  @override
+  String get madeWithLove => 'Made with ❤️ for meaningful conversations';
 
   @override
   String get personal => 'Personal';
@@ -933,19 +936,19 @@ class AppLocalizationsRo extends AppLocalizations {
       'Get unlimited access to all categories, remove ads forever, and unlock premium features';
 
   @override
-  String get save32Percent => 'SAVE 32%';
+  String get save32Percent => 'SAVE 29%';
 
   @override
-  String get priceMonthly => '49 DKK/month';
+  String get priceMonthly => '€6.99/month';
 
   @override
-  String get priceYearly => '399 DKK/year';
+  String get priceYearly => '€59.99/year';
 
   @override
   String get billedAnnually => 'Billed annually';
 
   @override
-  String get equivalentMonthly => 'Only 33 DKK/month';
+  String get equivalentMonthly => 'Only €5/month';
 
   @override
   String get feature24Categories =>

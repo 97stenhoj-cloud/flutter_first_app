@@ -1,20 +1,21 @@
 // lib/features/pandora/presentation/pages/pandora_question_submission_page.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import '../../../../core/services/pandora_service.dart';
 import '../../../game/presentation/pages/game_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../../core/utils/unlock_manager.dart';
+import '../../../../core/providers/unlock_provider.dart';
 import '../../../subscription/presentation/pages/subscription_page.dart';
 
-class PandoraQuestionSubmissionPage extends StatefulWidget {
+class PandoraQuestionSubmissionPage extends ConsumerStatefulWidget {
   final String sessionId;
   final bool isHost;
   final int timerMinutes;
   final bool isDarkMode;
-  
+
   const PandoraQuestionSubmissionPage({
     super.key,
     required this.sessionId,
@@ -24,17 +25,16 @@ class PandoraQuestionSubmissionPage extends StatefulWidget {
   });
 
   @override
-  State<PandoraQuestionSubmissionPage> createState() =>
+  ConsumerState<PandoraQuestionSubmissionPage> createState() =>
       _PandoraQuestionSubmissionPageState();
 }
 
 
 
 class _PandoraQuestionSubmissionPageState
-    extends State<PandoraQuestionSubmissionPage> {
+    extends ConsumerState<PandoraQuestionSubmissionPage> {
   final pandoraService = PandoraService();
   final questionController = TextEditingController();
-  final unlockManager = UnlockManager();
   List<Map<String, dynamic>> participants = [];
   List<Map<String, dynamic>> questions = [];
   String? myParticipantId;

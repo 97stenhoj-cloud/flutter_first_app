@@ -1,24 +1,24 @@
 // lib/features/subscription/presentation/pages/subscription_page.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/theme_helper.dart';
-import '../../../../core/utils/unlock_manager.dart';
+import '../../../../core/providers/unlock_provider.dart';
 import '../../../../l10n/app_localizations.dart';
 
-class SubscriptionPage extends StatefulWidget {
+class SubscriptionPage extends ConsumerStatefulWidget {
   final bool isDarkMode;
-  
+
   const SubscriptionPage({
     super.key,
     required this.isDarkMode,
   });
 
   @override
-  State<SubscriptionPage> createState() => _SubscriptionPageState();
+  ConsumerState<SubscriptionPage> createState() => _SubscriptionPageState();
 }
 
-class _SubscriptionPageState extends State<SubscriptionPage> {
-  final unlockManager = UnlockManager();
+class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
   bool isLoading = false;
   bool isYearly = true; // Default to yearly (better value)
 
@@ -404,8 +404,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   
   try {
     debugPrint('🔐 [Subscription] Calling unlockPremium...');
-    await unlockManager.unlockPremium();
-    debugPrint('✅ [Subscription] Premium unlocked! Status: ${unlockManager.isPremium}');
+    await ref.read(unlockProvider.notifier).unlockPremium();
+    debugPrint('✅ [Subscription] Premium unlocked! Status: ${ref.read(unlockProvider).isPremium}');
     
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(

@@ -65,13 +65,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Get unlimited access to all categories across all modes, remove ads, and enjoy unlimited Pandora sessions.';
 
   @override
-  String get premiumPriceMonthly => '49 DKK/month';
+  String get premiumPriceMonthly => '€6.99/month';
 
   @override
-  String get premiumPriceYearly => '399 DKK/year';
+  String get premiumPriceYearly => '€59.99/year';
 
   @override
-  String get saveWithYearly => 'Save 189 DKK with yearly!';
+  String get saveWithYearly => 'Save €23.89 with yearly!';
 
   @override
   String get monthly => 'Monthly';
@@ -187,7 +187,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adLoadingContinue => 'Ad Loading... Continue';
 
   @override
-  String get pricePerMonth => '49 DKK/month or 399 DKK/year';
+  String get pricePerMonth => '€6.99/month or €59.99/year';
 
   @override
   String noQuestionsFoundMessage(Object category, Object mode) {
@@ -202,15 +202,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String failedToLoadQuestions(Object error) {
     return 'Failed to load questions: $error';
   }
-
-  @override
-  String get madeForWife => 'Made for my beautiful wife';
-
-  @override
-  String get otiLia => 'Otilia Stenhøj';
-
-  @override
-  String get withLoveAndConversations => 'With love and conversations';
 
   @override
   String get howManyPlayers => 'How many players?';
@@ -301,9 +292,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noCategoriesFound => 'No categories found';
 
   @override
-  String get aboutCredits => 'About / Credits';
-
-  @override
   String get welcomeBack => 'Welcome Back!';
 
   @override
@@ -332,42 +320,57 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chooseYourModeDesc =>
-      'Select from three conversation styles:\n\n• Family - Warm, wholesome conversations perfect for all ages\n• Couple - Intimate and romantic questions to deepen your connection\n• Friends - Fun and entertaining topics for your squad';
+      'Select from five unique conversation experiences:\n\n• Couple - Intimate questions to deepen your romantic connection\n• Friends - Fun and engaging topics perfect for your squad\n• Family - Warm, wholesome conversations for all ages\n• Personal - Create your own custom question decks (Premium)\n• Pandora - Collaborative multiplayer game with real-time questions';
 
   @override
   String get pickCategory => '2. Pick a Category';
 
   @override
   String get pickCategoryDesc =>
-      'Each mode has multiple categories with unique question packs. 3 free categories per mode (30 questions each), with 5-question previews of premium categories.';
+      'Each mode offers multiple categories with curated question packs:\n\n• Free: 3 categories per mode (30 questions each)\n• Premium Preview: First 5 questions of premium categories\n• Premium: 24+ categories (75 questions each)\n• Personal: Create unlimited custom decks with your own questions';
 
   @override
-  String get startTalking => '3. Start Talking';
+  String get startTalking => '3. Start Playing';
 
   @override
   String get startTalkingDesc =>
-      'Questions appear full screen. Take turns reading and answering them honestly. There are no wrong answers - the goal is meaningful conversation!';
+      'Questions appear full screen for immersive conversations. Take turns reading and answering honestly - there are no wrong answers! The goal is meaningful connection and fun.\n\nFor Pandora mode: All players submit questions anonymously, then everyone answers together in real-time.';
 
   @override
   String get navigateQuestions => '4. Navigate Questions';
 
   @override
   String get navigateQuestionsDesc =>
-      '• Swipe right or tap \"Next\" for the next question\n• Swipe left or tap \"Previous\" to revisit questions\n• Tap the home button to return to the main menu anytime';
+      '• Swipe in any direction or tap arrows to move through questions\n• Tap the ❤️ heart icon to save favorites\n• Premium: Tap the question list icon (top right) to jump to any question\n• Tap the home button to return to the main menu anytime';
 
   @override
   String get premiumFeatures => '5. Premium Features';
 
   @override
   String get premiumFeaturesDesc =>
-      'Unlock all 24 categories with Premium:\n\n• Monthly: 49 DKK/month\n• Yearly: 399 DKK/year (save 189 DKK!)\n\n✓ All categories unlocked\n✓ No ads\n✓ Unlimited questions\n✓ Unlimited Pandora sessions';
+      'Unlock the full Connect experience:\n\n• Monthly: €6.99/month\n• Yearly: €59.99/year (Save 29%!)\n\n✓ All 24+ premium categories across all modes\n✓ 75 questions per category (vs 30 free)\n✓ No ads forever\n✓ Pandora: Unlimited players & questions\n✓ Personal: Create unlimited custom decks\n✓ Question navigation - jump to any question\n✓ Support ongoing development';
 
   @override
   String get proTips => 'Pro Tips';
 
   @override
   String get proTipsDesc =>
-      '• Create a comfortable, distraction-free environment\n• Listen actively and be present\n• Share honestly and encourage others to do the same\n• Respect boundaries - skip questions if needed\n• Have fun and enjoy connecting!';
+      '• Create a comfortable, distraction-free environment\n• Listen actively and be fully present\n• Share honestly and encourage others to do the same\n• Respect boundaries - it\'s okay to skip questions\n• Use favorites ❤️ to save questions you love\n• Try different modes for different occasions\n• Pandora is perfect for parties and group gatherings\n• Have fun and enjoy connecting!';
+
+  @override
+  String get aboutCredits => 'About / Credits';
+
+  @override
+  String get developedBy => 'Developed by TechyKoala';
+
+  @override
+  String get learnMore => 'Learn more about us and upcoming apps';
+
+  @override
+  String get visitWebsite => 'Visit techykoala.com';
+
+  @override
+  String get madeWithLove => 'Made with ❤️ for meaningful conversations';
 
   @override
   String get personal => 'Personal';
@@ -931,19 +934,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'Get unlimited access to all categories, remove ads forever, and unlock premium features';
 
   @override
-  String get save32Percent => 'SAVE 32%';
+  String get save32Percent => 'SAVE 29%';
 
   @override
-  String get priceMonthly => '49 DKK/month';
+  String get priceMonthly => '€6.99/month';
 
   @override
-  String get priceYearly => '399 DKK/year';
+  String get priceYearly => '€59.99/year';
 
   @override
   String get billedAnnually => 'Billed annually';
 
   @override
-  String get equivalentMonthly => 'Only 33 DKK/month';
+  String get equivalentMonthly => 'Only €5/month';
 
   @override
   String get feature24Categories =>

@@ -1,6 +1,7 @@
 // lib/features/pandora/presentation/pages/pandora_lobby_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import '../../../../core/utils/theme_helper.dart';
@@ -10,15 +11,15 @@ import 'pandora_timer_selection_page.dart';
 import 'pandora_question_submission_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../../core/utils/unlock_manager.dart';
+import '../../../../core/providers/unlock_provider.dart';
 import '../../../subscription/presentation/pages/subscription_page.dart';
 
-class PandoraLobbyPage extends StatefulWidget {
+class PandoraLobbyPage extends ConsumerStatefulWidget {
   final String sessionId;
   final String sessionPin;
   final bool isHost;
   final bool isDarkMode;
-  
+
   const PandoraLobbyPage({
     super.key,
     required this.sessionId,
@@ -28,17 +29,16 @@ class PandoraLobbyPage extends StatefulWidget {
   });
 
   @override
-  State<PandoraLobbyPage> createState() => _PandoraLobbyPageState();
+  ConsumerState<PandoraLobbyPage> createState() => _PandoraLobbyPageState();
 }
 
-class _PandoraLobbyPageState extends State<PandoraLobbyPage> {
+class _PandoraLobbyPageState extends ConsumerState<PandoraLobbyPage> {
   final pandoraService = PandoraService();
   List<Map<String, dynamic>> participants = [];
   RealtimeChannel? participantsChannel;
   RealtimeChannel? sessionChannel;
   bool isLoading = true;
   bool _hasNavigated = false;
-  final unlockManager = UnlockManager();
   
   Timer? lobbyTimer;
   late DateTime lobbyEndTime;
@@ -267,7 +267,7 @@ Future<void> _checkIfKicked() async {
         await _loadParticipants();
         
         // Check player limit for freemium hosts
-        if (widget.isHost && !unlockManager.isPremium && participants.length > 6) {
+        if (widget.isHost && !ref.read(unlockProvider).isPremium && participants.length > 6) {
           final l10n = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -702,7 +702,7 @@ Future<void> _checkIfKicked() async {
                   // Start button (only for host)
                   if (widget.isHost)
   // Check if over player limit
-  !unlockManager.isPremium && participants.length > 6
+  !ref.read(unlockProvider).isPremium && participants.length > 6
     ? SizedBox(
         width: double.infinity,
         height: AppConstants.buttonHeight,

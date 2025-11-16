@@ -1,24 +1,24 @@
 // lib/features/auth/presentation/pages/social_auth_page.dart
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/utils/theme_helper.dart';
-import '../../../../core/utils/unlock_manager.dart';
+import '../../../../core/providers/unlock_provider.dart';
 import '../../../../l10n/app_localizations.dart';
 
-class SocialAuthPage extends StatefulWidget {
+class SocialAuthPage extends ConsumerStatefulWidget {
   final bool isDarkMode;
-  
+
   const SocialAuthPage({super.key, required this.isDarkMode});
 
   @override
-  State<SocialAuthPage> createState() => _SocialAuthPageState();
+  ConsumerState<SocialAuthPage> createState() => _SocialAuthPageState();
 }
 
-class _SocialAuthPageState extends State<SocialAuthPage> {
+class _SocialAuthPageState extends ConsumerState<SocialAuthPage> {
   final authService = AuthService();
-  final unlockManager = UnlockManager();
   
   bool _isLoading = false;
   String? _errorMessage;
@@ -45,7 +45,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
 
     try {
       await authService.signInWithGoogle();
-      await unlockManager.initialize();
+      await ref.read(unlockProvider.notifier).initialize();
 
       if (mounted) {
         Navigator.of(context).pop();
@@ -72,7 +72,7 @@ class _SocialAuthPageState extends State<SocialAuthPage> {
 
     try {
       await authService.signInWithApple();
-      await unlockManager.initialize();
+      await ref.read(unlockProvider.notifier).initialize();
 
       if (mounted) {
         Navigator.of(context).pop();

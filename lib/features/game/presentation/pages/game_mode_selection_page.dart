@@ -1,9 +1,10 @@
 // lib/features/game/presentation/pages/game_mode_selection_page.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/services/auth_service.dart';
-import '../../../../core/utils/unlock_manager.dart';
+import '../../../../core/providers/unlock_provider.dart';
 import '../../../subscription/presentation/pages/subscription_page.dart';
 import '../../../auth/presentation/pages/social_auth_page.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -11,26 +12,25 @@ import 'category_selection_page.dart';
 import '../../../pandora/presentation/pages/pandora_entry_page.dart';
 import '../../../../core/widgets/custom_dialog.dart';
 
-class GameModeSelectionPage extends StatefulWidget {
+class GameModeSelectionPage extends ConsumerStatefulWidget {
   final bool isDarkMode;
-  
+
   const GameModeSelectionPage({
     super.key,
     required this.isDarkMode,
   });
 
   @override
-  State<GameModeSelectionPage> createState() => _GameModeSelectionPageState();
+  ConsumerState<GameModeSelectionPage> createState() => _GameModeSelectionPageState();
 }
 
-class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
+class _GameModeSelectionPageState extends ConsumerState<GameModeSelectionPage> {
   final PageController _pageController = PageController(
     viewportFraction: 0.45,
     initialPage: 1,
   );
   int currentPage = 0;
   final authService = AuthService();
-  final unlockManager = UnlockManager();
 
   @override
   void dispose() {
@@ -40,19 +40,20 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
 
   Future<void> _handlePersonalMode(BuildContext context) async {
   final l10n = AppLocalizations.of(context)!;
-  
+  final unlockState = ref.read(unlockProvider);
+
   // Check if user is signed in
   if (!authService.isLoggedIn) {
     _showSignInRequiredDialog(context);
     return;
   }
-  
+
   // Check if user is premium
-  if (!unlockManager.isPremium) {
+  if (!unlockState.isPremium) {
     await _showPremiumRequiredDialog(context);
     return;
   }
-  
+
   // User is signed in and premium - allow access
   Navigator.push(
     context,
@@ -149,11 +150,11 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
   
   // If user subscribed, refresh unlock manager and update UI
   if (result == true && mounted) {
-    await unlockManager.initialize();
-    setState(() {}); // Refresh UI to remove lock icon
-    
+    await ref.read(unlockProvider.notifier).initialize();
+    final unlockState = ref.read(unlockProvider);
+
     // Now navigate to Personal mode
-    if (unlockManager.isPremium) {
+    if (unlockState.isPremium) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -376,7 +377,7 @@ class _GameModeSelectionPageState extends State<GameModeSelectionPage> {
                     ),
                     
                     // Lock icon for premium modes
-                    if (isPremium && !unlockManager.isPremium)
+                    if (isPremium && !ref.watch(unlockProvider).isPremium)
                       Positioned(
                         top: 20,
                         right: 20,

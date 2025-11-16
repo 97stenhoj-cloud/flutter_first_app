@@ -205,15 +205,6 @@ class AppLocalizationsDa extends AppLocalizations {
   }
 
   @override
-  String get madeForWife => 'Lavet til min smukke kone';
-
-  @override
-  String get otiLia => 'Otilia Stenhøj';
-
-  @override
-  String get withLoveAndConversations => 'Med kærlighed og samtaler';
-
-  @override
   String get howManyPlayers => 'Hvor mange spillere?';
 
   @override
@@ -302,9 +293,6 @@ class AppLocalizationsDa extends AppLocalizations {
   String get noCategoriesFound => 'Ingen kategorier fundet';
 
   @override
-  String get aboutCredits => 'Om / Credits';
-
-  @override
   String get welcomeBack => 'Velkommen Tilbage!';
 
   @override
@@ -369,6 +357,21 @@ class AppLocalizationsDa extends AppLocalizations {
   @override
   String get proTipsDesc =>
       '• Skab et komfortabelt, distraktionsfrit miljø\n• Lyt aktivt og vær til stede\n• Del ærligt og opfordr andre til at gøre det samme\n• Respekter grænser - spring spørgsmål over hvis nødvendigt\n• Hav det sjovt og nyd at skabe forbindelse!';
+
+  @override
+  String get aboutCredits => 'Om / Credits';
+
+  @override
+  String get developedBy => 'Developed by TechyKoala';
+
+  @override
+  String get learnMore => 'Learn more about us and upcoming apps';
+
+  @override
+  String get visitWebsite => 'Visit techykoala.com';
+
+  @override
+  String get madeWithLove => 'Made with ❤️ for meaningful conversations';
 
   @override
   String get personal => 'Personligt';

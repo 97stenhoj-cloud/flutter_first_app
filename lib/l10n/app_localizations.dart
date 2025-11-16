@@ -219,19 +219,19 @@ abstract class AppLocalizations {
   /// No description provided for @premiumPriceMonthly.
   ///
   /// In en, this message translates to:
-  /// **'49 DKK/month'**
+  /// **'€6.99/month'**
   String get premiumPriceMonthly;
 
   /// No description provided for @premiumPriceYearly.
   ///
   /// In en, this message translates to:
-  /// **'399 DKK/year'**
+  /// **'€59.99/year'**
   String get premiumPriceYearly;
 
   /// No description provided for @saveWithYearly.
   ///
   /// In en, this message translates to:
-  /// **'Save 189 DKK with yearly!'**
+  /// **'Save €23.89 with yearly!'**
   String get saveWithYearly;
 
   /// No description provided for @monthly.
@@ -447,7 +447,7 @@ abstract class AppLocalizations {
   /// No description provided for @pricePerMonth.
   ///
   /// In en, this message translates to:
-  /// **'49 DKK/month or 399 DKK/year'**
+  /// **'€6.99/month or €59.99/year'**
   String get pricePerMonth;
 
   /// No description provided for @noQuestionsFoundMessage.
@@ -467,24 +467,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to load questions: {error}'**
   String failedToLoadQuestions(Object error);
-
-  /// No description provided for @madeForWife.
-  ///
-  /// In en, this message translates to:
-  /// **'Made for my beautiful wife'**
-  String get madeForWife;
-
-  /// No description provided for @otiLia.
-  ///
-  /// In en, this message translates to:
-  /// **'Otilia Stenhøj'**
-  String get otiLia;
-
-  /// No description provided for @withLoveAndConversations.
-  ///
-  /// In en, this message translates to:
-  /// **'With love and conversations'**
-  String get withLoveAndConversations;
 
   /// No description provided for @howManyPlayers.
   ///
@@ -654,12 +636,6 @@ abstract class AppLocalizations {
   /// **'No categories found'**
   String get noCategoriesFound;
 
-  /// No description provided for @aboutCredits.
-  ///
-  /// In en, this message translates to:
-  /// **'About / Credits'**
-  String get aboutCredits;
-
   /// No description provided for @welcomeBack.
   ///
   /// In en, this message translates to:
@@ -717,7 +693,7 @@ abstract class AppLocalizations {
   /// No description provided for @chooseYourModeDesc.
   ///
   /// In en, this message translates to:
-  /// **'Select from three conversation styles:\n\n• Family - Warm, wholesome conversations perfect for all ages\n• Couple - Intimate and romantic questions to deepen your connection\n• Friends - Fun and entertaining topics for your squad'**
+  /// **'Select from five unique conversation experiences:\n\n• Couple - Intimate questions to deepen your romantic connection\n• Friends - Fun and engaging topics perfect for your squad\n• Family - Warm, wholesome conversations for all ages\n• Personal - Create your own custom question decks (Premium)\n• Pandora - Collaborative multiplayer game with real-time questions'**
   String get chooseYourModeDesc;
 
   /// No description provided for @pickCategory.
@@ -729,19 +705,19 @@ abstract class AppLocalizations {
   /// No description provided for @pickCategoryDesc.
   ///
   /// In en, this message translates to:
-  /// **'Each mode has multiple categories with unique question packs. 3 free categories per mode (30 questions each), with 5-question previews of premium categories.'**
+  /// **'Each mode offers multiple categories with curated question packs:\n\n• Free: 3 categories per mode (30 questions each)\n• Premium Preview: First 5 questions of premium categories\n• Premium: 24+ categories (75 questions each)\n• Personal: Create unlimited custom decks with your own questions'**
   String get pickCategoryDesc;
 
   /// No description provided for @startTalking.
   ///
   /// In en, this message translates to:
-  /// **'3. Start Talking'**
+  /// **'3. Start Playing'**
   String get startTalking;
 
   /// No description provided for @startTalkingDesc.
   ///
   /// In en, this message translates to:
-  /// **'Questions appear full screen. Take turns reading and answering them honestly. There are no wrong answers - the goal is meaningful conversation!'**
+  /// **'Questions appear full screen for immersive conversations. Take turns reading and answering honestly - there are no wrong answers! The goal is meaningful connection and fun.\n\nFor Pandora mode: All players submit questions anonymously, then everyone answers together in real-time.'**
   String get startTalkingDesc;
 
   /// No description provided for @navigateQuestions.
@@ -753,7 +729,7 @@ abstract class AppLocalizations {
   /// No description provided for @navigateQuestionsDesc.
   ///
   /// In en, this message translates to:
-  /// **'• Swipe right or tap \"Next\" for the next question\n• Swipe left or tap \"Previous\" to revisit questions\n• Tap the home button to return to the main menu anytime'**
+  /// **'• Swipe in any direction or tap arrows to move through questions\n• Tap the ❤️ heart icon to save favorites\n• Premium: Tap the question list icon (top right) to jump to any question\n• Tap the home button to return to the main menu anytime'**
   String get navigateQuestionsDesc;
 
   /// No description provided for @premiumFeatures.
@@ -765,7 +741,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumFeaturesDesc.
   ///
   /// In en, this message translates to:
-  /// **'Unlock all 24 categories with Premium:\n\n• Monthly: 49 DKK/month\n• Yearly: 399 DKK/year (save 189 DKK!)\n\n✓ All categories unlocked\n✓ No ads\n✓ Unlimited questions\n✓ Unlimited Pandora sessions'**
+  /// **'Unlock the full Connect experience:\n\n• Monthly: €6.99/month\n• Yearly: €59.99/year (Save 29%!)\n\n✓ All 24+ premium categories across all modes\n✓ 75 questions per category (vs 30 free)\n✓ No ads forever\n✓ Pandora: Unlimited players & questions\n✓ Personal: Create unlimited custom decks\n✓ Question navigation - jump to any question\n✓ Support ongoing development'**
   String get premiumFeaturesDesc;
 
   /// No description provided for @proTips.
@@ -777,8 +753,38 @@ abstract class AppLocalizations {
   /// No description provided for @proTipsDesc.
   ///
   /// In en, this message translates to:
-  /// **'• Create a comfortable, distraction-free environment\n• Listen actively and be present\n• Share honestly and encourage others to do the same\n• Respect boundaries - skip questions if needed\n• Have fun and enjoy connecting!'**
+  /// **'• Create a comfortable, distraction-free environment\n• Listen actively and be fully present\n• Share honestly and encourage others to do the same\n• Respect boundaries - it\'s okay to skip questions\n• Use favorites ❤️ to save questions you love\n• Try different modes for different occasions\n• Pandora is perfect for parties and group gatherings\n• Have fun and enjoy connecting!'**
   String get proTipsDesc;
+
+  /// No description provided for @aboutCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'About / Credits'**
+  String get aboutCredits;
+
+  /// No description provided for @developedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Developed by TechyKoala'**
+  String get developedBy;
+
+  /// No description provided for @learnMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn more about us and upcoming apps'**
+  String get learnMore;
+
+  /// No description provided for @visitWebsite.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit techykoala.com'**
+  String get visitWebsite;
+
+  /// No description provided for @madeWithLove.
+  ///
+  /// In en, this message translates to:
+  /// **'Made with ❤️ for meaningful conversations'**
+  String get madeWithLove;
 
   /// No description provided for @personal.
   ///
@@ -1791,19 +1797,19 @@ abstract class AppLocalizations {
   /// No description provided for @save32Percent.
   ///
   /// In en, this message translates to:
-  /// **'SAVE 32%'**
+  /// **'SAVE 29%'**
   String get save32Percent;
 
   /// No description provided for @priceMonthly.
   ///
   /// In en, this message translates to:
-  /// **'49 DKK/month'**
+  /// **'€6.99/month'**
   String get priceMonthly;
 
   /// No description provided for @priceYearly.
   ///
   /// In en, this message translates to:
-  /// **'399 DKK/year'**
+  /// **'€59.99/year'**
   String get priceYearly;
 
   /// No description provided for @billedAnnually.
@@ -1815,7 +1821,7 @@ abstract class AppLocalizations {
   /// No description provided for @equivalentMonthly.
   ///
   /// In en, this message translates to:
-  /// **'Only 33 DKK/month'**
+  /// **'Only €5/month'**
   String get equivalentMonthly;
 
   /// No description provided for @feature24Categories.

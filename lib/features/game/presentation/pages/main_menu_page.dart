@@ -1,9 +1,10 @@
 // lib/features/game/presentation/pages/main_menu_page.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/utils/theme_helper.dart';
-import '../../../../core/utils/theme_notifier.dart';
+import '../../../../core/providers/theme_provider.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../settings/presentation/pages/settings_main_page.dart';
 import '../../../settings/presentation/pages/rules_page.dart';
@@ -14,14 +15,14 @@ import '../../../../core/services/auth_service.dart';
 import '../../../auth/presentation/pages/social_auth_page.dart';
 import '../../../../core/widgets/custom_dialog.dart';
 
-class MainMenuPage extends StatefulWidget {
+class MainMenuPage extends ConsumerStatefulWidget {
   const MainMenuPage({super.key});
 
   @override
-  State<MainMenuPage> createState() => _MainMenuPageState();
+  ConsumerState<MainMenuPage> createState() => _MainMenuPageState();
 }
 
-class _MainMenuPageState extends State<MainMenuPage> {
+class _MainMenuPageState extends ConsumerState<MainMenuPage> {
   final authService = AuthService();
 
   void _showSignInRequiredDialog(bool isDarkMode) {
@@ -81,8 +82,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final themeNotifier = ThemeProvider.of(context);
-    final isDarkMode = themeNotifier.isDarkMode;
+    final isDarkMode = ref.watch(themeProvider);
     
     return Scaffold(
       body: Container(
@@ -127,7 +127,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                       ),
                       child: IconButton(
                         onPressed: () {
-                          themeNotifier.toggleTheme();
+                          ref.read(themeProvider.notifier).toggleTheme();
                         },
                         icon: Icon(
                           isDarkMode ? Icons.light_mode : Icons.dark_mode,

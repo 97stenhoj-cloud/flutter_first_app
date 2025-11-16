@@ -1,52 +1,187 @@
 // lib/features/settings/presentation/pages/profile_page.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/auth_service.dart';
-import '../../../../core/utils/unlock_manager.dart';
+import '../../../../core/providers/unlock_provider.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../auth/presentation/pages/social_auth_page.dart';
 import '../../../subscription/presentation/pages/subscription_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/widgets/custom_dialog.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends ConsumerStatefulWidget {
   final bool isDarkMode;
-  
+
   const ProfilePage({super.key, required this.isDarkMode});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  ConsumerState<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends ConsumerState<ProfilePage> {
   final authService = AuthService();
-  final unlockManager = UnlockManager();
-  
-Future<void> _unsubscribe() async {
-  final user = Supabase.instance.client.auth.currentUser;
-  if (user == null) return;
 
-  try {
-    // Update the user's subscription status in Supabase
-    await Supabase.instance.client
-        .from('user_subscriptions')
-        .update({
-          'is_premium': false,
-          'updated_at': DateTime.now().toIso8601String(),
-        })
-        .eq('user_id', user.id);
-    
-    // Update UnlockManager state
-    unlockManager.lockPremium();
-    
-    debugPrint('✅ Successfully unsubscribed user');
-  } catch (e) {
-    debugPrint('❌ Error unsubscribing: $e');
-    rethrow;
+  Widget _buildFullWidthButton({
+    required String text,
+    required VoidCallback onPressed,
+    required bool isPrimary,
+    IconData? icon,
+  }) {
+    final colors = isPrimary
+        ? ThemeHelper.getPrimaryButtonGradient(widget.isDarkMode).colors
+        : ThemeHelper.getSecondaryButtonGradient(widget.isDarkMode).colors;
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // Outermost layer
+        Container(
+          width: double.infinity,
+          height: AppConstants.buttonHeight,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [colors[0], colors[1]],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: widget.isDarkMode
+                    ? const Color.fromRGBO(0, 0, 0, 0.4)
+                    : const Color.fromRGBO(100, 80, 60, 0.15),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+        ),
+        // Middle layer
+        Positioned.fill(
+          left: 4,
+          right: 4,
+          top: 4,
+          bottom: 4,
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  colors[0].withValues(alpha: 0.85),
+                  colors[1].withValues(alpha: 0.85)
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        ),
+        // Innermost layer (button)
+        Positioned.fill(
+          left: 8,
+          right: 8,
+          top: 8,
+          bottom: 8,
+          child: Material(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(20),
+            child: InkWell(
+              onTap: onPressed,
+              borderRadius: BorderRadius.circular(20),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: colors,
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: icon != null
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            icon,
+                            size: 24,
+                            color: isPrimary
+                                ? Colors.white
+                                : ThemeHelper.getSecondaryButtonTextColor(
+                                    widget.isDarkMode),
+                          ),
+                          const SizedBox(width: 8),
+                          Flexible(
+                            child: Text(
+                              text,
+                              style: GoogleFonts.poppins(
+                                fontSize: isPrimary ? 18 : 16,
+                                fontWeight: isPrimary
+                                    ? FontWeight.bold
+                                    : FontWeight.w600,
+                                color: isPrimary
+                                    ? Colors.white
+                                    : ThemeHelper.getSecondaryButtonTextColor(
+                                        widget.isDarkMode),
+                              ),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.visible,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Center(
+                        child: Text(
+                          text,
+                          style: GoogleFonts.poppins(
+                            fontSize: isPrimary ? 18 : 16,
+                            fontWeight:
+                                isPrimary ? FontWeight.bold : FontWeight.w600,
+                            color: isPrimary
+                                ? Colors.white
+                                : ThemeHelper.getSecondaryButtonTextColor(
+                                    widget.isDarkMode),
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.visible,
+                        ),
+                      ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
-}
+
+  Future<void> _unsubscribe() async {
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) return;
+
+    try {
+      // Update the user's subscription status in Supabase
+      await Supabase.instance.client
+          .from('user_subscriptions')
+          .update({
+            'is_premium': false,
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .eq('user_id', user.id);
+      
+      // Update UnlockManager state
+      ref.read(unlockProvider.notifier).lockPremium();
+      
+      debugPrint('✅ Successfully unsubscribed user');
+    } catch (e) {
+      debugPrint('❌ Error unsubscribing: $e');
+      rethrow;
+    }
+  }
 
   Widget _buildInfoCard({
     required IconData icon,
@@ -101,43 +236,6 @@ Future<void> _unsubscribe() async {
                   ),
                 ),
               ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSubscriptionCard(String bundleName) {
-    final Map<String, Color> bundleColors = {
-      'Couple': const Color(0xFFAD1457),
-      'Friends': const Color(0xFFFF8F00),
-      'Family': const Color(0xFF8D6E63),
-    };
-
-    final color = bundleColors[bundleName] ?? Colors.grey;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [color, color.withValues(alpha: 0.7)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.check_circle, color: Colors.white, size: 20),
-          const SizedBox(width: 8),
-          Text(
-            bundleName,
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
             ),
           ),
         ],
@@ -246,7 +344,7 @@ Future<void> _unsubscribe() async {
                               const SizedBox(height: 16),
 
                               // Check if user has premium
-                              if (!unlockManager.isPremium) ...[
+                              if (!ref.watch(unlockProvider).isPremium) ...[
                                 Container(
                                   padding: const EdgeInsets.all(16),
                                   decoration: BoxDecoration(
@@ -274,7 +372,7 @@ Future<void> _unsubscribe() async {
                                 ),
                                 const SizedBox(height: 16),
                                 // Get Premium Button
-                                ThemeHelper.buildLayeredButton(
+                                _buildFullWidthButton(
                                   text: l10n.getPremium,
                                   icon: Icons.workspace_premium,
                                   onPressed: () {
@@ -290,161 +388,182 @@ Future<void> _unsubscribe() async {
                                     });
                                   },
                                   isPrimary: true,
-                                  isDarkMode: widget.isDarkMode,
                                 ),
                               ] else
                                 Column(
                                   children: [
-                                    Wrap(
-                                      spacing: 8,
-                                      runSpacing: 8,
-                                      children: [
-                                        if (unlockManager.isPremium)
-                                          _buildSubscriptionCard('Premium')
-                                      ],
+                                    // Premium Status Button - Full Width Golden
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 18),
+                                        decoration: BoxDecoration(
+                                          gradient: const LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              Color(0xFFFFD700), // Gold
+                                              Color(0xFFD4A574), // Dark Gold
+                                            ],
+                                          ),
+                                          borderRadius: BorderRadius.circular(16),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: const Color(0xFFFFD700).withValues(alpha: 0.4),
+                                              blurRadius: 15,
+                                              offset: const Offset(0, 6),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            const Icon(
+                                              Icons.workspace_premium,
+                                              color: Colors.white,
+                                              size: 24,
+                                            ),
+                                            const SizedBox(width: 12),
+                                            Text(
+                                              l10n.premium,
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
                                     const SizedBox(height: 16),
-                                    
-                                    // Unsubscribe Button
-                                    ThemeHelper.buildLayeredButton(
+
+                                    // Unsubscribe Button - Full Width
+                                    _buildFullWidthButton(
                                       text: l10n.unsubscribe,
                                       icon: Icons.cancel_outlined,
                                       isPrimary: false,
                                       onPressed: () async {
-                                        final confirmed = await showDialog<bool>(
-  context: context,
-  builder: (context) => CustomDialog(
-    isDarkMode: widget.isDarkMode,
-    icon: Icons.warning_amber_rounded,
-    iconColor: Colors.orange,
-    title: l10n.unsubscribeConfirm,
-    content: l10n.unsubscribeWarning,
-    actions: [
-      DialogButton(
-        text: l10n.cancel,
-        onPressed: () => Navigator.pop(context, false),
-        isPrimary: false,
-        isDarkMode: widget.isDarkMode,
-      ),
-      const SizedBox(height: 12),
-      DialogButton(
-        text: l10n.yesUnsubscribe,
-        onPressed: () => Navigator.pop(context, true),
-        isPrimary: true,
-        isDarkMode: widget.isDarkMode,
-        customColor: Colors.red,
-        icon: Icons.cancel,
-      ),
-    ],
-  ),
-);
+                                            final confirmed = await showDialog<bool>(
+                                              context: context,
+                                              builder: (context) => CustomDialog(
+                                                isDarkMode: widget.isDarkMode,
+                                                icon: Icons.warning_amber_rounded,
+                                                iconColor: Colors.orange,
+                                                title: l10n.unsubscribeConfirm,
+                                                content: l10n.unsubscribeWarning,
+                                                actions: [
+                                                  DialogButton(
+                                                    text: l10n.cancel,
+                                                    onPressed: () => Navigator.pop(context, false),
+                                                    isPrimary: false,
+                                                    isDarkMode: widget.isDarkMode,
+                                                  ),
+                                                  const SizedBox(height: 12),
+                                                  DialogButton(
+                                                    text: l10n.yesUnsubscribe,
+                                                    onPressed: () => Navigator.pop(context, true),
+                                                    isPrimary: true,
+                                                    isDarkMode: widget.isDarkMode,
+                                                    customColor: Colors.red,
+                                                    icon: Icons.cancel,
+                                                  ),
+                                                ],
+                                              ),
+                                            );
 
-                                        if (confirmed == true) {
-                                          if (!mounted) return;
-                                          
-                                          try {
-                                            // Call unsubscribe function
-                                            await _unsubscribe();
-                                            
-                                            if (!mounted) return;
-                                            
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  l10n.unsubscribeSuccess,
-                                                  style: GoogleFonts.poppins(),
-                                                ),
-                                                backgroundColor: Colors.green,
-                                              ),
-                                            );
-                                            
-                                            // Refresh the page
-                                            setState(() {});
-                                          } catch (e) {
-                                            if (!mounted) return;
-                                            
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  '${l10n.unsubscribeError}: $e',
-                                                  style: GoogleFonts.poppins(),
-                                                ),
-                                                backgroundColor: Colors.red,
-                                              ),
-                                            );
-                                          }
-                                        }
-                                      },
-                                      width: double.infinity,
-                                      isDarkMode: widget.isDarkMode,
+                                            if (confirmed == true) {
+                                              if (!mounted) return;
+
+                                              try {
+                                                await _unsubscribe();
+
+                                                if (!mounted) return;
+
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      l10n.unsubscribeSuccess,
+                                                      style: GoogleFonts.poppins(),
+                                                    ),
+                                                    backgroundColor: Colors.green,
+                                                  ),
+                                                );
+
+                                                setState(() {});
+                                              } catch (e) {
+                                                if (!mounted) return;
+
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      '${l10n.unsubscribeError}: $e',
+                                                      style: GoogleFonts.poppins(),
+                                                    ),
+                                                    backgroundColor: Colors.red,
+                                                  ),
+                                                );
+                                              }
+                                            }
+                                          },
                                     ),
                                   ],
                                 ),
 
                               const SizedBox(height: 40),
 
-                              // Sign Out Button
-                              ThemeHelper.buildLayeredButton(
+                              // Sign Out Button - Full Width
+                              _buildFullWidthButton(
                                 text: l10n.signOut,
                                 icon: Icons.logout,
                                 onPressed: () async {
-  final confirmed = await showDialog<bool>(
-    context: context,
-    builder: (context) => CustomDialog(
-      isDarkMode: widget.isDarkMode,
-      icon: Icons.logout,
-      iconColor: Colors.orange,
-      iconSize: 48,
-      title: l10n.signOut,
-      content: l10n.signOutConfirm,
-      actions: [
-        DialogButton(
-          text: l10n.cancel,
-          onPressed: () => Navigator.pop(context, false),
-          isPrimary: false,
-          isDarkMode: widget.isDarkMode,
-        ),
-        const SizedBox(height: 12),
-        DialogButton(
-          text: l10n.signOut,
-          onPressed: () => Navigator.pop(context, true),
-          isPrimary: true,
-          isDarkMode: widget.isDarkMode,
-          customColor: Colors.red,
-          icon: Icons.logout,
-        ),
-      ],
-    ),
-  );
+                                      final confirmed = await showDialog<bool>(
+                                        context: context,
+                                        builder: (context) => CustomDialog(
+                                          isDarkMode: widget.isDarkMode,
+                                          icon: Icons.logout,
+                                          iconColor: Colors.orange,
+                                          iconSize: 48,
+                                          title: l10n.signOut,
+                                          content: l10n.signOutConfirm,
+                                          actions: [
+                                            DialogButton(
+                                              text: l10n.cancel,
+                                              onPressed: () => Navigator.pop(context, false),
+                                              isPrimary: false,
+                                              isDarkMode: widget.isDarkMode,
+                                            ),
+                                            const SizedBox(height: 12),
+                                            DialogButton(
+                                              text: l10n.signOut,
+                                              onPressed: () => Navigator.pop(context, true),
+                                              isPrimary: true,
+                                              isDarkMode: widget.isDarkMode,
+                                              customColor: Colors.red,
+                                              icon: Icons.logout,
+                                            ),
+                                          ],
+                                        ),
+                                      );
 
-  if (confirmed == true) {
-    await authService.signOut();
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            l10n.signedOutSuccess,
-            style: GoogleFonts.poppins(),
-          ),
-          backgroundColor: Colors.green,
-        ),
-      );
-      setState(() {});
-    }
-  }
-
-
-                                  if (confirmed == true) {
-                                    await authService.signOut();
-                                    if (mounted) {
-                                      setState(() {});
-                                    }
-                                  }
-                                },
-                                isPrimary: false,
-                                isDarkMode: widget.isDarkMode,
-                              ),
-                              
+                                      if (confirmed == true) {
+                                        await authService.signOut();
+                                        if (mounted) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                l10n.signedOutSuccess,
+                                                style: GoogleFonts.poppins(),
+                                              ),
+                                              backgroundColor: Colors.green,
+                                            ),
+                                          );
+                                          setState(() {});
+                                        }
+                                      }
+                                    },
+                                    isPrimary: false,
+                                  ),
                               const SizedBox(height: 40),
                             ],
                           ),
@@ -480,9 +599,9 @@ Future<void> _unsubscribe() async {
                                 ),
                               ),
                               const SizedBox(height: 40),
-                              
-                              // Sign In Button - NAVIGATE TO SOCIAL AUTH PAGE
-                              ThemeHelper.buildLayeredButton(
+
+                              // Sign In Button
+                              _buildFullWidthButton(
                                 text: l10n.signInSignUp,
                                 icon: Icons.login,
                                 onPressed: () {
@@ -493,12 +612,11 @@ Future<void> _unsubscribe() async {
                                     ),
                                   ).then((_) {
                                     if (mounted) {
-                                      setState(() {});  // Refresh the page when coming back
+                                      setState(() {});
                                     }
                                   });
                                 },
                                 isPrimary: true,
-                                isDarkMode: widget.isDarkMode,
                               ),
                             ],
                           ),

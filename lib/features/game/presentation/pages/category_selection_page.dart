@@ -1,8 +1,9 @@
 // lib/features/game/presentation/pages/category_selection_page.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/theme_helper.dart';
-import '../../../../core/utils/unlock_manager.dart';
+import '../../../../core/providers/unlock_provider.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/supabase_service.dart';
 import 'game_page.dart';
@@ -73,10 +74,10 @@ const Map<String, List<String>> categoryOrder = {
   ],
 };
 
-class CategorySelectionPage extends StatefulWidget {
+class CategorySelectionPage extends ConsumerStatefulWidget {
   final String gameMode;
   final bool isDarkMode;
-  
+
   const CategorySelectionPage({
     super.key,
     required this.gameMode,
@@ -84,14 +85,13 @@ class CategorySelectionPage extends StatefulWidget {
   });
 
   @override
-  State<CategorySelectionPage> createState() => _CategorySelectionPageState();
+  ConsumerState<CategorySelectionPage> createState() => _CategorySelectionPageState();
 }
 
-class _CategorySelectionPageState extends State<CategorySelectionPage> {
-  final unlockManager = UnlockManager();
+class _CategorySelectionPageState extends ConsumerState<CategorySelectionPage> {
   final supabaseService = SupabaseService();
   final PageController _pageController = PageController(viewportFraction: 0.85);
-  
+
   List<String> categories = [];
   bool isLoading = true;
   int currentPage = 0;
@@ -134,7 +134,6 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
   @override
   void initState() {
     super.initState();
-    _initializeUnlockManager();
     if (widget.gameMode.toLowerCase() != 'personal') {
       _loadCategories();
     } else {
@@ -174,12 +173,6 @@ Future<void> _reloadCategoriesSilently() async {
     debugPrint('Error reloading categories: $e');
   }
 }
-  Future<void> _initializeUnlockManager() async {
-    await unlockManager.initialize();
-    if (mounted) {
-      setState(() {});
-    }
-  }
 
   @override
   void dispose() {
@@ -225,7 +218,7 @@ Future<void> _reloadCategoriesSilently() async {
 }
 
   bool _isCategoryLocked(String categoryName) {
-    return unlockManager.isCategoryLocked(widget.gameMode, categoryName);
+    return ref.read(unlockProvider.notifier).isCategoryLocked(widget.gameMode, categoryName);
   }
 
   String _getCategoryDescription(String category) {
@@ -274,8 +267,9 @@ Future<void> _reloadCategoriesSilently() async {
   String _getQuestionCountText(String categoryName) {
     final l10n = AppLocalizations.of(context)!;
     final isFree = !_isCategoryLocked(categoryName);
-    
-    if (unlockManager.isPremium) {
+    final unlockState = ref.read(unlockProvider);
+
+    if (unlockState.isPremium) {
       return l10n.questionsCount75;
     } else if (isFree) {
       return l10n.questionsCount30;
@@ -483,7 +477,7 @@ Future<void> _reloadCategoriesSilently() async {
                   // Reload categories if user subscribed
                   if (needsRefresh == true && mounted) {
                     debugPrint('🔄 Silently reloading categories...');
-                    await unlockManager.initialize();
+                    await ref.read(unlockProvider.notifier).initialize();
                     await _reloadCategoriesSilently();
                     debugPrint('✅ Categories reloaded, staying at index $currentPage');
                   }
@@ -642,7 +636,7 @@ if (myRating != null)
 
                                                   
                                                   // Premium upgrade badge for ALL categories if not premium
-                                                  if (!unlockManager.isPremium) ...[
+                                                  if (!ref.watch(unlockProvider).isPremium) ...[
                                                     const SizedBox(height: 8),
                                                     GestureDetector(
                                                       onTap: () {
