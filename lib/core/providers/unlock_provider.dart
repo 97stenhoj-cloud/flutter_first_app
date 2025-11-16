@@ -82,11 +82,14 @@ class UnlockNotifier extends StateNotifier<UnlockState> {
 
     try {
       debugPrint('🔐 Unlocking premium for user: ${user.id}');
-      await Supabase.instance.client.from('user_subscriptions').upsert({
-        'user_id': user.id,
-        'is_premium': true,
-        'updated_at': DateTime.now().toIso8601String(),
-      });
+      await Supabase.instance.client.from('user_subscriptions').upsert(
+        {
+          'user_id': user.id,
+          'is_premium': true,
+          'updated_at': DateTime.now().toIso8601String(),
+        },
+        onConflict: 'user_id', // Specify which column to check for conflicts
+      );
 
       state = state.copyWith(isPremium: true);
       debugPrint('✅ Premium unlocked successfully');
