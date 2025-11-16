@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -74,9 +75,13 @@ class UnlockNotifier extends StateNotifier<UnlockState> {
 
   Future<void> unlockPremium() async {
     final user = Supabase.instance.client.auth.currentUser;
-    if (user == null) return;
+    if (user == null) {
+      debugPrint('❌ Cannot unlock premium: User not logged in');
+      throw Exception('User not logged in');
+    }
 
     try {
+      debugPrint('🔐 Unlocking premium for user: ${user.id}');
       await Supabase.instance.client.from('user_subscriptions').upsert({
         'user_id': user.id,
         'is_premium': true,
@@ -84,8 +89,10 @@ class UnlockNotifier extends StateNotifier<UnlockState> {
       });
 
       state = state.copyWith(isPremium: true);
+      debugPrint('✅ Premium unlocked successfully');
     } catch (e) {
-      // Handle error
+      debugPrint('❌ Error unlocking premium: $e');
+      rethrow; // Let subscription page handle the error
     }
   }
 

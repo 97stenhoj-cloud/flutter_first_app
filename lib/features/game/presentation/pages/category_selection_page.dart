@@ -639,13 +639,22 @@ if (myRating != null)
                                                   if (!ref.watch(unlockProvider).isPremium) ...[
                                                     const SizedBox(height: 8),
                                                     GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.push(
+                                                      onTap: () async {
+                                                        final subscribed = await Navigator.push<bool>(
                                                           context,
                                                           MaterialPageRoute(
                                                             builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
                                                           ),
                                                         );
+
+                                                        // Refresh state if user subscribed
+                                                        if (subscribed == true && mounted) {
+                                                          debugPrint('🎉 User subscribed! Refreshing unlock state...');
+                                                          await ref.read(unlockProvider.notifier).initialize();
+                                                          await _reloadCategoriesSilently();
+                                                          setState(() {});
+                                                          debugPrint('✅ State refreshed after subscription');
+                                                        }
                                                       },
                                                       child: Container(
                                                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
