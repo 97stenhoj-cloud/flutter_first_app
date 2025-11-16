@@ -13,10 +13,14 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
   
-  // Initialize Supabase with Realtime configuration
+  // Initialize Supabase with auth persistence and Realtime configuration
   await Supabase.initialize(
-    url: Env.supabaseUrl,              // CHANGED
-    anonKey: Env.supabaseAnonKey,      // CHANGED
+    url: Env.supabaseUrl,
+    anonKey: Env.supabaseAnonKey,
+    authOptions: FlutterAuthClientOptions(
+      authFlowType: AuthFlowType.pkce,  // Secure PKCE flow for mobile
+      autoRefreshToken: true,            // Auto-refresh expired tokens
+    ),
     realtimeClientOptions: const RealtimeClientOptions(
       eventsPerSecond: 10,
       logLevel: RealtimeLogLevel.info,
