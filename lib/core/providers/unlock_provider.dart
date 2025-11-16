@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -33,6 +34,8 @@ class UnlockState {
 
 // Unlock state notifier
 class UnlockNotifier extends StateNotifier<UnlockState> {
+  StreamSubscription<AuthState>? _authSubscription;
+
   UnlockNotifier()
       : super(UnlockState(
           isPremium: false,
@@ -40,13 +43,34 @@ class UnlockNotifier extends StateNotifier<UnlockState> {
           backButtonCount: 0,
         )) {
     initialize();
+    _subscribeToAuthChanges();
+  }
+
+  /// Subscribe to Supabase auth state changes to automatically sync premium status
+  void _subscribeToAuthChanges() {
+    _authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+      final event = data.event;
+      debugPrint('🔐 Auth state changed: $event');
+
+      if (event == AuthChangeEvent.signedIn ||
+          event == AuthChangeEvent.tokenRefreshed ||
+          event == AuthChangeEvent.initialSession) {
+        debugPrint('🔐 Auth event: $event - reinitializing premium status');
+        initialize();
+      } else if (event == AuthChangeEvent.signedOut) {
+        debugPrint('🚪 User signed out - resetting premium status');
+        reset();
+      }
+    });
   }
 
   Future<void> initialize() async {
     try {
       final user = Supabase.instance.client.auth.currentUser;
+      debugPrint('🔍 Initializing unlock provider for user: ${user?.id ?? "none"}');
 
       if (user == null) {
+        debugPrint('⚠️ No user found - setting premium to false');
         state = state.copyWith(
           isPremium: false,
           lastCheckedUserId: null,
@@ -55,6 +79,7 @@ class UnlockNotifier extends StateNotifier<UnlockState> {
       }
 
       // Check subscription status
+      debugPrint('📡 Fetching premium status from database for user: ${user.id}');
       final response = await Supabase.instance.client
           .from('user_subscriptions')
           .select('is_premium')
@@ -62,15 +87,23 @@ class UnlockNotifier extends StateNotifier<UnlockState> {
           .maybeSingle();
 
       final isPremium = response?['is_premium'] ?? false;
+      debugPrint('✅ Premium status loaded: $isPremium');
 
       state = state.copyWith(
         isPremium: isPremium,
         lastCheckedUserId: user.id,
       );
     } catch (e) {
+      debugPrint('❌ Error loading premium status: $e');
       // If error, default to free tier
       state = state.copyWith(isPremium: false);
     }
+  }
+
+  @override
+  void dispose() {
+    _authSubscription?.cancel();
+    super.dispose();
   }
 
   Future<void> unlockPremium() async {
