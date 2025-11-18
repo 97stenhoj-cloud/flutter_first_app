@@ -9,9 +9,15 @@ import 'app_localizations_da.dart';
 import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
 import 'app_localizations_es.dart';
+import 'app_localizations_fi.dart';
 import 'app_localizations_fr.dart';
+import 'app_localizations_it.dart';
+import 'app_localizations_nl.dart';
+import 'app_localizations_no.dart';
+import 'app_localizations_pl.dart';
 import 'app_localizations_pt.dart';
 import 'app_localizations_ro.dart';
+import 'app_localizations_sv.dart';
 
 // ignore_for_file: type=lint
 
@@ -103,9 +109,15 @@ abstract class AppLocalizations {
     Locale('de'),
     Locale('en'),
     Locale('es'),
+    Locale('fi'),
     Locale('fr'),
+    Locale('it'),
+    Locale('nl'),
+    Locale('no'),
+    Locale('pl'),
     Locale('pt'),
     Locale('ro'),
+    Locale('sv'),
   ];
 
   /// No description provided for @appTitle.
@@ -261,31 +273,31 @@ abstract class AppLocalizations {
   /// No description provided for @premiumFeature1.
   ///
   /// In en, this message translates to:
-  /// **'✓ All 21 premium categories unlocked'**
+  /// **'Everything in Basic'**
   String get premiumFeature1;
 
   /// No description provided for @premiumFeature2.
   ///
   /// In en, this message translates to:
-  /// **'✓ No ads forever'**
+  /// **'🔥 Spark Mode: AI-powered questions'**
   String get premiumFeature2;
 
   /// No description provided for @premiumFeature3.
   ///
   /// In en, this message translates to:
-  /// **'✓ 75 questions in all categories'**
+  /// **'150 AI questions per month'**
   String get premiumFeature3;
 
   /// No description provided for @premiumFeature4.
   ///
   /// In en, this message translates to:
-  /// **'✓ Pandora: Unlimited players & questions'**
+  /// **'Generate 5-25 questions at once'**
   String get premiumFeature4;
 
   /// No description provided for @premiumFeature5.
   ///
   /// In en, this message translates to:
-  /// **'✓ Support ongoing development'**
+  /// **'Custom sliders (Energy, Depth, Spice)'**
   String get premiumFeature5;
 
   /// No description provided for @subscribePremium.
@@ -2087,6 +2099,714 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap stars to rate'**
   String get tapStarsToRate;
+
+  /// No description provided for @downloadForOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Download for Offline'**
+  String get downloadForOffline;
+
+  /// No description provided for @downloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading...'**
+  String get downloading;
+
+  /// No description provided for @downloadedLanguages.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloaded Languages'**
+  String get downloadedLanguages;
+
+  /// No description provided for @languageNotDownloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Language Not Downloaded'**
+  String get languageNotDownloaded;
+
+  /// No description provided for @languageNotDownloadedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t downloaded {languageName} for offline use.\n\nGo to Settings > Profile > \"Download for Offline\" while connected to internet.'**
+  String languageNotDownloadedMessage(String languageName);
+
+  /// No description provided for @offlineLanguageError.
+  ///
+  /// In en, this message translates to:
+  /// **'This language hasn\'t been downloaded for offline use. Go to Settings > Profile > \"Download for Offline\" while connected to internet.'**
+  String get offlineLanguageError;
+
+  /// No description provided for @downloadComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Complete!'**
+  String get downloadComplete;
+
+  /// No description provided for @downloadCompleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'All content has been downloaded for offline use.'**
+  String get downloadCompleteMessage;
+
+  /// No description provided for @addedToFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to Favorites!'**
+  String get addedToFavorites;
+
+  /// No description provided for @removedFromFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed from favorites'**
+  String get removedFromFavorites;
+
+  /// No description provided for @errorSavingFavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving favorite'**
+  String get errorSavingFavorite;
+
+  /// No description provided for @internetRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Internet Required'**
+  String get internetRequired;
+
+  /// No description provided for @internetRequiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Some features require an internet connection. Premium users can download content for offline use in Settings.'**
+  String get internetRequiredMessage;
+
+  /// No description provided for @goPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Go Premium'**
+  String get goPremium;
+
+  /// No description provided for @pleaseEnterPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a 6-digit PIN'**
+  String get pleaseEnterPin;
+
+  /// No description provided for @errorOccurred.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {error}'**
+  String errorOccurred(String error);
+
+  /// No description provided for @errorCreatingSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Error creating session'**
+  String get errorCreatingSession;
+
+  /// No description provided for @sessionTimedOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Session timed out - host did not set timer'**
+  String get sessionTimedOut;
+
+  /// No description provided for @errorStarting.
+  ///
+  /// In en, this message translates to:
+  /// **'Error starting'**
+  String get errorStarting;
+
+  /// No description provided for @errorLoadingParticipants.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading participants'**
+  String get errorLoadingParticipants;
+
+  /// No description provided for @sessionCancelledByHost.
+  ///
+  /// In en, this message translates to:
+  /// **'Session cancelled by host'**
+  String get sessionCancelledByHost;
+
+  /// No description provided for @needAtLeast5Questions.
+  ///
+  /// In en, this message translates to:
+  /// **'Need at least 5 questions to start! (Currently: {count})'**
+  String needAtLeast5Questions(int count);
+
+  /// No description provided for @errorStartingGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Error starting game'**
+  String get errorStartingGame;
+
+  /// No description provided for @questionsAsked.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions Asked'**
+  String get questionsAsked;
+
+  /// No description provided for @totalReactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Reactions'**
+  String get totalReactions;
+
+  /// No description provided for @mostLovedQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Loved Question'**
+  String get mostLovedQuestion;
+
+  /// No description provided for @mostFunQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Fun Question'**
+  String get mostFunQuestion;
+
+  /// No description provided for @mostShockingQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Shocking Question'**
+  String get mostShockingQuestion;
+
+  /// No description provided for @mostLitQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Lit Question'**
+  String get mostLitQuestion;
+
+  /// No description provided for @hotSeatAward.
+  ///
+  /// In en, this message translates to:
+  /// **'Hot Seat Award'**
+  String get hotSeatAward;
+
+  /// No description provided for @errorCouldNotIdentifyPlayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: Could not identify player. Please rejoin the session.'**
+  String get errorCouldNotIdentifyPlayer;
+
+  /// No description provided for @createAiDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Create AI Deck'**
+  String get createAiDeck;
+
+  /// No description provided for @whatIsTheOccasion.
+  ///
+  /// In en, this message translates to:
+  /// **'What is the occasion?'**
+  String get whatIsTheOccasion;
+
+  /// No description provided for @occasionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Birthday party, Team building, Date night'**
+  String get occasionHint;
+
+  /// No description provided for @whatIsTheMood.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s the mood?'**
+  String get whatIsTheMood;
+
+  /// No description provided for @lighthearted.
+  ///
+  /// In en, this message translates to:
+  /// **'Lighthearted'**
+  String get lighthearted;
+
+  /// No description provided for @serious.
+  ///
+  /// In en, this message translates to:
+  /// **'Serious'**
+  String get serious;
+
+  /// No description provided for @mixed.
+  ///
+  /// In en, this message translates to:
+  /// **'Mixed'**
+  String get mixed;
+
+  /// No description provided for @depthOfQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Depth of questions?'**
+  String get depthOfQuestions;
+
+  /// No description provided for @surfaceLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Surface level'**
+  String get surfaceLevel;
+
+  /// No description provided for @deep.
+  ///
+  /// In en, this message translates to:
+  /// **'Deep'**
+  String get deep;
+
+  /// No description provided for @level.
+  ///
+  /// In en, this message translates to:
+  /// **'Level'**
+  String get level;
+
+  /// No description provided for @sizeOfGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Size of group?'**
+  String get sizeOfGroup;
+
+  /// No description provided for @people.
+  ///
+  /// In en, this message translates to:
+  /// **'people'**
+  String get people;
+
+  /// No description provided for @anyOtherRemarks.
+  ///
+  /// In en, this message translates to:
+  /// **'Any other remarks? (optional)'**
+  String get anyOtherRemarks;
+
+  /// No description provided for @remarksHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Family friendly, include some funny questions'**
+  String get remarksHint;
+
+  /// No description provided for @generateQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Questions'**
+  String get generateQuestions;
+
+  /// No description provided for @aiDeckPremiumMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'AI deck generation is a premium feature. Upgrade to create unlimited AI-powered conversation decks!'**
+  String get aiDeckPremiumMessage;
+
+  /// No description provided for @pleaseEnterOccasion.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the occasion'**
+  String get pleaseEnterOccasion;
+
+  /// No description provided for @errorGeneratingQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Error generating questions: {error}'**
+  String errorGeneratingQuestions(String error);
+
+  /// No description provided for @generatingAiQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating AI questions...'**
+  String get generatingAiQuestions;
+
+  /// No description provided for @generatingMoreQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating more questions...'**
+  String get generatingMoreQuestions;
+
+  /// No description provided for @batchComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch Complete!'**
+  String get batchComplete;
+
+  /// No description provided for @questionsInDeckMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have {count} questions in your deck. Generate 10 more?'**
+  String questionsInDeckMessage(int count);
+
+  /// No description provided for @questionsInDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'{kept}/{max}'**
+  String questionsInDeck(int kept, int max);
+
+  /// No description provided for @questionProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{current}/{total}'**
+  String questionProgress(int current, int total);
+
+  /// No description provided for @batchNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch #{number}'**
+  String batchNumber(int number);
+
+  /// No description provided for @imDone.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m Done'**
+  String get imDone;
+
+  /// No description provided for @generateMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate More'**
+  String get generateMore;
+
+  /// No description provided for @maxQuestionsReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Max Questions (50)'**
+  String get maxQuestionsReached;
+
+  /// No description provided for @namYourDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Name Your Deck'**
+  String get namYourDeck;
+
+  /// No description provided for @goBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Go Back'**
+  String get goBack;
+
+  /// No description provided for @swipeInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe right to keep • Swipe left to discard'**
+  String get swipeInstructions;
+
+  /// No description provided for @discussionPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Discussion Point'**
+  String get discussionPoint;
+
+  /// No description provided for @sparkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Spark Mode'**
+  String get sparkMode;
+
+  /// No description provided for @sparkModeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI-Powered Conversation Starters'**
+  String get sparkModeSubtitle;
+
+  /// No description provided for @sparkPremiumRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Spark Mode - Premium Feature'**
+  String get sparkPremiumRequired;
+
+  /// No description provided for @sparkPremiumMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Spark Mode is available for Premium and Premium+ subscribers. Generate AI-powered conversation starters tailored to your occasion!'**
+  String get sparkPremiumMessage;
+
+  /// No description provided for @sparkQuestionsRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{remaining} of {limit} questions remaining'**
+  String sparkQuestionsRemaining(int remaining, int limit);
+
+  /// No description provided for @howManyQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'How many questions?'**
+  String get howManyQuestions;
+
+  /// No description provided for @sparkQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Questions'**
+  String sparkQuestions(int count);
+
+  /// No description provided for @generateSparkQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate {count} Questions'**
+  String generateSparkQuestions(int count);
+
+  /// No description provided for @sparkLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Limit Reached'**
+  String get sparkLimitReached;
+
+  /// No description provided for @sparkLimitMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You only have {remaining} Spark questions remaining this month. You\'re trying to generate {requested} questions.\n\nUpgrade to Premium+ for 400 questions per month!'**
+  String sparkLimitMessage(int remaining, int requested);
+
+  /// No description provided for @expiresIn24Hours.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires in 24 hours'**
+  String get expiresIn24Hours;
+
+  /// No description provided for @alreadyInFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Already in Favorites'**
+  String get alreadyInFavorites;
+
+  /// No description provided for @addedToDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to {deckName}!'**
+  String addedToDeck(String deckName);
+
+  /// No description provided for @questionAlreadyInDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Question already in this deck'**
+  String get questionAlreadyInDeck;
+
+  /// No description provided for @addToDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Deck'**
+  String get addToDeck;
+
+  /// No description provided for @favorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite'**
+  String get favorite;
+
+  /// No description provided for @chooseDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a deck to add this question to:'**
+  String get chooseDeck;
+
+  /// No description provided for @noDecksFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No Decks Found'**
+  String get noDecksFound;
+
+  /// No description provided for @noDecksMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have any custom decks yet. Would you like to create one?'**
+  String get noDecksMessage;
+
+  /// No description provided for @createDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Deck'**
+  String get createDeck;
+
+  /// No description provided for @createAndAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Create & Add'**
+  String get createAndAdd;
+
+  /// No description provided for @pleaseEnterDeckName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a deck name'**
+  String get pleaseEnterDeckName;
+
+  /// No description provided for @tierBasic.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic'**
+  String get tierBasic;
+
+  /// No description provided for @tierPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get tierPremium;
+
+  /// No description provided for @tierPremiumPlus.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium+'**
+  String get tierPremiumPlus;
+
+  /// No description provided for @tierFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get tierFree;
+
+  /// No description provided for @choosePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Plan'**
+  String get choosePlan;
+
+  /// No description provided for @choosePlanSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock premium features and AI-powered conversations'**
+  String get choosePlanSubtitle;
+
+  /// No description provided for @mostPopular.
+  ///
+  /// In en, this message translates to:
+  /// **'MOST POPULAR'**
+  String get mostPopular;
+
+  /// No description provided for @perMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'per month'**
+  String get perMonth;
+
+  /// No description provided for @forever.
+  ///
+  /// In en, this message translates to:
+  /// **'Forever'**
+  String get forever;
+
+  /// No description provided for @continueWithBasic.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Basic (Free)'**
+  String get continueWithBasic;
+
+  /// No description provided for @subscribeTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe to {tier}'**
+  String subscribeTo(String tier);
+
+  /// No description provided for @cancelAnytime.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel anytime. No hidden fees.'**
+  String get cancelAnytime;
+
+  /// No description provided for @basicTierTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic'**
+  String get basicTierTitle;
+
+  /// No description provided for @basicTierPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'€6.99'**
+  String get basicTierPrice;
+
+  /// No description provided for @basicTierDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Access all game modes except Spark'**
+  String get basicTierDescription;
+
+  /// No description provided for @basicFeature1.
+  ///
+  /// In en, this message translates to:
+  /// **'All game modes (Couple, Friends, Family, Personal, Pandora)'**
+  String get basicFeature1;
+
+  /// No description provided for @basicFeature2.
+  ///
+  /// In en, this message translates to:
+  /// **'Access to all 24+ categories'**
+  String get basicFeature2;
+
+  /// No description provided for @basicFeature3.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom personal decks'**
+  String get basicFeature3;
+
+  /// No description provided for @basicFeature4.
+  ///
+  /// In en, this message translates to:
+  /// **'No ads'**
+  String get basicFeature4;
+
+  /// No description provided for @basicFeature5.
+  ///
+  /// In en, this message translates to:
+  /// **'Question navigation'**
+  String get basicFeature5;
+
+  /// No description provided for @premiumTierTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get premiumTierTitle;
+
+  /// No description provided for @premiumTierPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'€11.99'**
+  String get premiumTierPrice;
+
+  /// No description provided for @premiumTierDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything in Basic + Spark AI'**
+  String get premiumTierDescription;
+
+  /// No description provided for @premiumFeature6.
+  ///
+  /// In en, this message translates to:
+  /// **'Save favorites to personal decks'**
+  String get premiumFeature6;
+
+  /// No description provided for @premiumPlusTierTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium+'**
+  String get premiumPlusTierTitle;
+
+  /// No description provided for @premiumPlusTierPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'€19.99'**
+  String get premiumPlusTierPrice;
+
+  /// No description provided for @premiumPlusTierDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum AI power'**
+  String get premiumPlusTierDescription;
+
+  /// No description provided for @premiumPlusFeature1.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything in Premium'**
+  String get premiumPlusFeature1;
+
+  /// No description provided for @premiumPlusFeature2.
+  ///
+  /// In en, this message translates to:
+  /// **'🚀 400 AI questions per month'**
+  String get premiumPlusFeature2;
+
+  /// No description provided for @premiumPlusFeature3.
+  ///
+  /// In en, this message translates to:
+  /// **'2.5x more Spark questions'**
+  String get premiumPlusFeature3;
+
+  /// No description provided for @premiumPlusFeature4.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect for frequent use'**
+  String get premiumPlusFeature4;
+
+  /// No description provided for @premiumPlusFeature5.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority support'**
+  String get premiumPlusFeature5;
 }
 
 class _AppLocalizationsDelegate
@@ -2104,9 +2824,15 @@ class _AppLocalizationsDelegate
     'de',
     'en',
     'es',
+    'fi',
     'fr',
+    'it',
+    'nl',
+    'no',
+    'pl',
     'pt',
     'ro',
+    'sv',
   ].contains(locale.languageCode);
 
   @override
@@ -2124,12 +2850,24 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsEn();
     case 'es':
       return AppLocalizationsEs();
+    case 'fi':
+      return AppLocalizationsFi();
     case 'fr':
       return AppLocalizationsFr();
+    case 'it':
+      return AppLocalizationsIt();
+    case 'nl':
+      return AppLocalizationsNl();
+    case 'no':
+      return AppLocalizationsNo();
+    case 'pl':
+      return AppLocalizationsPl();
     case 'pt':
       return AppLocalizationsPt();
     case 'ro':
       return AppLocalizationsRo();
+    case 'sv':
+      return AppLocalizationsSv();
   }
 
   throw FlutterError(

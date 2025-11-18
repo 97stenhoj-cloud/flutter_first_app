@@ -5,10 +5,12 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/auth_service.dart';
+import '../../../../core/services/supabase_service.dart';
 import '../../../../core/providers/unlock_provider.dart';
+import '../../../../core/providers/locale_provider.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../auth/presentation/pages/social_auth_page.dart';
-import '../../../subscription/presentation/pages/subscription_page.dart';
+import '../../../subscription/presentation/pages/subscription_page_new.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/widgets/custom_dialog.dart';
 
@@ -23,6 +25,8 @@ class ProfilePage extends ConsumerStatefulWidget {
 
 class _ProfilePageState extends ConsumerState<ProfilePage> {
   final authService = AuthService();
+  final supabaseService = SupabaseService();
+  bool _isCaching = false;
 
   Widget _buildFullWidthButton({
     required String text,
@@ -159,6 +163,56 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     );
   }
 
+  Future<void> _preCacheContent() async {
+    if (_isCaching) return;
+
+    final l10n = AppLocalizations.of(context)!;
+
+    setState(() {
+      _isCaching = true;
+    });
+
+    try {
+      final languageCode = ref.read(localeProvider).currentLocale.languageCode;
+      await supabaseService.preCacheAllContent(languageCode: languageCode);
+
+      if (!mounted) return;
+
+      // Refresh UI to show updated downloaded languages
+      setState(() {});
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            l10n.downloadCompleteMessage,
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      debugPrint('❌ Error pre-caching: $e');
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Failed to cache content. Please check your internet connection.',
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isCaching = false;
+        });
+      }
+    }
+  }
+
   Future<void> _unsubscribe() async {
     final user = Supabase.instance.client.auth.currentUser;
     if (user == null) return;
@@ -172,70 +226,120 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             'updated_at': DateTime.now().toIso8601String(),
           })
           .eq('user_id', user.id);
-      
+
+      // Clear all cached content (premium feature only)
+      await supabaseService.clearCache();
+
       // Update UnlockManager state
-      ref.read(unlockProvider.notifier).lockPremium();
-      
-      debugPrint('✅ Successfully unsubscribed user');
+      await ref.read(unlockProvider.notifier).lockPremium();
+
+      debugPrint('✅ Successfully unsubscribed user and cleared cache');
     } catch (e) {
       debugPrint('❌ Error unsubscribing: $e');
       rethrow;
     }
   }
 
-  Widget _buildInfoCard({
-    required IconData icon,
-    required String title,
-    required String value,
-    Color? iconColor,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.2),
-        ),
-      ),
+  Widget _buildSectionDivider(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 24),
       child: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: (iconColor ?? Colors.white).withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              icon,
-              color: iconColor ?? Colors.white,
-              size: 28,
+          Expanded(
+            child: Container(
+              height: 1,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.transparent,
+                    ThemeHelper.getMutedTextColor(widget.isDarkMode).withValues(alpha: 0.3),
+                  ],
+                ),
+              ),
             ),
           ),
-          const SizedBox(width: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              title,
+              style: GoogleFonts.poppins(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
+                letterSpacing: 1.2,
+              ),
+            ),
+          ),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: GoogleFonts.poppins(
-                    fontSize: 13,
-                    color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
-                    fontWeight: FontWeight.w500,
-                  ),
+            child: Container(
+              height: 1,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    ThemeHelper.getMutedTextColor(widget.isDarkMode).withValues(alpha: 0.3),
+                    Colors.transparent,
+                  ],
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  value,
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGradientCard({
+    required Widget child,
+    List<Color>? gradientColors,
+  }) {
+    final defaultColors = [
+      widget.isDarkMode
+          ? const Color(0xFF2A2A3E)
+          : const Color(0xFFF5E6F1),
+      widget.isDarkMode
+          ? const Color(0xFF1F1F2E)
+          : const Color(0xFFE8D4E8),
+    ];
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: gradientColors ?? defaultColors,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: (gradientColors?[0] ?? defaultColors[0]).withValues(alpha: 0.3),
+            blurRadius: 15,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: child,
+    );
+  }
+
+  Widget _buildBenefitItem(String text, {bool isPremium = true}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Icon(
+            Icons.check_circle,
+            size: 18,
+            color: isPremium ? const Color(0xFF4CAF50) : ThemeHelper.getMutedTextColor(widget.isDarkMode),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              text,
+              style: GoogleFonts.poppins(
+                fontSize: 13,
+                color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],
@@ -288,229 +392,501 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // User Avatar
+                              // Simple Profile Header - Centered
                               Center(
-                                child: Container(
-                                  width: 100,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: LinearGradient(
-                                      colors: ThemeHelper.getPrimaryButtonGradient(widget.isDarkMode).colors,
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    boxShadow: ThemeHelper.getButtonShadow(widget.isDarkMode),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      user.email![0].toUpperCase(),
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 40,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
+                                child: Column(
+                                  children: [
+                                    // Name (if available from metadata)
+                                    if (user.userMetadata?['full_name'] != null ||
+                                        user.userMetadata?['name'] != null)
+                                      Padding(
+                                        padding: const EdgeInsets.only(bottom: 8),
+                                        child: Text(
+                                          user.userMetadata?['full_name']?.toString() ??
+                                          user.userMetadata?['name']?.toString() ?? '',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold,
+                                            color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
                                       ),
+                                    // Email
+                                    Text(
+                                      user.email!,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                  ),
+                                    const SizedBox(height: 8),
+                                    // User ID
+                                    Text(
+                                      'ID: ${user.id.substring(0, 8)}...',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 12,
+                                        color: ThemeHelper.getMutedTextColor(widget.isDarkMode),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
                               ),
-                              const SizedBox(height: 32),
 
-                              // User Info
-                              _buildInfoCard(
-                                icon: Icons.email,
-                                title: l10n.email,
-                                value: user.email!,
-                                iconColor: const Color(0xFF4285F4),
-                              ),
-                              _buildInfoCard(
-                                icon: Icons.person,
-                                title: l10n.userId,
-                                value: '${user.id.substring(0, 8)}...',
-                                iconColor: const Color(0xFF34A853),
-                              ),
-
-                              const SizedBox(height: 32),
-
-                              // Subscription Status
-                              Text(
-                                l10n.subscription,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
-                                ),
-                              ),
-                              const SizedBox(height: 16),
+                              _buildSectionDivider('SUBSCRIPTION'),
 
                               // Check if user has premium
                               if (!ref.watch(unlockProvider).isPremium) ...[
-                                Container(
-                                  padding: const EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withValues(alpha: 0.1),
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color: Colors.white.withValues(alpha: 0.2),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      const Icon(Icons.info_outline, color: Colors.white70),
-                                      const SizedBox(width: 12),
-                                      Expanded(
-                                        child: Text(
-                                          l10n.noActiveSubscription,
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 14,
-                                            color: ThemeHelper.getBodyTextColor(widget.isDarkMode),
+                                _buildGradientCard(
+                                  gradientColors: [
+                                    const Color(0xFFF5E6F1),
+                                    const Color(0xFFFFDEEB),
+                                  ],
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(24),
+                                    child: Column(
+                                      children: [
+                                        // No subscription icon
+                                        Container(
+                                          padding: const EdgeInsets.all(16),
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.orange.withValues(alpha: 0.2),
+                                          ),
+                                          child: Icon(
+                                            Icons.workspace_premium,
+                                            size: 48,
+                                            color: Colors.orange[700],
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                        const SizedBox(height: 16),
+                                        Text(
+                                          l10n.noActiveSubscription,
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: const Color(0xFF2D2D3A),
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        const SizedBox(height: 12),
+                                        Text(
+                                          'Unlock AI-powered questions, offline mode, and more',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 13,
+                                            color: const Color(0xFF6B6B7B),
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        const SizedBox(height: 24),
+                                        // Get Premium Button
+                                        _buildFullWidthButton(
+                                          text: l10n.getPremium,
+                                          icon: Icons.workspace_premium,
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => SubscriptionPageNew(isDarkMode: widget.isDarkMode),
+                                              ),
+                                            ).then((_) {
+                                              if (mounted) {
+                                                setState(() {}); // Refresh after returning
+                                              }
+                                            });
+                                          },
+                                          isPrimary: true,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 16),
-                                // Get Premium Button
-                                _buildFullWidthButton(
-                                  text: l10n.getPremium,
-                                  icon: Icons.workspace_premium,
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
-                                      ),
-                                    ).then((_) {
-                                      if (mounted) {
-                                        setState(() {}); // Refresh after returning
-                                      }
-                                    });
-                                  },
-                                  isPrimary: true,
                                 ),
                               ] else
                                 Column(
                                   children: [
-                                    // Premium Status Button - Full Width Golden
-                                    SizedBox(
-                                      width: double.infinity,
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(vertical: 18),
-                                        decoration: BoxDecoration(
-                                          gradient: const LinearGradient(
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                            colors: [
-                                              Color(0xFFFFD700), // Gold
-                                              Color(0xFFD4A574), // Dark Gold
-                                            ],
-                                          ),
-                                          borderRadius: BorderRadius.circular(16),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: const Color(0xFFFFD700).withValues(alpha: 0.4),
-                                              blurRadius: 15,
-                                              offset: const Offset(0, 6),
-                                            ),
+                                    // Premium Subscription Card
+                                    Builder(
+                                      builder: (context) {
+                                        final tier = ref.watch(unlockProvider).subscriptionTier;
+                                        final unlockState = ref.watch(unlockProvider);
+
+                                        // Get colors and text based on tier
+                                        List<Color> gradientColors;
+                                        String tierText;
+                                        IconData tierIcon;
+                                        List<String> benefits;
+
+                                        switch (tier) {
+                                          case SubscriptionTier.basic:
+                                            gradientColors = [const Color(0xFF9E9E9E), const Color(0xFF757575)];
+                                            tierText = 'Basic';
+                                            tierIcon = Icons.workspace_premium;
+                                            benefits = [
+                                              'Access to premium content',
+                                              'Ad-free experience',
+                                              'Priority support',
+                                            ];
+                                            break;
+                                          case SubscriptionTier.premium:
+                                            gradientColors = [const Color(0xFFD4A574), const Color(0xFFB8956A)];
+                                            tierText = 'Premium';
+                                            tierIcon = Icons.workspace_premium;
+                                            benefits = [
+                                              'Everything in Basic',
+                                              'AI Question Generation (150/month)',
+                                              'Offline mode',
+                                              'Custom decks',
+                                            ];
+                                            break;
+                                          case SubscriptionTier.premiumPlus:
+                                            gradientColors = [const Color(0xFF9C27B0), const Color(0xFF673AB7)];
+                                            tierText = 'Premium+';
+                                            tierIcon = Icons.workspace_premium;
+                                            benefits = [
+                                              'Everything in Premium',
+                                              'AI Question Generation (400/month)',
+                                              'Advanced customization',
+                                              'Early access to features',
+                                            ];
+                                            break;
+                                          default:
+                                            gradientColors = [const Color(0xFFFFD700), const Color(0xFFD4A574)];
+                                            tierText = l10n.premium;
+                                            tierIcon = Icons.workspace_premium;
+                                            benefits = ['Premium features unlocked'];
+                                        }
+
+                                        return _buildGradientCard(
+                                          gradientColors: [
+                                            gradientColors[0].withValues(alpha: 0.3),
+                                            gradientColors[1].withValues(alpha: 0.2),
                                           ],
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            const Icon(
-                                              Icons.workspace_premium,
-                                              color: Colors.white,
-                                              size: 24,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(24),
+                                            child: Column(
+                                              children: [
+                                                // Tier Badge
+                                                Container(
+                                                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                                                  decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      begin: Alignment.topLeft,
+                                                      end: Alignment.bottomRight,
+                                                      colors: gradientColors,
+                                                    ),
+                                                    borderRadius: BorderRadius.circular(16),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: gradientColors[0].withValues(alpha: 0.4),
+                                                        blurRadius: 15,
+                                                        offset: const Offset(0, 6),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: [
+                                                      Icon(
+                                                        tierIcon,
+                                                        color: Colors.white,
+                                                        size: 24,
+                                                      ),
+                                                      const SizedBox(width: 12),
+                                                      Text(
+                                                        tierText,
+                                                        style: GoogleFonts.poppins(
+                                                          fontSize: 20,
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 24),
+                                                // Benefits List
+                                                ...benefits.map((benefit) => _buildBenefitItem(benefit)),
+                                                // Spark Usage (for Premium and Premium+)
+                                                if (tier == SubscriptionTier.premium || tier == SubscriptionTier.premiumPlus) ...[
+                                                  const SizedBox(height: 16),
+                                                  Container(
+                                                    padding: const EdgeInsets.all(16),
+                                                    decoration: BoxDecoration(
+                                                      color: const Color(0xFFFF6B9D).withValues(alpha: 0.2),
+                                                      borderRadius: BorderRadius.circular(12),
+                                                      border: Border.all(
+                                                        color: const Color(0xFFFF6B9D).withValues(alpha: 0.5),
+                                                        width: 2,
+                                                      ),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.auto_awesome,
+                                                          color: Color(0xFFD81B60),
+                                                          size: 24,
+                                                        ),
+                                                        const SizedBox(width: 12),
+                                                        Expanded(
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text(
+                                                                'Spark Questions',
+                                                                style: GoogleFonts.poppins(
+                                                                  fontSize: 13,
+                                                                  fontWeight: FontWeight.bold,
+                                                                  color: const Color(0xFF2D2D3A),
+                                                                ),
+                                                              ),
+                                                              const SizedBox(height: 4),
+                                                              Text(
+                                                                '${unlockState.sparkQuestionsRemaining} of ${ref.read(unlockProvider.notifier).getSparkLimit()} remaining',
+                                                                style: GoogleFonts.poppins(
+                                                                  fontSize: 12,
+                                                                  color: const Color(0xFF6B6B7B),
+                                                                  fontWeight: FontWeight.w500,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ],
                                             ),
-                                            const SizedBox(width: 12),
-                                            Text(
-                                              l10n.premium,
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    const SizedBox(height: 16),
+
+                                    // Upgrade Button (only show for Basic and Premium users, not Premium+)
+                                    if (ref.watch(unlockProvider).subscriptionTier != SubscriptionTier.premiumPlus)
+                                      Column(
+                                        children: [
+                                          _buildFullWidthButton(
+                                            text: 'Upgrade Subscription',
+                                            icon: Icons.arrow_upward,
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => SubscriptionPageNew(isDarkMode: widget.isDarkMode),
+                                                ),
+                                              ).then((_) {
+                                                if (mounted) {
+                                                  setState(() {}); // Refresh after returning
+                                                }
+                                              });
+                                            },
+                                            isPrimary: true,
+                                          ),
+                                          const SizedBox(height: 16),
+                                        ],
+                                      ),
+
+                                    _buildSectionDivider('TRAVEL FEATURE'),
+
+                                    // Travel Feature Card
+                                    _buildGradientCard(
+                                      gradientColors: [
+                                        const Color(0xFFE8F5E9),
+                                        const Color(0xFFC8E6C9),
+                                      ],
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(24),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            // Offline Mode Section
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  padding: const EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(
+                                                    color: const Color(0xFF4CAF50).withValues(alpha: 0.3),
+                                                    borderRadius: BorderRadius.circular(12),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.offline_bolt,
+                                                    color: Colors.green[800],
+                                                    size: 24,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 12),
+                                                Expanded(
+                                                  child: Text(
+                                                    'Offline Mode',
+                                                    style: GoogleFonts.poppins(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: const Color(0xFF2D2D3A),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 16),
+                                            // Download Button
+                                            _buildFullWidthButton(
+                                              text: _isCaching
+                                                  ? l10n.downloading
+                                                  : l10n.downloadForOffline,
+                                              icon: _isCaching
+                                                  ? Icons.downloading
+                                                  : Icons.download_for_offline,
+                                              isPrimary: false,
+                                              onPressed: _isCaching ? () {} : _preCacheContent,
+                                            ),
+                                            const SizedBox(height: 16),
+                                            // Downloaded Languages Display
+                                            FutureBuilder<List<String>>(
+                                              future: supabaseService.getDownloadedLanguages(),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                                                  final languages = snapshot.data!;
+                                                  final languageNames = languages.map((code) {
+                                                    final lang = supportedLanguages.firstWhere(
+                                                      (l) => l['code'] == code,
+                                                      orElse: () => {'code': code, 'name': code, 'flag': '🌍'},
+                                                    );
+                                                    return '${lang['flag']} ${lang['name']}';
+                                                  }).join(', ');
+
+                                                  return Container(
+                                                    width: double.infinity,
+                                                    padding: const EdgeInsets.all(12),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.green.withValues(alpha: 0.3),
+                                                      borderRadius: BorderRadius.circular(12),
+                                                      border: Border.all(
+                                                        color: Colors.green.withValues(alpha: 0.5),
+                                                        width: 2,
+                                                      ),
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons.offline_pin,
+                                                              color: Colors.green[800],
+                                                              size: 16,
+                                                            ),
+                                                            const SizedBox(width: 8),
+                                                            Text(
+                                                              l10n.downloadedLanguages,
+                                                              style: GoogleFonts.poppins(
+                                                                fontSize: 12,
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.green[800],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        const SizedBox(height: 8),
+                                                        Text(
+                                                          languageNames,
+                                                          style: GoogleFonts.poppins(
+                                                            fontSize: 13,
+                                                            color: const Color(0xFF2D2D3A),
+                                                            fontWeight: FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                }
+                                                return const SizedBox.shrink();
+                                              },
                                             ),
                                           ],
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(height: 16),
-
-                                    // Unsubscribe Button - Full Width
-                                    _buildFullWidthButton(
-                                      text: l10n.unsubscribe,
-                                      icon: Icons.cancel_outlined,
-                                      isPrimary: false,
-                                      onPressed: () async {
-                                            final confirmed = await showDialog<bool>(
-                                              context: context,
-                                              builder: (context) => CustomDialog(
-                                                isDarkMode: widget.isDarkMode,
-                                                icon: Icons.warning_amber_rounded,
-                                                iconColor: Colors.orange,
-                                                title: l10n.unsubscribeConfirm,
-                                                content: l10n.unsubscribeWarning,
-                                                actions: [
-                                                  DialogButton(
-                                                    text: l10n.cancel,
-                                                    onPressed: () => Navigator.pop(context, false),
-                                                    isPrimary: false,
-                                                    isDarkMode: widget.isDarkMode,
-                                                  ),
-                                                  const SizedBox(height: 12),
-                                                  DialogButton(
-                                                    text: l10n.yesUnsubscribe,
-                                                    onPressed: () => Navigator.pop(context, true),
-                                                    isPrimary: true,
-                                                    isDarkMode: widget.isDarkMode,
-                                                    customColor: Colors.red,
-                                                    icon: Icons.cancel,
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-
-                                            if (confirmed == true) {
-                                              if (!mounted) return;
-
-                                              try {
-                                                await _unsubscribe();
-
-                                                if (!mounted) return;
-
-                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                      l10n.unsubscribeSuccess,
-                                                      style: GoogleFonts.poppins(),
-                                                    ),
-                                                    backgroundColor: Colors.green,
-                                                  ),
-                                                );
-
-                                                setState(() {});
-                                              } catch (e) {
-                                                if (!mounted) return;
-
-                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                      '${l10n.unsubscribeError}: $e',
-                                                      style: GoogleFonts.poppins(),
-                                                    ),
-                                                    backgroundColor: Colors.red,
-                                                  ),
-                                                );
-                                              }
-                                            }
-                                          },
-                                    ),
                                   ],
                                 ),
 
-                              const SizedBox(height: 40),
+                              _buildSectionDivider('ACCOUNT'),
+
+                              // Unsubscribe Button - Full Width
+                              _buildFullWidthButton(
+                                text: l10n.unsubscribe,
+                                icon: Icons.cancel_outlined,
+                                isPrimary: false,
+                                onPressed: () async {
+                                      final confirmed = await showDialog<bool>(
+                                        context: context,
+                                        builder: (context) => CustomDialog(
+                                          isDarkMode: widget.isDarkMode,
+                                          icon: Icons.warning_amber_rounded,
+                                          iconColor: Colors.orange,
+                                          title: l10n.unsubscribeConfirm,
+                                          content: l10n.unsubscribeWarning,
+                                          actions: [
+                                            DialogButton(
+                                              text: l10n.cancel,
+                                              onPressed: () => Navigator.pop(context, false),
+                                              isPrimary: false,
+                                              isDarkMode: widget.isDarkMode,
+                                            ),
+                                            const SizedBox(height: 12),
+                                            DialogButton(
+                                              text: l10n.yesUnsubscribe,
+                                              onPressed: () => Navigator.pop(context, true),
+                                              isPrimary: true,
+                                              isDarkMode: widget.isDarkMode,
+                                              customColor: Colors.red,
+                                              icon: Icons.cancel,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+
+                                      if (confirmed == true) {
+                                        if (!mounted) return;
+
+                                        try {
+                                          await _unsubscribe();
+
+                                          if (!mounted) return;
+
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                l10n.unsubscribeSuccess,
+                                                style: GoogleFonts.poppins(),
+                                              ),
+                                              backgroundColor: Colors.green,
+                                            ),
+                                          );
+
+                                          setState(() {});
+                                        } catch (e) {
+                                          if (!mounted) return;
+
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                '${l10n.unsubscribeError}: $e',
+                                                style: GoogleFonts.poppins(),
+                                              ),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
+                                      }
+                                    },
+                              ),
+                              const SizedBox(height: 16),
 
                               // Sign Out Button - Full Width
                               _buildFullWidthButton(

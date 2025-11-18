@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../core/utils/theme_helper.dart';
 
 class QuestionCard extends StatelessWidget {
@@ -111,14 +112,15 @@ class QuestionCard extends StatelessWidget {
                   right: 0,
                   child: Center(
                     child: logoUrl != null
-                        ? Image.network(
-                            logoUrl!,
+                        ? CachedNetworkImage(
+                            imageUrl: logoUrl!,
                             width: 80,
                             height: 80,
                             fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) {
+                            errorWidget: (context, url, error) {
                               return const SizedBox.shrink();
                             },
+                            placeholder: (context, url) => const SizedBox.shrink(),
                           )
                         : const SizedBox.shrink(),
                   ),

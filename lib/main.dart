@@ -26,8 +26,6 @@ Future<void> main() async {
       logLevel: RealtimeLogLevel.info,
     ),
   );
-  
-  debugPrint('✅ Supabase initialized with Realtime enabled');
 
   runApp(
     const ProviderScope(
@@ -66,8 +64,13 @@ class TalkingGameApp extends ConsumerWidget {
         Locale('de'), // German
         Locale('es'), // Spanish
         Locale('fr'), // French
+        Locale('it'), // Italian
+        Locale('nb'), // Norwegian Bokmål
+        Locale('nl'), // Dutch
+        Locale('pl'), // Polish
         Locale('pt'), // Portuguese
         Locale('ro'), // Romanian
+        Locale('sv'), // Swedish
       ],
 
       // Fallback to English if device language not supported
@@ -82,20 +85,14 @@ class TalkingGameApp extends ConsumerWidget {
           return const Locale('en');
         }
 
-        debugPrint('🌍 Device locale: ${deviceLocale.languageCode}');
-
         // Check if device language is supported
         for (var supportedLocale in supportedLocales) {
           if (supportedLocale.languageCode == deviceLocale.languageCode) {
-            debugPrint(
-              '✅ Using device language: ${deviceLocale.languageCode}',
-            );
             return supportedLocale;
           }
         }
 
         // Default to English if not supported
-        debugPrint('⚠️ Device language not supported, using English');
         return const Locale('en');
       },
 

@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../../core/services/custom_deck_service.dart';
 import '../../../../../core/utils/theme_helper.dart';
 import '../../../../../core/constants/app_constants.dart';
+import '../../../../../core/widgets/custom_dialog.dart';
 import '../../../../l10n/app_localizations.dart';
 
 class QuestionEditorPage extends StatefulWidget {
@@ -102,25 +103,43 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
 
     final questionText = await showDialog<String>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.addQuestion, style: GoogleFonts.poppins()),
-        content: TextField(
+      builder: (context) => CustomDialog(
+        isDarkMode: widget.isDarkMode,
+        icon: Icons.add_circle_outline,
+        iconColor: const Color(0xFFFF6B9D),
+        title: l10n.addQuestion,
+        contentWidget: TextField(
           controller: controller,
           decoration: InputDecoration(
             hintText: l10n.enterYourQuestion,
-            border: OutlineInputBorder(),
+            filled: true,
+            fillColor: widget.isDarkMode
+                ? Colors.white.withValues(alpha: 0.1)
+                : Colors.black.withValues(alpha: 0.05),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+          ),
+          style: GoogleFonts.poppins(
+            color: widget.isDarkMode ? Colors.white : Colors.black87,
           ),
           maxLines: 3,
           autofocus: true,
         ),
         actions: [
-          TextButton(
+          DialogButton(
+            text: l10n.cancel,
             onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancel, style: GoogleFonts.poppins()),
+            isDarkMode: widget.isDarkMode,
           ),
-          ElevatedButton(
+          const SizedBox(height: 12),
+          DialogButton(
+            text: l10n.add,
             onPressed: () => Navigator.pop(context, controller.text),
-            child: Text(l10n.add, style: GoogleFonts.poppins()),
+            isPrimary: true,
+            isDarkMode: widget.isDarkMode,
+            icon: Icons.add,
           ),
         ],
       ),
@@ -157,25 +176,43 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
 
     final newText = await showDialog<String>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.editQuestion, style: GoogleFonts.poppins()),
-        content: TextField(
+      builder: (context) => CustomDialog(
+        isDarkMode: widget.isDarkMode,
+        icon: Icons.edit,
+        iconColor: const Color(0xFFFF6B9D),
+        title: l10n.editQuestion,
+        contentWidget: TextField(
           controller: controller,
           decoration: InputDecoration(
             hintText: l10n.enterYourQuestion,
-            border: OutlineInputBorder(),
+            filled: true,
+            fillColor: widget.isDarkMode
+                ? Colors.white.withValues(alpha: 0.1)
+                : Colors.black.withValues(alpha: 0.05),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+          ),
+          style: GoogleFonts.poppins(
+            color: widget.isDarkMode ? Colors.white : Colors.black87,
           ),
           maxLines: 3,
           autofocus: true,
         ),
         actions: [
-          TextButton(
+          DialogButton(
+            text: l10n.cancel,
             onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancel, style: GoogleFonts.poppins()),
+            isDarkMode: widget.isDarkMode,
           ),
-          ElevatedButton(
+          const SizedBox(height: 12),
+          DialogButton(
+            text: l10n.save,
             onPressed: () => Navigator.pop(context, controller.text),
-            child: Text(l10n.save, style: GoogleFonts.poppins()),
+            isPrimary: true,
+            isDarkMode: widget.isDarkMode,
+            icon: Icons.save,
           ),
         ],
       ),
@@ -211,21 +248,26 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
     // FIXED: Removed the restriction - allow deletion at any count
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.deleteQuestion, style: GoogleFonts.poppins()),
-        content: Text(
-          l10n.deleteQuestionConfirm,
-          style: GoogleFonts.poppins(),
-        ),
+      builder: (context) => CustomDialog(
+        isDarkMode: widget.isDarkMode,
+        icon: Icons.delete_outline,
+        iconColor: Colors.red,
+        title: l10n.deleteQuestion,
+        content: l10n.deleteQuestionConfirm,
         actions: [
-          TextButton(
+          DialogButton(
+            text: l10n.cancel,
             onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.cancel, style: GoogleFonts.poppins()),
+            isDarkMode: widget.isDarkMode,
           ),
-          ElevatedButton(
+          const SizedBox(height: 12),
+          DialogButton(
+            text: l10n.delete,
             onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: Text(l10n.delete, style: GoogleFonts.poppins()),
+            isPrimary: true,
+            isDarkMode: widget.isDarkMode,
+            customColor: Colors.red,
+            icon: Icons.delete,
           ),
         ],
       ),

@@ -6,7 +6,6 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../config/env.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
-import '../utils/unlock_manager.dart';
 
 class AuthService {
   static final AuthService _instance = AuthService._internal();
@@ -154,9 +153,8 @@ class AuthService {
     }
     
     await _supabase.auth.signOut();
-    
-    // Reset UnlockManager to clear cached premium status
-    UnlockManager().reset();
+
+    // Note: UnlockProvider will automatically reset via auth state listener
   }
 
   // Reset password

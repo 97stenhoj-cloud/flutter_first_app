@@ -2,10 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../../core/services/custom_deck_service.dart';
+import '../../../../../core/services/connectivity_service.dart';
 import '../../../../../core/utils/theme_helper.dart';
 import 'question_editor_page.dart';
 import '../../../game/presentation/pages/game_page.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../spark/presentation/pages/spark_creator_screen.dart';
+import '../../../../core/widgets/custom_dialog.dart';
 
 class CustomDeckListPage extends StatefulWidget {
   final bool isDarkMode;
@@ -64,24 +67,47 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
 
     final deckName = await showDialog<String>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.createNewDeck, style: GoogleFonts.poppins()),
-        content: TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            hintText: l10n.deckNameHint,
-            border: OutlineInputBorder(),
+      builder: (context) => CustomDialog(
+        isDarkMode: widget.isDarkMode,
+        icon: Icons.add_circle_outline,
+        iconColor: const Color(0xFF9C27B0),
+        title: l10n.createNewDeck,
+        contentWidget: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              hintText: l10n.deckNameHint,
+              filled: true,
+              fillColor: widget.isDarkMode
+                  ? Colors.white.withValues(alpha: 0.1)
+                  : Colors.black.withValues(alpha: 0.05),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            ),
+            style: GoogleFonts.poppins(
+              color: ThemeHelper.getTextColor(widget.isDarkMode),
+            ),
+            autofocus: true,
           ),
-          autofocus: true,
         ),
         actions: [
-          TextButton(
+          DialogButton(
+            text: l10n.cancel,
             onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancel, style: GoogleFonts.poppins()),
+            isPrimary: false,
+            isDarkMode: widget.isDarkMode,
           ),
-          ElevatedButton(
+          const SizedBox(height: 12),
+          DialogButton(
+            text: l10n.create,
             onPressed: () => Navigator.pop(context, controller.text),
-            child: Text(l10n.create, style: GoogleFonts.poppins()),
+            isPrimary: true,
+            isDarkMode: widget.isDarkMode,
+            icon: Icons.add,
           ),
         ],
       ),
@@ -116,21 +142,27 @@ class _CustomDeckListPageState extends State<CustomDeckListPage> {
     final l10n = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.deleteDeck, style: GoogleFonts.poppins()),
-        content: Text(
-          l10n.deleteDeckConfirmation(deckName),
-          style: GoogleFonts.poppins(),
-        ),
+      builder: (context) => CustomDialog(
+        isDarkMode: widget.isDarkMode,
+        icon: Icons.warning_amber_rounded,
+        iconColor: Colors.red,
+        title: l10n.deleteDeck,
+        content: l10n.deleteDeckConfirmation(deckName),
         actions: [
-          TextButton(
+          DialogButton(
+            text: l10n.cancel,
             onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.cancel, style: GoogleFonts.poppins()),
+            isPrimary: false,
+            isDarkMode: widget.isDarkMode,
           ),
-          ElevatedButton(
+          const SizedBox(height: 12),
+          DialogButton(
+            text: l10n.delete,
             onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: Text(l10n.delete, style: GoogleFonts.poppins()),
+            isPrimary: true,
+            isDarkMode: widget.isDarkMode,
+            customColor: Colors.red,
+            icon: Icons.delete,
           ),
         ],
       ),
@@ -165,24 +197,47 @@ Future<void> _renameDeck(String deckId, String currentName) async {
 
   final newName = await showDialog<String>(
     context: context,
-    builder: (context) => AlertDialog(
-      title: Text(l10n.renameDeck, style: GoogleFonts.poppins()),
-      content: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          hintText: l10n.deckNameHint,
-          border: const OutlineInputBorder(),
+    builder: (context) => CustomDialog(
+      isDarkMode: widget.isDarkMode,
+      icon: Icons.drive_file_rename_outline,
+      iconColor: const Color(0xFF9C27B0),
+      title: l10n.renameDeck,
+      contentWidget: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            hintText: l10n.deckNameHint,
+            filled: true,
+            fillColor: widget.isDarkMode
+                ? Colors.white.withValues(alpha: 0.1)
+                : Colors.black.withValues(alpha: 0.05),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          ),
+          style: GoogleFonts.poppins(
+            color: ThemeHelper.getTextColor(widget.isDarkMode),
+          ),
+          autofocus: true,
         ),
-        autofocus: true,
       ),
       actions: [
-        TextButton(
+        DialogButton(
+          text: l10n.cancel,
           onPressed: () => Navigator.pop(context),
-          child: Text(l10n.cancel, style: GoogleFonts.poppins()),
+          isPrimary: false,
+          isDarkMode: widget.isDarkMode,
         ),
-        ElevatedButton(
+        const SizedBox(height: 12),
+        DialogButton(
+          text: l10n.save,
           onPressed: () => Navigator.pop(context, controller.text),
-          child: Text(l10n.save, style: GoogleFonts.poppins()),
+          isPrimary: true,
+          isDarkMode: widget.isDarkMode,
+          icon: Icons.save,
         ),
       ],
     ),
@@ -234,21 +289,93 @@ Future<void> _renameDeck(String deckId, String currentName) async {
                         size: 28,
                       ),
                     ),
-                    Text(
-                      l10n.customDecks,
-                      style: GoogleFonts.poppins(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: ThemeHelper.getTextColor(widget.isDarkMode),
+                    Expanded(
+                      child: Text(
+                        l10n.customDecks,
+                        style: GoogleFonts.poppins(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: ThemeHelper.getTextColor(widget.isDarkMode),
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                    IconButton(
-                      onPressed: _createDeck,
-                      icon: Icon(
-                        Icons.add,
-                        color: ThemeHelper.getTextColor(widget.isDarkMode),
-                        size: 28,
-                      ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // AI Deck Creation Button
+                        Container(
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFF9C27B0), Color(0xFF673AB7)],
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () async {
+                                // Check internet connection - Spark Mode requires online access
+                                final hasInternet = await ConnectivityService.hasInternetConnection();
+                                if (!hasInternet && mounted) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => CustomDialog(
+                                      isDarkMode: widget.isDarkMode,
+                                      icon: Icons.wifi_off,
+                                      iconColor: Colors.orange,
+                                      title: 'Spark Mode Requires Internet',
+                                      content: 'Spark Mode uses AI to generate personalized questions and requires an active internet connection. Please connect to the internet and try again.',
+                                      actions: [
+                                        DialogButton(
+                                          text: 'OK',
+                                          onPressed: () => Navigator.pop(context),
+                                          isPrimary: true,
+                                          isDarkMode: widget.isDarkMode,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                  return;
+                                }
+
+                                // Navigate to Spark Mode for AI question generation
+                                if (mounted) {
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SparkCreatorScreen(
+                                        isDarkMode: widget.isDarkMode,
+                                      ),
+                                    ),
+                                  );
+                                  // Refresh decks in case any questions were favorited
+                                  _loadDecks();
+                                }
+                              },
+                              borderRadius: BorderRadius.circular(12),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(
+                                  Icons.auto_awesome,
+                                  color: Colors.white,
+                                  size: 24,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        // Manual Deck Creation Button
+                        IconButton(
+                          onPressed: _createDeck,
+                          icon: Icon(
+                            Icons.add,
+                            color: ThemeHelper.getTextColor(widget.isDarkMode),
+                            size: 28,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -508,7 +635,7 @@ Future<void> _renameDeck(String deckId, String currentName) async {
         children: [
           const Icon(Icons.drive_file_rename_outline, size: 20),
           const SizedBox(width: 12),
-          Text('Rename Deck', style: GoogleFonts.poppins()),
+          Text(l10n.renameDeck, style: GoogleFonts.poppins()),
         ],
       ),
     ),

@@ -6,13 +6,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/widgets/custom_dialog.dart';
 import '../../../../core/services/pandora_service.dart';
 import 'pandora_timer_selection_page.dart';
 import 'pandora_question_submission_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/providers/unlock_provider.dart';
-import '../../../subscription/presentation/pages/subscription_page.dart';
+import '../../../subscription/presentation/pages/subscription_page_new.dart';
 
 class PandoraLobbyPage extends ConsumerStatefulWidget {
   final String sessionId;
@@ -116,11 +117,12 @@ class _PandoraLobbyPageState extends ConsumerState<PandoraLobbyPage> {
     } catch (e) {
       debugPrint('❌ [Lobby] Error loading participants: $e');
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         setState(() {
           isLoading = false;
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error loading participants: $e')),
+          SnackBar(content: Text('${l10n.errorLoadingParticipants}: $e')),
         );
       }
     }
@@ -343,21 +345,26 @@ Future<void> _checkIfKicked() async {
   
   final confirmed = await showDialog<bool>(
     context: context,
-    builder: (context) => AlertDialog(
-      title: Text(l10n.kickPlayer, style: GoogleFonts.poppins()),
-      content: Text(
-        l10n.kickPlayerConfirm(displayName),
-        style: GoogleFonts.poppins(),
-      ),
+    builder: (context) => CustomDialog(
+      isDarkMode: widget.isDarkMode,
+      icon: Icons.remove_circle_outline,
+      iconColor: Colors.red,
+      title: l10n.kickPlayer,
+      content: l10n.kickPlayerConfirm(displayName),
       actions: [
-        TextButton(
+        DialogButton(
+          text: l10n.cancel,
           onPressed: () => Navigator.pop(context, false),
-          child: Text(l10n.cancel, style: GoogleFonts.poppins()),
+          isDarkMode: widget.isDarkMode,
         ),
-        ElevatedButton(
+        const SizedBox(height: 12),
+        DialogButton(
+          text: l10n.kick,
           onPressed: () => Navigator.pop(context, true),
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-          child: Text(l10n.kick, style: GoogleFonts.poppins()),
+          isPrimary: true,
+          isDarkMode: widget.isDarkMode,
+          customColor: Colors.red,
+          icon: Icons.remove_circle,
         ),
       ],
     ),
@@ -416,17 +423,25 @@ Future<void> _checkIfKicked() async {
         if (widget.isHost) {
           final shouldExit = await showDialog<bool>(
             context: context,
-            builder: (context) => AlertDialog(
-              title: Text(l10n.endSession),
-              content: Text(l10n.endSessionConfirm),
+            builder: (context) => CustomDialog(
+              isDarkMode: widget.isDarkMode,
+              icon: Icons.exit_to_app,
+              iconColor: Colors.orange,
+              title: l10n.endSession,
+              content: l10n.endSessionConfirm,
               actions: [
-                TextButton(
+                DialogButton(
+                  text: l10n.cancel,
                   onPressed: () => Navigator.pop(context, false),
-                  child: const Text('Cancel'),
+                  isDarkMode: widget.isDarkMode,
                 ),
-                TextButton(
+                const SizedBox(height: 12),
+                DialogButton(
+                  text: l10n.endSessionButton,
                   onPressed: () => Navigator.pop(context, true),
-                  child: const Text('End Session'),
+                  isPrimary: true,
+                  isDarkMode: widget.isDarkMode,
+                  customColor: Colors.orange,
                 ),
               ],
             ),
@@ -711,7 +726,7 @@ Future<void> _checkIfKicked() async {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+                builder: (context) => SubscriptionPageNew(isDarkMode: widget.isDarkMode),
               ),
             );
           },

@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
+import '../../../../core/widgets/custom_dialog.dart';
 import '../../../../core/services/pandora_service.dart';
 import '../../../game/presentation/pages/game_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/providers/unlock_provider.dart';
-import '../../../subscription/presentation/pages/subscription_page.dart';
+import '../../../subscription/presentation/pages/subscription_page_new.dart';
 
 class PandoraQuestionSubmissionPage extends ConsumerStatefulWidget {
   final String sessionId;
@@ -226,21 +227,20 @@ Future<void> _timeoutSession() async {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          title: Text(
-            '⏰ ${l10n.timeIsUp}',
-            style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
-          ),
-          content: Text(
-            l10n.notEnoughQuestionsSubmitted(questions.length, 5),
-            style: GoogleFonts.poppins(),
-          ),
+        builder: (context) => CustomDialog(
+          isDarkMode: widget.isDarkMode,
+          icon: Icons.timer_off,
+          iconColor: Colors.orange,
+          title: '${l10n.timeIsUp}',
+          content: l10n.notEnoughQuestionsSubmitted(questions.length, 5),
           actions: [
-            TextButton(
+            DialogButton(
+              text: l10n.ok,
               onPressed: () {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
-              child: Text('OK', style: GoogleFonts.poppins()),
+              isPrimary: true,
+              isDarkMode: widget.isDarkMode,
             ),
           ],
         ),
@@ -330,13 +330,14 @@ Future<void> _timeoutSession() async {
   }
 
   void _handleSessionCancellation() {
+    final l10n = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Session cancelled by host'),
+      SnackBar(
+        content: Text(l10n.sessionCancelledByHost),
         backgroundColor: Colors.red,
       ),
     );
-    
+
     Future.delayed(const Duration(seconds: 1), () {
       if (mounted) {
         Navigator.of(context).popUntil((route) => route.isFirst);
@@ -375,31 +376,22 @@ Future<void> _timeoutSession() async {
       if (!mounted) return;
 showDialog(
   context: context,
-  builder: (context) => AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: Row(
-            children: [
-              const Icon(Icons.lock, color: Color(0xFFFF6B9D), size: 28),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  l10n.sessionQuestionLimit,
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          content: Column(
+  builder: (context) => CustomDialog(
+          isDarkMode: widget.isDarkMode,
+          icon: Icons.lock,
+          iconColor: const Color(0xFFFF6B9D),
+          title: l10n.sessionQuestionLimit,
+          contentWidget: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 l10n.sessionQuestionLimitMessage,
-                style: GoogleFonts.poppins(fontSize: 14),
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: widget.isDarkMode
+                      ? Colors.white.withValues(alpha: 0.85)
+                      : const Color(0xFF2D1B2E).withValues(alpha: 0.8),
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
@@ -422,11 +414,17 @@ showDialog(
                       style: GoogleFonts.poppins(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: widget.isDarkMode ? Colors.white : Colors.black87,
                       ),
                     ),
                     Text(
                       'Unlimited questions & players',
-                      style: GoogleFonts.poppins(fontSize: 12),
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: widget.isDarkMode
+                            ? Colors.white.withValues(alpha: 0.7)
+                            : Colors.black54,
+                      ),
                     ),
                   ],
                 ),
@@ -434,35 +432,30 @@ showDialog(
             ],
           ),
           actions: [
-            TextButton(
+            DialogButton(
+              text: l10n.mayBeLater,
               onPressed: () => Navigator.pop(context),
-              child: Text(
-                l10n.mayBeLater,
-                style: GoogleFonts.poppins(),
-              ),
+              isDarkMode: widget.isDarkMode,
             ),
-            ElevatedButton(
+            const SizedBox(height: 12),
+            DialogButton(
+              text: l10n.subscribe,
               onPressed: () {
                 if (!mounted) return;
-Navigator.pop(context);
-if (!mounted) return;
-Navigator.push(
-  context,
-  MaterialPageRoute(
-                    builder: (context) => SubscriptionPage(
+                Navigator.pop(context);
+                if (!mounted) return;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SubscriptionPageNew(
                       isDarkMode: widget.isDarkMode,
                     ),
                   ),
                 );
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFF6B9D),
-                foregroundColor: Colors.white,
-              ),
-              child: Text(
-                l10n.subscribe,
-                style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-              ),
+              isPrimary: true,
+              isDarkMode: widget.isDarkMode,
+              icon: Icons.star,
             ),
           ],
         ),
@@ -496,9 +489,10 @@ Navigator.push(
       ),
     );
   } catch (e) {
+    final l10n = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Error: $e'),
+        content: Text(l10n.errorOccurred(e.toString())),
         backgroundColor: Colors.red,
       ),
     );
@@ -509,12 +503,13 @@ Navigator.push(
 
   Future<void> _startGame() async {
     if (isStartingGame || hasNavigatedToGame) return;
-    
+
     // Validate minimum questions
     if (questions.length < 5) {
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Need at least 5 questions to start! (Currently: ${questions.length})'),
+          content: Text(l10n.needAtLeast5Questions(questions.length)),
           backgroundColor: Colors.orange,
         ),
       );
@@ -538,10 +533,11 @@ Navigator.push(
     } catch (e) {
       debugPrint('❌ Error starting game: $e');
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         setState(() => isStartingGame = false);
         hasNavigatedToGame = false;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error starting game: $e')),
+          SnackBar(content: Text('${l10n.errorStartingGame}: $e')),
         );
       }
     }
@@ -557,9 +553,10 @@ Navigator.push(
       
       if (sessionQuestions.length < 5) {
         if (mounted) {
+          final l10n = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Need at least 5 questions! (Currently: ${sessionQuestions.length})'),
+              content: Text(l10n.needAtLeast5Questions(sessionQuestions.length)),
               backgroundColor: Colors.orange,
             ),
           );
@@ -678,23 +675,25 @@ Navigator.push(
     if (widget.isHost) {
       final shouldCancel = await showDialog<bool>(
         context: context,
-        builder: (context) => AlertDialog(
-          title: Text(l10n.cancelSession, style: GoogleFonts.poppins()),
-          content: Text(
-            l10n.cancelSessionForAll,
-            style: GoogleFonts.poppins(),
-          ),
+        builder: (context) => CustomDialog(
+          isDarkMode: widget.isDarkMode,
+          icon: Icons.cancel,
+          iconColor: Colors.red,
+          title: l10n.cancelSession,
+          content: l10n.cancelSessionForAll,
           actions: [
-            TextButton(
+            DialogButton(
+              text: l10n.no,
               onPressed: () => Navigator.of(context).pop(false),
-              child: Text(l10n.no, style: GoogleFonts.poppins()),
+              isDarkMode: widget.isDarkMode,
             ),
-            ElevatedButton(
+            const SizedBox(height: 12),
+            DialogButton(
+              text: l10n.yesCancel,
               onPressed: () => Navigator.of(context).pop(true),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              child: Text(l10n.yesCancel, style: GoogleFonts.poppins()),
+              isPrimary: true,
+              isDarkMode: widget.isDarkMode,
+              customColor: Colors.red,
             ),
           ],
         ),
@@ -726,28 +725,30 @@ Navigator.push(
     if (widget.isHost) {
       final shouldCancel = await showDialog<bool>(
         context: context,
-        builder: (context) => AlertDialog(
-          title: Text(l10n.cancelSession, style: GoogleFonts.poppins()),
-          content: Text(
-            l10n.cancelSessionForAll,
-            style: GoogleFonts.poppins(),
-          ),
+        builder: (context) => CustomDialog(
+          isDarkMode: widget.isDarkMode,
+          icon: Icons.cancel,
+          iconColor: Colors.red,
+          title: l10n.cancelSession,
+          content: l10n.cancelSessionForAll,
           actions: [
-            TextButton(
+            DialogButton(
+              text: l10n.no,
               onPressed: () => Navigator.of(context).pop(false),
-              child: Text(l10n.no, style: GoogleFonts.poppins()),
+              isDarkMode: widget.isDarkMode,
             ),
-            ElevatedButton(
+            const SizedBox(height: 12),
+            DialogButton(
+              text: l10n.yesCancel,
               onPressed: () => Navigator.of(context).pop(true),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              child: Text(l10n.yesCancel, style: GoogleFonts.poppins()),
+              isPrimary: true,
+              isDarkMode: widget.isDarkMode,
+              customColor: Colors.red,
             ),
           ],
         ),
       );
-      
+
       // Only cancel if user confirmed (true), otherwise do nothing
       if (shouldCancel == true) {
         if (mounted) {

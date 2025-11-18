@@ -1,10 +1,12 @@
 // lib/core/services/custom_deck_service.dart
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/foundation.dart'; // ADDED: For debugPrint
+import 'supabase_service.dart';
 
 
 class CustomDeckService {
   final supabase = Supabase.instance.client;
+  final _supabaseService = SupabaseService();
   
   // Special Favorites deck ID (consistent across all users)
   static const String favoritesDeckName = 'Favorites';
@@ -20,9 +22,22 @@ class CustomDeckService {
           .select('*')
           .eq('user_id', userId)
           .order('created_at', ascending: false);
-      
+
       return List<Map<String, dynamic>>.from(response);
     } catch (e) {
+      debugPrint('Error loading decks from network: $e');
+
+      // Try to load from cache (offline mode)
+      try {
+        final cachedDecks = await _supabaseService.getCachedPersonalDecks();
+        if (cachedDecks.isNotEmpty) {
+          debugPrint('✅ Loaded ${cachedDecks.length} decks from offline cache');
+          return cachedDecks;
+        }
+      } catch (cacheError) {
+        debugPrint('Error loading from cache: $cacheError');
+      }
+
       throw Exception('Failed to load decks: $e');
     }
   }
@@ -219,9 +234,27 @@ Future<void> renameDeck(String deckId, String newName) async {
           .select('*')
           .eq('deck_id', deckId)
           .order('created_at', ascending: true);
-      
+
       return List<Map<String, dynamic>>.from(response);
     } catch (e) {
+      debugPrint('Error loading questions from network: $e');
+
+      // Try to load from cache (offline mode)
+      try {
+        final cachedQuestions = await _supabaseService.getCachedPersonalDeckQuestions(deckId);
+        if (cachedQuestions.isNotEmpty) {
+          debugPrint('✅ Loaded ${cachedQuestions.length} questions from offline cache');
+          // Convert strings to Map format expected by the caller
+          return cachedQuestions.map((q) => {
+            'id': '', // ID not available in cache, but not critical for display
+            'question_text': q,
+            'deck_id': deckId,
+          }).toList();
+        }
+      } catch (cacheError) {
+        debugPrint('Error loading from cache: $cacheError');
+      }
+
       throw Exception('Failed to load questions: $e');
     }
   }

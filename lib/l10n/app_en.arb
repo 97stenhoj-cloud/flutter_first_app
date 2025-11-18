@@ -471,5 +471,250 @@
 "submit": "Submit",
 "thankYouForFeedback": "Thank you for your feedback!",
 "failedToSubmitRating": "Failed to submit rating",
-"tapStarsToRate": "Tap stars to rate"
+"tapStarsToRate": "Tap stars to rate",
+
+"downloadForOffline": "Download for Offline",
+"downloading": "Downloading...",
+"downloadedLanguages": "Downloaded Languages",
+"languageNotDownloaded": "Language Not Downloaded",
+"languageNotDownloadedMessage": "You haven't downloaded {languageName} for offline use.\n\nGo to Settings > Profile > \"Download for Offline\" while connected to internet.",
+"@languageNotDownloadedMessage": {
+  "placeholders": {
+    "languageName": {
+      "type": "String"
+    }
+  }
+},
+"offlineLanguageError": "This language hasn't been downloaded for offline use. Go to Settings > Profile > \"Download for Offline\" while connected to internet.",
+"downloadComplete": "Download Complete!",
+"downloadCompleteMessage": "All content has been downloaded for offline use.",
+
+"addedToFavorites": "Added to favorites",
+"removedFromFavorites": "Removed from favorites",
+"errorSavingFavorite": "Error saving favorite",
+"internetRequired": "Internet Required",
+"internetRequiredMessage": "Some features require an internet connection. Premium users can download content for offline use in Settings.",
+"goPremium": "Go Premium",
+"pleaseEnterPin": "Please enter a 6-digit PIN",
+"errorOccurred": "Error: {error}",
+"@errorOccurred": {
+  "placeholders": {
+    "error": {
+      "type": "String"
+    }
+  }
+},
+"errorCreatingSession": "Error creating session",
+"sessionTimedOut": "Session timed out - host did not set timer",
+"errorStarting": "Error starting",
+"errorLoadingParticipants": "Error loading participants",
+"sessionCancelledByHost": "Session cancelled by host",
+"needAtLeast5Questions": "Need at least 5 questions to start! (Currently: {count})",
+"@needAtLeast5Questions": {
+  "placeholders": {
+    "count": {
+      "type": "int"
+    }
+  }
+},
+"errorStartingGame": "Error starting game",
+"questionsAsked": "Questions Asked",
+"totalReactions": "Total Reactions",
+"mostLovedQuestion": "Most Loved Question",
+"mostFunQuestion": "Most Fun Question",
+"mostShockingQuestion": "Most Shocking Question",
+"mostLitQuestion": "Most Lit Question",
+"hotSeatAward": "Hot Seat Award",
+"errorCouldNotIdentifyPlayer": "Error: Could not identify player. Please rejoin the session.",
+
+"createAiDeck": "Create AI Deck",
+"whatIsTheOccasion": "What is the occasion?",
+"occasionHint": "e.g., Birthday party, Team building, Date night",
+"whatIsTheMood": "What's the mood?",
+"lighthearted": "Lighthearted",
+"serious": "Serious",
+"mixed": "Mixed",
+"depthOfQuestions": "Depth of questions?",
+"surfaceLevel": "Surface level",
+"deep": "Deep",
+"level": "Level",
+"sizeOfGroup": "Size of group?",
+"people": "people",
+"anyOtherRemarks": "Any other remarks? (optional)",
+"remarksHint": "e.g., Family friendly, include some funny questions",
+"generateQuestions": "Generate Questions",
+"aiDeckPremiumMessage": "AI deck generation is a premium feature. Upgrade to create unlimited AI-powered conversation decks!",
+"pleaseEnterOccasion": "Please enter the occasion",
+"errorGeneratingQuestions": "Error generating questions: {error}",
+"@errorGeneratingQuestions": {
+  "placeholders": {
+    "error": {
+      "type": "String"
+    }
+  }
+},
+"generatingAiQuestions": "Generating AI questions...",
+"generatingMoreQuestions": "Generating more questions...",
+"batchComplete": "Batch Complete!",
+"questionsInDeckMessage": "You have {count} questions in your deck. Generate 10 more?",
+"@questionsInDeckMessage": {
+  "placeholders": {
+    "count": {
+      "type": "int"
+    }
+  }
+},
+"questionsInDeck": "{kept}/{max}",
+"@questionsInDeck": {
+  "placeholders": {
+    "kept": {
+      "type": "int"
+    },
+    "max": {
+      "type": "int"
+    }
+  }
+},
+"questionProgress": "{current}/{total}",
+"@questionProgress": {
+  "placeholders": {
+    "current": {
+      "type": "int"
+    },
+    "total": {
+      "type": "int"
+    }
+  }
+},
+"batchNumber": "Batch #{number}",
+"@batchNumber": {
+  "placeholders": {
+    "number": {
+      "type": "int"
+    }
+  }
+},
+"imDone": "I'm Done",
+"generateMore": "Generate More",
+"maxQuestionsReached": "Max Questions (50)",
+"namYourDeck": "Name Your Deck",
+"goBack": "Go Back",
+"swipeInstructions": "Swipe right to keep • Swipe left to discard",
+"discussionPoint": "Discussion Point",
+
+"sparkMode": "Spark Mode",
+"sparkModeSubtitle": "AI-Powered Conversation Starters",
+"sparkPremiumRequired": "Spark Mode - Premium Feature",
+"sparkPremiumMessage": "Spark Mode is available for Premium and Premium+ subscribers. Generate AI-powered conversation starters tailored to your occasion!",
+"sparkQuestionsRemaining": "{remaining} of {limit} questions remaining",
+"@sparkQuestionsRemaining": {
+  "placeholders": {
+    "remaining": {
+      "type": "int"
+    },
+    "limit": {
+      "type": "int"
+    }
+  }
+},
+"howManyQuestions": "How many questions?",
+"sparkQuestions": "{count} Questions",
+"@sparkQuestions": {
+  "placeholders": {
+    "count": {
+      "type": "int"
+    }
+  }
+},
+"generateSparkQuestions": "Generate {count} Questions",
+"@generateSparkQuestions": {
+  "placeholders": {
+    "count": {
+      "type": "int"
+    }
+  }
+},
+"sparkLimitReached": "Monthly Limit Reached",
+"sparkLimitMessage": "You only have {remaining} Spark questions remaining this month. You're trying to generate {requested} questions.\n\nUpgrade to Premium+ for 400 questions per month!",
+"@sparkLimitMessage": {
+  "placeholders": {
+    "remaining": {
+      "type": "int"
+    },
+    "requested": {
+      "type": "int"
+    }
+  }
+},
+"expiresIn24Hours": "Expires in 24 hours",
+"addedToFavorites": "Added to Favorites!",
+"alreadyInFavorites": "Already in Favorites",
+"addedToDeck": "Added to {deckName}!",
+"@addedToDeck": {
+  "placeholders": {
+    "deckName": {
+      "type": "String"
+    }
+  }
+},
+"questionAlreadyInDeck": "Question already in this deck",
+"addToDeck": "Add to Deck",
+"favorite": "Favorite",
+"skip": "Skip",
+"chooseDeck": "Choose a deck to add this question to:",
+"noDecksFound": "No Decks Found",
+"noDecksMessage": "You don't have any custom decks yet. Would you like to create one?",
+"createDeck": "Create Deck",
+"createNewDeck": "Create New Deck",
+"createAndAdd": "Create & Add",
+"enterDeckName": "Enter deck name",
+"pleaseEnterDeckName": "Please enter a deck name",
+
+"tierBasic": "Basic",
+"tierPremium": "Premium",
+"tierPremiumPlus": "Premium+",
+"tierFree": "Free",
+"choosePlan": "Choose Your Plan",
+"choosePlanSubtitle": "Unlock premium features and AI-powered conversations",
+"mostPopular": "MOST POPULAR",
+"perMonth": "per month",
+"forever": "Forever",
+"continueWithBasic": "Continue with Basic (Free)",
+"subscribeTo": "Subscribe to {tier}",
+"@subscribeTo": {
+  "placeholders": {
+    "tier": {
+      "type": "String"
+    }
+  }
+},
+"cancelAnytime": "Cancel anytime. No hidden fees.",
+
+"basicTierTitle": "Basic",
+"basicTierPrice": "€6.99",
+"basicTierDescription": "Access all game modes except Spark",
+"basicFeature1": "All game modes (Couple, Friends, Family, Personal, Pandora)",
+"basicFeature2": "Access to all 24+ categories",
+"basicFeature3": "Custom personal decks",
+"basicFeature4": "No ads",
+"basicFeature5": "Question navigation",
+
+"premiumTierTitle": "Premium",
+"premiumTierPrice": "€11.99",
+"premiumTierDescription": "Everything in Basic + Spark AI",
+"premiumFeature1": "Everything in Basic",
+"premiumFeature2": "🔥 Spark Mode: AI-powered questions",
+"premiumFeature3": "150 AI questions per month",
+"premiumFeature4": "Generate 5-25 questions at once",
+"premiumFeature5": "Custom sliders (Energy, Depth, Spice)",
+"premiumFeature6": "Save favorites to personal decks",
+
+"premiumPlusTierTitle": "Premium+",
+"premiumPlusTierPrice": "€19.99",
+"premiumPlusTierDescription": "Maximum AI power",
+"premiumPlusFeature1": "Everything in Premium",
+"premiumPlusFeature2": "🚀 400 AI questions per month",
+"premiumPlusFeature3": "2.5x more Spark questions",
+"premiumPlusFeature4": "Perfect for frequent use",
+"premiumPlusFeature5": "Priority support"
 }

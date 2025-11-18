@@ -7,13 +7,6 @@ class AppConstants {
   static const String familyMode = 'Family';
   static const String pandoraMode = 'Pandora';
   
-  // Asset Paths
-  static const String videoAssetPath = 'assets/images/parrots.mp4';
-  static const String questionsAssetPath = 'assets/data/questions.json';
-
-  // App Icon
-  static const String appIconPath = 'assets/images/appIcon.png';
-  
   // UI Constants
   static const double defaultPadding = 24.0;
   static const double buttonHeight = 60.0;

@@ -86,19 +86,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get billedYearly => 'Billed annually';
 
   @override
-  String get premiumFeature1 => '✓ All 21 premium categories unlocked';
+  String get premiumFeature1 => 'Everything in Basic';
 
   @override
-  String get premiumFeature2 => '✓ No ads forever';
+  String get premiumFeature2 => '🔥 Spark Mode: AI-powered questions';
 
   @override
-  String get premiumFeature3 => '✓ 75 questions in all categories';
+  String get premiumFeature3 => '150 AI questions per month';
 
   @override
-  String get premiumFeature4 => '✓ Pandora: Unlimited players & questions';
+  String get premiumFeature4 => 'Generate 5-25 questions at once';
 
   @override
-  String get premiumFeature5 => '✓ Support ongoing development';
+  String get premiumFeature5 => 'Custom sliders (Energy, Depth, Spice)';
 
   @override
   String get subscribePremium => 'Subscribe to Premium';
@@ -1109,4 +1109,396 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tapStarsToRate => 'Tap stars to rate';
+
+  @override
+  String get downloadForOffline => 'Download for Offline';
+
+  @override
+  String get downloading => 'Downloading...';
+
+  @override
+  String get downloadedLanguages => 'Downloaded Languages';
+
+  @override
+  String get languageNotDownloaded => 'Language Not Downloaded';
+
+  @override
+  String languageNotDownloadedMessage(String languageName) {
+    return 'You haven\'t downloaded $languageName for offline use.\n\nGo to Settings > Profile > \"Download for Offline\" while connected to internet.';
+  }
+
+  @override
+  String get offlineLanguageError =>
+      'This language hasn\'t been downloaded for offline use. Go to Settings > Profile > \"Download for Offline\" while connected to internet.';
+
+  @override
+  String get downloadComplete => 'Download Complete!';
+
+  @override
+  String get downloadCompleteMessage =>
+      'All content has been downloaded for offline use.';
+
+  @override
+  String get addedToFavorites => 'Added to Favorites!';
+
+  @override
+  String get removedFromFavorites => 'Removed from favorites';
+
+  @override
+  String get errorSavingFavorite => 'Error saving favorite';
+
+  @override
+  String get internetRequired => 'Internet Required';
+
+  @override
+  String get internetRequiredMessage =>
+      'Some features require an internet connection. Premium users can download content for offline use in Settings.';
+
+  @override
+  String get goPremium => 'Go Premium';
+
+  @override
+  String get pleaseEnterPin => 'Please enter a 6-digit PIN';
+
+  @override
+  String errorOccurred(String error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String get errorCreatingSession => 'Error creating session';
+
+  @override
+  String get sessionTimedOut => 'Session timed out - host did not set timer';
+
+  @override
+  String get errorStarting => 'Error starting';
+
+  @override
+  String get errorLoadingParticipants => 'Error loading participants';
+
+  @override
+  String get sessionCancelledByHost => 'Session cancelled by host';
+
+  @override
+  String needAtLeast5Questions(int count) {
+    return 'Need at least 5 questions to start! (Currently: $count)';
+  }
+
+  @override
+  String get errorStartingGame => 'Error starting game';
+
+  @override
+  String get questionsAsked => 'Questions Asked';
+
+  @override
+  String get totalReactions => 'Total Reactions';
+
+  @override
+  String get mostLovedQuestion => 'Most Loved Question';
+
+  @override
+  String get mostFunQuestion => 'Most Fun Question';
+
+  @override
+  String get mostShockingQuestion => 'Most Shocking Question';
+
+  @override
+  String get mostLitQuestion => 'Most Lit Question';
+
+  @override
+  String get hotSeatAward => 'Hot Seat Award';
+
+  @override
+  String get errorCouldNotIdentifyPlayer =>
+      'Error: Could not identify player. Please rejoin the session.';
+
+  @override
+  String get createAiDeck => 'Create AI Deck';
+
+  @override
+  String get whatIsTheOccasion => 'What is the occasion?';
+
+  @override
+  String get occasionHint => 'e.g., Birthday party, Team building, Date night';
+
+  @override
+  String get whatIsTheMood => 'What\'s the mood?';
+
+  @override
+  String get lighthearted => 'Lighthearted';
+
+  @override
+  String get serious => 'Serious';
+
+  @override
+  String get mixed => 'Mixed';
+
+  @override
+  String get depthOfQuestions => 'Depth of questions?';
+
+  @override
+  String get surfaceLevel => 'Surface level';
+
+  @override
+  String get deep => 'Deep';
+
+  @override
+  String get level => 'Level';
+
+  @override
+  String get sizeOfGroup => 'Size of group?';
+
+  @override
+  String get people => 'people';
+
+  @override
+  String get anyOtherRemarks => 'Any other remarks? (optional)';
+
+  @override
+  String get remarksHint =>
+      'e.g., Family friendly, include some funny questions';
+
+  @override
+  String get generateQuestions => 'Generate Questions';
+
+  @override
+  String get aiDeckPremiumMessage =>
+      'AI deck generation is a premium feature. Upgrade to create unlimited AI-powered conversation decks!';
+
+  @override
+  String get pleaseEnterOccasion => 'Please enter the occasion';
+
+  @override
+  String errorGeneratingQuestions(String error) {
+    return 'Error generating questions: $error';
+  }
+
+  @override
+  String get generatingAiQuestions => 'Generating AI questions...';
+
+  @override
+  String get generatingMoreQuestions => 'Generating more questions...';
+
+  @override
+  String get batchComplete => 'Batch Complete!';
+
+  @override
+  String questionsInDeckMessage(int count) {
+    return 'You have $count questions in your deck. Generate 10 more?';
+  }
+
+  @override
+  String questionsInDeck(int kept, int max) {
+    return '$kept/$max';
+  }
+
+  @override
+  String questionProgress(int current, int total) {
+    return '$current/$total';
+  }
+
+  @override
+  String batchNumber(int number) {
+    return 'Batch #$number';
+  }
+
+  @override
+  String get imDone => 'I\'m Done';
+
+  @override
+  String get generateMore => 'Generate More';
+
+  @override
+  String get maxQuestionsReached => 'Max Questions (50)';
+
+  @override
+  String get namYourDeck => 'Name Your Deck';
+
+  @override
+  String get goBack => 'Go Back';
+
+  @override
+  String get swipeInstructions => 'Swipe right to keep • Swipe left to discard';
+
+  @override
+  String get discussionPoint => 'Discussion Point';
+
+  @override
+  String get sparkMode => 'Spark Mode';
+
+  @override
+  String get sparkModeSubtitle => 'AI-Powered Conversation Starters';
+
+  @override
+  String get sparkPremiumRequired => 'Spark Mode - Premium Feature';
+
+  @override
+  String get sparkPremiumMessage =>
+      'Spark Mode is available for Premium and Premium+ subscribers. Generate AI-powered conversation starters tailored to your occasion!';
+
+  @override
+  String sparkQuestionsRemaining(int remaining, int limit) {
+    return '$remaining of $limit questions remaining';
+  }
+
+  @override
+  String get howManyQuestions => 'How many questions?';
+
+  @override
+  String sparkQuestions(int count) {
+    return '$count Questions';
+  }
+
+  @override
+  String generateSparkQuestions(int count) {
+    return 'Generate $count Questions';
+  }
+
+  @override
+  String get sparkLimitReached => 'Monthly Limit Reached';
+
+  @override
+  String sparkLimitMessage(int remaining, int requested) {
+    return 'You only have $remaining Spark questions remaining this month. You\'re trying to generate $requested questions.\n\nUpgrade to Premium+ for 400 questions per month!';
+  }
+
+  @override
+  String get expiresIn24Hours => 'Expires in 24 hours';
+
+  @override
+  String get alreadyInFavorites => 'Already in Favorites';
+
+  @override
+  String addedToDeck(String deckName) {
+    return 'Added to $deckName!';
+  }
+
+  @override
+  String get questionAlreadyInDeck => 'Question already in this deck';
+
+  @override
+  String get addToDeck => 'Add to Deck';
+
+  @override
+  String get favorite => 'Favorite';
+
+  @override
+  String get chooseDeck => 'Choose a deck to add this question to:';
+
+  @override
+  String get noDecksFound => 'No Decks Found';
+
+  @override
+  String get noDecksMessage =>
+      'You don\'t have any custom decks yet. Would you like to create one?';
+
+  @override
+  String get createDeck => 'Create Deck';
+
+  @override
+  String get createAndAdd => 'Create & Add';
+
+  @override
+  String get pleaseEnterDeckName => 'Please enter a deck name';
+
+  @override
+  String get tierBasic => 'Basic';
+
+  @override
+  String get tierPremium => 'Premium';
+
+  @override
+  String get tierPremiumPlus => 'Premium+';
+
+  @override
+  String get tierFree => 'Free';
+
+  @override
+  String get choosePlan => 'Choose Your Plan';
+
+  @override
+  String get choosePlanSubtitle =>
+      'Unlock premium features and AI-powered conversations';
+
+  @override
+  String get mostPopular => 'MOST POPULAR';
+
+  @override
+  String get perMonth => 'per month';
+
+  @override
+  String get forever => 'Forever';
+
+  @override
+  String get continueWithBasic => 'Continue with Basic (Free)';
+
+  @override
+  String subscribeTo(String tier) {
+    return 'Subscribe to $tier';
+  }
+
+  @override
+  String get cancelAnytime => 'Cancel anytime. No hidden fees.';
+
+  @override
+  String get basicTierTitle => 'Basic';
+
+  @override
+  String get basicTierPrice => '€6.99';
+
+  @override
+  String get basicTierDescription => 'Access all game modes except Spark';
+
+  @override
+  String get basicFeature1 =>
+      'All game modes (Couple, Friends, Family, Personal, Pandora)';
+
+  @override
+  String get basicFeature2 => 'Access to all 24+ categories';
+
+  @override
+  String get basicFeature3 => 'Custom personal decks';
+
+  @override
+  String get basicFeature4 => 'No ads';
+
+  @override
+  String get basicFeature5 => 'Question navigation';
+
+  @override
+  String get premiumTierTitle => 'Premium';
+
+  @override
+  String get premiumTierPrice => '€11.99';
+
+  @override
+  String get premiumTierDescription => 'Everything in Basic + Spark AI';
+
+  @override
+  String get premiumFeature6 => 'Save favorites to personal decks';
+
+  @override
+  String get premiumPlusTierTitle => 'Premium+';
+
+  @override
+  String get premiumPlusTierPrice => '€19.99';
+
+  @override
+  String get premiumPlusTierDescription => 'Maximum AI power';
+
+  @override
+  String get premiumPlusFeature1 => 'Everything in Premium';
+
+  @override
+  String get premiumPlusFeature2 => '🚀 400 AI questions per month';
+
+  @override
+  String get premiumPlusFeature3 => '2.5x more Spark questions';
+
+  @override
+  String get premiumPlusFeature4 => 'Perfect for frequent use';
+
+  @override
+  String get premiumPlusFeature5 => 'Priority support';
 }

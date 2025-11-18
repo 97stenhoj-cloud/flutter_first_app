@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/utils/theme_helper.dart';
 
@@ -60,10 +61,10 @@ class CreditsPage extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(50),
-                            child: Image.network(
-                              'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/AppIcon/techykoalaIcon.png',
+                            child: CachedNetworkImage(
+                              imageUrl: 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/AppIcon/techykoalaIcon.png',
                               fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
+                              errorWidget: (context, url, error) {
                                 return Container(
                                   decoration: BoxDecoration(
                                     gradient: const LinearGradient(
@@ -85,20 +86,15 @@ class CreditsPage extends StatelessWidget {
                                   ),
                                 );
                               },
-                              loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
+                              placeholder: (context, url) {
                                 return Container(
                                   decoration: BoxDecoration(
                                     color: Colors.white.withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(50),
                                   ),
-                                  child: Center(
+                                  child: const Center(
                                     child: CircularProgressIndicator(
-                                      value: loadingProgress.expectedTotalBytes != null
-                                          ? loadingProgress.cumulativeBytesLoaded /
-                                              loadingProgress.expectedTotalBytes!
-                                          : null,
-                                      color: const Color(0xFFFF6B9D),
+                                      color: Color(0xFFFF6B9D),
                                     ),
                                   ),
                                 );

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/providers/theme_provider.dart';
@@ -146,34 +147,26 @@ class _MainMenuPageState extends ConsumerState<MainMenuPage> {
                     children: [
                       // Logo from Supabase storage
                       const SizedBox(height: 20),
-                      Image.network(
-                        'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/AppIcon/AppIcon.png',
+                      CachedNetworkImage(
+                        imageUrl: 'https://tpjsebutbieghpmvpktv.supabase.co/storage/v1/object/public/AppIcon/AppIcon.png',
                         width: 200,
                         height: 200,
                         fit: BoxFit.contain,
-                        cacheWidth: 200,
-                        cacheHeight: 200,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return SizedBox(
-                            width: 200,
-                            height: 200,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes != null
-                                    ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                    : null,
-                                color: ThemeHelper.getHeadingTextColor(isDarkMode),
-                                strokeWidth: 2,
-                              ),
+                        placeholder: (context, url) => SizedBox(
+                          width: 200,
+                          height: 200,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: ThemeHelper.getHeadingTextColor(isDarkMode),
+                              strokeWidth: 2,
                             ),
-                          );
-                        },
-                        errorBuilder: (context, error, stackTrace) {
+                          ),
+                        ),
+                        errorWidget: (context, url, error) {
                           debugPrint('Error loading logo: $error');
                           return Icon(
-                            Icons.chat_bubble, 
-                            size: 100, 
+                            Icons.chat_bubble,
+                            size: 100,
                             color: ThemeHelper.getHeadingTextColor(isDarkMode),
                           );
                         },

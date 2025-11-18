@@ -1,30 +1,25 @@
 // lib/features/settings/presentation/pages/language_page.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/utils/theme_helper.dart';
-import '../../../../core/utils/language_manager.dart';
+import '../../../../core/providers/locale_provider.dart';
 import '../../../../core/constants/app_constants.dart';
 
-class LanguagePage extends StatefulWidget {
+class LanguagePage extends ConsumerWidget {
   final bool isDarkMode;
-  
+
   const LanguagePage({super.key, required this.isDarkMode});
 
   @override
-  State<LanguagePage> createState() => _LanguagePageState();
-}
-
-class _LanguagePageState extends State<LanguagePage> {
-  final languageManager = LanguageManager();
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    
+    final localeState = ref.watch(localeProvider);
+
     return Scaffold(
       body: Container(
-        decoration: ThemeHelper.getBackgroundDecoration(widget.isDarkMode), // Fixed: Add proper background
+        decoration: ThemeHelper.getBackgroundDecoration(isDarkMode),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(AppConstants.defaultPadding),
@@ -37,7 +32,7 @@ class _LanguagePageState extends State<LanguagePage> {
                       onPressed: () => Navigator.pop(context),
                       icon: Icon(
                         Icons.arrow_back,
-                        color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                        color: ThemeHelper.getHeadingTextColor(isDarkMode),
                         size: 28,
                       ),
                     ),
@@ -47,28 +42,31 @@ class _LanguagePageState extends State<LanguagePage> {
                       style: GoogleFonts.poppins(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: ThemeHelper.getHeadingTextColor(widget.isDarkMode),
+                        color: ThemeHelper.getHeadingTextColor(isDarkMode),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 40),
-                
+
                 // Language list
                 Expanded(
                   child: ListView.builder(
-                    itemCount: LanguageManager.supportedLanguages.length,
+                    itemCount: supportedLanguages.length,
                     itemBuilder: (context, index) {
-                      final language = LanguageManager.supportedLanguages[index];
-                      final isSelected = languageManager.currentLocale.languageCode == language['code'];
-                      
+                      final language = supportedLanguages[index];
+                      final isSelected = localeState.currentLocale.languageCode == language['code'];
+
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: _buildLanguageButton(
+                          context: context,
+                          ref: ref,
                           flag: language['flag']!,
                           name: language['name']!,
                           code: language['code']!,
                           isSelected: isSelected,
+                          isDarkMode: isDarkMode,
                         ),
                       );
                     },
@@ -83,15 +81,18 @@ class _LanguagePageState extends State<LanguagePage> {
   }
 
   Widget _buildLanguageButton({
+    required BuildContext context,
+    required WidgetRef ref,
     required String flag,
     required String name,
     required String code,
     required bool isSelected,
+    required bool isDarkMode,
   }) {
-    final colors = isSelected 
-        ? ThemeHelper.getPrimaryButtonGradient(widget.isDarkMode).colors
-        : ThemeHelper.getSecondaryButtonGradient(widget.isDarkMode).colors;
-    
+    final colors = isSelected
+        ? ThemeHelper.getPrimaryButtonGradient(isDarkMode).colors
+        : ThemeHelper.getSecondaryButtonGradient(isDarkMode).colors;
+
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -108,7 +109,7 @@ class _LanguagePageState extends State<LanguagePage> {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: widget.isDarkMode 
+                color: isDarkMode
                     ? const Color.fromRGBO(0, 0, 0, 0.4)
                     : const Color.fromRGBO(100, 80, 60, 0.15),
                 blurRadius: 8,
@@ -139,8 +140,7 @@ class _LanguagePageState extends State<LanguagePage> {
           borderRadius: BorderRadius.circular(20),
           child: InkWell(
             onTap: () {
-              languageManager.setLocale(Locale(code));
-              setState(() {});
+              ref.read(localeProvider.notifier).setLocale(Locale(code));
             },
             borderRadius: BorderRadius.circular(20),
             child: Container(
@@ -168,13 +168,13 @@ class _LanguagePageState extends State<LanguagePage> {
                       style: GoogleFonts.poppins(
                         fontSize: isSelected ? 18 : 16,
                         fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                        color: isSelected 
+                        color: isSelected
                             ? Colors.white
-                            : ThemeHelper.getSecondaryButtonTextColor(widget.isDarkMode),
+                            : ThemeHelper.getSecondaryButtonTextColor(isDarkMode),
                       ),
                     ),
                   ),
-                                 ],
+                ],
               ),
             ),
           ),

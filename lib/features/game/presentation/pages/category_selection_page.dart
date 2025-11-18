@@ -2,16 +2,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../core/utils/theme_helper.dart';
 import '../../../../core/providers/unlock_provider.dart';
+import '../../../../core/providers/category_rating_provider.dart';
+import '../../../../core/providers/locale_provider.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/services/supabase_service.dart';
+import '../../../../core/services/connectivity_service.dart';
 import 'game_page.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../custom/presentation/pages/custom_deck_list_page.dart';
-import '../../../subscription/presentation/pages/subscription_page.dart';
+import '../../../subscription/presentation/pages/subscription_page_new.dart';
 import '../../../../core/widgets/custom_dialog.dart';
-import '../../../../core/services/feedback_service.dart';
 import '../../../../core/widgets/rating_dialog.dart';
 
 // Category image URLs - keyed by "gameMode_categoryName"
@@ -144,23 +147,31 @@ class _CategorySelectionPageState extends ConsumerState<CategorySelectionPage> {
   }
 Future<void> _reloadCategoriesSilently() async {
   try {
-    final fetchedCategories = await supabaseService.getCategories(widget.gameMode);
-    
+    // Get premium status from provider to enable offline caching
+    final isPremium = ref.read(unlockProvider).isPremium;
+    final fetchedCategories = await supabaseService.getCategories(widget.gameMode, isPremium: isPremium);
+
     // Get the definitive order for this game mode
     final definitiveOrder = categoryOrder[widget.gameMode.toLowerCase()] ?? [];
-    
+
+    // Create index map for O(1) lookups instead of O(n) indexOf
+    final orderMap = <String, int>{};
+    for (var i = 0; i < definitiveOrder.length; i++) {
+      orderMap[definitiveOrder[i]] = i;
+    }
+
     // Sort categories based on the definitive order
     fetchedCategories.sort((a, b) {
-      final aIndex = definitiveOrder.indexOf(a);
-      final bIndex = definitiveOrder.indexOf(b);
-      
+      final aIndex = orderMap[a] ?? -1;
+      final bIndex = orderMap[b] ?? -1;
+
       if (aIndex != -1 && bIndex != -1) {
         return aIndex.compareTo(bIndex);
       }
-      
+
       if (aIndex != -1) return -1;
       if (bIndex != -1) return 1;
-      
+
       return 0;
     });
     
@@ -182,33 +193,47 @@ Future<void> _reloadCategoriesSilently() async {
 
   Future<void> _loadCategories() async {
   try {
-    final fetchedCategories = await supabaseService.getCategories(widget.gameMode);
-    
+    // Get premium status from provider to enable offline caching
+    final isPremium = ref.read(unlockProvider).isPremium;
+    final fetchedCategories = await supabaseService.getCategories(widget.gameMode, isPremium: isPremium);
+
     // Get the definitive order for this game mode
     final definitiveOrder = categoryOrder[widget.gameMode.toLowerCase()] ?? [];
-    
+
+    // Create index map for O(1) lookups instead of O(n) indexOf
+    final orderMap = <String, int>{};
+    for (var i = 0; i < definitiveOrder.length; i++) {
+      orderMap[definitiveOrder[i]] = i;
+    }
+
     // Sort categories based on the definitive order
     fetchedCategories.sort((a, b) {
-      final aIndex = definitiveOrder.indexOf(a);
-      final bIndex = definitiveOrder.indexOf(b);
-      
+      final aIndex = orderMap[a] ?? -1;
+      final bIndex = orderMap[b] ?? -1;
+
       // If both are in the definitive order, sort by that
       if (aIndex != -1 && bIndex != -1) {
         return aIndex.compareTo(bIndex);
       }
-      
+
       // If only one is in the order, prioritize it
       if (aIndex != -1) return -1;
       if (bIndex != -1) return 1;
-      
+
       // If neither is in the order, keep original order
       return 0;
     });
-    
+
     setState(() {
       categories = fetchedCategories;
       isLoading = false;
     });
+
+    // Load ratings in parallel (non-blocking)
+    ref.read(categoryRatingProvider.notifier).loadRatingsForMode(
+      widget.gameMode,
+      fetchedCategories,
+    );
   } catch (e) {
     debugPrint('Error loading categories: $e');
     setState(() {
@@ -431,8 +456,7 @@ Future<void> _reloadCategoriesSilently() async {
     final imageKey = '${widget.gameMode.toLowerCase()}_$category';
     final imageUrl = categoryImages[imageKey];
     final l10n = AppLocalizations.of(context)!;
-    final feedbackService = FeedbackService(); // NEW: Add feedback service
-    
+
     return AnimatedBuilder(
       animation: _pageController,
       builder: (context, child) {
@@ -458,9 +482,49 @@ Future<void> _reloadCategoriesSilently() async {
                   // Save the category NAME before navigating
                   final savedCategoryName = category;
                   final savedIndex = index;
-                  
+
                   debugPrint('🎯 Navigating FROM: $savedCategoryName at index $savedIndex');
-                  
+
+                  // Check if user is offline and premium
+                  final isPremium = ref.read(unlockProvider).isPremium;
+                  final hasInternet = await ConnectivityService.hasInternetConnection();
+
+                  if (isPremium && !hasInternet) {
+                    // User is offline - check if language is downloaded
+                    final languageCode = ref.read(localeProvider).currentLocale.languageCode;
+                    final downloadedLanguages = await supabaseService.getDownloadedLanguages();
+
+                    if (!downloadedLanguages.contains(languageCode)) {
+                      // Language not downloaded - show error dialog
+                      if (!mounted) return;
+                      final l10n = AppLocalizations.of(context)!;
+                      final languageName = supportedLanguages.firstWhere(
+                        (lang) => lang['code'] == languageCode,
+                        orElse: () => {'name': languageCode},
+                      )['name'];
+
+                      showDialog(
+                        context: context,
+                        builder: (context) => CustomDialog(
+                          isDarkMode: widget.isDarkMode,
+                          icon: Icons.cloud_off,
+                          iconColor: Colors.orange,
+                          title: l10n.languageNotDownloaded,
+                          content: l10n.languageNotDownloadedMessage(languageName ?? languageCode),
+                          actions: [
+                            DialogButton(
+                              text: l10n.ok,
+                              onPressed: () => Navigator.pop(context),
+                              isPrimary: true,
+                              isDarkMode: widget.isDarkMode,
+                            ),
+                          ],
+                        ),
+                      );
+                      return; // Don't navigate
+                    }
+                  }
+
                   final needsRefresh = await Navigator.push<bool>(
                     context,
                     MaterialPageRoute(
@@ -471,9 +535,9 @@ Future<void> _reloadCategoriesSilently() async {
                       ),
                     ),
                   );
-                  
+
                   debugPrint('🔙 Returned from game. needsRefresh: $needsRefresh');
-                  
+
                   // Reload categories if user subscribed
                   if (needsRefresh == true && mounted) {
                     debugPrint('🔄 Silently reloading categories...');
@@ -482,14 +546,14 @@ Future<void> _reloadCategoriesSilently() async {
                     debugPrint('✅ Categories reloaded, staying at index $currentPage');
                   }
                 },
-                child: FutureBuilder<int?>( // NEW: Fetch user's own rating
-                  future: feedbackService.getMyDeckRating(
-                    categoryName: category,
-                    gameMode: widget.gameMode,
-                  ),
-                  builder: (context, ratingSnapshot) {
-                    final myRating = ratingSnapshot.data;
-                    
+                child: Builder(
+                  builder: (context) {
+                    // Get cached rating from provider (no async call)
+                    final myRating = ref.read(categoryRatingProvider.notifier).getRating(
+                      widget.gameMode,
+                      category,
+                    );
+
                     return AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
@@ -516,12 +580,13 @@ Future<void> _reloadCategoriesSilently() async {
       Positioned.fill(
         child: Opacity(
           opacity: 0.15,
-          child: Image.network(
-            imageUrl,
+          child: CachedNetworkImage(
+            imageUrl: imageUrl,
             fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
+            errorWidget: (context, url, error) {
               return const SizedBox.shrink();
             },
+            placeholder: (context, url) => const SizedBox.shrink(),
           ),
         ),
       ),
@@ -541,8 +606,14 @@ if (myRating != null)
           gameMode: widget.gameMode,
           isDarkMode: widget.isDarkMode,
         );
-        // Refresh to show new rating
-        setState(() {});
+        // Reload the rating from database to update cache
+        if (mounted) {
+          ref.read(categoryRatingProvider.notifier).loadRatingsForMode(
+            widget.gameMode,
+            [category],
+          );
+          setState(() {});
+        }
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -643,7 +714,7 @@ if (myRating != null)
                                                         final subscribed = await Navigator.push<bool>(
                                                           context,
                                                           MaterialPageRoute(
-                                                            builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+                                                            builder: (context) => SubscriptionPageNew(isDarkMode: widget.isDarkMode),
                                                           ),
                                                         );
 

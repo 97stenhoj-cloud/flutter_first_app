@@ -1,0 +1,504 @@
+{
+  "@@locale": "it",
+  "appTitle": "Connect",
+  "start": "Inizia",
+  "settings": "Impostazioni",
+  "howToPlay": "Come si gioca",
+  "chooseGameMode": "Scegli la modalità di gioco",
+  "family": "Famiglia",
+  "couple": "Coppia",
+  "friends": "Amici",
+  "chooseCategory": "Scegli una categoria",
+  "locked": "Categoria Premium",
+  "lockedMessage": "Questa è una categoria premium. Passa a Premium per sbloccare tutte le categorie e rimuovere le pubblicità!",
+  "previewAvailable": "Anteprima: prime 5 domande disponibili",
+  "upgradeNow": "Passa a Premium",
+  "ok": "OK",
+  "mayBeLater": "Magari dopo",
+  
+  "getPremium": "Ottieni Premium",
+  "premiumTitle": "Sblocca tutto",
+  "premiumDescription": "Ottieni accesso illimitato a tutte le categorie in tutte le modalità, rimuovi le pubblicità e goditi sessioni Pandora illimitate.",
+  "premiumPriceMonthly": "€6,99/mese",
+  "premiumPriceYearly": "€59,99/anno",
+  "saveWithYearly": "Risparmia €23,89 con l’abbonamento annuale!",
+  "monthly": "Mensile",
+  "yearly": "Annuale",
+  "billedMonthly": "Fatturato mensilmente",
+  "billedYearly": "Fatturato annualmente",
+  "premiumFeature1": "✓ Tutte le 21 categorie premium sbloccate",
+  "premiumFeature2": "✓ Niente pubblicità per sempre",
+  "premiumFeature3": "✓ Domande illimitate in tutte le categorie",
+  "premiumFeature4": "✓ Pandora: giocatori e domande illimitati",
+  "premiumFeature5": "✓ Supporta lo sviluppo continuo",
+  "subscribePremium": "Abbonati a Premium",
+  "subscribe": "Abbonati",
+  "cancel": "Annulla",
+  "subscriptionActivated": "Premium attivato! Tutte le categorie sono state sbloccate.",
+  "premiumActivated": "Premium attivato!",
+  "demoNote": "Demo: l’abbonamento verrà reimpostato al riavvio dell’app",
+  
+  "freeTier": "Versione gratuita",
+  "freeTierDesc": "3 categorie per modalità (30 domande ciascuna)\nAnteprima di 5 domande delle categorie premium\nAnnunci ogni 7 domande",
+  "currentPlan": "Piano attuale",
+  
+  "limitReached": "Limite raggiunto",
+  "freeCategoryLimit": "Hai raggiunto il limite di 30 domande per le categorie gratuite. Passa a Premium per un accesso illimitato!",
+  "previewLimit": "Hai visto tutte le 5 domande di anteprima. Passa a Premium per continuare!",
+  
+  "pandoraFreeLimit": "Limite versione gratuita",
+  "pandoraFreeLimitMessage": "Gli host gratuiti possono avere al massimo 6 giocatori e 12 domande. Passa a Premium per togliere i limiti!",
+  "pandoraUpgradeMessage": "Hai raggiunto 12 domande. Passa a Premium per continuare a giocare!",
+  "pandoraMaxPlayers": "Numero massimo di 6 giocatori raggiunto (limite gratuito). Passa a Premium per giocatori illimitati!",
+  
+  "swipeOrTap": "Scorri o tocca le frecce",
+  "previous": "Precedente",
+  "next": "Successiva",
+  "advertisement": "Pubblicità",
+  "watchAdMessage": "Guarda una breve pubblicità per continuare, oppure gioca senza pubblicità con Premium!",
+  "watchAd": "Guarda la pubblicità",
+  "goAdFree": "Vai senza pubblicità con Premium",
+  "removeAdsForever": "Rimuovi le pubblicità per sempre",
+  "adNotReady": "Pubblicità non pronta. Si continua senza.",
+  "adLoadingContinue": "Caricamento pubblicità... Continua",
+  "pricePerMonth": "€6,99/mese o €59,99/anno",
+  "noQuestionsFoundMessage": "Nessuna domanda trovata per {category} in modalità {mode}",
+  "errorLoadingQuestions": "Errore nel caricamento delle domande. Controlla la connessione.",
+  "failedToLoadQuestions": "Impossibile caricare le domande: {error}",
+
+  "howManyPlayers": "Quanti giocatori?",
+  "players": "Giocatori",
+  "continueButton": "Continua",
+  
+  "language": "Lingua",
+  "languageChanged": "Lingua cambiata in {language}",
+  
+  "profile": "Profilo",
+  "signOut": "Esci",
+  "notSignedIn": "Non hai effettuato l’accesso",
+  "signInSignUp": "Accedi / Registrati",
+  "signInToSync": "Accedi per sincronizzare l’abbonamento tra i dispositivi e sbloccare i contenuti premium",
+  "signOutConfirm": "Sei sicuro di voler uscire?",
+  "signedOutSuccess": "Disconnessione effettuata",
+  "accountInformation": "Informazioni account",
+  "email": "E-mail",
+  "memberSince": "Membro dal",
+  "notAvailable": "Non disponibile",
+  "unknown": "Sconosciuto",
+  "subscriptionStatus": "Stato abbonamento",
+  "premiumMember": "Utente Premium",
+  "freeAccount": "Account gratuito",
+  
+  "welcomeToConnect": "Benvenuto su Connect!",
+  "continueWithApple": "Continua con Apple",
+  "continueWithGoogle": "Continua con Google",
+  "skipForNow": "Salta per ora",
+  "byContining": "Continuando, accetti i nostri Termini di servizio e l’Informativa sulla privacy",
+  "googleSignInFailed": "Accesso con Google non riuscito. Riprova.",
+  "appleSignInFailed": "Accesso con Apple non riuscito. Riprova.",
+  
+  "noCategoriesFound": "Nessuna categoria trovata",
+  
+  "welcomeBack": "Bentornato!",
+  "createAccount": "Crea un account",
+  "displayName": "Nome visualizzato",
+  "password": "Password",
+  "signIn": "Accedi",
+  "signUp": "Registrati",
+  "dontHaveAccount": "Non hai un account? Registrati",
+  "alreadyHaveAccount": "Hai già un account? Accedi",
+  
+  "chooseYourMode": "1. Scegli la modalità",
+  "chooseYourModeDesc": "Scegli tra cinque esperienze di conversazione uniche:\n\n• Coppia – Domande intime per approfondire il vostro rapporto\n• Amici – Argomenti divertenti e coinvolgenti, perfetti per il tuo gruppo\n• Famiglia – Conversazioni calorose e adatte a tutte le età\n• Personale – Crea i tuoi mazzi personalizzati di domande (Premium)\n• Pandora – Gioco multigiocatore collaborativo con domande in tempo reale",
+  "pickCategory": "2. Scegli una categoria",
+  "pickCategoryDesc": "Ogni modalità offre più categorie con mazzi di domande selezionate:\n\n• Gratis: 3 categorie per modalità (30 domande ciascuna)\n• Anteprima Premium: prime 5 domande delle categorie premium\n• Premium: oltre 24 categorie (75 domande ciascuna)\n• Personale: crea mazzi personalizzati illimitati con le tue domande",
+  "startTalking": "3. Inizia a giocare",
+  "startTalkingDesc": "Le domande compaiono a tutto schermo per conversazioni immersive. A turno, leggete e rispondete con sincerità – non esistono risposte sbagliate! L’obiettivo è connettersi davvero e divertirsi.\n\nIn modalità Pandora: tutti i giocatori inviano domande in modo anonimo, poi tutti rispondono insieme in tempo reale.",
+  "navigateQuestions": "4. Naviga tra le domande",
+  "navigateQuestionsDesc": "• Scorri in qualsiasi direzione o tocca le frecce per cambiare domanda\n• Tocca l’icona a forma di cuore ❤️ per salvare i preferiti\n• Premium: tocca l’icona dell’elenco domande (in alto a destra) per passare a qualsiasi domanda\n• Tocca il pulsante Home per tornare al menu principale in qualsiasi momento",
+  "premiumFeatures": "5. Funzionalità Premium",
+  "premiumFeaturesDesc": "Sblocca l’esperienza completa di Connect:\n\n• Mensile: €6,99/mese\n• Annuale: €59,99/anno (Risparmi il 29%!)\n\n✓ Tutte le 24+ categorie premium in tutte le modalità\n✓ 75 domande per categoria (contro 30 nella versione gratuita)\n✓ Niente pubblicità per sempre\n✓ Pandora: giocatori e domande illimitati\n✓ Personale: crea mazzi personalizzati illimitati\n✓ Navigazione per domande – salta a qualsiasi domanda\n✓ Supporta lo sviluppo continuo",
+  "proTips": "Consigli",
+  "proTipsDesc": "• Crea un ambiente comodo e senza distrazioni\n• Ascolta attivamente ed essere presente\n• Rispondi con sincerità e incoraggia gli altri a fare lo stesso\n• Rispetta i limiti – va benissimo saltare una domanda\n• Usa i preferiti ❤️ per salvare le domande che ti piacciono\n• Prova modalità diverse per occasioni diverse\n• Pandora è perfetto per feste e serate di gruppo\n• Divertiti e goditi la connessione!",
+  "aboutCredits": "Informazioni / Crediti",
+  "developedBy": "Sviluppato da TechyKoala",
+  "learnMore": "Scopri di più su di noi e sulle prossime app",
+  "visitWebsite": "Visita techykoala.com",
+  "madeWithLove": "Creato con ❤️ per conversazioni significative",
+  
+  "personal": "Personale",
+  "personalDesc": "Crea i tuoi mazzi personalizzati di domande",
+  "gameComplete": "Partita terminata!",
+  "noMoreQuestions": "Hai visto tutte le domande di questo mazzo!",
+  "playAgain": "Gioca di nuovo",
+  "mainMenu": "Menu principale",
+  "thanksForPlaying": "Grazie per aver giocato!",
+  "hopeYouHadFun": "Speriamo che ti sia divertito! 🎉",
+  "backToMenu": "Torna al menu",
+  "leaveGame": "Uscire dalla partita?",
+  "leaveGameMessage": "Sei sicuro di voler uscire? La partita continuerà per gli altri giocatori.",
+  "leave": "Esci",
+  "noQuestionsAvailable": "Nessuna domanda disponibile",
+
+  "showLess": "Mostra meno",
+  "readMore": "Mostra altro",
+  "tapToPlay": "Tocca per giocare",
+  "favorites": "Preferiti",
+  
+  "pandoraHostCreatePin": "L’host crea una sessione e condivide il PIN",
+  "pandoraPlayersJoinMax": "I giocatori si uniscono (max 6 gratis, illimitati con Premium)",
+  "pandoraHostSetsTimer": "L’host imposta il timer per le domande (1–15 min)",
+  "pandoraEveryoneSubmits": "Tutti inviano domande (max 12 gratis)",
+  "pandoraHostControls": "L’host controlla l’andamento della partita",
+  "pandoraQuestionsDeleted": "Le domande vengono eliminate dopo la partita",
+  "pandoraHost": "Host",
+  "pandoraJoinGame": "Unisciti alla partita",
+  "pandoraPandoraBox": "Scatola di Pandora",
+  
+  "pleaseEnterName": "Inserisci il tuo nome",
+  "hostSuffix": "(Host)",
+  "playersJoinWithNames": "I giocatori si uniscono con il proprio nome",
+  "everyoneSubmitsMin5": "Tutti inviano domande (min 5, max 12 gratis)",
+  "createSession": "Crea sessione",
+  "creating": "Creazione in corso...",
+  "yourName": "Il tuo nome",
+  "enterDisplayName": "Inserisci il nome visualizzato",
+  "howItWorks": "Come funziona",
+  
+  "pinCopied": "PIN copiato negli appunti!",
+  "endSession": "Terminare la sessione?",
+  "endSessionConfirm": "Sei sicuro di voler terminare questa sessione di Pandora?",
+  
+  "createCustomDeck": "Crea mazzo personalizzato",
+  "deckName": "Nome del mazzo",
+  "enterDeckName": "Inserisci il nome del mazzo",
+  "create": "Crea",
+  "deckCreated": "Mazzo creato!",
+  "failedToCreateDeck": "Impossibile creare il mazzo",
+  "deleteDeck": "Eliminare il mazzo?",
+  "deleteDeckConfirm": "Questo eliminerà tutte le domande di questo mazzo.",
+  "delete": "Elimina",
+  "deckDeleted": "Mazzo eliminato",
+  "failedToDeleteDeck": "Impossibile eliminare il mazzo",
+  "myDecks": "I miei mazzi",
+  "noDecksYet": "Nessun mazzo ancora",
+  "createFirstDeck": "Crea il tuo primo mazzo personalizzato!",
+  "questionsCount": "{count} domande",
+  "questionCount": "{count} domanda",
+  
+  "questionAdded": "Domanda aggiunta!",
+  "failedToAddQuestion": "Impossibile aggiungere la domanda",
+  "editQuestion": "Modifica domanda",
+  "enterYourQuestion": "Inserisci la tua domanda",
+  "save": "Salva",
+  "questionUpdated": "Domanda aggiornata!",
+  "failedToUpdateQuestion": "Impossibile aggiornare la domanda",
+  "deleteQuestion": "Elimina domanda",
+  "deleteQuestionConfirm": "Sei sicuro di voler eliminare questa domanda?",
+  "questionDeleted": "Domanda eliminata",
+  "failedToDeleteQuestion": "Impossibile eliminare la domanda",
+  "addQuestion": "Aggiungi domanda",
+  "typeQuestionHere": "Scrivi qui la tua domanda...",
+  "add": "Aggiungi",
+  "noQuestionsYet": "Ancora nessuna domanda",
+  "addFirstQuestion": "Aggiungi la tua prima domanda!",
+  
+  "deckDescLoveTalks": "Esplora il romanticismo, la chimica e la connessione attraverso domande profonde che celebrano la vostra relazione. Dai momenti di \"come ci siamo conosciuti\" a ciò che ti fa sentire più amato, queste carte approfondiscono l’intimità emotiva.",
+  "deckDescDeepTalks": "Queste carte affrontano valori, vulnerabilità e cosa significa crescere insieme. Aiutano i partner a riflettere su indipendenza, comunicazione e obiettivi condivisi.",
+  "deckDescSpicyTalks": "Piccanti, audaci e intime — queste carte invitano la coppia a esplorare desideri, fantasie e passione insieme. Ogni domanda è pensata per accendere conversazioni sincere ed emozionanti su ciò che vi attrae e vi avvicina.",
+  "deckDescDoYouDareTalks": "Un mazzo senza filtri che unisce onestà emotiva e argomenti delicati come fiducia, religione, soldi e confini personali — tutto pensato per rivelare ciò che conta davvero per entrambi. *Nota:* alcune domande sono crude e dirette — giocate con apertura, empatia e rispetto.",
+  "deckDescLoveLanguagesTalks": "Ispirato ai cinque linguaggi dell’amore, questo mazzo aiuta i partner a esprimere affetto nei modi che risuonano davvero con l’altro. Scoprite come parole, gesti e azioni possano rafforzare la vostra connessione.",
+  "deckDescSillyTalks": "Solo divertimento e tante risate! Queste domande leggere e buffe tirano fuori le vostre abitudini più strane e i pensieri più divertenti. Perfette per amici, famiglia o coppie che non si prendono troppo sul serio.",
+  "deckDescCarTalks": "Perfetto per i viaggi in auto — queste carte trasformano il tempo in macchina in ottime conversazioni. Aspettati domande divertenti, creative e nostalgiche su viaggi, avventure e piccole manie.",
+  "deckDescCozyTalks": "Conversazioni calde e rilassate, ideali per serate accoglienti. Queste domande creano momenti di connessione tranquilla e sincera.",
+  "deckDescPartyNight": "Domande piene di energia pensate per i gruppi. Perfette per feste, aperitivi e serate con amici.",
+  "deckDescUnpopularOpinions": "Il mazzo che ti sfida a dire ad alta voce ciò che tutti pensano ma nessuno dice. Dalla cultura degli influencer alle norme sociali — queste domande scatenano dibattiti sinceri e punti di vista sorprendenti. Ideale per amici con opinioni forti.",
+  "deckDescPlotTwists": "Questo mazzo ti catapulta nelle situazioni più divertenti e più difficili del tipo \"cosa faresti se...?\". Reazioni d’istinto, decisioni a caldo e tante risate garantite! Perfetto per serate di gruppo piene di colpi di scena.",
+  "deckDescAfterDark": "Entra nel lato più oscuro delle conversazioni con domande che fanno venire i brividi. Da coincidenze inquietanti a scenari di sopravvivenza — perfetto per le notti più tarde con un tocco di mistero.",
+  "deckDescHistoryTalks": "Un mix nostalgico di ricordi personali e momenti in famiglia. Queste domande ispirano storie, risate e la riscoperta delle tue radici. Perfetto per cene in famiglia o serate tranquille.",
+  "deckDescTinyTalks": "Pensato per genitori e bambini! Domande semplici e giocose aiutano i piccoli a esprimersi, mentre i genitori scoprono come pensano. Perfetto dai 3 ai 9 anni.",
+  "deckDescGoodOldDays": "Fai un tuffo nel passato con domande su ricordi preziosi, esperienze vissute e com’era “una volta”. Adatto a tutte le età.",
+  "deckDescWouldYouRather": "I classici dilemmi \"preferiresti\" che scatenano discussioni e rivelano preferenze. Scegli tra due opzioni e scopri cosa conta di più per ognuno.",
+  
+  "createNewDeck": "Crea nuovo mazzo",
+  "sessionPin": "PIN sessione",
+  "joinSession": "Unisciti alla sessione",
+  "questionSubmitted": "Domanda inviata",
+  "sessionCancelled": "Sessione annullata",
+  "yourQuestion": "La tua domanda",
+  "reactionBreakdown": "Dettaglio delle reazioni",
+  "deckNameHint": "Nome del mazzo",  
+  "deckCreatedSuccess": "Mazzo creato!",
+  "deleteDeckConfirm": "Sei sicuro di voler eliminare \"{deckName}\"? Questo eliminerà tutte le domande del mazzo.",
+  "cancelSession": "Annullare la sessione?",
+  "cancelSessionConfirm": "Questo annullerà la sessione per tutti i giocatori. Sei sicuro?",
+  "no": "No",
+  "yesCancel": "Sì, annulla",
+  "hostQuestionCollection": "Host – raccolta domande",
+  "questionCollection": "Raccolta domande",
+  "endSessionButton": "Termina sessione",
+  "noActiveSubscription": "Nessun abbonamento attivo",
+  "premium": "Premium",
+  "notEnoughQuestions": "Domande insufficienti. Minimo richiesto: 5. (Attualmente: {count})",
+  "premiumFeatureTitle": "Funzione Premium",
+  "questionNavigationPremium": "La navigazione tra le domande è una funzione Premium. Abbonati per sbloccare la possibilità di saltare a qualsiasi domanda!",
+  "customDecks": "Mazzi personalizzati",
+  "noDecksYetMessage": "Ancora nessun mazzo",
+  "createFirstDeckMessage": "Tocca + per creare il tuo primo mazzo",
+  "signInRequired": "Accesso richiesto",
+  "signInToUsePersonal": "Accedi per usare la modalità Personale e creare mazzi personalizzati di domande.",
+  "collaborativeQuestionGame": "Gioco collaborativo di domande",
+  "hostPandoraSession": "Ospita una sessione Pandora",
+  "joinPandoraGame": "Unisciti a una partita",
+  "yourDisplayName": "Il tuo nome visualizzato",
+  "enterYourName": "Inserisci il tuo nome",
+  "selectQuestion": "Seleziona una domanda",
+  "joinTime": "Tempo per unirsi",
+  "participants": "Partecipanti",
+  "loading": "Caricamento...",
+  "needAtLeastPlayers": "Servono almeno 2 giocatori ({current}/2)",
+  "@needAtLeastPlayers": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "continueToTimerSetup": "Continua alla configurazione del timer",
+  "setQuestionTimer": "Imposta timer domanda",
+  "questionCollectionTime": "Tempo di raccolta delle domande",
+  "minutes": "minuti",
+  "sessionWillEnd": "La sessione terminerà automaticamente se non continui entro 5 minuti",
+  "startQuestionCollection": "Inizia raccolta domande",
+  "questionsSubmitted": "{count} domande inviate",
+  "@questionsSubmitted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "writeQuestionHere": "Scrivi qui la tua domanda...",
+  "whoIsThisFor": "Per chi è questa domanda?",
+  "everyone": "Tutti",
+  "specific": "Qualcuno in particolare",
+  "submitQuestion": "Invia domanda",
+  "needMoreQuestions": "Servono ancora {count} domande",
+  "@needMoreQuestions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "startGame": "Avvia partita",
+  "selectPlayer": "Seleziona un giocatore",
+  "unsubscribe": "Disdici abbonamento",
+  "unsubscribeConfirm": "Disdire l’abbonamento Premium?",
+  "unsubscribeWarning": "Perderai l’accesso a tutte le funzioni Premium, incluse domande illimitate, tutte le categorie, esperienza senza pubblicità e giocatori illimitati su Pandora. Potrai riabbonarti in qualsiasi momento.",
+  "yesUnsubscribe": "Sì, disdici",
+  "unsubscribeSuccess": "Abbonamento disdetto. Le funzioni Premium sono state disabilitate.",
+  "unsubscribeError": "Impossibile disdire l’abbonamento",
+  "questions": "domande",
+  "preview": "anteprima",
+  "premiumFeature3": "✓ 75 domande in tutte le categorie",
+  "freeTierDesc": "3 categorie per modalità (30 domande ciascuna)\nAnteprima di 5 domande delle categorie premium\nAnnunci ogni 7 domande",
+  "userId": "ID utente",
+  "subscription": "Abbonamento",
+  "questionsCount75": "75 domande",
+  "questionsCount30": "30 domande",
+  "questionsCount5Preview": "Anteprima di 5 domande",
+  "unlockFullDeck": "Sblocca 75 domande",
+  "renameDeck": "Rinomina mazzo",
+  "deckRenamed": "Mazzo rinominato con successo",
+  "failedToRenameDeck": "Impossibile rinominare il mazzo",
+  "shuffleQuestions": "Mescola domande",
+  "resetOrder": "Reimposta ordine",
+  "questionsShuffled": "Domande mescolate!",
+  "orderReset": "Ordine reimpostato a quello originale",
+  "readyToPlay": "Pronto per giocare",
+  "longPressReorder": "Tieni premuto e trascina per riordinare le domande",
+  "noFavoritesYet": "Ancora nessun preferito",
+  "heartQuestionsDuringGameplay": "Tocca il cuore ❤️ sulle carte durante la partita per salvarle qui!",
+  "addAtLeastQuestions": "Aggiungi almeno {count} domande per iniziare a giocare!",
+  "heartQuestionsInfo": "Metti il cuore alle domande durante la partita per aggiungerle ai Preferiti!",
+  "addAtLeastQuestionsToPlay": "Aggiungi almeno {count} domande per giocare con questo mazzo",
+  "removeFromFavorites": "Rimuovi dai preferiti",
+  "unlockEverything": "Sblocca tutto",
+  "premiumSubtitle": "Ottieni accesso illimitato a tutte le categorie, rimuovi per sempre le pubblicità e sblocca le funzioni Premium",
+  "monthly": "Mensile",
+  "yearly": "Annuale",
+  "save32Percent": "RISPARMIA IL 29%",
+  "priceMonthly": "€6,99/mese",
+  "priceYearly": "€59,99/anno",
+  "billedMonthly": "Fatturato mensilmente",
+  "billedAnnually": "Fatturato annualmente",
+  "equivalentMonthly": "Solo €5/mese",
+  "premium": "PREMIUM",
+  "feature24Categories": "Oltre 24 categorie premium sbloccate in tutte le modalità",
+  "feature75Questions": "75 domande per categoria (contro 30 nella versione gratuita)",
+  "featureNoAds": "Niente pubblicità per sempre – gioco senza interruzioni",
+  "featureUnlimitedPlayers": "Modalità Pandora: giocatori e domande illimitati",
+  "featureQuestionNavigation": "Naviga e salta a qualsiasi domanda durante la partita",
+  "featureSupportDevelopment": "Supporta lo sviluppo continuo e le nuove funzionalità",
+  "freeTier": "Versione gratuita",
+  "error": "Errore",
+  "premiumActivatedMessage": "Premium attivato! Tutte le categorie sono sbloccate.",
+  "featurePersonalDecks": "Modalità Personale: crea mazzi personalizzati illimitati con le tue domande",
+  "premiumPersonal": "La modalità Personale con mazzi personalizzati è una funzione Premium. Passa a Premium per creare e giocare con i tuoi mazzi di domande!",
+  "deleteDeckConfirmation": "Sei sicuro di voler eliminare \"{deckName}\"? Questo eliminerà tutte le domande del mazzo.",
+  "@deleteDeckConfirmation": {
+    "placeholders": {
+      "deckName": {
+        "type": "String"
+      }
+    }
+  },
+  "needMore": "Servono ancora {count}",
+  "@needMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "editQuestions": "Modifica domande",
+  "questionCount": "{count, plural, =0{0 domande} =1{1 domanda} other{{count} domande}}",
+  "@questionCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "addMore": "Aggiungi altre",
+  "useMyConnectEmail": "Usa la mia e-mail Connect: {email}",
+  "@useMyConnectEmail": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "freemiumPlayerLimit": "Gli utenti gratuiti possono avere al massimo 6 giocatori. Passa a Premium per giocatori illimitati!",
+  "freemiumQuestionLimit": "Gli utenti gratuiti possono inviare al massimo 12 domande. Passa a Premium per domande illimitate!",
+  "yourQuestions": "Le tue domande",
+  "waitingForHost": "In attesa dell’host... ({count} giocatori)",
+  "@waitingForHost": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "upgradeForUnlimitedPlayers": "Passa a Premium per giocatori illimitati",
+  "kickPlayer": "Rimuovi giocatore",
+  "kickPlayerConfirm": "Sei sicuro di voler rimuovere \"{playerName}\" dalla sessione?",
+  "@kickPlayerConfirm": {
+    "placeholders": {
+      "playerName": {
+        "type": "String"
+      }
+    }
+  },
+  "kick": "Rimuovi",
+  "playerKicked": "{playerName} è stato rimosso dalla sessione",
+  "@playerKicked": {
+    "placeholders": {
+      "playerName": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToKickPlayer": "Impossibile rimuovere il giocatore",
+  "cancelSessionForAll": "Questo annullerà la sessione per tutti i giocatori. Sei sicuro?",
+  "youWereKicked": "Sei stato rimosso dalla sessione",
+  "you": "Tu",
+  "loginRequiredForPandora": "Accesso richiesto per giocare a Pandora",
+  "login": "Accedi",
+  "loginRequiredNote": "Per giocare a Pandora è necessario effettuare l’accesso (per tracciare correttamente i giocatori)",
+  "timeIsUp": "Tempo scaduto!",
+  "notEnoughQuestionsSubmitted": "Non sono state inviate abbastanza domande ({current}/{minimum} minimo).",
+  "@notEnoughQuestionsSubmitted": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "minimum": {
+        "type": "int"
+      }
+    }
+  },
+  "sessionQuestionLimit": "Limite di domande della sessione raggiunto",
+  "sessionQuestionLimitMessage": "Questa sessione ha raggiunto il limite di 12 domande (host gratuito). Passa a Premium per domande illimitate!",
+  "sessionQuestionCount": "Sessione: {current}/12 domande",
+  "@sessionQuestionCount": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "pleaseEnterQuestion": "Inserisci una domanda",
+  "rateThisDeck": "Valuta questo mazzo",
+  "yourRating": "La tua valutazione",
+  "skip": "Salta",
+  "submit": "Invia",
+  "thankYouForFeedback": "Grazie per il tuo feedback!",
+  "failedToSubmitRating": "Impossibile inviare la valutazione",
+  "tapStarsToRate": "Tocca le stelle per valutare",
+
+  "downloadForOffline": "Scarica per uso offline",
+  "downloading": "Download in corso...",
+  "downloadedLanguages": "Lingue scaricate",
+  "languageNotDownloaded": "Lingua non scaricata",
+  "languageNotDownloadedMessage": "Non hai scaricato {languageName} per l'uso offline.\n\nVai in Impostazioni > Profilo > \"Scarica per uso offline\" quando sei connesso a internet.",
+  "@languageNotDownloadedMessage": {
+    "placeholders": {
+      "languageName": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineLanguageError": "Questa lingua non è stata scaricata per l'uso offline. Vai in Impostazioni > Profilo > \"Scarica per uso offline\" quando sei connesso a internet.",
+  "downloadComplete": "Download completato!",
+  "downloadCompleteMessage": "Tutti i contenuti sono stati scaricati per l'uso offline.",
+
+  "addedToFavorites": "Aggiunto ai preferiti",
+  "removedFromFavorites": "Rimosso dai preferiti",
+  "errorSavingFavorite": "Errore nel salvataggio del preferito",
+  "internetRequired": "Connessione Internet richiesta",
+  "internetRequiredMessage": "Alcune funzionalità richiedono una connessione Internet. Gli utenti Premium possono scaricare i contenuti per l'uso offline nelle Impostazioni.",
+  "goPremium": "Passa a Premium",
+  "pleaseEnterPin": "Inserisci un PIN di 6 cifre",
+  "errorOccurred": "Errore: {error}",
+  "@errorOccurred": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "errorCreatingSession": "Errore nella creazione della sessione",
+  "sessionTimedOut": "Sessione scaduta - l'host non ha impostato il timer",
+  "errorStarting": "Errore nell'avvio",
+  "errorLoadingParticipants": "Errore nel caricamento dei partecipanti",
+  "sessionCancelledByHost": "Sessione annullata dall'host",
+  "needAtLeast5Questions": "Servono almeno 5 domande per iniziare! (Attualmente: {count})",
+  "@needAtLeast5Questions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "errorStartingGame": "Errore nell'avvio della partita",
+  "questionsAsked": "Domande poste",
+  "totalReactions": "Reazioni totali",
+  "mostLovedQuestion": "Domanda più amata",
+  "mostFunQuestion": "Domanda più divertente",
+  "mostShockingQuestion": "Domanda più scioccante",
+  "mostLitQuestion": "Domanda più epica",
+  "hotSeatAward": "Premio Hot Seat",
+  "errorCouldNotIdentifyPlayer": "Errore: impossibile identificare il giocatore. Rientra nella sessione."
+}

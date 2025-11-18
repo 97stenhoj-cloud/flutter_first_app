@@ -69,10 +69,11 @@ class _PandoraTimerSelectionPageState extends State<PandoraTimerSelectionPage> {
     try {
       await pandoraService.endSession(widget.sessionId);
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         Navigator.of(context).popUntil((route) => route.isFirst);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Session timed out - host did not set timer'),
+          SnackBar(
+            content: Text(l10n.sessionTimedOut),
             backgroundColor: Colors.red,
           ),
         );
@@ -107,8 +108,9 @@ class _PandoraTimerSelectionPageState extends State<PandoraTimerSelectionPage> {
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error starting: $e')),
+          SnackBar(content: Text('${l10n.errorStarting}: $e')),
         );
       }
     } finally {

@@ -2,6 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// List of supported languages with flags
+const List<Map<String, String>> supportedLanguages = [
+  {'code': 'en', 'name': 'English', 'flag': '🇬🇧'},
+  {'code': 'da', 'name': 'Dansk', 'flag': '🇩🇰'},
+  {'code': 'de', 'name': 'Deutsch', 'flag': '🇩🇪'},
+  {'code': 'es', 'name': 'Español', 'flag': '🇪🇸'},
+  {'code': 'fr', 'name': 'Français', 'flag': '🇫🇷'},
+  {'code': 'it', 'name': 'Italiano', 'flag': '🇮🇹'},
+  {'code': 'nb', 'name': 'Norsk', 'flag': '🇳🇴'},
+  {'code': 'nl', 'name': 'Nederlands', 'flag': '🇳🇱'},
+  {'code': 'pl', 'name': 'Polski', 'flag': '🇵🇱'},
+  {'code': 'pt', 'name': 'Português', 'flag': '🇵🇹'},
+  {'code': 'ro', 'name': 'Română', 'flag': '🇷🇴'},
+  {'code': 'sv', 'name': 'Svenska', 'flag': '🇸🇪'},
+];
+
 // Locale state class
 class LocaleState {
   final Locale currentLocale;

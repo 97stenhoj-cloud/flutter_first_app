@@ -67,8 +67,9 @@ class _PandoraHostPageState extends State<PandoraHostPage> {
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error creating session: $e')),
+          SnackBar(content: Text('${l10n.errorCreatingSession}: $e')),
         );
       }
     } finally {

@@ -5,12 +5,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/providers/unlock_provider.dart';
+import '../../../../core/providers/locale_provider.dart';
 import '../../../../core/services/supabase_service.dart';
 import '../../../../core/services/pandora_service.dart';
+import '../../../../core/services/analytics_service.dart';
 import '../../../pandora/presentation/pages/session_stats_page.dart';
-import '../../../subscription/presentation/pages/subscription_page.dart';
+import '../../../subscription/presentation/pages/subscription_page_new.dart';
 import '../../../../core/widgets/custom_dialog.dart';
 import '../../../../core/widgets/rating_dialog.dart';
 import '../../../../core/services/feedback_service.dart';
@@ -45,15 +48,16 @@ class GamePage extends ConsumerStatefulWidget {
 class _GamePageState extends ConsumerState<GamePage> {
   final supabaseService = SupabaseService();
   final pandoraService = PandoraService();
+  final analyticsService = AnalyticsService();
   final CardSwiperController controller = CardSwiperController();
   String? _loadedLanguageCode;
   bool _favoritesLoaded = false;
-  bool _lastKnownPremiumStatus = false; // Track premium status
   List<String> allQuestions = [];
   List<String> displayedQuestions = [];
   int currentIndex = 0;
   bool isLoading = true;
   String? logoUrl;
+
   
   InterstitialAd? _interstitialAd;
   bool _isAdLoaded = false;
@@ -80,13 +84,10 @@ class _GamePageState extends ConsumerState<GamePage> {
     isPandoraMode = widget.gameMode.toLowerCase() == 'pandora' && widget.sessionId != null;
     isHostMode = widget.isHost ?? false;
 
-    _lastKnownPremiumStatus = ref.read(unlockProvider).isPremium; // Initialize premium status
-
     // Listen for premium status changes and reload questions automatically
     ref.listenManual(unlockProvider.select((state) => state.isPremium), (previous, next) {
       if (previous == false && next == true && !isLoading) {
         debugPrint('🎉 Premium status changed! Reloading questions to get all 75...');
-        _lastKnownPremiumStatus = true;
         _loadQuestions();
 
         // Reload the UI to remove lock icons, update limits, etc.
@@ -154,7 +155,6 @@ class _GamePageState extends ConsumerState<GamePage> {
       if (mounted) {
         setState(() {
           currentIndex = savedIndex;
-          _lastKnownPremiumStatus = true;
         });
 
         final l10n = AppLocalizations.of(context)!;
@@ -252,9 +252,10 @@ class _GamePageState extends ConsumerState<GamePage> {
         });
         
         if (mounted) {
+          final l10n = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Removed from favorites'),
+            SnackBar(
+              content: Text(l10n.removedFromFavorites),
               duration: Duration(seconds: 2),
               backgroundColor: Colors.orange,
             ),
@@ -273,9 +274,10 @@ class _GamePageState extends ConsumerState<GamePage> {
         });
         
         if (mounted) {
+          final l10n = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Added to favorites'),
+            SnackBar(
+              content: Text(l10n.addedToFavorites),
               duration: Duration(seconds: 2),
               backgroundColor: Colors.green,
             ),
@@ -285,9 +287,10 @@ class _GamePageState extends ConsumerState<GamePage> {
     } catch (e) {
       debugPrint('❌ Error toggling favorite: $e');
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Error saving favorite'),
+          SnackBar(
+            content: Text(l10n.errorSavingFavorite),
             duration: Duration(seconds: 2),
             backgroundColor: Colors.red,
           ),
@@ -347,12 +350,13 @@ class _GamePageState extends ConsumerState<GamePage> {
     debugPrint('✅ My participant ID: $myParticipantId (${myParticipant['display_name']})');
   } catch (e) {
     debugPrint('❌ Error getting participant ID: $e');
-    
+
     // Show error to user
     if (mounted) {
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error: Could not identify player. Please rejoin the session.'),
+          content: Text(l10n.errorCouldNotIdentifyPlayer),
           backgroundColor: Colors.red,
         ),
       );
@@ -414,8 +418,73 @@ class _GamePageState extends ConsumerState<GamePage> {
     });
   }
 
+  // Analytics methods
+  Future<void> _startAnalyticsSession() async {
+    if (displayedQuestions.isEmpty) return;
+
+    final isPremium = ref.read(unlockProvider).isPremium;
+    final language = ref.read(localeProvider).currentLocale.languageCode;
+
+    await analyticsService.startSession(
+      gameMode: widget.gameMode,
+      category: widget.category,
+      languageCode: language,
+      isPremium: isPremium,
+    );
+
+    // Start tracking time for first question
+    if (displayedQuestions.isNotEmpty) {
+      analyticsService.startQuestionView(displayedQuestions[currentIndex]);
+    }
+  }
+
+  Future<void> _trackQuestionChange({
+    required bool wasSkipped,
+    String? reaction,
+  }) async {
+    if (displayedQuestions.isEmpty || currentIndex >= displayedQuestions.length) {
+      return;
+    }
+
+    final currentQuestion = displayedQuestions[currentIndex];
+
+    // Track the interaction for the current question
+    await analyticsService.trackQuestionInteraction(
+      question: currentQuestion,
+      wasSkipped: wasSkipped,
+      wasFavorited: favoriteQuestions.contains(currentQuestion),
+      reaction: reaction,
+    );
+
+    // Start tracking the next question if available
+    if (currentIndex < displayedQuestions.length - 1) {
+      analyticsService.startQuestionView(displayedQuestions[currentIndex + 1]);
+    }
+  }
+
+  Future<void> _endAnalyticsSession() async {
+    // Track the last question if we're on it
+    if (currentIndex < displayedQuestions.length) {
+      final currentQuestion = displayedQuestions[currentIndex];
+      await analyticsService.trackQuestionInteraction(
+        question: currentQuestion,
+        wasSkipped: false,
+        wasFavorited: favoriteQuestions.contains(currentQuestion),
+        reaction: null,
+      );
+    }
+
+    await analyticsService.endSession(
+      questionsViewed: currentIndex + 1,
+      questionsCompleted: currentIndex,
+    );
+  }
+
   @override
   void dispose() {
+    // End analytics session
+    _endAnalyticsSession();
+
     controller.dispose();
     _interstitialAd?.dispose();
     sessionChannel?.unsubscribe();
@@ -540,17 +609,20 @@ class _GamePageState extends ConsumerState<GamePage> {
         return;
       }
 
-      String languageCode = 'da';
-      try {
-        languageCode = Localizations.localeOf(context).languageCode;
-      } catch (e) {
-        debugPrint('Using default language: English');
-      }
+      // Use LocaleProvider instead of Localizations.localeOf(context)
+      // This works in initState() while Localizations doesn't
+      String languageCode = ref.read(localeProvider).currentLocale.languageCode;
+      debugPrint('🌍 GamePage: Detected locale from provider: $languageCode');
+      debugPrint('🎮 GamePage: Fetching questions with languageCode: $languageCode');
+
+      // Get premium status from provider to enable offline caching
+      final isPremium = ref.read(unlockProvider).isPremium;
 
       final questions = await supabaseService.getQuestions(
         widget.gameMode,
         widget.category,
         languageCode: languageCode,
+        isPremium: isPremium,
       );
 
       if (!mounted) return;
@@ -578,27 +650,55 @@ class _GamePageState extends ConsumerState<GamePage> {
       });
 
       debugPrint('✅ Loaded ${questions.length} questions, displaying ${limitedQuestions.length} (limit: $questionLimit) in $languageCode');
+
+      // Start analytics session when questions are loaded
+      _startAnalyticsSession();
     } catch (e) {
       debugPrint('Error loading questions: $e');
-      
+
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
         setState(() {
-          allQuestions = [l10n.errorLoadingQuestions];
-          displayedQuestions = List.from(allQuestions);
+          allQuestions = [];
+          displayedQuestions = [];
           isLoading = false;
         });
-        
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              l10n.failedToLoadQuestions(e.toString()),
-              style: GoogleFonts.poppins(),
+
+        // Check if this is a premium user offline with uncached language
+        final isPremiumUser = ref.read(unlockProvider).isPremium;
+        final isOfflineError = e.toString().contains('Failed host lookup') ||
+                               e.toString().contains('SocketException');
+
+        if (isPremiumUser && isOfflineError) {
+          // Show helpful message about downloading language
+          final l10n = AppLocalizations.of(context)!;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                l10n.offlineLanguageError,
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.orange,
+              duration: const Duration(seconds: 8),
+              action: SnackBarAction(
+                label: l10n.ok,
+                textColor: Colors.white,
+                onPressed: () {},
+              ),
             ),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 5),
-          ),
-        );
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                l10n.failedToLoadQuestions(e.toString()),
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.red,
+              duration: const Duration(seconds: 5),
+            ),
+          );
+        }
       }
     }
   }
@@ -675,7 +775,7 @@ class _GamePageState extends ConsumerState<GamePage> {
                 final result = await Navigator.push<bool>(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+                    builder: (context) => SubscriptionPageNew(isDarkMode: widget.isDarkMode),
                   ),
                 );
 
@@ -735,23 +835,31 @@ class _GamePageState extends ConsumerState<GamePage> {
       return false; // Block the swipe
     }
     
+    // Track analytics for the previous question before moving
+    if (!isPandoraMode) {
+      _trackQuestionChange(
+        wasSkipped: direction == CardSwiperDirection.left,
+        reaction: mySelectedReaction,
+      );
+    }
+
     // Normal swipe logic
     setState(() {
       currentIndex = newIndex;
       mySelectedReaction = null; // Clear selection when question changes
     });
-    
+
     if (isPandoraMode && isHostMode) {
       _updateDatabaseIndex(newIndex);
     }
-    
+
     _loadReactionsForCurrentQuestion();
-    
+
     if (!isPandoraMode) {
       ref.read(unlockProvider.notifier).incrementQuestionCount();
       _showAdOrPurchaseOption();
     }
-    
+
     return true;
   }
 
@@ -785,6 +893,11 @@ class _GamePageState extends ConsumerState<GamePage> {
 
 void _showGameEndDialog() {
   if (!mounted) return;
+
+  // End analytics session when game ends
+  if (!isPandoraMode) {
+    _endAnalyticsSession();
+  }
 
   // For Pandora mode, ALWAYS go to stats page (both host and players)
   if (isPandoraMode) {
@@ -912,7 +1025,7 @@ void _showGameEndDialog() {
                 final result = await Navigator.push<bool>(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+                    builder: (context) => SubscriptionPageNew(isDarkMode: widget.isDarkMode),
                   ),
                 );
 
@@ -994,7 +1107,7 @@ void _showPremiumCategoryDialog() {
             final result = await Navigator.push<bool>(
               context,
               MaterialPageRoute(
-                builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+                builder: (context) => SubscriptionPageNew(isDarkMode: widget.isDarkMode),
               ),
             );
 
@@ -1224,7 +1337,6 @@ void _showPremiumCategoryDialog() {
                               ),
                             )
                           : CardSwiper(
-                              key: ValueKey('card_swiper_${displayedQuestions.length}'),
                               controller: controller,
                               cardsCount: displayedQuestions.length,
                               initialIndex: currentIndex,
@@ -1292,7 +1404,7 @@ void _showPremiumCategoryDialog() {
             final result = await Navigator.push<bool>(
               context,
               MaterialPageRoute(
-                builder: (context) => SubscriptionPage(isDarkMode: widget.isDarkMode),
+                builder: (context) => SubscriptionPageNew(isDarkMode: widget.isDarkMode),
               ),
             );
 

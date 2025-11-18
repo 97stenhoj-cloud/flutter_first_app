@@ -2,7 +2,6 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../utils/unlock_manager.dart';
 
 class PandoraService {
   static final PandoraService _instance = PandoraService._internal();
@@ -21,12 +20,22 @@ class PandoraService {
 }) async {
   try {
     final userId = _supabase.auth.currentUser?.id;
-    final unlockManager = UnlockManager();
-    
+
+    // Query premium status directly from database
+    bool isPremium = false;
+    if (userId != null) {
+      final premiumResponse = await _supabase
+          .from('user_subscriptions')
+          .select('is_premium')
+          .eq('user_id', userId)
+          .maybeSingle();
+      isPremium = premiumResponse?['is_premium'] ?? false;
+    }
+
     // Generate unique PIN
     final pinResponse = await _supabase.rpc('generate_unique_pin');
     final pin = pinResponse as String;
-    
+
     // Create session with host premium status
     final sessionResponse = await _supabase
         .from('pandora_sessions')
@@ -36,7 +45,7 @@ class PandoraService {
           'timer_minutes': timerMinutes,
           'status': 'waiting',
           'current_question_index': 0,
-          'host_is_premium': unlockManager.isPremium, // ← Add this
+          'host_is_premium': isPremium,
         })
         .select()
         .single();
@@ -48,7 +57,7 @@ class PandoraService {
       isHost: true,
     );
 
-    debugPrint('✅ Pandora session created: ${sessionResponse['session_pin']} (Premium: ${unlockManager.isPremium})');
+    debugPrint('✅ Pandora session created: ${sessionResponse['session_pin']} (Premium: $isPremium)');
     return sessionResponse;
   } catch (e, stackTrace) {
     debugPrint('❌ Error creating Pandora session: $e');

@@ -59,6 +59,7 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -106,21 +107,21 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
                       // Stats cards
                       _buildStatCard(
                         icon: '📝',
-                        title: 'Questions Asked',
+                        title: l10n.questionsAsked,
                         value: '${stats?['total_questions'] ?? 0}',
                         color: const Color(0xFF4CAF50),
                       ),
-                      
+
                       _buildStatCard(
                         icon: '👥',
-                        title: 'Players',
+                        title: l10n.players,
                         value: '${stats?['total_participants'] ?? 0}',
                         color: const Color(0xFF2196F3),
                       ),
-                      
+
                       _buildStatCard(
                         icon: '❤️',
-                        title: 'Total Reactions',
+                        title: l10n.totalReactions,
                         value: '${stats?['total_reactions'] ?? 0}',
                         color: const Color(0xFFE91E63),
                       ),
@@ -136,52 +137,52 @@ class _SessionStatsPageState extends State<SessionStatsPage> {
                         const SizedBox(height: 16),
                         _buildQuestionAwardCard(
                           icon: '❤️',
-                          title: 'Most Loved Question',
+                          title: l10n.mostLovedQuestion,
                           question: stats!['most_loved_question'],
                           count: '${stats!['most_loved_count']} hearts',
                           color: const Color(0xFFE91E63),
                         ),
                       ],
-                      
+
                       if (stats?['most_funny_question'] != null) ...[
                         const SizedBox(height: 16),
                         _buildQuestionAwardCard(
                           icon: '😂',
-                          title: 'Most Fun Question',
+                          title: l10n.mostFunQuestion,
                           question: stats!['most_funny_question'],
                           count: '${stats!['most_funny_count']} laughs',
                           color: const Color(0xFFFFEB3B),
                         ),
                       ],
-                      
+
                       if (stats?['most_shocking_question'] != null) ...[
                         const SizedBox(height: 16),
                         _buildQuestionAwardCard(
                           icon: '😮',
-                          title: 'Most Shocking Question',
+                          title: l10n.mostShockingQuestion,
                           question: stats!['most_shocking_question'],
                           count: '${stats!['most_shocking_count']} shocks',
                           color: const Color(0xFF9C27B0),
                         ),
                       ],
-                      
+
                       if (stats?['most_lit_question'] != null) ...[
                         const SizedBox(height: 16),
                         _buildQuestionAwardCard(
                           icon: '🔥',
-                          title: 'Most Lit Question',
+                          title: l10n.mostLitQuestion,
                           question: stats!['most_lit_question'],
                           count: '${stats!['most_lit_count']} fires',
                           color: const Color(0xFFFF5722),
                         ),
                       ],
-                      
+
                       // Most targeted
                       if (stats?['most_targeted_id'] != null) ...[
                         const SizedBox(height: 16),
                         _buildAwardCard(
                           icon: '🎯',
-                          title: 'Hot Seat Award',
+                          title: l10n.hotSeatAward,
                           winner: _getParticipantName(stats!['most_targeted_id']),
                           count: '${stats!['most_targeted_count']} questions',
                           color: const Color(0xFFFF6B9D),

@@ -48,7 +48,7 @@ class _PandoraJoinPageState extends State<PandoraJoinPage> {
     final l10n = AppLocalizations.of(context)!;
     if (pinController.text.length != 6) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a 6-digit PIN')),
+        SnackBar(content: Text(l10n.pleaseEnterPin)),
       );
       return;
     }
@@ -87,8 +87,9 @@ class _PandoraJoinPageState extends State<PandoraJoinPage> {
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${e.toString()}')),
+          SnackBar(content: Text(l10n.errorOccurred(e.toString()))),
         );
       }
     } finally {
