@@ -1,0 +1,5 @@
+SET translations = '{"en": "What\u2019s your most random talent?", "da": "Hvad er dit mest tilf\u00e6ldige talent?", "de": "Was ist dein zuf\u00e4lligstes Talent?", "es": "\u00bfCu\u00e1l es tu talento m\u00e1s aleatorio?", "pt": "Qual \u00e9 o teu talento mais aleat\u00f3rio?", "ro": "Care este talentul t\u0103u cel mai nea\u0219teptat?", "fr": "Quel est ton talent le plus al\u00e9atoire ?", "it": "Qual \u00e8 il tuo talento pi\u00f9 strano?", "fi": "Mik\u00e4 on outoin taitosi?", "nl": "Wat is jouw meest willekeurige talent?", "no": "Hva er ditt mest tilfeldige talent?", "sv": "Vad \u00e4r din mest slumpm\u00e4ssiga talang?", "pl": "Jaki jest tw\u00f3j najbardziej przypadkowy talent?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'What’s your most random talent?';
+UPDATE questions

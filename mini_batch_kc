@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What scares you most about losing connection, and how can we protect it?';
+UPDATE questions
+SET translations = '{"en": "What kind of elder do you hope to become?", "da": "Hvilken slags \u00e6ldre h\u00e5ber du at blive?", "de": "Welche Art \u00e4lterer Mensch hoffst du zu werden?", "es": "\u00bfQu\u00e9 tipo de persona mayor esperas llegar a ser?", "pt": "Que tipo de pessoa idosa voc\u00ea espera se tornar?", "ro": "Ce fel de persoan\u0103 \u00een v\u00e2rst\u0103 speri s\u0103 devii?", "fr": "Quel genre de personne \u00e2g\u00e9e esp\u00e8res-tu devenir ?", "it": "Che tipo di anziano speri di diventare?", "fi": "Mink\u00e4laista vanhusta toivot tulevasi?", "nl": "Wat voor soort oudere hoop je te worden?", "no": "Hva slags eldre h\u00e5per du \u00e5 bli?", "sv": "Vilken typ av \u00e4ldre person hoppas du bli?", "pl": "Jakim starszym mam nadziej\u0119 zosta\u0107?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

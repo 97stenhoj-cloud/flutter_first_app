@@ -1,0 +1,5 @@
+WHERE category_name = 'Do-you-dare Talks'
+  AND translations->>'en' = 'How do you think your exes would describe you as a partner?';
+UPDATE questions
+SET translations = '{"en": "How do you feel about getting older?", "da": "Hvordan har du det med at blive \u00e6ldre?", "de": "Wie f\u00fchlst du dich, wenn du \u00e4lter wirst?", "es": "\u00bfC\u00f3mo te sientes respecto a envejecer?", "pt": "Como te sentes em rela\u00e7\u00e3o a envelhecer?", "ro": "Cum te sim\u021bi \u00een leg\u0103tur\u0103 cu \u00eemb\u0103tr\u00e2nirea?", "fr": "Comment te sens-tu \u00e0 propos du fait de vieillir ?", "it": "Come ti senti riguardo all''invecchiare?", "fi": "Milt\u00e4 sinusta tuntuu vanhenemisesta?", "nl": "Hoe voel je je over ouder worden?", "no": "Hvordan f\u00f8ler du om \u00e5 bli eldre?", "sv": "Hur k\u00e4nner du inf\u00f6r att bli \u00e4ldre?", "pl": "Jak si\u0119 czujesz z powodu starzenia si\u0119?"}'::jsonb,
+    updated_at = NOW()

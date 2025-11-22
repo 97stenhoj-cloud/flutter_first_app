@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'Which of us is more likely to light candles and set the mood?';
+UPDATE questions
+SET translations = '{"en": "What would you like to do when you retire?", "da": "Hvem af os siger f\u00f8rst undskyld efter et sk\u00e6nderi?", "de": "Wer von uns entschuldigt sich als Erstes nach einem Streit?", "es": "\u00bfQui\u00e9n de los dos pide perd\u00f3n primero despu\u00e9s de una pelea?", "pt": "Qual de n\u00f3s pede desculpa primeiro depois de uma discuss\u00e3o?", "ro": "Cine dintre noi \u00ee\u0219i cere primul scuze dup\u0103 o ceart\u0103?", "fr": "Lequel de nous s\u2019excuse en premier apr\u00e8s une dispute ?", "it": "Cosa ti piacerebbe fare quando andrai in pensione?", "fi": "Mit\u00e4 haluaisit tehd\u00e4, kun j\u00e4\u00e4t el\u00e4kkeelle?", "nl": "Wat zou je graag willen doen als je met pensioen gaat?", "no": "Hva ville du likt \u00e5 gj\u00f8re n\u00e5r du g\u00e5r av med pensjon?", "sv": "Vad skulle du vilja g\u00f6ra n\u00e4r du g\u00e5r i pension?", "pl": "Co chcia\u0142by\u015b robi\u0107 na emeryturze?"}'::jsonb,

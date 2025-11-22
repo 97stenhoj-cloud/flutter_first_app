@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who’s best known for taking way too many selfies?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s the most competitive person here?", "da": "Hvem er den mest konkurrencemindede her?", "de": "Wer ist hier am wettkampffreudigsten?", "es": "\u00bfQui\u00e9n es la persona m\u00e1s competitiva aqu\u00ed?", "pt": "Quem \u00e9 a pessoa mais competitiva aqui?", "ro": "Cine este cea mai competitiv\u0103 persoan\u0103 de aici?", "fr": "Qui est la personne la plus comp\u00e9titive ici ?", "it": "Chi \u00e8 la persona pi\u00f9 competitiva qui?", "fi": "Kuka on t\u00e4\u00e4ll\u00e4 kilpailuhenkisin henkil\u00f6?", "nl": "Wie is de meest competitieve persoon hier?", "no": "Hvem er den mest konkurransedyktige personen her?", "sv": "Vem \u00e4r den mest t\u00e4vlingsinriktade personen h\u00e4r?", "pl": "Kto jest najbardziej konkurencyjn\u0105 osob\u0105 tutaj?"}'::jsonb,

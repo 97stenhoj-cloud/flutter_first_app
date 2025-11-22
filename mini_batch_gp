@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What’s the best relationship advice you’ve ever received?';
+UPDATE questions
+SET translations = '{"en": "What season matches your personality?", "da": "Hvilken \u00e5rstid matcher din personlighed?", "de": "Welche Jahreszeit passt zu deiner Pers\u00f6nlichkeit?", "es": "\u00bfQu\u00e9 estaci\u00f3n del a\u00f1o coincide con tu personalidad?", "pt": "Qual esta\u00e7\u00e3o combina com a sua personalidade?", "ro": "Ce anotimp se potrive\u0219te personalit\u0103\u021bii tale?", "fr": "Quelle saison correspond \u00e0 ta personnalit\u00e9 ?", "it": "Quale stagione corrisponde alla tua personalit\u00e0?", "fi": "Mik\u00e4 vuodenaika vastaa persoonallisuuttasi?", "nl": "Welke seizoen past bij jouw persoonlijkheid?", "no": "Hvilken \u00e5rstid passer til din personlighet?", "sv": "Vilken \u00e5rstid matchar din personlighet?", "pl": "Kt\u00f3ra pora roku pasuje do twojej osobowo\u015bci?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'Who in this group would make the best game show host — and what would the show be about?';
+
+-- Category: Plot Twists & Dilemmas  (75 questions)

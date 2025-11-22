@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "If gossip were a sport, who here would win gold?", "da": "Hvis sladder var en sport, hvem her ville vinde guld?", "de": "Wenn Klatsch eine Sportart w\u00e4re, wer hier w\u00fcrde Gold gewinnen?", "es": "Si el chisme fuera un deporte, \u00bfqui\u00e9n aqu\u00ed ganar\u00eda el oro?", "pt": "Se fofoca fosse um esporte, quem aqui ganharia ouro?", "ro": "Dac\u0103 b\u00e2rfa ar fi un sport, cine de aici ar c\u00e2\u0219tiga aurul?", "fr": "Si les comm\u00e9rages \u00e9taient un sport, qui ici remporterait l\u2019or ?", "it": "Se il pettegolezzo fosse uno sport, chi qui vincerebbe l''oro?", "fi": "Jos juoruilu olisi urheilulaji, kuka t\u00e4\u00e4ll\u00e4 voittaisi kultamitalin?", "nl": "Als roddelen een sport was, wie hier zou dan goud winnen?", "no": "Hvis sladder var en sport, hvem her ville vinne gull?", "sv": "Om skvaller vore en sport, vem h\u00e4r skulle vinna guld?", "pl": "Gdyby plotki by\u0142y sportem, kto tutaj zdoby\u0142by z\u0142oty medal?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'
+  AND translations->>'en' = 'If gossip were a sport, who here would win gold?';

@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What would Past-You thank Present-You for?';
+UPDATE questions
+SET translations = '{"en": "Name one thing worth being patient for?", "da": "N\u00e6vn \u00e9n ting, der er v\u00e6rd at v\u00e6re t\u00e5lmodig for.", "de": "Nenne eine Sache, f\u00fcr die es sich lohnt, geduldig zu sein.", "es": "Nombra una cosa por la que valga la pena ser paciente.", "pt": "Diga uma coisa pela qual vale a pena ser paciente.", "ro": "Nume\u0219te un lucru pentru care merit\u0103 s\u0103 fii r\u0103bd\u0103tor(are).", "fr": "Nomme une chose qui vaut la peine d\u2019\u00eatre patient(e).", "it": "Nomina una cosa per cui valga la pena avere pazienza?", "fi": "Nime\u00e4 yksi asia, jota kannattaa odottaa k\u00e4rsiv\u00e4llisesti?", "nl": "Noem \u00e9\u00e9n ding waar het de moeite waard is om geduldig voor te zijn?", "no": "Nevn \u00e9n ting som er verdt \u00e5 v\u00e6re t\u00e5lmodig for?", "sv": "N\u00e4mn en sak som \u00e4r v\u00e4rd att vara t\u00e5lmodig f\u00f6r?", "pl": "Wymie\u0144 jedn\u0105 rzecz, na kt\u00f3r\u0105 warto czeka\u0107?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

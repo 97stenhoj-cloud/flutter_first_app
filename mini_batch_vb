@@ -1,0 +1,5 @@
+SET translations = '{"en": "When do you feel proud of who we are together?", "da": "Hvilken af dine kvaliteter tror du, jeg v\u00e6rds\u00e6tter mest?", "de": "Welche deiner Eigenschaften glaubst du, sch\u00e4tze ich am meisten?", "es": "\u00bfQu\u00e9 cualidad tuya crees que valoro m\u00e1s?", "pt": "Que qualidade sua voc\u00ea acha que eu mais valorizo?", "ro": "Care calitate a ta crezi c\u0103 o apreciez cel mai mult?", "fr": "Quelle qualit\u00e9 chez toi penses-tu que j\u2019appr\u00e9cie le plus ?", "it": "Quando ti senti orgoglioso di chi siamo insieme?", "fi": "Milloin tunnet ylpeytt\u00e4 siit\u00e4, keit\u00e4 me olemme yhdess\u00e4?", "nl": "Wanneer voel je je trots op wie we samen zijn?", "no": "N\u00e5r f\u00f8ler du deg stolt av hvem vi er sammen?", "sv": "N\u00e4r k\u00e4nner du dig stolt \u00f6ver vilka vi \u00e4r tillsammans?", "pl": "Kiedy czujesz dum\u0119 z tego, kim jeste\u015bmy razem?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'When do you feel proud of who we are together?';
+UPDATE questions

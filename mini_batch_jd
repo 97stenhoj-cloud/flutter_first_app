@@ -1,0 +1,5 @@
+WHERE category_name = 'Deep Talks'
+  AND translations->>'en' = 'Which of us holds a grudge longer — and how do we fix it fast?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s a boundary that protects your creativity or rest?", "da": "Hvilken gr\u00e6nse beskytter din kreativitet eller din hvile?", "de": "Welche Grenze sch\u00fctzt deine Kreativit\u00e4t oder deine Erholung?", "es": "\u00bfQu\u00e9 l\u00edmite protege tu creatividad o tu descanso?", "pt": "Que limite protege a sua criatividade ou o seu descanso?", "ro": "Care este o limit\u0103 care \u00ee\u021bi protejeaz\u0103 creativitatea sau odihna?", "fr": "Quelle limite prot\u00e8ge ta cr\u00e9ativit\u00e9 ou ton repos ?", "it": "Qual \u00e8 un confine che protegge la tua creativit\u00e0 o il tuo riposo?", "fi": "Mik\u00e4 on raja, joka suojaa luovuuttasi tai lepoasi?", "nl": "Wat is een grens die jouw creativiteit of rust beschermt?", "no": "Hva er en grense som beskytter din kreativitet eller hvile?", "sv": "Vilken gr\u00e4ns skyddar din kreativitet eller vila?", "pl": "Jaka granica chroni twoj\u0105 kreatywno\u015b\u0107 lub odpoczynek?"}'::jsonb,
+    updated_at = NOW()

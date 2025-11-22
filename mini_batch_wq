@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'What do you think makes our relationship unique?';
+UPDATE questions
+SET translations = '{"en": "What makes you feel respected by me?", "da": "Hvad f\u00e5r dig til at f\u00f8le dig respekteret af mig?", "de": "Wodurch f\u00fchlst du dich von mir respektiert?", "es": "\u00bfQu\u00e9 te hace sentir respetado/a por m\u00ed?", "pt": "O que te faz sentir respeitado/a por mim?", "ro": "Ce te face s\u0103 te sim\u021bi respectat(\u0103) de mine?", "fr": "Qu\u2019est-ce qui te fait te sentir respect\u00e9(e) par moi ?", "it": "Cosa ti fa sentire rispettato da me?", "fi": "Mik\u00e4 saa sinut tuntemaan itsesi kunnioitetuksi minun puolestani?", "nl": "Wat maakt dat je je door mij gerespecteerd voelt?", "no": "Hva f\u00e5r deg til \u00e5 f\u00f8le deg respektert av meg?", "sv": "Vad f\u00e5r dig att k\u00e4nna dig respekterad av mig?", "pl": "Co sprawia, \u017ce czujesz si\u0119 przeze mnie szanowany?"}'::jsonb,

@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What moral value or principle matters most to you in a relationship?';
+UPDATE questions
+SET translations = '{"en": "How do you decide what\u2019s forgivable and what\u2019s not?", "da": "Hvordan beslutter du, hvad der kan tilgives, og hvad der ikke kan?", "de": "Wie entscheidest du, was verzeihbar ist und was nicht?", "es": "\u00bfC\u00f3mo decides qu\u00e9 se puede perdonar y qu\u00e9 no?", "pt": "Como decides o que \u00e9 perdo\u00e1vel e o que n\u00e3o \u00e9?", "ro": "Cum decizi ce poate fi iertat \u0219i ce nu?", "fr": "Comment d\u00e9cides-tu ce qui est pardonnable et ce qui ne l\u2019est pas ?", "it": "Come decidi cosa \u00e8 perdonabile e cosa non lo \u00e8?", "fi": "Miten p\u00e4\u00e4t\u00e4t, mik\u00e4 on anteeksiannettavaa ja mik\u00e4 ei?", "nl": "Hoe beslis je wat vergeven kan worden en wat niet?", "no": "Hvordan bestemmer du hva som er tilgivelig og hva som ikke er det?", "sv": "Hur best\u00e4mmer du vad som \u00e4r f\u00f6rl\u00e5tligt och vad som inte \u00e4r det?", "pl": "Jak decydujesz, co jest do wybaczenia, a co nie?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Do-you-dare Talks'

@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'What’s a memory that instantly makes everyone laugh?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s most likely to retell the same story every time?", "da": "Hvem fort\u00e6ller den samme historie igen og igen?", "de": "Wer erz\u00e4hlt jedes Mal dieselbe Geschichte?", "es": "\u00bfQui\u00e9n siempre cuenta la misma historia?", "pt": "Quem sempre conta a mesma hist\u00f3ria?", "ro": "Cine spune mereu aceea\u0219i poveste?", "fr": "Qui raconte toujours la m\u00eame histoire ?", "it": "Chi \u00e8 pi\u00f9 probabile che racconti la stessa storia ogni volta?", "fi": "Kuka on kaikkein todenn\u00e4k\u00f6isin kertomaan saman tarinan joka kerta?", "nl": "Wie is het meest waarschijnlijk om steeds hetzelfde verhaal te vertellen?", "no": "Hvem er mest sannsynlig til \u00e5 gjenta den samme historien hver gang?", "sv": "Vem \u00e4r mest ben\u00e4gen att \u00e5terber\u00e4tta samma historia varje g\u00e5ng?", "pl": "Kto najprawdopodobniej opowiada t\u0119 sam\u0105 histori\u0119 za ka\u017cdym razem?"}'::jsonb,
+    updated_at = NOW()

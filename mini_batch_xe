@@ -1,0 +1,5 @@
+SET translations = '{"en": "What\u2019s your signature move on the dance floor?", "da": "Hvad er dit signaturmove p\u00e5 dansegulvet?", "de": "Was ist dein Signature-Move auf der Tanzfl\u00e4che?", "es": "\u00bfCu\u00e1l es tu movimiento caracter\u00edstico en la pista de baile?", "pt": "Qual \u00e9 o teu movimento de assinatura na pista de dan\u00e7a?", "ro": "Care este mi\u0219carea ta semn\u0103tur\u0103 pe ringul de dans?", "fr": "Quel est ton pas de danse signature ?", "it": "Qual \u00e8 la tua mossa distintiva sulla pista da ballo?", "fi": "Mik\u00e4 on sinun tavaramerkkiliike tanssilattialla?", "nl": "Wat is jouw kenmerkende beweging op de dansvloer?", "no": "Hva er ditt signaturtrekk p\u00e5 dansegulvet?", "sv": "Vad \u00e4r ditt signaturdrag p\u00e5 dansgolvet?", "pl": "Jaki jest tw\u00f3j znak rozpoznawczy na parkiecie?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'What’s your signature move on the dance floor?';
+UPDATE questions

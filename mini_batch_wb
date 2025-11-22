@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'What’s a decision of ours you’re proudest of?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s something new you want to learn together?", "da": "Hvad er noget nyt, du gerne vil l\u00e6re sammen med mig?", "de": "Was ist etwas Neues, das du gerne gemeinsam lernen m\u00f6chtest?", "es": "\u00bfQu\u00e9 cosa nueva te gustar\u00eda que aprendi\u00e9ramos juntos?", "pt": "O que de novo gostarias que aprend\u00eassemos juntos?", "ro": "Ce lucru nou ai vrea s\u0103 \u00eenv\u0103\u021b\u0103m \u00eempreun\u0103?", "fr": "Quelle nouvelle chose voudrais-tu qu\u2019on apprenne ensemble ?", "it": "Qualcosa di nuovo che vuoi imparare insieme?", "fi": "Mik\u00e4 on jotain uutta, mit\u00e4 haluaisit oppia yhdess\u00e4?", "nl": "Wat is iets nieuws dat je samen wilt leren?", "no": "Hva er noe nytt du \u00f8nsker \u00e5 l\u00e6re sammen?", "sv": "Vad \u00e4r n\u00e5got nytt ni vill l\u00e4ra er tillsammans?", "pl": "Co\u015b nowego, czego chcesz si\u0119 nauczy\u0107 razem?"}'::jsonb,

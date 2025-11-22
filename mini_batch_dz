@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "What\u2019s a smell that takes you straight back to childhood?", "da": "Hvilken duft sender dig direkte tilbage til barndommen?", "de": "Welcher Geruch versetzt dich sofort in deine Kindheit zur\u00fcck?", "es": "\u00bfQu\u00e9 olor te transporta directamente a tu infancia?", "pt": "Que cheiro te leva diretamente de volta \u00e0 inf\u00e2ncia?", "ro": "Ce miros te trimite direct \u00een copil\u0103rie?", "fr": "Quelle odeur te ram\u00e8ne directement \u00e0 ton enfance ?", "it": "Quale odore ti riporta immediatamente all\u2019infanzia?", "fi": "Mik\u00e4 tuoksu vie sinut suoraan takaisin lapsuuteen?", "nl": "Welke geur brengt je meteen terug naar je kindertijd?", "no": "Hvilken lukt sender deg rett tilbake til barndommen?", "sv": "Vilken doft tar dig direkt tillbaka till barndomen?", "pl": "Jaki zapach przenosi ci\u0119 prosto do dzieci\u0144stwa?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Car Talks'
+  AND translations->>'en' = 'What’s a smell that takes you straight back to childhood?';

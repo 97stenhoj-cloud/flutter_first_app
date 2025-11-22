@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'What’s our most unforgettable vacation moment?';
+UPDATE questions
+SET translations = '{"en": "Who always ends up getting lost on road trips?", "da": "Hvem farer altid vild p\u00e5 roadtrips?", "de": "Wer verirrt sich immer auf Roadtrips?", "es": "\u00bfQui\u00e9n siempre se pierde en los viajes por carretera?", "pt": "Quem sempre se perde nas viagens de carro?", "ro": "Cine se pierde mereu \u00een excursiile cu ma\u0219ina?", "fr": "Qui se perd toujours pendant les road trips ?", "it": "Chi si perde sempre durante i viaggi in auto?", "fi": "Kuka aina p\u00e4\u00e4tyy eksym\u00e4\u00e4n automatkoilla?", "nl": "Wie raakt er altijd verdwaald tijdens roadtrips?", "no": "Hvem ender alltid opp med \u00e5 g\u00e5 seg bort p\u00e5 bilturer?", "sv": "Vem brukar alltid g\u00e5 vilse p\u00e5 roadtrips?", "pl": "Kto zawsze gubi si\u0119 podczas podr\u00f3\u017cy samochodowych?"}'::jsonb,
+    updated_at = NOW()

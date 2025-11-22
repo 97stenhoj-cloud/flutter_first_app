@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'What would you like to do when you retire?';
+UPDATE questions
+SET translations = '{"en": "Which of us apologizes first after a fight?", "da": "Hvem af os siger f\u00f8rst undskyld efter et sk\u00e6nderi?", "de": "Wer von uns entschuldigt sich als Erstes nach einem Streit?", "es": "\u00bfQui\u00e9n de los dos pide perd\u00f3n primero despu\u00e9s de una pelea?", "pt": "Qual de n\u00f3s pede desculpa primeiro depois de uma discuss\u00e3o?", "ro": "Cine dintre noi \u00ee\u0219i cere primul scuze dup\u0103 o ceart\u0103?", "fr": "Lequel de nous s\u2019excuse en premier apr\u00e8s une dispute ?", "it": "Chi di noi si scusa per primo dopo una lite?", "fi": "Kumpi meist\u00e4 pyyt\u00e4\u00e4 anteeksi ensin riidan j\u00e4lkeen?", "nl": "Wie van ons verontschuldigt zich het eerst na een ruzie?", "no": "Hvem av oss unnskylder seg f\u00f8rst etter en krangel?", "sv": "Vem av oss ber om urs\u00e4kt f\u00f6rst efter ett br\u00e5k?", "pl": "Kto z nas przeprasza pierwszy po k\u0142\u00f3tni?"}'::jsonb,

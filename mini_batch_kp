@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'When do you feel most attractive?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s a piece of advice you\u2019re glad you ignored?", "da": "Hvilket r\u00e5d er du glad for, at du ignorerede?", "de": "Welchen Rat bist du froh, ignoriert zu haben?", "es": "\u00bfQu\u00e9 consejo te alegra haber ignorado?", "pt": "Que conselho voc\u00ea est\u00e1 feliz por ter ignorado?", "ro": "Ce sfat te bucuri c\u0103 ai ignorat?", "fr": "Quel conseil es-tu heureux(se) d\u2019avoir ignor\u00e9 ?", "it": "Qual \u00e8 un consiglio che sei contento di aver ignorato?", "fi": "Mik\u00e4 on neuvo, josta olet iloinen, ett\u00e4 ignoroit sen?", "nl": "Wat is een advies dat je blij bent dat je hebt genegeerd?", "no": "Hva er et r\u00e5d du er glad for at du ignorerte?", "sv": "Vilket r\u00e5d \u00e4r du glad att du ignorerade?", "pl": "Jak\u0105 rad\u0119 cieszysz si\u0119, \u017ce zignorowa\u0142e\u015b?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

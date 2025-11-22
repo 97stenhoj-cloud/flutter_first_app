@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who has the funniest school stories?';
+UPDATE questions
+SET translations = '{"en": "Who always took forever to finish homework?", "da": "Hvem brugte evigheder p\u00e5 at lave lektier?", "de": "Wer brauchte ewig, um Hausaufgaben zu machen?", "es": "\u00bfQui\u00e9n tardaba una eternidad en hacer la tarea?", "pt": "Quem demorava uma eternidade para fazer o dever de casa?", "ro": "Cine terminaa cel mai greu temele?", "fr": "Qui mettait toujours une \u00e9ternit\u00e9 \u00e0 faire ses devoirs ?", "it": "Chi impiegava sempre un''eternit\u00e0 per finire i compiti?", "fi": "Kuka aina k\u00e4ytti ikuisuuden kotiteht\u00e4vien tekemiseen?", "nl": "Wie deed er altijd eeuwig over het maken van huiswerk?", "no": "Hvem brukte alltid evigheter p\u00e5 \u00e5 bli ferdig med leksene?", "sv": "Vem tog alltid en evighet p\u00e5 sig att bli klar med l\u00e4xorna?", "pl": "Kto zawsze potrzebowa\u0142 wieczno\u015bci, \u017ceby sko\u0144czy\u0107 prac\u0119 domow\u0105?"}'::jsonb,
+    updated_at = NOW()

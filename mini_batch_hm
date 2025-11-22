@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What’s a TV show or movie you’d love to watch for the first time again?';
+UPDATE questions
+SET translations = '{"en": "What does your ideal \u201cno plans\u201d night look like?", "da": "Hvordan ser din ideelle \u201cingen planer\u201d-aften ud?", "de": "Wie sieht dein idealer \u201eKeine-Pl\u00e4ne\u201c-Abend aus?", "es": "\u00bfC\u00f3mo es tu noche ideal de \u201csin planes\u201d?", "pt": "Como \u00e9 a sua noite ideal de \u201csem planos\u201d?", "ro": "Cum arat\u0103 seara ta ideal\u0103 \u201ef\u0103r\u0103 planuri\u201d?", "fr": "\u00c0 quoi ressemble ta soir\u00e9e id\u00e9ale \u00ab sans plans \u00bb ?", "it": "Come sarebbe la tua serata ideale \"senza piani\"?", "fi": "Millainen on sinun ihanteellinen \"ilman suunnitelmia\" ilta?", "nl": "Hoe ziet jouw ideale \"geen plannen\" avond eruit?", "no": "Hvordan ser din ideelle \"ingen planer\" kveld ut?", "sv": "Hur ser din ideala \"inga planer\" kv\u00e4ll ut?", "pl": "Jak wygl\u0105da tw\u00f3j idealny wiecz\u00f3r bez plan\u00f3w?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

@@ -1,0 +1,5 @@
+WHERE category_name = 'Love Languages Remix Talks'
+  AND translations->>'en' = 'Do you think people misunderstand this love language — assuming it’s only about sex, when it’s really about comfort and connection?';
+UPDATE questions
+SET translations = '{"en": "How do you feel about affection in public?", "da": "Hvad synes du om hengivenhed i det offentlige rum?", "de": "Wie f\u00fchlst du dich bei Zuneigung in der \u00d6ffentlichkeit?", "es": "\u00bfQu\u00e9 piensas del afecto en p\u00fablico?", "pt": "O que achas de mostrar carinho em p\u00fablico?", "ro": "Ce p\u0103rere ai despre afec\u021biunea \u00een public?", "fr": "Que penses-tu de l\u2019affection en public ?", "it": "Cosa ne pensi dell''affetto in pubblico?", "fi": "Miten suhtaudut julkiseen hellyyteen?", "nl": "Hoe voel je je over genegenheid in het openbaar?", "no": "Hvordan f\u00f8ler du om kj\u00e6rlighet i offentligheten?", "sv": "Hur k\u00e4nner du f\u00f6r \u00f6mhet p\u00e5 offentliga platser?", "pl": "Jak si\u0119 czujesz w kwestii okazywania uczu\u0107 publicznie?"}'::jsonb,
+    updated_at = NOW()

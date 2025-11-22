@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "What\u2019s something people overhype way too much?", "da": "Hvad er noget, folk overvurderer alt for meget?", "de": "Was ist etwas, das die Leute total \u00fcberbewerten?", "es": "\u00bfQu\u00e9 es algo que la gente sobrevalora demasiado?", "pt": "O que as pessoas supervalorizam demais?", "ro": "Ce e ceva ce oamenii supraevalueaz\u0103 prea mult?", "fr": "Quelle chose les gens surestiment-ils beaucoup trop ?", "it": "Qual \u00e8 qualcosa che la gente esalta troppo?", "fi": "Mik\u00e4 on jotain, mit\u00e4 ihmiset ylikorostavat aivan liikaa?", "nl": "Wat is iets dat mensen veel te veel ophemelen?", "no": "Hva er noe folk overhypet altfor mye?", "sv": "Vad \u00e4r n\u00e5got som folk \u00f6verhypa alldeles f\u00f6r mycket?", "pl": "Co\u015b, co ludzie zdecydowanie za bardzo wyolbrzymiaj\u0105?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'
+  AND translations->>'en' = 'What’s something people overhype way too much?';

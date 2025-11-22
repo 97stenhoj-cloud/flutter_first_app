@@ -1,0 +1,5 @@
+SET translations = '{"en": "What''s something you don''t miss about being single?", "da": "Hvad savner du ikke ved at v\u00e6re single?", "de": "Was vermisst du nicht am Singleleben?", "es": "\u00bfQu\u00e9 es algo que no extra\u00f1as de estar soltero/a?", "pt": "O que \u00e9 algo que n\u00e3o sentes falta na vida de solteiro/a?", "ro": "Ce lucru nu \u00ee\u021bi lipse\u0219te din perioada c\u00e2nd erai singur(\u0103)?", "fr": "Qu\u2019est-ce qui ne te manque pas dans la vie de c\u00e9libataire ?", "it": "Qual \u00e8 una cosa che non ti manca di essere single?", "fi": "Mik\u00e4 on jotain, jota et kaipaakaan sinkkuudesta?", "nl": "Wat is iets dat je niet mist aan het vrijgezel zijn?", "no": "Hva er noe du ikke savner med \u00e5 v\u00e6re singel?", "sv": "Vad \u00e4r n\u00e5got du inte saknar med att vara singel?", "pl": "Co\u015b, czego nie t\u0119sknisz za byciem singlem?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'What''s something you don''t miss about being single?';
+UPDATE questions

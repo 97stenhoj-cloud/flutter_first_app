@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Languages Remix Talks'
+  AND translations->>'en' = 'What’s one compliment or kind word that always feels awkward to you — and why?';
+UPDATE questions
+SET translations = '{"en": "Do you like when you get comments on your appearance?", "da": "Kan du lide, n\u00e5r du f\u00e5r kommentarer om dit udseende?", "de": "Magst du es, wenn du Kommentare zu deinem Aussehen bekommst?", "es": "\u00bfTe gusta cuando recibes comentarios sobre tu apariencia?", "pt": "Gostas quando recebes coment\u00e1rios sobre a tua apar\u00eancia?", "ro": "\u00ce\u021bi place c\u00e2nd prime\u0219ti comentarii despre aspectul t\u0103u?", "fr": "Aimes-tu quand on commente ton apparence ?", "it": "Ti piace quando ricevi commenti sul tuo aspetto?", "fi": "Pid\u00e4tk\u00f6 siit\u00e4, kun saat kommentteja ulkon\u00e4\u00f6st\u00e4si?", "nl": "Vind je het leuk als je opmerkingen krijgt over je uiterlijk?", "no": "Liker du n\u00e5r du f\u00e5r kommentarer om utseendet ditt?", "sv": "Tycker du om n\u00e4r du f\u00e5r kommentarer om ditt utseende?", "pl": "Czy lubisz, gdy dostajesz komentarze na temat swojego wygl\u0105du?"}'::jsonb,

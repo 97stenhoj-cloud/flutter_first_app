@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What’s your perfect slow morning?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s your most used emoji and why?", "da": "Hvilken emoji bruger du mest \u2013 og hvorfor?", "de": "Welchen Emoji benutzt du am h\u00e4ufigsten \u2013 und warum?", "es": "\u00bfQu\u00e9 emoji usas m\u00e1s y por qu\u00e9?", "pt": "Qual emoji voc\u00ea mais usa \u2014 e por qu\u00ea?", "ro": "Ce emoji folose\u0219ti cel mai des \u0219i de ce?", "fr": "Quel emoji utilises-tu le plus \u2014 et pourquoi ?", "it": "Qual \u00e8 la tua emoji pi\u00f9 usata e perch\u00e9?", "fi": "Mik\u00e4 on eniten k\u00e4ytt\u00e4m\u00e4si emoji ja miksi?", "nl": "Wat is je meest gebruikte emoji en waarom?", "no": "Hva er din mest brukte emoji og hvorfor?", "sv": "Vilken emoji anv\u00e4nder du mest och varf\u00f6r?", "pl": "Jaki jest Tw\u00f3j najcz\u0119\u015bciej u\u017cywany emoji i dlaczego?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

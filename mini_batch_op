@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who’s the loudest when telling a story?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s a family tradition that\u2019s been around the longest?", "da": "Hvad er den \u00e6ldste familietradition?", "de": "Was ist die \u00e4lteste Familientradition?", "es": "\u00bfCu\u00e1l es la tradici\u00f3n familiar m\u00e1s antigua?", "pt": "Qual \u00e9 a tradi\u00e7\u00e3o familiar mais antiga?", "ro": "Care este cea mai veche tradi\u021bie de familie?", "fr": "Quelle est la plus ancienne tradition familiale ?", "it": "Qual \u00e8 una tradizione familiare che esiste da pi\u00f9 tempo?", "fi": "Mik\u00e4 on perheenne vanhin perinne?", "nl": "Wat is een familietraditie die al het langst bestaat?", "no": "Hva er en familietradisjon som har vart lengst?", "sv": "Vilken familjetradition har funnits l\u00e4ngst?", "pl": "Jaka tradycja rodzinna istnieje najd\u0142u\u017cej?"}'::jsonb,

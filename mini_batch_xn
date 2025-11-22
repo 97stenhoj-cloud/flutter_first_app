@@ -1,0 +1,5 @@
+SET translations = '{"en": "Who\u2019s most likely to lose their phone tonight?", "da": "Hvem mister mest sandsynligt deres telefon i aften?", "de": "Wer verliert heute Abend am ehesten sein Handy?", "es": "\u00bfQui\u00e9n es m\u00e1s probable que pierda su tel\u00e9fono esta noche?", "pt": "Quem \u00e9 mais prov\u00e1vel perder o telem\u00f3vel esta noite?", "ro": "Cine e cel mai probabil s\u0103-\u0219i piard\u0103 telefonul \u00een seara asta?", "fr": "Qui est le plus susceptible de perdre son t\u00e9l\u00e9phone ce soir ?", "it": "Chi \u00e8 pi\u00f9 probabile che perda il telefono stasera?", "fi": "Kuka todenn\u00e4k\u00f6isesti hukkaa puhelimensa t\u00e4n\u00e4 iltana?", "nl": "Wie is het meest waarschijnlijk om vanavond zijn telefoon te verliezen?", "no": "Hvem er mest sannsynlig \u00e5 miste telefonen sin i kveld?", "sv": "Vem \u00e4r mest sannolikt att tappa sin telefon ikv\u00e4ll?", "pl": "Kto najprawdopodobniej zgubi dzisiaj telefon?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'Who’s most likely to lose their phone tonight?';
+UPDATE questions

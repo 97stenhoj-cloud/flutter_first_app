@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'How do you define success for yourself now?';
+UPDATE questions
+SET translations = '{"en": "Do you think honesty can sometimes sound like judgment?", "da": "Tror du, \u00e6rlighed nogle gange kan lyde som d\u00f8mmende?", "de": "Denkst du, Ehrlichkeit kann manchmal wie ein Urteil klingen?", "es": "\u00bfCrees que la honestidad a veces puede sonar como un juicio?", "pt": "Acreditas que a honestidade \u00e0s vezes soa como julgamento?", "ro": "Crezi c\u0103 sinceritatea poate suna uneori ca o judecat\u0103?", "fr": "Penses-tu que l\u2019honn\u00eatet\u00e9 peut parfois ressembler \u00e0 un jugement ?", "it": "Pensi che l''onest\u00e0 a volte possa sembrare un giudizio?", "fi": "Luuleeko, ett\u00e4 rehellisyys voi joskus kuulostaa tuomiolta?", "nl": "Denk je dat eerlijkheid soms als oordeel kan klinken?", "no": "Tror du at \u00e6rlighet noen ganger kan h\u00f8res ut som d\u00f8mming?", "sv": "Tycker du att \u00e4rlighet ibland kan l\u00e5ta som d\u00f6mande?", "pl": "Czy my\u015blisz, \u017ce szczero\u015b\u0107 czasami mo\u017ce brzmie\u0107 jak os\u0105d?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Do-you-dare Talks'

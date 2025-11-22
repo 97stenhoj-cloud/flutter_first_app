@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What’s the most embarrassing thing that happened to you as a teen?';
+UPDATE questions
+SET translations = '{"en": "What would you name a child if we had one together?", "da": "Hvad ville du kalde et barn, hvis vi fik et sammen?", "de": "Wie w\u00fcrdest du ein Kind nennen, wenn wir eins zusammen h\u00e4tten?", "es": "\u00bfQu\u00e9 nombre le pondr\u00edas a un hijo si tuvi\u00e9ramos uno juntos?", "pt": "Que nome darias a uma crian\u00e7a se tiv\u00e9ssemos uma juntos?", "ro": "Ce nume i-ai da unui copil dac\u0103 am avea unul \u00eempreun\u0103?", "fr": "Quel pr\u00e9nom donnerais-tu \u00e0 un enfant si nous en avions un ensemble ?", "it": "Come chiameresti un bambino se ne avessimo uno insieme?", "fi": "Mit\u00e4 nime\u00e4 antaisit lapselle, jos meill\u00e4 olisi yksi yhdess\u00e4?", "nl": "Hoe zou je een kind noemen als we er samen een zouden hebben?", "no": "Hva ville du kalt et barn hvis vi fikk ett sammen?", "sv": "Vad skulle du kalla ett barn om vi fick ett tillsammans?", "pl": "Jak by\u015b nazwa\u0142 dziecko, gdyby\u015bmy mieli je razem?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Do-you-dare Talks'

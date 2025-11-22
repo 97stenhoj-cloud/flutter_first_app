@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "Do you believe people can fall in love more than once?", "da": "Tror du, folk kan blive forelskede mere end \u00e9n gang?", "de": "Glaubst du, dass Menschen sich mehr als einmal verlieben k\u00f6nnen?", "es": "\u00bfCrees que las personas pueden enamorarse m\u00e1s de una vez?", "pt": "Voc\u00ea acredita que as pessoas podem se apaixonar mais de uma vez?", "ro": "Crezi c\u0103 oamenii se pot \u00eendr\u0103gosti de mai multe ori?", "fr": "Penses-tu qu\u2019on puisse tomber amoureux plus d\u2019une fois ?", "it": "Credi che le persone possano innamorarsi pi\u00f9 di una volta?", "fi": "Uskotko, ett\u00e4 ihmiset voivat rakastua useammin kuin kerran?", "nl": "Geloof je dat mensen meer dan eens verliefd kunnen worden?", "no": "Tror du folk kan bli forelsket mer enn \u00e9n gang?", "sv": "Tror du att m\u00e4nniskor kan bli k\u00e4ra mer \u00e4n en g\u00e5ng?", "pl": "Czy wierzysz, \u017ce ludzie mog\u0105 zakochiwa\u0107 si\u0119 wi\u0119cej ni\u017c raz?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'
+  AND translations->>'en' = 'Do you believe people can fall in love more than once?';

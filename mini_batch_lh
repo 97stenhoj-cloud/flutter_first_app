@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'Which friend or couple around us brings out our best?';
+UPDATE questions
+SET translations = '{"en": "Who have you looked up to in your life?", "da": "Hvem har du set mest op til i dit liv?", "de": "Zu wem hast du in deinem Leben am meisten aufgesehen?", "es": "\u00bfA qui\u00e9n has admirado m\u00e1s en tu vida?", "pt": "A quem voc\u00ea mais admirou na sua vida?", "ro": "Pe cine ai admirat cel mai mult \u00een via\u021ba ta?", "fr": "Qui as-tu le plus admir\u00e9 dans ta vie ?", "it": "Chi hai ammirato nella tua vita?", "fi": "Ket\u00e4 olet ihaillut el\u00e4m\u00e4ss\u00e4si?", "nl": "Wie heb je in je leven als voorbeeld gezien?", "no": "Hvem har du sett opp til i livet ditt?", "sv": "Vem har du sett upp till i ditt liv?", "pl": "Kogo podziwia\u0142e\u015b w swoim \u017cyciu?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

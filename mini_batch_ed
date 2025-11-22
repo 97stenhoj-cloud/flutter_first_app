@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "How do you balance plans vs. spontaneity on a trip?", "da": "Hvordan balancerer du planer vs. spontanitet p\u00e5 en rejse?", "de": "Wie balancierst du Planung und Spontaneit\u00e4t auf einer Reise?", "es": "\u00bfC\u00f3mo equilibras los planes y la espontaneidad en un viaje?", "pt": "Como equilibras planos e espontaneidade numa viagem?", "ro": "Cum echilibrezi planurile \u0219i spontaneitatea \u00eentr-o excursie?", "fr": "Comment \u00e9quilibres-tu les plans et la spontan\u00e9it\u00e9 lors d\u2019un voyage ?", "it": "Come bilanci i piani e la spontaneit\u00e0 in viaggio?", "fi": "Miten tasapainotat suunnitelmat ja spontaaniuden matkalla?", "nl": "Hoe balanceer jij plannen maken en spontaniteit op reis?", "no": "Hvordan balanserer du planer og spontanitet p\u00e5 tur?", "sv": "Hur balanserar du planering och spontanitet p\u00e5 en resa?", "pl": "Jak \u0142\u0105czysz planowanie ze spontaniczno\u015bci\u0105 w podr\u00f3\u017cy?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Car Talks'
+  AND translations->>'en' = 'How do you balance plans vs. spontaneity on a trip?';

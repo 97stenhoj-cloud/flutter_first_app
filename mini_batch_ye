@@ -1,0 +1,5 @@
+SET translations = '{"en": "Who\u2019s most likely to fall asleep mid-party?", "da": "Hvem falder mest sandsynligt i s\u00f8vn midt i festen?", "de": "Wer schl\u00e4ft am ehesten mitten auf der Party ein?", "es": "\u00bfQui\u00e9n es m\u00e1s probable que se quede dormido en mitad de la fiesta?", "pt": "Quem \u00e9 mais prov\u00e1vel adormecer a meio da festa?", "ro": "Cine e cel mai probabil s\u0103 adoarm\u0103 \u00een mijlocul petrecerii?", "fr": "Qui est le plus susceptible de s\u2019endormir en pleine soir\u00e9e ?", "it": "Chi \u00e8 pi\u00f9 probabile che si addormenti a met\u00e0 festa?", "fi": "Kuka todenn\u00e4k\u00f6isesti nukkuu kesken juhlia?", "nl": "Wie is het meest waarschijnlijk om halverwege een feestje in slaap te vallen?", "no": "Hvem er mest sannsynlig til \u00e5 sovne midt i festen?", "sv": "Vem \u00e4r mest sannolikt att somna mitt under festen?", "pl": "Kto najprawdopodobniej za\u015bnie w trakcie imprezy?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'Who’s most likely to fall asleep mid-party?';
+UPDATE questions

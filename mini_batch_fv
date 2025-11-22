@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What snack is pure nostalgia?';
+UPDATE questions
+SET translations = '{"en": "Who in your life gives the best hugs?", "da": "Hvem i dit liv giver de bedste kram?", "de": "Wer in deinem Leben gibt die besten Umarmungen?", "es": "\u00bfQui\u00e9n en tu vida da los mejores abrazos?", "pt": "Quem na sua vida d\u00e1 os melhores abra\u00e7os?", "ro": "Cine din via\u021ba ta ofer\u0103 cele mai bune \u00eembr\u0103\u021bi\u0219\u0103ri?", "fr": "Qui dans ta vie donne les meilleurs c\u00e2lins ?", "it": "Chi nella tua vita d\u00e0 i migliori abbracci?", "fi": "Kuka el\u00e4m\u00e4ss\u00e4si antaa parhaat halaukset?", "nl": "Wie in jouw leven geeft de beste knuffels?", "no": "Hvem i livet ditt gir de beste klemene?", "sv": "Vem i ditt liv ger de b\u00e4sta kramarna?", "pl": "Kto w twoim \u017cyciu daje najlepsze u\u015bciski?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

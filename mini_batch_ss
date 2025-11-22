@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Languages Remix Talks'
+  AND translations->>'en' = 'What little thing do I do that makes your life easier?';
+UPDATE questions
+SET translations = '{"en": "How do you want me to show that I\u2019ve got your back?", "da": "Hvordan vil du have, jeg viser, at jeg st\u00f8tter dig?", "de": "Wie m\u00f6chtest du, dass ich zeige, dass ich hinter dir stehe?", "es": "\u00bfC\u00f3mo quieres que te demuestre que te apoyo?", "pt": "Como queres que eu mostre que estou do teu lado?", "ro": "Cum vrei s\u0103 \u00ee\u021bi ar\u0103t c\u0103 te sus\u021bin?", "fr": "Comment veux-tu que je montre que je suis l\u00e0 pour toi ?", "it": "Come vuoi che ti dimostri che ti sostengo?", "fi": "Miten haluat, ett\u00e4 n\u00e4yt\u00e4n, ett\u00e4 olen tukenasi?", "nl": "Hoe wil je dat ik laat zien dat ik je steun?", "no": "Hvordan vil du at jeg skal vise at jeg st\u00f8tter deg?", "sv": "Hur vill du att jag ska visa att jag st\u00f6ttar dig?", "pl": "Jak chcesz, \u017cebym pokaza\u0142, \u017ce ci\u0119 wspieram?"}'::jsonb,

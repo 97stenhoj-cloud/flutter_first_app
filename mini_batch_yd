@@ -1,0 +1,5 @@
+SET translations = '{"en": "If this night was a movie, what would the title be?", "da": "Hvis denne aften var en film, hvad ville titlen v\u00e6re?", "de": "Wenn dieser Abend ein Film w\u00e4re, wie w\u00fcrde er hei\u00dfen?", "es": "Si esta noche fuera una pel\u00edcula, \u00bfc\u00f3mo se llamar\u00eda?", "pt": "Se esta noite fosse um filme, qual seria o t\u00edtulo?", "ro": "Dac\u0103 aceast\u0103 sear\u0103 ar fi un film, care ar fi titlul?", "fr": "Si cette soir\u00e9e \u00e9tait un film, quel serait le titre ?", "it": "Se questa notte fosse un film, quale sarebbe il titolo?", "fi": "Jos t\u00e4m\u00e4 y\u00f6 olisi elokuva, mik\u00e4 sen nimi olisi?", "nl": "Als deze nacht een film was, wat zou de titel dan zijn?", "no": "Hvis denne natten var en film, hva ville tittelen v\u00e6rt?", "sv": "Om denna natt var en film, vad skulle titeln vara?", "pl": "Gdyby ta noc by\u0142a filmem, jaki by\u0142by tytu\u0142?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'If this night was a movie, what would the title be?';
+UPDATE questions

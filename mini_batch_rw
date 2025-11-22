@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Languages Remix Talks'
+  AND translations->>'en' = 'Do you like when you get comments on your appearance?';
+UPDATE questions
+SET translations = '{"en": "When do you feel like you have my full attention?", "da": "Hvorn\u00e5r f\u00f8ler du, at du har min fulde opm\u00e6rksomhed?", "de": "Wann f\u00fchlst du, dass du meine volle Aufmerksamkeit hast?", "es": "\u00bfCu\u00e1ndo sientes que tienes toda mi atenci\u00f3n?", "pt": "Quando sentes que tens toda a minha aten\u00e7\u00e3o?", "ro": "C\u00e2nd sim\u021bi c\u0103 ai toat\u0103 aten\u021bia mea?", "fr": "Quand sens-tu que tu as toute mon attention ?", "it": "Quando senti di avere la mia piena attenzione?", "fi": "Milloin tunnet, ett\u00e4 minulla on t\u00e4ysi huomiosi?", "nl": "Wanneer voel je dat je mijn volledige aandacht hebt?", "no": "N\u00e5r f\u00f8ler du at du har min fulle oppmerksomhet?", "sv": "N\u00e4r k\u00e4nner du att du har min fulla uppm\u00e4rksamhet?", "pl": "Kiedy czujesz, \u017ce mam twoj\u0105 pe\u0142n\u0105 uwag\u0119?"}'::jsonb,

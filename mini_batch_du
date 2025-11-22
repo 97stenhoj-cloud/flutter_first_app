@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'Where were you the first time you saw the ocean?';
+UPDATE questions
+SET translations = '{"en": "Tell a travel mishap you can laugh about now.", "da": "Fort\u00e6l om en rejsefejl, du nu kan grine af.", "de": "Erz\u00e4hl von einem Reisepatzer, \u00fcber den du jetzt lachen kannst.", "es": "Cu\u00e9ntanos un error de viaje del que ahora puedas re\u00edrte.", "pt": "Conte um erro de viagem do qual voc\u00ea ri hoje.", "ro": "Poveste\u0219te o gre\u0219eal\u0103 de c\u0103l\u0103torie de care po\u021bi r\u00e2de acum.", "fr": "Raconte une m\u00e9saventure de voyage dont tu peux rire maintenant.", "it": "Racconta un imprevisto di viaggio su cui ora riesci a ridere.", "fi": "Kerro matkak\u00f6mm\u00e4hdys, jolle voit nyky\u00e4\u00e4n jo nauraa.", "nl": "Vertel over een reisblunder waar je nu om kunt lachen.", "no": "Fortell om en reisetabbe du kan le av n\u00e5.", "sv": "Ber\u00e4tta om ett rese-misstag som du kan skratta \u00e5t nu.", "pl": "Opowiedz o wpadce z podr\u00f3\u017cy, z kt\u00f3rej dzi\u015b mo\u017cesz si\u0119 \u015bmia\u0107."}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Car Talks'

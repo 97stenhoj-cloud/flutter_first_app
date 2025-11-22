@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What do you wish people knew about your inner world?';
+UPDATE questions
+SET translations = '{"en": "What helps you trust me deeper?", "da": "Hvad hj\u00e6lper dig med at stole dybere p\u00e5 mig?", "de": "Was hilft dir, mir tiefer zu vertrauen?", "es": "\u00bfQu\u00e9 te ayuda a confiar m\u00e1s profundamente en m\u00ed?", "pt": "O que te ajuda a confiar mais profundamente em mim?", "ro": "Ce te ajut\u0103 s\u0103 ai mai mult\u0103 \u00eencredere \u00een mine?", "fr": "Qu\u2019est-ce qui t\u2019aide \u00e0 me faire plus profond\u00e9ment confiance ?", "it": "Cosa ti aiuta a fidarti di me pi\u00f9 profondamente?", "fi": "Mik\u00e4 auttaa sinua luottamaan minuun syvemmin?", "nl": "Wat helpt je om me dieper te vertrouwen?", "no": "Hva hjelper deg med \u00e5 stole mer p\u00e5 meg?", "sv": "Vad hj\u00e4lper dig att lita p\u00e5 mig mer?", "pl": "Co sprawia, \u017ce bardziej mi ufasz?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

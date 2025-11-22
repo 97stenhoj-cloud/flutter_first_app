@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who keeps the family photo albums or digital archives?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s something that feels unique about our family?", "da": "Hvad f\u00f8les helt unikt ved vores familie?", "de": "Was f\u00fchlt sich an unserer Familie besonders einzigartig an?", "es": "\u00bfQu\u00e9 se siente \u00fanico acerca de nuestra familia?", "pt": "O que \u00e9 algo que faz a nossa fam\u00edlia ser \u00fanica?", "ro": "Ce e unic la familia noastr\u0103?", "fr": "Qu\u2019est-ce qui rend notre famille vraiment unique ?", "it": "Qual \u00e8 una cosa che ci sembra unica della nostra famiglia?", "fi": "Mik\u00e4 on jotain, mik\u00e4 tuntuu ainutlaatuiselta perheess\u00e4mme?", "nl": "Wat is iets dat uniek aan onze familie voelt?", "no": "Hva er noe som f\u00f8les unikt med familien v\u00e5r?", "sv": "Vad \u00e4r n\u00e5got som k\u00e4nns unikt med v\u00e5r familj?", "pl": "Co\u015b, co wydaje si\u0119 wyj\u0105tkowe w naszej rodzinie?"}'::jsonb,
+    updated_at = NOW()

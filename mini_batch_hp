@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What kind of home do you dream of living in one day?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s the best compliment you\u2019ve ever received?", "da": "Hvad er det bedste kompliment, du nogensinde har f\u00e5et?", "de": "Was ist das beste Kompliment, das du je bekommen hast?", "es": "\u00bfCu\u00e1l es el mejor cumplido que has recibido?", "pt": "Qual \u00e9 o melhor elogio que voc\u00ea j\u00e1 recebeu?", "ro": "Care este cel mai frumos compliment pe care l-ai primit vreodat\u0103?", "fr": "Quel est le plus beau compliment que tu aies jamais re\u00e7u ?", "it": "Qual \u00e8 il miglior complimento che tu abbia mai ricevuto?", "fi": "Mik\u00e4 on paras kehu, jonka olet koskaan saanut?", "nl": "Wat is het beste compliment dat je ooit hebt gekregen?", "no": "Hva er det beste komplimentet du noen gang har f\u00e5tt?", "sv": "Vad \u00e4r den b\u00e4sta komplimang du n\u00e5gonsin har f\u00e5tt?", "pl": "Jakie jest najlepsze komplement, jaki kiedykolwiek otrzyma\u0142e\u015b?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

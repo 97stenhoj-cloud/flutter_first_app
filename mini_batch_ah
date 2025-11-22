@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "Would you rather meet a man or a bear in the forest?", "da": "Ville du hellere m\u00f8de en mand eller en bj\u00f8rn i skoven?", "de": "W\u00fcrdest du lieber einem Mann oder einem B\u00e4ren im Wald begegnen?", "es": "\u00bfPreferir\u00edas encontrarte con un hombre o con un oso en el bosque?", "pt": "Preferias encontrar um homem ou um urso na floresta?", "ro": "Ai prefera s\u0103 \u00eent\u00e2lne\u0219ti un b\u0103rbat sau un urs \u00een p\u0103dure?", "fr": "Pr\u00e9f\u00e8rerais-tu croiser un homme ou un ours dans la for\u00eat ?", "it": "Preferiresti incontrare un uomo o un orso nel bosco?", "fi": "Haluaisitko mieluummin kohdata mets\u00e4ss\u00e4 miehen vai karhun?", "nl": "Kom je liever een man of een beer tegen in het bos?", "no": "Vil du helst m\u00f8te en mann eller en bj\u00f8rn i skogen?", "sv": "Skulle du hellre m\u00f6ta en man eller en bj\u00f6rn i skogen?", "pl": "Wolisz spotka\u0107 w lesie m\u0119\u017cczyzn\u0119 czy nied\u017awiedzia?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'After Dark Talks'
+  AND translations->>'en' = 'Would you rather meet a man or a bear in the forest?';

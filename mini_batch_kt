@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'Which memory reminds you that you’re resilient?';
+UPDATE questions
+SET translations = '{"en": "What would Past-You thank Present-You for?", "da": "Hvad ville Fortids-Dig takke Nutids-Dig for?", "de": "Wof\u00fcr w\u00fcrde dein Vergangenheits-Ich deinem Gegenwarts-Ich danken?", "es": "\u00bfPor qu\u00e9 te agradecer\u00eda tu Yo del pasado?", "pt": "Pelo que o Seu Eu do Passado agradeceria ao Seu Eu do Presente?", "ro": "Pentru ce \u021bi-ar mul\u021bumi Sinele t\u0103u din trecut?", "fr": "Pour quoi ton Toi du pass\u00e9 remercierait-il ton Toi du pr\u00e9sent ?", "it": "Per cosa ringrazierebbe il Passato-Te il Presente-Te?", "fi": "Mit\u00e4 menneisyydess\u00e4 oleva sin\u00e4 kiitt\u00e4isi nykyisyydess\u00e4 olevaa sinua?", "nl": "Waarvoor zou het verleden-Jij het heden-Jij bedanken?", "no": "Hva ville Fortid-Du takket N\u00e5tid-Du for?", "sv": "Vad skulle det f\u00f6rflutna du tacka nuvarande du f\u00f6r?", "pl": "Za co przesz\u0142e \"Ty\" podzi\u0119kowa\u0142by tera\u017aniejszemu \"Ty\"?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

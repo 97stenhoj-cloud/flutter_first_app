@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What kind of weather makes you happiest?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s something you\u2019ve recently learned to appreciate?", "da": "Hvad er noget, du for nylig har l\u00e6rt at s\u00e6tte pris p\u00e5?", "de": "Was hast du in letzter Zeit sch\u00e4tzen gelernt?", "es": "\u00bfQu\u00e9 es algo que has aprendido a apreciar recientemente?", "pt": "O que voc\u00ea aprendeu a valorizar recentemente?", "ro": "Ce ai \u00eenv\u0103\u021bat recent s\u0103 apreciezi?", "fr": "Qu\u2019as-tu appris \u00e0 appr\u00e9cier r\u00e9cemment ?", "it": "Qualcosa che hai recentemente imparato ad apprezzare?", "fi": "Mik\u00e4 on jotain, mit\u00e4 olet \u00e4skett\u00e4in oppinut arvostamaan?", "nl": "Wat is iets dat je recentelijk hebt leren waarderen?", "no": "Hva er noe du nylig har l\u00e6rt \u00e5 sette pris p\u00e5?", "sv": "Vad \u00e4r n\u00e5got du nyligen har l\u00e4rt dig att uppskatta?", "pl": "Co\u015b, co ostatnio nauczy\u0142e\u015b si\u0119 docenia\u0107?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

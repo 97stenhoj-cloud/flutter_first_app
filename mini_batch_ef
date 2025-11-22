@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "What\u2019s a moment when you felt totally fearless?", "da": "Hvorn\u00e5r f\u00f8lte du dig helt frygtl\u00f8s?", "de": "Wann hast du dich v\u00f6llig furchtlos gef\u00fchlt?", "es": "\u00bfCu\u00e1ndo te has sentido completamente sin miedo?", "pt": "Quando te sentiste totalmente destemido(a)?", "ro": "C\u00e2nd te-ai sim\u021bit complet ne\u00eenfricat(\u0103)?", "fr": "\u00c0 quel moment t\u2019es-tu senti(e) totalement sans peur ?", "it": "Racconta un momento in cui ti sei sentito/a totalmente senza paura.", "fi": "Kerro hetki, jolloin tunsit olosi t\u00e4ysin pelottomaksi.", "nl": "Noem een moment waarop je je totaal onbevreesd voelde.", "no": "Fortell om et \u00f8yeblikk der du f\u00f8lte deg helt fryktl\u00f8s.", "sv": "Ber\u00e4tta om ett tillf\u00e4lle d\u00e5 du k\u00e4nde dig helt or\u00e4dd.", "pl": "Opowiedz o chwili, kiedy czu\u0142e\u015b/czu\u0142a\u015b si\u0119 ca\u0142kowicie nieustraszony/a."}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Car Talks'
+  AND translations->>'en' = 'What’s a moment when you felt totally fearless?';

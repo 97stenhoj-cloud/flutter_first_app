@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'Which of us is more likely to suggest something spontaneous?';
+UPDATE questions
+SET translations = '{"en": "Which quality of yours do you think I value most?", "da": "Hvilken af dine kvaliteter tror du, jeg v\u00e6rds\u00e6tter mest?", "de": "Welche deiner Eigenschaften glaubst du, sch\u00e4tze ich am meisten?", "es": "\u00bfQu\u00e9 cualidad tuya crees que valoro m\u00e1s?", "pt": "Que qualidade sua voc\u00ea acha que eu mais valorizo?", "ro": "Care calitate a ta crezi c\u0103 o apreciez cel mai mult?", "fr": "Quelle qualit\u00e9 chez toi penses-tu que j\u2019appr\u00e9cie le plus ?", "it": "Quale qualit\u00e0 tua pensi che io apprezzi di pi\u00f9?", "fi": "Mik\u00e4 ominaisuutesi mielest\u00e4si on se, jota arvostan eniten?", "nl": "Welke eigenschap van jou denk je dat ik het meest waardeer?", "no": "Hvilken egenskap ved deg tror du jeg verdsetter mest?", "sv": "Vilken egenskap hos dig tror du att jag v\u00e4rdes\u00e4tter mest?", "pl": "Kt\u00f3r\u0105 cech\u0119 u siebie my\u015blisz, \u017ce najbardziej ceni\u0119?"}'::jsonb,

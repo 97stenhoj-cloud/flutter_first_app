@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Languages Remix Talks'
+  AND translations->>'en' = 'How do you want me to show that I’ve got your back?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s a small gesture that always feels big to you?", "da": "Hvilken lille gestus f\u00f8les altid stor for dig?", "de": "Welche kleine Geste f\u00fchlt sich f\u00fcr dich immer gro\u00df an?", "es": "\u00bfQu\u00e9 peque\u00f1o gesto siempre se siente grande para ti?", "pt": "Que pequeno gesto te parece sempre importante?", "ro": "Ce mic gest \u021bi se pare mereu important?", "fr": "Quel petit geste te semble toujours grand ?", "it": "Qual \u00e8 un piccolo gesto che per te sembra sempre grande?", "fi": "Mik\u00e4 on pieni ele, joka tuntuu aina suurelta sinulle?", "nl": "Wat is een klein gebaar dat altijd groot voor je aanvoelt?", "no": "Hva er en liten gest som alltid f\u00f8les stor for deg?", "sv": "Vilken liten gest k\u00e4nns alltid stor f\u00f6r dig?", "pl": "Jaki ma\u0142y gest zawsze wydaje ci si\u0119 wielki?"}'::jsonb,

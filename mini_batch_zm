@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'Who would you trust least to keep your secrets after three drinks?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s your most unforgettable kiss story?", "da": "Hvad er din mest uforglemmelige kyssehistorie?", "de": "Was ist deine unvergesslichste Kussgeschichte?", "es": "\u00bfCu\u00e1l es tu historia de beso m\u00e1s inolvidable?", "pt": "Qual \u00e9 a tua hist\u00f3ria de beijo mais inesquec\u00edvel?", "ro": "Care este cea mai de neuitat poveste a ta despre un s\u0103rut?", "fr": "Quelle est ton histoire de baiser la plus inoubliable ?", "it": "Qual \u00e8 la tua storia di bacio pi\u00f9 indimenticabile?", "fi": "Mik\u00e4 on unohtumattomin suudelmasi tarina?", "nl": "Wat is jouw meest onvergetelijke kusverhaal?", "no": "Hva er din mest uforglemmelige kyss-historie?", "sv": "Vad \u00e4r din mest of\u00f6rgl\u00f6mliga kysshistoria?", "pl": "Jaka jest twoja najbardziej niezapomniana historia poca\u0142unku?"}'::jsonb,

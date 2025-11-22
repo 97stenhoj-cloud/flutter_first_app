@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'Tickets edition: if you could re-live one concert you’ve been to, which one would you choose?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s a random fact about yourself ?", "da": "Hvad er en tilf\u00e6ldig fakta om dig selv?", "de": "Was ist eine zuf\u00e4llige Tatsache \u00fcber dich?", "es": "\u00bfCu\u00e1l es un dato curioso sobre ti?", "pt": "Qual \u00e9 um fato aleat\u00f3rio sobre voc\u00ea?", "ro": "Care este un fapt aleatoriu despre tine?", "fr": "Quel fait al\u00e9atoire te d\u00e9crit ?", "it": "Qual \u00e8 un fatto casuale su di te?", "fi": "Mik\u00e4 on satunnainen fakta itsest\u00e4si?", "nl": "Wat is een random feitje over jezelf?", "no": "Hva er et tilfeldig faktum om deg selv?", "sv": "Vad \u00e4r en slumpm\u00e4ssig fakta om dig sj\u00e4lv?", "pl": "Jaki\u015b przypadkowy fakt o sobie?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

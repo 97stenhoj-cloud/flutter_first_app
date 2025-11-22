@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'How do you show love when words don’t feel enough?';
+UPDATE questions
+SET translations = '{"en": "When do you feel most emotionally connected to me?", "da": "Hvorn\u00e5r f\u00f8ler du dig mest f\u00f8lelsesm\u00e6ssigt forbundet med mig?", "de": "Wann f\u00fchlst du dich mir emotional am n\u00e4chsten?", "es": "\u00bfCu\u00e1ndo te sientes m\u00e1s conectado/a emocionalmente conmigo?", "pt": "Quando voc\u00ea se sente mais ligado(a) a mim emocionalmente?", "ro": "C\u00e2nd te sim\u021bi cel mai conectat(\u0103) emo\u021bional cu mine?", "fr": "Quand te sens-tu le plus connect\u00e9(e) \u00e9motionnellement \u00e0 moi ?", "it": "Quando ti senti pi\u00f9 emotivamente connesso a me?", "fi": "Milloin tunnet itsesi eniten emotionaalisesti yhteyteen kanssani?", "nl": "Wanneer voel je je het meest emotioneel verbonden met mij?", "no": "N\u00e5r f\u00f8ler du deg mest f\u00f8lelsesmessig knyttet til meg?", "sv": "N\u00e4r k\u00e4nner du dig mest k\u00e4nslom\u00e4ssigt kopplad till mig?", "pl": "Kiedy czujesz si\u0119 ze mn\u0105 najbardziej emocjonalnie zwi\u0105zany?"}'::jsonb,

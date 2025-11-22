@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "Is there anything embarrassing you once posted online?", "da": "Har du nogensinde lagt noget pinligt ud online?", "de": "Hast du jemals etwas Peinliches online gepostet?", "es": "\u00bfHas publicado alguna vez algo embarazoso en l\u00ednea?", "pt": "Voc\u00ea j\u00e1 postou algo constrangedor na internet?", "ro": "Ai postat vreodat\u0103 ceva jenant online?", "fr": "As-tu d\u00e9j\u00e0 post\u00e9 quelque chose d\u2019embarrassant en ligne ?", "it": "C''\u00e8 qualcosa di imbarazzante che hai postato online una volta?", "fi": "Onko jotain h\u00e4pe\u00e4llist\u00e4, mit\u00e4 olet joskus julkaissut verkossa?", "nl": "Is er iets beschamends dat je ooit online hebt gepost?", "no": "Er det noe pinlig du en gang la ut p\u00e5 nettet?", "sv": "\u00c4r det n\u00e5got pinsamt som du en g\u00e5ng postade online?", "pl": "Czy jest co\u015b kr\u0119puj\u0105cego, co kiedy\u015b opublikowa\u0142e\u015b w internecie?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'
+  AND translations->>'en' = 'Is there anything embarrassing you once posted online?';

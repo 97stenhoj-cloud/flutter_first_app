@@ -528,7 +528,7 @@ class _AIQuestionReviewScreenState extends State<AIQuestionReviewScreen> {
                               ),
                               const SizedBox(width: 8),
                               Text(
-                                l10n.questionsInDeck(_keptQuestions.length, 50),
+                                '${_keptQuestions.length}/50',
                                 style: GoogleFonts.poppins(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,

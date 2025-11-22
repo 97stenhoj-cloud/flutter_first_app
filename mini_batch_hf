@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'If you could relive one weekend with friends, which would it be?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s your favorite form of self-care?", "da": "Hvad er din yndlingsform for egenomsorg?", "de": "Was ist deine Lieblingsform der Selbstf\u00fcrsorge?", "es": "\u00bfCu\u00e1l es tu forma favorita de autocuidado?", "pt": "Qual \u00e9 a sua forma favorita de autocuidado?", "ro": "Care este forma ta preferat\u0103 de \u00eengrijire de sine?", "fr": "Quelle est ta forme pr\u00e9f\u00e9r\u00e9e de soin de soi ?", "it": "Qual \u00e8 la tua forma di cura di te stesso preferita?", "fi": "Mik\u00e4 on suosikkimuotosi itsest\u00e4 huolehtimiseen?", "nl": "Wat is jouw favoriete manier van zelfzorg?", "no": "Hva er din favorittform for egenpleie?", "sv": "Vad \u00e4r din favoritform av sj\u00e4lvv\u00e5rd?", "pl": "Jaka jest twoja ulubiona forma dbania o siebie?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

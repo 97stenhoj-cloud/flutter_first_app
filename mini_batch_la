@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What are your favorite kind of compliments —and why?';
+UPDATE questions
+SET translations = '{"en": "What makes you feel like we\u2019re a real team?", "da": "Hvad f\u00e5r dig til at f\u00f8le, at vi er et rigtigt team?", "de": "Was l\u00e4sst dich f\u00fchlen, dass wir ein echtes Team sind?", "es": "\u00bfQu\u00e9 te hace sentir que somos un verdadero equipo?", "pt": "O que faz voc\u00ea sentir que somos uma verdadeira equipe?", "ro": "Ce te face s\u0103 sim\u021bi c\u0103 suntem o adev\u0103rat\u0103 echip\u0103?", "fr": "Qu\u2019est-ce qui te fait sentir que nous formons une vraie \u00e9quipe ?", "it": "Cosa ti fa sentire che siamo una vera squadra?", "fi": "Mik\u00e4 saa sinut tuntemaan, ett\u00e4 olemme oikea tiimi?", "nl": "Wat zorgt ervoor dat je het gevoel hebt dat we een echt team zijn?", "no": "Hva f\u00e5r deg til \u00e5 f\u00f8le at vi er et ekte team?", "sv": "Vad f\u00e5r dig att k\u00e4nna att vi verkligen \u00e4r ett team?", "pl": "Co sprawia, \u017ce czujesz, \u017ce jeste\u015bmy prawdziwym zespo\u0142em?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'What’s a TV show or song that reminds us of growing up?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s a memory that instantly makes everyone laugh?", "da": "Hvilken erindring f\u00e5r straks alle til at grine?", "de": "Welche Erinnerung bringt sofort alle zum Lachen?", "es": "\u00bfQu\u00e9 recuerdo hace que todos se r\u00edan al instante?", "pt": "Que lembran\u00e7a faz todos rirem instantaneamente?", "ro": "Ce amintire \u00eei face pe to\u021bi s\u0103 r\u00e2d\u0103 instantaneu?", "fr": "Quel souvenir fait rire tout le monde instantan\u00e9ment ?", "it": "Qual \u00e8 un ricordo che fa ridere tutti all''istante?", "fi": "Mik\u00e4 on muisto, joka saa kaikki nauramaan heti?", "nl": "Wat is een herinnering die iedereen meteen aan het lachen maakt?", "no": "Hva er et minne som umiddelbart f\u00e5r alle til \u00e5 le?", "sv": "Vilket minne f\u00e5r alltid alla att skratta?", "pl": "Jakie wspomnienie od razu sprawia, \u017ce wszyscy si\u0119 \u015bmiej\u0105?"}'::jsonb,
+    updated_at = NOW()

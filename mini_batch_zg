@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'What’s your personal definition of a 10/10 night?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s most likely to start flirting with the bartender?", "da": "Hvem begynder mest sandsynligt at flirte med bartenderen?", "de": "Wer f\u00e4ngt am ehesten an, mit dem Barkeeper zu flirten?", "es": "\u00bfQui\u00e9n es m\u00e1s probable que empiece a coquetear con el camarero?", "pt": "Quem \u00e9 mais prov\u00e1vel come\u00e7ar a flertar com o barman?", "ro": "Cine e cel mai probabil s\u0103 flirteze cu barmanul?", "fr": "Qui est le plus susceptible de flirter avec le barman ?", "it": "Chi \u00e8 pi\u00f9 probabile che inizi a flirtare con il barista?", "fi": "Kuka todenn\u00e4k\u00f6isesti alkaa flirttailla baarimikon kanssa?", "nl": "Wie is het meest waarschijnlijk om te beginnen flirten met de barman?", "no": "Hvem er mest sannsynlig til \u00e5 begynne \u00e5 fl\u00f8rte med bartenderen?", "sv": "Vem \u00e4r mest ben\u00e4gen att b\u00f6rja flirta med bartendrarna?", "pl": "Kto najprawdopodobniej zacznie flirtowa\u0107 z barmanem?"}'::jsonb,

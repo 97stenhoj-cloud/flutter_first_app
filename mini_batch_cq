@@ -1,0 +1,5 @@
+SET translations = '{"en": "What\u2019s the eeriest kind of weather?", "da": "Hvad er den mest uhyggelige slags vejr?", "de": "Was ist die unheimlichste Art von Wetter?", "es": "\u00bfCu\u00e1l es el tipo de clima m\u00e1s inquietante?", "pt": "Qual \u00e9 o tipo de clima mais assustador?", "ro": "Care este cel mai \u00eenfior\u0103tor tip de vreme?", "fr": "Quel est le type de temps le plus inqui\u00e9tant ?", "it": "Che tipo di tempo atmosferico ti sembra pi\u00f9 inquietante?", "fi": "Millainen s\u00e4\u00e4 on mielest\u00e4si karmivin?", "nl": "Wat voor soort weer vind jij het meest spookachtig?", "no": "Hva er den mest uhyggelige typen v\u00e6r?", "sv": "Vilken sorts v\u00e4der \u00e4r ruggigast enligt dig?", "pl": "Jaki rodzaj pogody jest dla ciebie najbardziej upiorny?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'After Dark Talks'
+  AND translations->>'en' = 'What’s the eeriest kind of weather?';
+UPDATE questions

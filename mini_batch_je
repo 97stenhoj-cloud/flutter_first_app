@@ -1,0 +1,5 @@
+WHERE category_name = 'Deep Talks'
+  AND translations->>'en' = 'What’s a boundary that protects your creativity or rest?';
+UPDATE questions
+SET translations = '{"en": "What do you dream about accomplishing?", "da": "Hvad dr\u00f8mmer du om at opn\u00e5?", "de": "Wovon tr\u00e4umst du, etwas zu erreichen?", "es": "\u00bfCon qu\u00e9 sue\u00f1as lograr?", "pt": "O que voc\u00ea sonha em conquistar?", "ro": "Ce visezi s\u0103 realizezi?", "fr": "Que r\u00eaves-tu d\u2019accomplir ?", "it": "Di cosa sogni di realizzare?", "fi": "Mist\u00e4 unelmoit saavuttavasi?", "nl": "Waar droom je van om te bereiken?", "no": "Hva dr\u00f8mmer du om \u00e5 oppn\u00e5?", "sv": "Vad dr\u00f6mmer du om att uppn\u00e5?", "pl": "O czym marzysz, aby osi\u0105gn\u0105\u0107?"}'::jsonb,
+    updated_at = NOW()

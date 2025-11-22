@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'Who is your ''call any time'' person—and what makes them that?';
+UPDATE questions
+SET translations = '{"en": "What tiny luxury upgrades your day?", "da": "Hvilken lille luksus g\u00f8r din dag bedre?", "de": "Welcher kleine Luxus versch\u00f6nert deinen Tag?", "es": "\u00bfQu\u00e9 peque\u00f1o lujo mejora tu d\u00eda?", "pt": "Que pequeno luxo melhora o seu dia?", "ro": "Ce mic lux \u00ee\u021bi \u00eembun\u0103t\u0103\u021be\u0219te ziua?", "fr": "Quel petit luxe am\u00e9liore ta journ\u00e9e ?", "it": "Quali piccoli lussi migliorano la tua giornata?", "fi": "Mitk\u00e4 pienet luksusparannukset tekev\u00e4t p\u00e4iv\u00e4st\u00e4si paremman?", "nl": "Welke kleine luxe maakt jouw dag beter?", "no": "Hvilke sm\u00e5 luksusforbedringer gj\u00f8r dagen din bedre?", "sv": "Vilka sm\u00e5 lyxuppgraderingar g\u00f6r din dag b\u00e4ttre?", "pl": "Jakie ma\u0142e luksusy umilaj\u0105 tw\u00f3j dzie\u0144?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

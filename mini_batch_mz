@@ -1,0 +1,5 @@
+WHERE category_name = 'Do-you-dare Talks'
+  AND translations->>'en' = 'Who from your past do you still think about sometimes — and in what way?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s something people often misunderstand about you?", "da": "Hvad misforst\u00e5r folk ofte om dig?", "de": "Was missverstehen die Leute oft an dir?", "es": "\u00bfQu\u00e9 es algo que la gente suele malinterpretar sobre ti?", "pt": "O que \u00e9 algo que as pessoas geralmente interpretam mal sobre ti?", "ro": "Ce crezi c\u0103 oamenii \u00een\u021beleg gre\u0219it despre tine?", "fr": "Qu\u2019est-ce que les gens comprennent souvent mal \u00e0 ton sujet ?", "it": "Qualcosa che le persone fraintendono spesso su di te?", "fi": "Mik\u00e4 on jotain, mit\u00e4 ihmiset usein v\u00e4\u00e4rin ymm\u00e4rt\u00e4v\u00e4t sinusta?", "nl": "Wat is iets dat mensen vaak verkeerd begrijpen over jou?", "no": "Hva er noe folk ofte misforst\u00e5r om deg?", "sv": "Vad \u00e4r n\u00e5got som folk ofta missf\u00f6rst\u00e5r om dig?", "pl": "Co\u015b, co ludzie cz\u0119sto \u017ale rozumiej\u0105 na tw\u00f3j temat?"}'::jsonb,
+    updated_at = NOW()

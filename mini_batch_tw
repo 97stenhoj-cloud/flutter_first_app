@@ -1,0 +1,5 @@
+WHERE category_name = 'Love Languages Remix Talks'
+  AND translations->>'en' = 'What kind of physical affection helps you feel secure?';
+UPDATE questions
+SET translations = '{"en": "When do you crave closeness with me the most?", "da": "Hvorn\u00e5r l\u00e6nges du mest efter at v\u00e6re t\u00e6t p\u00e5 mig?", "de": "Wann sehnst du dich am meisten danach, mir nahe zu sein?", "es": "\u00bfCu\u00e1ndo anhelas m\u00e1s estar cerca de m\u00ed?", "pt": "Quando \u00e9 que mais desejas estar perto de mim?", "ro": "C\u00e2nd \u00ee\u021bi dore\u0219ti cel mai mult s\u0103 fii aproape de mine?", "fr": "Quand d\u00e9sires-tu le plus \u00eatre proche de moi ?", "it": "Quando hai pi\u00f9 voglia di vicinanza con me?", "fi": "Milloin kaipaat l\u00e4heisyytt\u00e4 kanssani eniten?", "nl": "Wanneer heb je het meest behoefte aan nabijheid met mij?", "no": "N\u00e5r lengter du mest etter n\u00e6rhet med meg?", "sv": "N\u00e4r l\u00e4ngtar du mest efter n\u00e4rhet med mig?", "pl": "Kiedy najbardziej pragniesz blisko\u015bci ze mn\u0105?"}'::jsonb,
+    updated_at = NOW()

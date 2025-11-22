@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What helps you trust me deeper?';
+UPDATE questions
+SET translations = '{"en": "Which personal accomplishment are you most proud of?", "da": "Hvilken personlig pr\u00e6station er du mest stolt af?", "de": "Auf welche pers\u00f6nliche Leistung bist du am stolzesten?", "es": "\u00bfDe cu\u00e1l logro personal te sientes m\u00e1s orgulloso/a?", "pt": "De qual realiza\u00e7\u00e3o pessoal voc\u00ea sente mais orgulho?", "ro": "Cu care realizare personal\u0103 e\u0219ti cel mai m\u00e2ndru / cea mai m\u00e2ndr\u0103?", "fr": "De quel accomplissement personnel es-tu le plus fier / la plus fi\u00e8re ?", "it": "Quale traguardo personale di cui sei pi\u00f9 orgoglioso?", "fi": "Mist\u00e4 henkil\u00f6kohtaisesta saavutuksesta olet ylpein?", "nl": "Welke persoonlijke prestatie waar je het meest trots op bent?", "no": "Hvilken personlig prestasjon er du mest stolt av?", "sv": "Vilken personlig prestation \u00e4r du mest stolt \u00f6ver?", "pl": "Z kt\u00f3rego osobistego osi\u0105gni\u0119cia jeste\u015b najbardziej dumny?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

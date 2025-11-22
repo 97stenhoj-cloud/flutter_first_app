@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'When do you feel time slow down?';
+UPDATE questions
+SET translations = '{"en": "What are your favorite kind of compliments \u2014and why?", "da": "Hvilken slags komplimenter kan du bedst lide \u2014 og hvorfor?", "de": "Welche Art von Komplimenten magst du am liebsten \u2013 und warum?", "es": "\u00bfQu\u00e9 tipo de cumplidos te gustan m\u00e1s, y por qu\u00e9?", "pt": "Que tipo de elogios voc\u00ea mais gosta \u2014 e por qu\u00ea?", "ro": "Ce fel de complimente \u00ee\u021bi plac cel mai mult \u2014 \u0219i de ce?", "fr": "Quel type de compliments pr\u00e9f\u00e8res-tu \u2014 et pourquoi ?", "it": "Quali sono i tuoi complimenti preferiti \u2014 e perch\u00e9?", "fi": "Mitk\u00e4 ovat suosikkisi kehuja \u2014 ja miksi?", "nl": "Wat zijn jouw favoriete soorten complimenten \u2014 en waarom?", "no": "Hva er dine favorittkomplimenter \u2014 og hvorfor?", "sv": "Vilka \u00e4r dina favoritkommentarer \u2014 och varf\u00f6r?", "pl": "Jakie s\u0105 twoje ulubione rodzaje komplement\u00f3w \u2014 i dlaczego?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

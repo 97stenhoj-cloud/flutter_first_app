@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'How do you feel about the level of physical intimacy in our relationship?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s your favorite compliment to give me?", "da": "Hvad er noget, der altid f\u00e5r dig til at t\u00e6nke p\u00e5 mig?", "de": "Was erinnert dich immer an mich?", "es": "\u00bfQu\u00e9 cosa siempre te recuerda a m\u00ed?", "pt": "O que \u00e9 algo que sempre faz voc\u00ea lembrar de mim?", "ro": "Ce lucru te face \u00eentotdeauna s\u0103 te g\u00e2nde\u0219ti la mine?", "fr": "Qu\u2019est-ce qui te fait toujours penser \u00e0 moi ?", "it": "Qual \u00e8 il tuo complimento preferito da darmi?", "fi": "Mik\u00e4 on suosikkikehu, jonka haluaisit antaa minulle?", "nl": "Wat is jouw favoriete compliment om mij te geven?", "no": "Hva er ditt favorittkompliment \u00e5 gi meg?", "sv": "Vilken komplimang gillar du mest att ge mig?", "pl": "Jakie jest twoje ulubione komplement, kt\u00f3ry mo\u017cesz mi da\u0107?"}'::jsonb,

@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'How can I better show that I’m in your corner, no matter what?';
+UPDATE questions
+SET translations = '{"en": "Which memory reminds you that you\u2019re resilient?", "da": "Hvilket minde minder dig om, at du er modstandsdygtig?", "de": "Welche Erinnerung erinnert dich daran, dass du widerstandsf\u00e4hig bist?", "es": "\u00bfQu\u00e9 recuerdo te recuerda que eres resiliente?", "pt": "Que lembran\u00e7a te lembra que voc\u00ea \u00e9 resiliente?", "ro": "Ce amintire \u00ee\u021bi aminte\u0219te c\u0103 e\u0219ti rezistent(\u0103)?", "fr": "Quel souvenir te rappelle que tu es r\u00e9silient(e) ?", "it": "Quale ricordo ti ricorda che sei resiliente?", "fi": "Mik\u00e4 muisto muistuttaa sinua siit\u00e4, ett\u00e4 olet kest\u00e4v\u00e4?", "nl": "Welke herinnering herinnert je eraan dat je veerkrachtig bent?", "no": "Hvilket minne minner deg om at du er motstandsdyktig?", "sv": "Vilket minne p\u00e5minner dig om att du \u00e4r motst\u00e5ndskraftig?", "pl": "Kt\u00f3ra pami\u0119\u0107 przypomina ci, \u017ce jeste\u015b odporny?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

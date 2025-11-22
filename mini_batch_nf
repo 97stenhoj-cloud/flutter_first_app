@@ -1,0 +1,5 @@
+WHERE category_name = 'Do-you-dare Talks'
+  AND translations->>'en' = 'What’s something you’d love us to try together but haven’t yet?';
+UPDATE questions
+SET translations = '{"en": "How do you think your exes would describe you as a partner?", "da": "Hvordan tror du, dine ekser ville beskrive dig som partner?", "de": "Wie w\u00fcrden dich deine Ex-Partner als Partner beschreiben?", "es": "\u00bfC\u00f3mo crees que tus ex te describir\u00edan como pareja?", "pt": "Como achas que os teus ex te descreveriam como parceiro?", "ro": "Cum crezi c\u0103 te-ar descrie fo\u0219tii t\u0103i ca partener?", "fr": "Comment penses-tu que tes ex te d\u00e9criraient comme partenaire ?", "it": "Come pensi che i tuoi ex ti descriverebbero come partner?", "fi": "Miten luulet, ett\u00e4 eks\u00e4si kuvailisivat sinua kumppanina?", "nl": "Hoe denk je dat je exen jou als partner zouden beschrijven?", "no": "Hvordan tror du eksene dine ville beskrevet deg som partner?", "sv": "Hur tror du att dina ex skulle beskriva dig som partner?", "pl": "Jak my\u015blisz, jak twoje by\u0142e partnerki/partnerzy opisaliby ci\u0119 jako partnera?"}'::jsonb,
+    updated_at = NOW()

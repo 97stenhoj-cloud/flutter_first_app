@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'What do you want our mornings to feel like?';
+UPDATE questions
+SET translations = '{"en": "What makes you feel the most energized?", "da": "Hvad f\u00e5r dig til at f\u00f8le dig mest energisk?", "de": "Was l\u00e4sst dich am meisten energiegeladen f\u00fchlen?", "es": "\u00bfQu\u00e9 te hace sentir con m\u00e1s energ\u00eda?", "pt": "O que te faz sentir mais energizado/a?", "ro": "Ce te face s\u0103 te sim\u021bi cel mai plin(\u0103) de energie?", "fr": "Qu\u2019est-ce qui te fait te sentir le plus \u00e9nergis\u00e9(e) ?", "it": "Cosa ti fa sentire pi\u00f9 energico?", "fi": "Mik\u00e4 saa sinut tuntemaan itsesi energisimm\u00e4ksi?", "nl": "Wat geeft jou de meeste energie?", "no": "Hva f\u00e5r deg til \u00e5 f\u00f8le deg mest energisk?", "sv": "Vad f\u00e5r dig att k\u00e4nna dig mest energisk?", "pl": "Co sprawia, \u017ce czujesz si\u0119 najbardziej na\u0142adowany energi\u0105?"}'::jsonb,

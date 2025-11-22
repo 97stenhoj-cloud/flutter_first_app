@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "Would cannibalism ever be an option?", "da": "Ville kannibalisme nogensinde v\u00e6re en mulighed?", "de": "W\u00e4re Kannibalismus jemals eine Option?", "es": "\u00bfSer\u00eda el canibalismo alguna vez una opci\u00f3n?", "pt": "O canibalismo seria alguma vez uma op\u00e7\u00e3o?", "ro": "Ar fi vreodat\u0103 canibalismul o op\u021biune?", "fr": "Le cannibalisme serait-il jamais une option ?", "it": "Il cannibalismo sarebbe mai un\u2019opzione?", "fi": "Voisiko kannibalismi ikin\u00e4 olla vaihtoehto?", "nl": "Zou kannibalisme ooit een optie zijn?", "no": "Kunne kannibalisme noen gang v\u00e6rt et alternativ?", "sv": "Skulle kannibalism n\u00e5gonsin kunna vara ett alternativ?", "pl": "Czy kanibalizm m\u00f3g\u0142by kiedykolwiek by\u0107 opcj\u0105?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'After Dark Talks'
+  AND translations->>'en' = 'Would cannibalism ever be an option?';

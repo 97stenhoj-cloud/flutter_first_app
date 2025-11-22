@@ -1,0 +1,47 @@
+# screenshots.yaml
+# Configuration file for screenshot automation
+# Use the integration_test approach instead
+
+# Devices to generate screenshots for
+devices:
+  # iOS Devices (App Store Requirements)
+  ios:
+    iPhone-15-Pro-Max:
+      frame: false  # Set to true to add device frames
+      orientation: portrait
+    iPhone-15-Pro:
+      frame: false
+      orientation: portrait
+    iPhone-SE-3rd-generation:
+      frame: false
+      orientation: portrait
+    iPad-Pro-12-9-inch-6th-generation:
+      frame: false
+      orientation: portrait
+
+  # Android Devices (Play Store Requirements)
+  android:
+    Pixel-7-Pro:
+      frame: false
+      orientation: portrait
+    Pixel-7:
+      frame: false
+      orientation: portrait
+    Nexus-9:  # Tablet
+      frame: false
+      orientation: portrait
+
+# Screenshot output location
+staging: screenshots/staging
+archive: screenshots/archive
+
+# Localization (optional - can capture in multiple languages)
+locales:
+  - en-US
+
+# Test file to run for screenshot capture
+tests:
+  - integration_test/screenshot_test.dart
+
+# Screenshot recording
+recording: false

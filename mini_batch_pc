@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who’s the most competitive person here?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s most likely to exaggerate every story just a little?", "da": "Hvem overdriver altid historierne lidt?", "de": "Wer \u00fcbertreibt jede Geschichte ein kleines bisschen?", "es": "\u00bfQui\u00e9n es m\u00e1s probable que exagere cada historia un poco?", "pt": "Quem \u00e9 mais prov\u00e1vel de exagerar um pouco cada hist\u00f3ria?", "ro": "Cine e cel mai probabil s\u0103 exagereze pu\u021bin fiecare poveste?", "fr": "Qui exag\u00e8re toujours un peu chaque histoire ?", "it": "Chi \u00e8 pi\u00f9 probabile che esageri ogni storia solo un po''?", "fi": "Kuka todenn\u00e4k\u00f6isesti liioittelee jokaista tarinaa hieman?", "nl": "Wie is het meest waarschijnlijk om elk verhaal net iets te overdrijven?", "no": "Hvem er mest sannsynlig til \u00e5 overdrive hver historie bare litt?", "sv": "Vem \u00e4r mest ben\u00e4gen att \u00f6verdriva varje historia lite grann?", "pl": "Kto jest najbardziej sk\u0142onny do nieco przesadzania w ka\u017cdej historii?"}'::jsonb,

@@ -1,0 +1,5 @@
+SET translations = '{"en": "What\u2019s your usual catchphrase? Does it work?", "da": "Hvad er dit s\u00e6dvanlige catchphrase? Virker det?", "de": "Was ist dein typischer Spruch? Funktioniert er?", "es": "\u00bfCu\u00e1l es tu frase t\u00edpica? \u00bfFunciona?", "pt": "Qual \u00e9 a tua frase t\u00edpica? Funciona?", "ro": "Care este expresia ta obi\u0219nuit\u0103? Func\u021bioneaz\u0103?", "fr": "Quelle est ta phrase f\u00e9tiche ? Est-ce qu\u2019elle marche ?", "it": "Qual \u00e8 il tuo solito motto? Funziona?", "fi": "Mik\u00e4 on tavallinen iskulauseesi? Toimiiko se?", "nl": "Wat is jouw gebruikelijke catchphrase? Werkt het?", "no": "Hva er ditt vanlige slagord? Fungerer det?", "sv": "Vad \u00e4r ditt vanliga motto? Fungerar det?", "pl": "Jakie jest twoje zwyk\u0142e powiedzenie? Dzia\u0142a?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'What’s your usual catchphrase? Does it work?';
+UPDATE questions

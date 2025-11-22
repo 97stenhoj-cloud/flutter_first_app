@@ -1,0 +1,5 @@
+SET translations = '{"en": "Who\u2019s most likely to start karaoke out of nowhere?", "da": "Hvem starter mest sandsynligt karaoke ud af ingenting?", "de": "Wer startet am ehesten spontan Karaoke?", "es": "\u00bfQui\u00e9n es m\u00e1s probable que empiece karaoke de la nada?", "pt": "Quem \u00e9 mais prov\u00e1vel come\u00e7ar karaoke do nada?", "ro": "Cine e cel mai probabil s\u0103 porneasc\u0103 karaoke din senin?", "fr": "Qui est le plus susceptible de lancer un karaok\u00e9 sans pr\u00e9venir ?", "it": "Chi \u00e8 pi\u00f9 probabile che inizi a cantare karaoke all''improvviso?", "fi": "Kuka todenn\u00e4k\u00f6isesti aloittaa karaoken tyhj\u00e4st\u00e4?", "nl": "Wie is het meest waarschijnlijk om zomaar karaoke te beginnen?", "no": "Hvem er mest sannsynlig til \u00e5 starte karaoke ut av det bl\u00e5?", "sv": "Vem \u00e4r mest ben\u00e4gen att b\u00f6rja sjunga karaoke helt pl\u00f6tsligt?", "pl": "Kto najprawdopodobniej zacznie karaoke znik\u0105d?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'Who’s most likely to start karaoke out of nowhere?';
+UPDATE questions

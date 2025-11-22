@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'How do you know it’s time to let something end?';
+UPDATE questions
+SET translations = '{"en": "What do you owe your future self?", "da": "Hvad skylder du dit fremtidige jeg?", "de": "Was schuldest du deinem zuk\u00fcnftigen Ich?", "es": "\u00bfQu\u00e9 le debes a tu yo del futuro?", "pt": "O que voc\u00ea deve ao seu eu do futuro?", "ro": "Ce datorezi sinelui t\u0103u din viitor?", "fr": "Que dois-tu \u00e0 ton toi futur ?", "it": "Cosa devi al tuo io futuro?", "fi": "Mit\u00e4 olet velkaa tulevalle itsellesi?", "nl": "Wat ben je je toekomstige zelf verschuldigd?", "no": "Hva skylder du din fremtidige selv?", "sv": "Vad \u00e4r du skyldig din framtida jag?", "pl": "Co jeste\u015b winien swojemu przysz\u0142emu ja?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

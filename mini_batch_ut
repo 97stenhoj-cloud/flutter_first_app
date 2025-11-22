@@ -1,0 +1,5 @@
+SET translations = '{"en": "When do you feel most playful with me?", "da": "Hvorn\u00e5r f\u00f8ler du dig mest legesyg sammen med mig?", "de": "Wann f\u00fchlst du dich mit mir am verspieltesten?", "es": "\u00bfCu\u00e1ndo te sientes m\u00e1s juguet\u00f3n/a conmigo?", "pt": "Quando te sentes mais brincalh\u00e3o/brincalhona comigo?", "ro": "C\u00e2nd te sim\u021bi cel mai juc\u0103u\u0219/juc\u0103u\u0219\u0103 cu mine?", "fr": "Quand te sens-tu le/la plus joueur(se) avec moi ?", "it": "Quando ti senti pi\u00f9 giocoso con me?", "fi": "Milloin tunnet itsesi leikkisimm\u00e4ksi kanssani?", "nl": "Wanneer voel je je het meest speels met mij?", "no": "N\u00e5r f\u00f8ler du deg mest leken med meg?", "sv": "N\u00e4r k\u00e4nner du dig mest lekfull med mig?", "pl": "Kiedy czujesz si\u0119 ze mn\u0105 najbardziej zabawnie?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'When do you feel most playful with me?';
+UPDATE questions

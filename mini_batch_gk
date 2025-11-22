@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What makes a space feel cozy to you?';
+UPDATE questions
+SET translations = '{"en": "When did you last feel butterflies?", "da": "Hvorn\u00e5r fik du sidst sommerfugle i maven?", "de": "Wann hattest du zuletzt Schmetterlinge im Bauch?", "es": "\u00bfCu\u00e1ndo fue la \u00faltima vez que sentiste mariposas en el est\u00f3mago?", "pt": "Quando foi a \u00faltima vez que voc\u00ea sentiu borboletas no est\u00f4mago?", "ro": "C\u00e2nd ai sim\u021bit ultima dat\u0103 fluturi \u00een stomac?", "fr": "Quand as-tu eu des papillons dans le ventre pour la derni\u00e8re fois ?", "it": "Quando \u00e8 stata l''ultima volta che hai provato le farfalle nello stomaco?", "fi": "Milloin tunsit viimeksi perhosia vatsassasi?", "nl": "Wanneer voelde je voor het laatst vlinders in je buik?", "no": "N\u00e5r f\u00f8lte du sist sommerfugler i magen?", "sv": "N\u00e4r k\u00e4nde du senast fj\u00e4rilar i magen?", "pl": "Kiedy ostatnio poczu\u0142e\u015b motyle w brzuchu?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

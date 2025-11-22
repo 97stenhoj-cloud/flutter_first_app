@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'When you’re overwhelmed, what’s the most helpful thing I can do?';
+UPDATE questions
+SET translations = '{"en": "What do you need from me when you\u2019re doubting yourself?", "da": "Hvad har du brug for fra mig, n\u00e5r du tvivler p\u00e5 dig selv?", "de": "Was brauchst du von mir, wenn du an dir selbst zweifelst?", "es": "\u00bfQu\u00e9 necesitas de m\u00ed cuando dudas de ti mismo/a?", "pt": "Do que precisas de mim quando duvidas de ti?", "ro": "De ce ai nevoie de la mine c\u00e2nd te \u00eendoie\u0219ti de tine?", "fr": "De quoi as-tu besoin de ma part quand tu doutes de toi ?", "it": "Cosa hai bisogno da me quando hai dei dubbi su te stesso?", "fi": "Mit\u00e4 tarvitset minulta, kun ep\u00e4ilet itse\u00e4si?", "nl": "Wat heb je van mij nodig als je aan jezelf twijfelt?", "no": "Hva trenger du fra meg n\u00e5r du tviler p\u00e5 deg selv?", "sv": "Vad beh\u00f6ver du fr\u00e5n mig n\u00e4r du tvivlar p\u00e5 dig sj\u00e4lv?", "pl": "Czego potrzebujesz ode mnie, gdy masz w\u0105tpliwo\u015bci co do siebie?"}'::jsonb,

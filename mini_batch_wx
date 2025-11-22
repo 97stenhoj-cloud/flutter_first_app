@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'How do you think we handle conflict?';
+UPDATE questions
+SET translations = '{"en": "What do you want our mornings to feel like?", "da": "Hvordan vil du have, at vores morgener skal f\u00f8les?", "de": "Wie m\u00f6chtest du, dass sich unsere Morgen anf\u00fchlen?", "es": "\u00bfC\u00f3mo quieres que se sientan nuestras ma\u00f1anas?", "pt": "Como queres que sejam as nossas manh\u00e3s?", "ro": "Cum ai vrea s\u0103 fie dimine\u021bile noastre?", "fr": "Comment voudrais-tu que soient nos matins ?", "it": "Come vuoi che si sentano le nostre mattine?", "fi": "Milt\u00e4 haluat, ett\u00e4 aamuamme tuntuu?", "nl": "Hoe wil je dat onze ochtenden aanvoelen?", "no": "Hvordan vil du at morgenene v\u00e5re skal f\u00f8les?", "sv": "Hur vill du att v\u00e5ra morgnar ska k\u00e4nnas?", "pl": "Jak chcesz, \u017ceby nasze poranki wygl\u0105da\u0142y?"}'::jsonb,

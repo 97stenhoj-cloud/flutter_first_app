@@ -1,0 +1,5 @@
+SET translations = '{"en": "Who would you trust to order shots for everyone?", "da": "Hvem ville du stole p\u00e5 til at bestille shots til alle?", "de": "Wem w\u00fcrdest du vertrauen, Shots f\u00fcr alle zu bestellen?", "es": "\u00bfEn qui\u00e9n confiar\u00edas para pedir los chupitos para todos?", "pt": "Em quem confiarias para pedir os shots para todos?", "ro": "\u00cen cine ai avea \u00eencredere s\u0103 comande shot-uri pentru to\u021bi?", "fr": "\u00c0 qui ferais-tu confiance pour commander des shots pour tout le monde ?", "it": "Di chi ti fideresti per ordinare i drink per tutti?", "fi": "Keneen luottaisit tilaamaan shotsit kaikille?", "nl": "Wie zou je vertrouwen om shots voor iedereen te bestellen?", "no": "Hvem ville du stole p\u00e5 til \u00e5 bestille shots for alle?", "sv": "Vem skulle du lita p\u00e5 att best\u00e4lla shots till alla?", "pl": "Kogo by\u015b zaufa\u0142, \u017ceby zam\u00f3wi\u0142 kolejki dla wszystkich?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'Who would you trust to order shots for everyone?';
+UPDATE questions

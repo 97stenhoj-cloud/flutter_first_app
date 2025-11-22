@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who insists on having a real Christmas tree, no matter the mess?';
+UPDATE questions
+SET translations = '{"en": "How did mom and dad meet - What\u2019s the story?", "da": "Hvordan m\u00f8dtes mor og far \u2013 hvad er historien?", "de": "Wie haben sich Mama und Papa kennengelernt \u2013 was ist die Geschichte?", "es": "\u00bfC\u00f3mo se conocieron mam\u00e1 y pap\u00e1? \u00bfCu\u00e1l es la historia?", "pt": "Como mam\u00e3e e papai se conheceram \u2013 qual \u00e9 a hist\u00f3ria?", "ro": "Cum s-au cunoscut mama \u0219i tata \u2013 care e povestea?", "fr": "Comment maman et papa se sont-ils rencontr\u00e9s \u2013 quelle est l\u2019histoire ?", "it": "Come si sono conosciuti mamma e pap\u00e0 - Qual \u00e8 la storia?", "fi": "Miten \u00e4iti ja is\u00e4 tapasivat - Mik\u00e4 on tarina?", "nl": "Hoe hebben mama en papa elkaar ontmoet - Wat is het verhaal?", "no": "Hvordan m\u00f8ttes mamma og pappa - Hva er historien?", "sv": "Hur tr\u00e4ffades mamma och pappa - Vad \u00e4r historien?", "pl": "Jak mama i tata si\u0119 poznali - Jaka jest historia?"}'::jsonb,
+    updated_at = NOW()

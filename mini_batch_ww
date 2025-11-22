@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'When did you last feel completely seen by me?';
+UPDATE questions
+SET translations = '{"en": "How do you think we handle conflict?", "da": "Hvordan synes du, vi h\u00e5ndterer konflikter?", "de": "Wie, denkst du, gehen wir mit Konflikten um?", "es": "\u00bfC\u00f3mo crees que manejamos el conflicto?", "pt": "Como achas que lidamos com o conflito?", "ro": "Cum crezi c\u0103 gestion\u0103m conflictul?", "fr": "Comment penses-tu que nous g\u00e9rons le conflit ?", "it": "Come pensi che gestiamo i conflitti?", "fi": "Miten luulet, ett\u00e4 k\u00e4sittelemme konflikteja?", "nl": "Hoe denk je dat we met conflicten omgaan?", "no": "Hvordan tror du vi h\u00e5ndterer konflikt?", "sv": "Hur tycker du att vi hanterar konflikt?", "pl": "Jak my\u015blisz, jak radzimy sobie z konfliktami?"}'::jsonb,

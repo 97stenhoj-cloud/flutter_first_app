@@ -1,0 +1,5 @@
+SET translations = '{"en": "What\u2019s a drink that gives you instant flashbacks?", "da": "Hvilken drink giver dig \u00f8jeblikkelige flashbacks?", "de": "Welches Getr\u00e4nk l\u00f6st bei dir sofort Flashbacks aus?", "es": "\u00bfQu\u00e9 bebida te da flashbacks instant\u00e1neos?", "pt": "Que bebida te d\u00e1 flashbacks instant\u00e2neos?", "ro": "Ce b\u0103utur\u0103 \u00ee\u021bi provoac\u0103 instantaneu amintiri intense?", "fr": "Quelle boisson te donne instantan\u00e9ment des flashbacks ?", "it": "Qual \u00e8 una bevanda che ti fa avere flashback istantanei?", "fi": "Mik\u00e4 juoma tuo sinulle heti mieleen muistoja?", "nl": "Wat is een drankje dat je directe flashbacks geeft?", "no": "Hva er en drink som gir deg umiddelbare tilbakeblikk?", "sv": "Vilken dryck ger dig omedelbara flashbacks?", "pl": "Jaki nap\u00f3j wywo\u0142uje u ciebie natychmiastowe wspomnienia?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'What’s a drink that gives you instant flashbacks?';
+UPDATE questions

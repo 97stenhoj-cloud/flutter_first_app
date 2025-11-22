@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'What’s a family saying or phrase everyone knows?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s best known for taking way too many selfies?", "da": "Hvem er kendt for at tage alt for mange selfies?", "de": "Wer ist bekannt daf\u00fcr, viel zu viele Selfies zu machen?", "es": "\u00bfQui\u00e9n es conocido por tomar demasiados selfies?", "pt": "Quem \u00e9 conhecido por tirar selfies demais?", "ro": "Cine e cunoscut c\u0103 face prea multe selfie-uri?", "fr": "Qui est connu pour prendre beaucoup trop de selfies ?", "it": "Chi \u00e8 il pi\u00f9 conosciuto per scattare un numero eccessivo di selfie?", "fi": "Kuka tunnetaan parhaiten siit\u00e4, ett\u00e4 ottaa aivan liian monta selfie-kuvaa?", "nl": "Wie staat het meest bekend om veel te veel selfies te nemen?", "no": "Hvem er best kjent for \u00e5 ta altfor mange selfies?", "sv": "Vem \u00e4r mest k\u00e4nd f\u00f6r att ta alldeles f\u00f6r m\u00e5nga selfies?", "pl": "Kto jest najlepiej znany z robienia zbyt wielu selfie?"}'::jsonb,

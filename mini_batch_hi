@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What’s your favorite comfort food?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s something small that you\u2019ve been grateful for lately?", "da": "Hvad er en lille ting, du har v\u00e6ret taknemmelig for for nylig?", "de": "Wof\u00fcr warst du in letzter Zeit dankbar, auch wenn es klein war?", "es": "\u00bfQu\u00e9 cosa peque\u00f1a has agradecido \u00faltimamente?", "pt": "Por qual coisa pequena voc\u00ea tem sido grato(a) ultimamente?", "ro": "Pentru ce lucru mic ai fost recunosc\u0103tor(are) \u00een ultima vreme?", "fr": "Quelle petite chose as-tu r\u00e9cemment appr\u00e9ci\u00e9e ?", "it": "Qualcosa di piccolo per cui sei stato grato ultimamente?", "fi": "Mik\u00e4 on jokin pieni asia, josta olet ollut kiitollinen viime aikoina?", "nl": "Wat is iets kleins waar je de laatste tijd dankbaar voor bent geweest?", "no": "Hva er noe lite du har v\u00e6rt takknemlig for i det siste?", "sv": "Vad \u00e4r n\u00e5got litet som du har varit tacksam f\u00f6r p\u00e5 sistone?", "pl": "Co\u015b ma\u0142ego, za co ostatnio by\u0142e\u015b wdzi\u0119czny?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

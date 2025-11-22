@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'What’s a challenge we handled well—and why?';
+UPDATE questions
+SET translations = '{"en": "What does \u201chome\u201d mean to you when it comes to us?", "da": "Hvad betyder \u201chjem\u201d for dig, n\u00e5r det handler om os?", "de": "Was bedeutet \u201eZuhause\u201c f\u00fcr dich, wenn es um uns geht?", "es": "\u00bfQu\u00e9 significa \u201chogar\u201d para ti cuando se trata de nosotros?", "pt": "O que significa \u201ccasa\u201d para ti quando se trata de n\u00f3s?", "ro": "Ce \u00eenseamn\u0103 \u201eacas\u0103\u201d pentru tine c\u00e2nd e vorba de noi?", "fr": "Que veut dire \u00ab chez nous \u00bb pour toi quand il s\u2019agit de nous ?", "it": "Cosa significa \"casa\" per te quando si tratta di noi?", "fi": "Mit\u00e4 \"koti\" merkitsee sinulle meid\u00e4n suhteessamme?", "nl": "Wat betekent \"thuis\" voor jou als het om ons gaat?", "no": "Hva betyr \"hjem\" for deg n\u00e5r det gjelder oss?", "sv": "Vad betyder \"hem\" f\u00f6r dig n\u00e4r det g\u00e4ller oss?", "pl": "Co dla ciebie oznacza \u201edom\u201d w kontek\u015bcie nas?"}'::jsonb,

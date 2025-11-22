@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who would make the best (or worst) reality TV star in our family?';
+UPDATE questions
+SET translations = '{"en": "Who in our family gives the best hugs?", "da": "Hvem i familien giver de bedste kram?", "de": "Wer in unserer Familie gibt die besten Umarmungen?", "es": "\u00bfQui\u00e9n da los mejores abrazos en la familia?", "pt": "Quem na nossa fam\u00edlia d\u00e1 os melhores abra\u00e7os?", "ro": "Cine din familia noastr\u0103 d\u0103 cele mai bune \u00eembr\u0103\u021bi\u0219\u0103ri?", "fr": "Qui dans notre famille fait les meilleurs c\u00e2lins ?", "it": "Chi nella nostra famiglia d\u00e0 i migliori abbracci?", "fi": "Kuka perheess\u00e4mme antaa parhaat halaukset?", "nl": "Wie in onze familie geeft de beste knuffels?", "no": "Hvem i familien v\u00e5r gir de beste klemene?", "sv": "Vem i v\u00e5r familj ger de b\u00e4sta kramarna?", "pl": "Kto w naszej rodzinie daje najlepsze u\u015bciski?"}'::jsonb,

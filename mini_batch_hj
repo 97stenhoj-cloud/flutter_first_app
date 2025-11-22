@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What’s something small that you’ve been grateful for lately?';
+UPDATE questions
+SET translations = '{"en": "What do you miss most about being young?", "da": "Hvad savner du mest ved at v\u00e6re ung?", "de": "Was vermisst du am meisten daran, jung zu sein?", "es": "\u00bfQu\u00e9 extra\u00f1as m\u00e1s de ser joven?", "pt": "Do que voc\u00ea mais sente falta em ser jovem?", "ro": "Ce \u00ee\u021bi lipse\u0219te cel mai mult din tinere\u021be?", "fr": "Qu\u2019est-ce qui te manque le plus dans ta jeunesse ?", "it": "Cosa ti manca di pi\u00f9 dell''essere giovane?", "fi": "Mit\u00e4 kaipaat eniten nuoruudesta?", "nl": "Wat mis je het meest aan jong zijn?", "no": "Hva savner du mest med \u00e5 v\u00e6re ung?", "sv": "Vad saknar du mest med att vara ung?", "pl": "Czego najbardziej brakuje ci w byciu m\u0142odym?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

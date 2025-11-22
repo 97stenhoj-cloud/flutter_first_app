@@ -1,0 +1,5 @@
+WHERE category_name = 'Deep Talks'
+  AND translations->>'en' = 'How do you feel when we disagree — and what helps you feel heard?';
+UPDATE questions
+SET translations = '{"en": "Who in your life taught you the most about love?", "da": "Hvem i dit liv har l\u00e6rt dig mest om k\u00e6rlighed?", "de": "Wer in deinem Leben hat dir am meisten \u00fcber Liebe beigebracht?", "es": "\u00bfQui\u00e9n en tu vida te ha ense\u00f1ado m\u00e1s sobre el amor?", "pt": "Quem na sua vida te ensinou mais sobre o amor?", "ro": "Cine din via\u021ba ta te-a \u00eenv\u0103\u021bat cel mai mult despre dragoste?", "fr": "Qui dans ta vie t\u2019a le plus appris sur l\u2019amour ?", "it": "Chi nella tua vita ti ha insegnato di pi\u00f9 sull''amore?", "fi": "Kuka el\u00e4m\u00e4ss\u00e4si opetti sinulle eniten rakkaudesta?", "nl": "Wie in jouw leven heeft je het meest over liefde geleerd?", "no": "Hvem i livet ditt har l\u00e6rt deg mest om kj\u00e6rlighet?", "sv": "Vem i ditt liv l\u00e4rde dig mest om k\u00e4rlek?", "pl": "Kto w twoim \u017cyciu nauczy\u0142 ci\u0119 najwi\u0119cej o mi\u0142o\u015bci?"}'::jsonb,
+    updated_at = NOW()

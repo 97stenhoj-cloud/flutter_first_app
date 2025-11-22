@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'Do you think we’ve helped each other grow as people? How?';
+UPDATE questions
+SET translations = '{"en": "How do you know it\u2019s time to let something end?", "da": "Hvordan ved du, at det er tid til at afslutte noget?", "de": "Woran erkennst du, dass es Zeit ist, etwas zu beenden?", "es": "\u00bfC\u00f3mo sabes que es momento de dejar algo ir?", "pt": "Como voc\u00ea sabe que \u00e9 hora de deixar algo acabar?", "ro": "Cum \u0219tii c\u0103 este timpul s\u0103 \u00eenchei ceva?", "fr": "Comment sais-tu qu\u2019il est temps de mettre fin \u00e0 quelque chose ?", "it": "Come fai a sapere che \u00e8 il momento di far finire qualcosa?", "fi": "Miten tied\u00e4t, ett\u00e4 on aika p\u00e4\u00e4st\u00e4\u00e4 jotain loppumaan?", "nl": "Hoe weet je wanneer het tijd is om iets te laten eindigen?", "no": "Hvordan vet du at det er p\u00e5 tide \u00e5 la noe ta slutt?", "sv": "Hur vet du n\u00e4r det \u00e4r dags att l\u00e5ta n\u00e5got ta slut?", "pl": "Jak wiesz, \u017ce nadszed\u0142 czas, aby co\u015b zako\u0144czy\u0107?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'If the car had a name and personality, what’s its vibe?';
+UPDATE questions
+SET translations = '{"en": "Have you ever gotten lost? If yes, tell the story", "da": "Er du nogensinde faret vild? Hvis ja, fort\u00e6l historien.", "de": "Hast du dich schon einmal verlaufen? Wenn ja, erz\u00e4hle die Geschichte.", "es": "\u00bfAlguna vez te has perdido? Si es as\u00ed, cuenta la historia.", "pt": "J\u00e1 te perdeste alguma vez? Se sim, conta a hist\u00f3ria.", "ro": "Te-ai pierdut vreodat\u0103? Dac\u0103 da, spune povestea.", "fr": "T\u2019es-tu d\u00e9j\u00e0 perdu ? Si oui, raconte l\u2019histoire.", "it": "Ti sei mai perso/a? Se s\u00ec, racconta la storia.", "fi": "Oletko koskaan eksynyt? Jos olet, kerro tarina.", "nl": "Ben je ooit echt verdwaald geweest? Zo ja, vertel het verhaal.", "no": "Har du noen gang g\u00e5tt deg bort? Hvis ja, fortell historien.", "sv": "Har du n\u00e5gonsin g\u00e5tt vilse? Om ja, ber\u00e4tta historien.", "pl": "Czy kiedykolwiek si\u0119 zgubi\u0142e\u015b/zgubi\u0142a\u015b? Je\u015bli tak, opowiedz t\u0119 histori\u0119."}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Car Talks'

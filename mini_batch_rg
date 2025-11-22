@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who’s the most dramatic when things go wrong?';
+UPDATE questions
+SET translations = '{"en": "What does \u201chome\u201d smell like to us?", "da": "Hvordan lugter \u201chjem\u201d for os?", "de": "Wie riecht \u201eZuhause\u201c f\u00fcr uns?", "es": "\u00bfA qu\u00e9 nos huele \u201chogar\u201d?", "pt": "A que cheira \u201clar\u201d para n\u00f3s?", "ro": "Cum miroase \u201eacas\u0103\u201d pentru noi?", "fr": "Quelle est l\u2019odeur de \u00ab la maison \u00bb pour nous ?", "it": "Che odore ha \"casa\" per noi?", "fi": "Milt\u00e4 \"koti\" tuoksuu meille?", "nl": "Hoe ruikt \"thuis\" voor ons?", "no": "Hva lukter \"hjem\" for oss?", "sv": "Vad luktar \"hemma\" f\u00f6r oss?", "pl": "Jak pachnie \u201edom\u201d dla nas?"}'::jsonb,
+    updated_at = NOW()

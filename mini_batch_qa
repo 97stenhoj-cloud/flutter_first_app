@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'How did mom and dad meet - What’s the story?';
+UPDATE questions
+SET translations = '{"en": "Who always falls asleep halfway through family movie night?", "da": "Hvem falder altid i s\u00f8vn halvvejs gennem familiefilmaften?", "de": "Wer schl\u00e4ft immer mitten im Familienfilmabend ein?", "es": "\u00bfQui\u00e9n siempre se queda dormido a mitad de la noche de pel\u00edculas familiares?", "pt": "Quem sempre adormece no meio da noite de filme em fam\u00edlia?", "ro": "Cine adoarme mereu la jum\u0103tatea serii de film \u00een familie?", "fr": "Qui s\u2019endort toujours \u00e0 mi-chemin de la soir\u00e9e cin\u00e9ma en famille ?", "it": "Chi si addormenta sempre a met\u00e0 della serata cinema in famiglia?", "fi": "Kuka aina nukahtaa puoliv\u00e4liss\u00e4 perheen elokuvailtaa?", "nl": "Wie valt er altijd halverwege de familiefilmavond in slaap?", "no": "Hvem sovner alltid halvveis gjennom familiefilmen?", "sv": "Vem somnar alltid halvv\u00e4gs genom familjefilmkv\u00e4llen?", "pl": "Kto zawsze zasypia w po\u0142owie rodzinnego wieczoru filmowego?"}'::jsonb,
+    updated_at = NOW()

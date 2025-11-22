@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "What\u2019s one lesson past relationships taught you?", "da": "Hvilken lektie har tidligere forhold l\u00e6rt dig?", "de": "Welche Lektion haben dir fr\u00fchere Beziehungen beigebracht?", "es": "\u00bfQu\u00e9 lecci\u00f3n te ense\u00f1aron las relaciones pasadas?", "pt": "Que li\u00e7\u00e3o os relacionamentos passados te ensinaram?", "ro": "Ce lec\u021bie te-au \u00eenv\u0103\u021bat rela\u021biile trecute?", "fr": "Quelle le\u00e7on tes relations pass\u00e9es t\u2019ont-elles apprise ?", "it": "Qual \u00e8 una lezione che le relazioni passate ti hanno insegnato?", "fi": "Mik\u00e4 on yksi oppi, jonka menneet suhteet ovat opettaneet sinulle?", "nl": "Wat is \u00e9\u00e9n les die je uit eerdere relaties hebt geleerd?", "no": "Hva er en l\u00e6rdom tidligere forhold har l\u00e6rt deg?", "sv": "Vilken l\u00e4rdom har tidigare relationer l\u00e4rt dig?", "pl": "Jak\u0105 jedn\u0105 lekcj\u0119 nauczy\u0142y ci\u0119 przesz\u0142e zwi\u0105zki?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'
+  AND translations->>'en' = 'What’s one lesson past relationships taught you?';

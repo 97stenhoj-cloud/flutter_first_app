@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who in our family is the best at fixing things (even if it’s with duct tape)?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s most likely to blink in every photo?", "da": "Hvem blinker mest p\u00e5 billeder?", "de": "Wer blinzelt auf jedem Foto?", "es": "\u00bfQui\u00e9n es m\u00e1s probable que parpadee en todas las fotos?", "pt": "Quem \u00e9 mais prov\u00e1vel piscar em todas as fotos?", "ro": "Cine clipe\u0219te cel mai des \u00een poze?", "fr": "Qui cligne toujours des yeux sur les photos ?", "it": "Chi \u00e8 pi\u00f9 probabile che sbatti le palpebre in ogni foto?", "fi": "Kuka todenn\u00e4k\u00f6isesti r\u00e4p\u00e4ytt\u00e4\u00e4 silmi\u00e4\u00e4n jokaisessa valokuvassa?", "nl": "Wie is het meest waarschijnlijk om in elke foto te knipperen?", "no": "Hvem er mest sannsynlig til \u00e5 blunke p\u00e5 hvert bilde?", "sv": "Vem \u00e4r mest sannolikt att blinka p\u00e5 varje foto?", "pl": "Kto najprawdopodobniej mruga na ka\u017cdym zdj\u0119ciu?"}'::jsonb,
+    updated_at = NOW()

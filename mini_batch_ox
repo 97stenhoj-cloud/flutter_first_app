@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'What’s a song our family always sings or plays together?';
+UPDATE questions
+SET translations = '{"en": "Who in the family tells the best stories?", "da": "Hvem i familien fort\u00e6ller de bedste historier?", "de": "Wer in der Familie erz\u00e4hlt die besten Geschichten?", "es": "\u00bfQui\u00e9n cuenta las mejores historias en la familia?", "pt": "Quem na fam\u00edlia conta as melhores hist\u00f3rias?", "ro": "Cine din familie spune cele mai bune pove\u0219ti?", "fr": "Qui dans la famille raconte les meilleures histoires ?", "it": "Chi in famiglia racconta le storie migliori?", "fi": "Kuka perheess\u00e4 kertoo parhaat tarinat?", "nl": "Wie in de familie vertelt de beste verhalen?", "no": "Hvem i familien forteller de beste historiene?", "sv": "Vem i familjen ber\u00e4ttar de b\u00e4sta historierna?", "pl": "Kto w rodzinie opowiada najlepsze historie?"}'::jsonb,

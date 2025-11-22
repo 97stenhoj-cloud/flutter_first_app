@@ -1,0 +1,5 @@
+WHERE category_name = 'Do-you-dare Talks'
+  AND translations->>'en' = 'What does financial independence mean to you in a relationship?';
+UPDATE questions
+SET translations = '{"en": "How do you feel about your body right now?", "da": "Hvordan har du det med din krop lige nu?", "de": "Kan du lide, n\u00e5r jeg holder om dit ansigt eller dine hofter?", "es": "Magst du es, wenn ich dein Gesicht oder deine H\u00fcften halte?", "pt": "Como te sentes com o teu corpo neste momento?", "ro": "Cum te sim\u021bi \u00een leg\u0103tur\u0103 cu corpul t\u0103u acum?", "fr": "Comment te sens-tu par rapport \u00e0 ton corps en ce moment ?", "it": "Come ti senti riguardo al tuo corpo in questo momento?", "fi": "Milt\u00e4 sinusta tuntuu kehostasi juuri nyt?", "nl": "Hoe voel je je op dit moment over je lichaam?", "no": "Hvordan f\u00f8ler du deg om kroppen din akkurat n\u00e5?", "sv": "Hur k\u00e4nner du f\u00f6r din kropp just nu?", "pl": "Jak si\u0119 czujesz ze swoim cia\u0142em w tej chwili?"}'::jsonb,
+    updated_at = NOW()

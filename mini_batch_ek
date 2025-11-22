@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "What was your most peaceful travel moment?", "da": "Hvad var dit mest fredfyldte rejse\u00f8jeblik?", "de": "Was war dein friedlichster Reisemoment?", "es": "\u00bfCu\u00e1l fue tu momento de viaje m\u00e1s tranquilo?", "pt": "Qual foi o teu momento de viagem mais pac\u00edfico?", "ro": "Care a fost cel mai lini\u0219tit moment al t\u0103u dintr-o c\u0103l\u0103torie?", "fr": "Quel a \u00e9t\u00e9 ton moment de voyage le plus paisible ?", "it": "Qual \u00e8 stato il tuo momento di viaggio pi\u00f9 pacifico?", "fi": "Mik\u00e4 on rauhallisin matkamuistosi?", "nl": "Wat was je meest vredige reis-moment?", "no": "Hva var ditt mest fredfulle reiseminne?", "sv": "Vad var ditt mest fridfulla rese\u00f6gonblick?", "pl": "Jaki by\u0142 tw\u00f3j najbardziej spokojny moment w podr\u00f3\u017cy?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Car Talks'
+  AND translations->>'en' = 'What was your most peaceful travel moment?';

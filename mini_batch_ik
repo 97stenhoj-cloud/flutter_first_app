@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "Who in this room would make the best celebrity?", "da": "Hvem i dette rum ville blive den bedste kendis?", "de": "Wer in diesem Raum w\u00e4re der beste Promi?", "es": "\u00bfQui\u00e9n en esta sala ser\u00eda la mejor celebridad?", "pt": "Quem nesta sala seria a melhor celebridade?", "ro": "Cine din aceast\u0103 camer\u0103 ar deveni cea mai bun\u0103 celebritate?", "fr": "Qui dans cette pi\u00e8ce ferait la meilleure c\u00e9l\u00e9brit\u00e9 ?", "it": "Chi in questa stanza diventerebbe la migliore celebrit\u00e0?", "fi": "Kuka t\u00e4ss\u00e4 huoneessa olisi paras julkkis?", "nl": "Wie in deze kamer zou de beste beroemdheid zijn?", "no": "Hvem i dette rommet ville blitt den beste kjendisen?", "sv": "Vem i det h\u00e4r rummet skulle bli den b\u00e4sta k\u00e4ndisen?", "pl": "Kto w tym pomieszczeniu by\u0142by najlepsz\u0105 gwiazd\u0105?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'
+  AND translations->>'en' = 'Who in this room would make the best celebrity?';

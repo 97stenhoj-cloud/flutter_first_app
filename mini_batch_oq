@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'What’s a family tradition that’s been around the longest?';
+UPDATE questions
+SET translations = '{"en": "Who do we all take after the most \u2014 personality-wise?", "da": "Hvem ligner vi mest personlighedsm\u00e6ssigt?", "de": "Wem \u00e4hneln wir alle am meisten \u2013 vom Charakter her?", "es": "\u00bfA qui\u00e9n nos parecemos m\u00e1s en personalidad?", "pt": "A quem mais nos parecemos em personalidade?", "ro": "Pe cine sem\u0103n\u0103m cel mai mult ca personalitate?", "fr": "\u00c0 qui ressemblons-nous le plus niveau personnalit\u00e9 ?", "it": "Chi di noi assomiglia di pi\u00f9 agli altri \u2014 per quanto riguarda la personalit\u00e0?", "fi": "Keneen meist\u00e4 me kaikki muistutamme eniten \u2014 luonteenpiirteilt\u00e4\u00e4n?", "nl": "Van wie lijken we allemaal het meest \u2014 qua persoonlijkheid?", "no": "Hvem av oss ligner mest p\u00e5 hverandre \u2014 n\u00e5r det gjelder personlighet?", "sv": "Vem liknar vi alla mest \u2014 n\u00e4r det kommer till personlighet?", "pl": "Kogo najbardziej przypominamy, je\u015bli chodzi o osobowo\u015b\u0107?"}'::jsonb,

@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "Your shadow lags by two seconds. Now what?", "da": "Din skygge er to sekunder bagud. Hvad nu?", "de": "Dein Schatten hinkt zwei Sekunden hinterher. Was jetzt?", "es": "Tu sombra se retrasa dos segundos. \u00bfY ahora qu\u00e9?", "pt": "A tua sombra atrasa-se dois segundos. E agora?", "ro": "Umbra ta \u00eent\u00e2rzie dou\u0103 secunde. Ce faci?", "fr": "Ton ombre a deux secondes de retard. Et maintenant ?", "it": "La tua ombra \u00e8 in ritardo di due secondi. E adesso?", "fi": "Varjosi laahaa kaksi sekuntia per\u00e4ss\u00e4. Mit\u00e4 nyt?", "nl": "Je schaduw loopt twee seconden achter. Wat doe je?", "no": "Skyggen din henger to sekunder etter. Hva gj\u00f8r du?", "sv": "Din skugga ligger tv\u00e5 sekunder efter. Vad g\u00f6r du?", "pl": "Tw\u00f3j cie\u0144 sp\u00f3\u017ania si\u0119 o dwie sekundy. I co teraz?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'After Dark Talks'
+  AND translations->>'en' = 'Your shadow lags by two seconds. Now what?';

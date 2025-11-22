@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What do you wish your parents had taught you about love?';
+
+-- Category: Do-you-dare Talks (75 questions)UPDATE questions
+SET translations = '{"en": "How do you feel about privacy in a relationship?", "da": "Hvordan har du det med privatliv i et forhold?", "de": "Kan du lide langsomme kys p\u00e5 din ryg og nakke?", "es": "H\u00e1 algo que gostarias que eu te chamasse quando fazemos sexo?", "pt": "H\u00e1 algo que gostarias que eu te chamasse quando fazemos sexo?", "ro": "Exist\u0103 ceva ce ai vrea s\u0103 te numesc c\u00e2nd facem dragoste?", "fr": "Y a-t-il quelque chose que tu aimerais que je t\u2019appelle quand on fait l\u2019amour ?", "it": "Come ti senti riguardo alla privacy in una relazione?", "fi": "Milt\u00e4 sinusta tuntuu yksityisyydest\u00e4 parisuhteessa?", "nl": "Hoe voel je je over privacy in een relatie?", "no": "Hvordan f\u00f8ler du om privatliv i et forhold?", "sv": "Hur k\u00e4nner du f\u00f6r integritet i en relation?", "pl": "Jak si\u0119 czujesz w kwestii prywatno\u015bci w zwi\u0105zku?"}'::jsonb,
+    updated_at = NOW()

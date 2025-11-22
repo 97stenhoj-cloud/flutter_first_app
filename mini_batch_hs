@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'Who’s your favorite person to low-key stalk online?';UPDATE questions
+SET translations = '{"en": "What\u2019s something you\u2019ve done that took real courage?", "da": "Hvad har du gjort, der kr\u00e6vede \u00e6gte mod?", "de": "Was hast du getan, das echten Mut erforderte?", "es": "\u00bfQu\u00e9 has hecho que requiri\u00f3 verdadero valor?", "pt": "O que voc\u00ea fez que exigiu coragem de verdade?", "ro": "Ce ai f\u0103cut care a cerut curaj adev\u0103rat?", "fr": "Qu\u2019as-tu fait qui t\u2019a demand\u00e9 un vrai courage ?", "it": "Qualcosa che hai fatto che ha richiesto davvero coraggio?", "fi": "Mik\u00e4 on jotain, mit\u00e4 olet tehnyt, mik\u00e4 vaati todellista rohkeutta?", "nl": "Wat is iets dat je hebt gedaan dat echte moed vergde?", "no": "Hva er noe du har gjort som krevde ekte mot?", "sv": "Vad \u00e4r n\u00e5got du har gjort som kr\u00e4vde riktig mod?", "pl": "Co\u015b, co zrobi\u0142e\u015b, co wymaga\u0142o prawdziwej odwagi?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'
+  AND translations->>'en' = 'What’s something you’ve done that took real courage?';

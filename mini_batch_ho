@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What’s your favorite cozy season activity — baking, reading, movie marathons, crafts?';
+UPDATE questions
+SET translations = '{"en": "What kind of home do you dream of living in one day?", "da": "Hvilken slags hjem dr\u00f8mmer du om at bo i en dag?", "de": "Von welchem Zuhause tr\u00e4umst du, eines Tages zu leben?", "es": "\u00bfEn qu\u00e9 tipo de casa sue\u00f1as vivir alg\u00fan d\u00eda?", "pt": "Em que tipo de casa voc\u00ea sonha em morar um dia?", "ro": "\u00cen ce fel de cas\u0103 visezi s\u0103 tr\u0103ie\u0219ti \u00eentr-o zi?", "fr": "Dans quel type de maison r\u00eaves-tu de vivre un jour ?", "it": "Che tipo di casa sogni di vivere un giorno?", "fi": "Millaisessa kodissa unelmoit asuvasi jonain p\u00e4iv\u00e4n\u00e4?", "nl": "In wat voor soort huis droom je ervan om op een dag te wonen?", "no": "Hvilken type hjem dr\u00f8mmer du om \u00e5 bo i en dag?", "sv": "Vilken typ av hem dr\u00f6mmer du om att bo i en dag?", "pl": "W jakim domu marzysz o tym, aby mieszka\u0107 pewnego dnia?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

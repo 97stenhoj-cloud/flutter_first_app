@@ -1,0 +1,5 @@
+
+-- Category: Deep Talks (75 questions)
+UPDATE questions
+SET translations = '{"en": "In what ways were we raised similarly and differently?", "da": "P\u00e5 hvilke m\u00e5der blev vi opdraget ens og forskelligt?", "de": "In welcher Hinsicht sind wir \u00e4hnlich und unterschiedlich aufgewachsen?", "es": "\u00bfEn qu\u00e9 aspectos fuimos criados de forma similar y diferente?", "pt": "De que maneiras fomos criados de forma parecida e diferente?", "ro": "\u00cen ce moduri am fost crescu\u021bi la fel \u0219i diferit?", "fr": "En quoi avons-nous \u00e9t\u00e9 \u00e9lev\u00e9s de mani\u00e8re similaire et diff\u00e9rente ?", "it": "In quali modi siamo stati cresciuti in modo simile e in modo diverso?", "fi": "Mill\u00e4 tavoin meid\u00e4t kasvatettiin samoin ja eri tavoin?", "nl": "Op welke manieren zijn we op vergelijkbare en verschillende manieren opgevoed?", "no": "P\u00e5 hvilke m\u00e5ter ble vi oppdratt likt og ulikt?", "sv": "P\u00e5 vilka s\u00e4tt blev vi uppfostrade p\u00e5 liknande och olika s\u00e4tt?", "pl": "W jakich aspektach byli\u015bmy wychowani podobnie, a w jakich r\u00f3\u017cnie?"}'::jsonb,
+    updated_at = NOW()

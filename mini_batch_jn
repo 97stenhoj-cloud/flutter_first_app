@@ -1,0 +1,5 @@
+WHERE category_name = 'Deep Talks'
+  AND translations->>'en' = 'How do you balance wanting to be right with wanting to be close?';
+UPDATE questions
+SET translations = '{"en": "What do you think is the point of being alive?", "da": "Hvad tror du er meningen med at v\u00e6re i live?", "de": "Was glaubst du, ist der Sinn des Lebens?", "es": "\u00bfCu\u00e1l crees que es el prop\u00f3sito de estar vivo(a)?", "pt": "O que voc\u00ea acha que \u00e9 o prop\u00f3sito de estar vivo(a)?", "ro": "Care crezi c\u0103 este sensul de a fi \u00een via\u021b\u0103?", "fr": "Quel est, selon toi, le sens d\u2019\u00eatre en vie ?", "it": "Cosa pensi sia il senso di essere vivi?", "fi": "Mit\u00e4 mielt\u00e4 olet, mik\u00e4 on el\u00e4m\u00e4n tarkoitus?", "nl": "Wat denk je dat het doel is van leven?", "no": "Hva tror du er meningen med \u00e5 v\u00e6re i live?", "sv": "Vad tycker du \u00e4r meningen med att leva?", "pl": "Co my\u015blisz, jaki jest sens \u017cycia?"}'::jsonb,
+    updated_at = NOW()

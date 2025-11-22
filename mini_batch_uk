@@ -1,0 +1,5 @@
+SET translations = '{"en": "When do you feel most loved by me?", "da": "Hvorn\u00e5r f\u00f8ler du dig mest elsket af mig?", "de": "Wann f\u00fchlst du dich von mir am meisten geliebt?", "es": "\u00bfCu\u00e1ndo te sientes m\u00e1s amado/a por m\u00ed?", "pt": "Quando te sentes mais amado/a por mim?", "ro": "C\u00e2nd te sim\u021bi cel mai iubit(\u0103) de mine?", "fr": "Quand te sens-tu le plus aim\u00e9(e) par moi ?", "it": "Quando ti senti pi\u00f9 amato da me?", "fi": "Milloin tunnet itsesi eniten rakastetuksi minun puolestani?", "nl": "Wanneer voel je je het meest geliefd door mij?", "no": "N\u00e5r f\u00f8ler du deg mest elsket av meg?", "sv": "N\u00e4r k\u00e4nner du dig mest \u00e4lskad av mig?", "pl": "Kiedy czujesz si\u0119 przeze mnie najbardziej kochany?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'When do you feel most loved by me?';
+UPDATE questions

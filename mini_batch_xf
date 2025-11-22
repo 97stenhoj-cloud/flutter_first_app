@@ -1,0 +1,5 @@
+SET translations = '{"en": "Who in this room takes the longest to get ready?", "da": "Hvem i dette rum bruger l\u00e6ngst tid p\u00e5 at g\u00f8re sig klar?", "de": "Wer in diesem Raum braucht am l\u00e4ngsten, um sich fertig zu machen?", "es": "\u00bfQui\u00e9n en esta sala tarda m\u00e1s en prepararse?", "pt": "Quem nesta sala demora mais a preparar-se?", "ro": "Cine din camer\u0103 are nevoie de cel mai mult timp s\u0103 se aranjeze?", "fr": "Qui dans cette pi\u00e8ce met le plus de temps \u00e0 se pr\u00e9parer ?", "it": "Chi in questa stanza impiega pi\u00f9 tempo a prepararsi?", "fi": "Kuka t\u00e4ss\u00e4 huoneessa vie eniten aikaa valmistautumiseen?", "nl": "Wie in deze kamer doet er het langst over om zich klaar te maken?", "no": "Hvem i dette rommet bruker lengst tid p\u00e5 \u00e5 gj\u00f8re seg klar?", "sv": "Vem i det h\u00e4r rummet tar l\u00e4ngst tid p\u00e5 sig?", "pl": "Kto w tym pokoju potrzebuje najwi\u0119cej czasu, \u017ceby si\u0119 przygotowa\u0107?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'Who in this room takes the longest to get ready?';
+UPDATE questions

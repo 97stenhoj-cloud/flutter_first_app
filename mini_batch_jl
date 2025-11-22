@@ -1,0 +1,5 @@
+WHERE category_name = 'Deep Talks'
+  AND translations->>'en' = 'What do you need from your partner when you’ve had a tough day?';
+UPDATE questions
+SET translations = '{"en": "What are you most grateful for in your life?", "da": "Hvad er du mest taknemmelig for i dit liv?", "de": "Wof\u00fcr bist du in deinem Leben am dankbarsten?", "es": "\u00bfPor qu\u00e9 est\u00e1s m\u00e1s agradecido(a) en tu vida?", "pt": "Pelo que voc\u00ea \u00e9 mais grato(a) na sua vida?", "ro": "Pentru ce e\u0219ti cel mai recunosc\u0103tor(are) \u00een via\u021ba ta?", "fr": "Pour quoi es-tu le plus reconnaissant(e) dans ta vie ?", "it": "Per cosa sei pi\u00f9 grato nella tua vita?", "fi": "Mist\u00e4 olet el\u00e4m\u00e4ss\u00e4si kiitollisin?", "nl": "Waar ben je het meest dankbaar voor in je leven?", "no": "Hva er du mest takknemlig for i livet ditt?", "sv": "Vad \u00e4r du mest tacksam f\u00f6r i ditt liv?", "pl": "Za co jeste\u015b najbardziej wdzi\u0119czny w swoim \u017cyciu?"}'::jsonb,
+    updated_at = NOW()

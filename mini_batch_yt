@@ -1,0 +1,5 @@
+SET translations = '{"en": "What\u2019s your funniest drunk confession story?", "da": "Hvad er din sjoveste fuld-tilst\u00e5elses-historie?", "de": "Was ist deine lustigste betrunkene Beichtgeschichte?", "es": "\u00bfCu\u00e1l es tu historia de confesi\u00f3n borracha m\u00e1s divertida?", "pt": "Qual \u00e9 a tua hist\u00f3ria de confiss\u00e3o b\u00eabeda mais engra\u00e7ada?", "ro": "Care este cea mai amuzant\u0103 poveste a ta spus\u0103 beat?", "fr": "Quelle est ton histoire d\u2019aveu d\u2019ivresse la plus dr\u00f4le ?", "it": "Qual \u00e8 la tua storia pi\u00f9 divertente di confessione da ubriaco?", "fi": "Mik\u00e4 on hauskin juopottelun tunnustustarinasi?", "nl": "Wat is jouw grappigste dronken bekentenisverhaal?", "no": "Hva er din morsomste fulle bekjennelseshistorie?", "sv": "Vad \u00e4r din roligaste berusade bek\u00e4nnelsehistoria?", "pl": "Jaka jest twoja najzabawniejsza historia z pijanego wyznania?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'What’s your funniest drunk confession story?';
+UPDATE questions

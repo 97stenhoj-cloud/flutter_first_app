@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'What makes you feel the most energized?';
+UPDATE questions
+SET translations = '{"en": "Describe your feelings for me using only 3 words.", "da": "Beskriv dine f\u00f8lelser for mig med kun 3 ord.", "de": "Beschreibe deine Gef\u00fchle f\u00fcr mich in nur 3 W\u00f6rtern.", "es": "Describe tus sentimientos por m\u00ed usando solo 3 palabras.", "pt": "Descreve os teus sentimentos por mim usando apenas 3 palavras.", "ro": "Descrie-\u021bi sentimentele pentru mine \u00een doar 3 cuvinte.", "fr": "D\u00e9cris tes sentiments pour moi en seulement 3 mots.", "it": "Descrivi i tuoi sentimenti per me usando solo 3 parole.", "fi": "Kuvaile tunteitasi minua kohtaan k\u00e4ytt\u00e4en vain kolmea sanaa.", "nl": "Beschrijf je gevoelens voor mij met slechts 3 woorden.", "no": "Beskriv f\u00f8lelsene dine for meg med bare 3 ord.", "sv": "Beskriv dina k\u00e4nslor f\u00f6r mig med endast 3 ord.", "pl": "Opisz swoje uczucia do mnie u\u017cywaj\u0105c tylko 3 s\u0142\u00f3w."}'::jsonb,

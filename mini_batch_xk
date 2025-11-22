@@ -1,0 +1,5 @@
+SET translations = '{"en": "Who\u2019s the biggest flirt when the drinks hit?", "da": "Hvem er den st\u00f8rste flirt, n\u00e5r alkoholen rammer?", "de": "Wer ist der gr\u00f6\u00dfte Flirt, wenn der Alkohol wirkt?", "es": "\u00bfQui\u00e9n es el mayor coqueto cuando llegan las copas?", "pt": "Quem \u00e9 o maior flirt quando o \u00e1lcool come\u00e7a a bater?", "ro": "Cine e cel mai mare flirt c\u00e2nd \u00eencep b\u0103uturile?", "fr": "Qui devient le plus grand charmeur quand les verres tournent ?", "it": "Chi \u00e8 il pi\u00f9 grande seduttore quando arrivano da bere?", "fi": "Kuka on suurin flirtteri, kun juomat alkavat virrata?", "nl": "Wie is de grootste flirt als de drankjes binnenstromen?", "no": "Hvem er den st\u00f8rste fl\u00f8rten n\u00e5r drinkene begynner \u00e5 flyte?", "sv": "Vem \u00e4r den st\u00f6rsta flirten n\u00e4r drinkarna kommer fram?", "pl": "Kto jest najwi\u0119kszym flirciarzem, gdy zaczynaj\u0105 lecie\u0107 drinki?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'Who’s the biggest flirt when the drinks hit?';
+UPDATE questions

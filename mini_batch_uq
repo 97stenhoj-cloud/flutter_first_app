@@ -1,0 +1,5 @@
+SET translations = '{"en": "In what ways has our relationship changed you?", "da": "P\u00e5 hvilke m\u00e5der har vores forhold \u00e6ndret dig?", "de": "Inwiefern hat unsere Beziehung dich ver\u00e4ndert?", "es": "\u00bfDe qu\u00e9 maneras nuestra relaci\u00f3n te ha cambiado?", "pt": "De que maneiras a nossa rela\u00e7\u00e3o te mudou?", "ro": "\u00cen ce fel te-a schimbat rela\u021bia noastr\u0103?", "fr": "De quelles mani\u00e8res notre relation t\u2019a-t-elle chang\u00e9(e) ?", "it": "In che modo la nostra relazione ti ha cambiato?", "fi": "Miten suhteemme on muuttanut sinua?", "nl": "Op welke manieren heeft onze relatie jou veranderd?", "no": "P\u00e5 hvilke m\u00e5ter har forholdet v\u00e5rt endret deg?", "sv": "P\u00e5 vilka s\u00e4tt har v\u00e5r relation f\u00f6r\u00e4ndrat dig?", "pl": "W jaki spos\u00f3b nasza relacja ci\u0119 zmieni\u0142a?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'In what ways has our relationship changed you?';
+UPDATE questions

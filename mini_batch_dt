@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'If you caught a shooting star, what wish would you send with it?';
+UPDATE questions
+SET translations = '{"en": "Where were you the first time you saw the ocean?", "da": "Hvor var du f\u00f8rste gang, du s\u00e5 havet?", "de": "Wo warst du, als du das Meer zum ersten Mal gesehen hast?", "es": "\u00bfD\u00f3nde estabas la primera vez que viste el mar?", "pt": "Onde voc\u00ea estava quando viu o mar pela primeira vez?", "ro": "Unde erai prima dat\u0103 c\u00e2nd ai v\u0103zut marea?", "fr": "O\u00f9 \u00e9tais-tu la premi\u00e8re fois que tu as vu la mer ?", "it": "Dove eri la prima volta che hai visto l\u2019oceano?", "fi": "Miss\u00e4 olit, kun n\u00e4it meren ensimm\u00e4isen kerran?", "nl": "Waar was je de eerste keer dat je de oceaan zag?", "no": "Hvor var du f\u00f8rste gang du s\u00e5 havet?", "sv": "Var befann du dig f\u00f6rsta g\u00e5ngen du s\u00e5g havet?", "pl": "Gdzie by\u0142e\u015b/by\u0142a\u015b, gdy po raz pierwszy zobaczy\u0142e\u015b/zobaczy\u0142a\u015b ocean?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Car Talks'

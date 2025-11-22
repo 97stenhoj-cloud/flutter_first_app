@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'What does “home” smell like to us?';
+
+-- Category: Love Languages Remix Talks (75 questions)
+UPDATE questions

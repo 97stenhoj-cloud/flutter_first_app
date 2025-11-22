@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'What’s the weirdest family rule we’ve ever had?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s best known for burning dinner?", "da": "Hvem er bedst kendt for at br\u00e6nde maden p\u00e5?", "de": "Wer ist bekannt daf\u00fcr, das Abendessen anzubrennen?", "es": "\u00bfQui\u00e9n es conocido por quemar la cena?", "pt": "Quem \u00e9 conhecido por queimar o jantar?", "ro": "Cine e cunoscut c\u0103 arde cina?", "fr": "Qui est connu pour br\u00fbler le d\u00eener ?", "it": "Chi \u00e8 il pi\u00f9 noto per bruciare la cena?", "fi": "Kuka on parhaiten tunnettu illallisen polttamisesta?", "nl": "Wie staat het meest bekend om het verbranden van het avondeten?", "no": "Hvem er best kjent for \u00e5 brenne middagen?", "sv": "Vem \u00e4r mest k\u00e4nd f\u00f6r att br\u00e4nna middagen?", "pl": "Kto jest najbardziej znany z przypalania kolacji?"}'::jsonb,

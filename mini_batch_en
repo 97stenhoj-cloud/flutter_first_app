@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "What\u2019s a family tradition you actually really love?", "da": "Hvad er en familietradition, du faktisk virkelig elsker?", "de": "Welche Familientradition liebst du wirklich?", "es": "\u00bfQu\u00e9 tradici\u00f3n familiar realmente te encanta?", "pt": "Qual \u00e9 uma tradi\u00e7\u00e3o familiar que realmente adoras?", "ro": "Care este o tradi\u021bie de familie pe care chiar o iube\u0219ti?", "fr": "Quelle tradition familiale aimes-tu vraiment ?", "it": "Qual \u00e8 una tradizione di famiglia che in realt\u00e0 ami davvero?", "fi": "Mik\u00e4 on sellainen perinne, josta perheess\u00e4si oikeasti pid\u00e4t?", "nl": "Welke familietraditie vind je stiekem echt heel leuk?", "no": "Hvilken familietradisjon liker du faktisk veldig godt?", "sv": "Vilken familjetradition tycker du faktiskt riktigt mycket om?", "pl": "Jaka rodzinna tradycja naprawd\u0119 bardzo ci si\u0119 podoba?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Car Talks'
+  AND translations->>'en' = 'What’s a family tradition you actually really love?';

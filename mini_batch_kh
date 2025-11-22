@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What’s the kindest thing someone did for you?';
+UPDATE questions
+SET translations = '{"en": "What do you do when your motivation goes missing?", "da": "Hvad g\u00f8r du, n\u00e5r din motivation forsvinder?", "de": "Was machst du, wenn deine Motivation verschwindet?", "es": "\u00bfQu\u00e9 haces cuando pierdes la motivaci\u00f3n?", "pt": "O que voc\u00ea faz quando perde a motiva\u00e7\u00e3o?", "ro": "Ce faci c\u00e2nd \u00ee\u021bi pierzi motiva\u021bia?", "fr": "Que fais-tu quand ta motivation dispara\u00eet ?", "it": "Cosa fai quando la tua motivazione scompare?", "fi": "Mit\u00e4 teet, kun motivaatiosi katoaa?", "nl": "Wat doe je als je motivatie weg is?", "no": "Hva gj\u00f8r du n\u00e5r motivasjonen forsvinner?", "sv": "Vad g\u00f6r du n\u00e4r din motivation f\u00f6rsvinner?", "pl": "Co robisz, gdy brakuje ci motywacji?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

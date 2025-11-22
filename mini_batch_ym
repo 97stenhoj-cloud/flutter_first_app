@@ -1,0 +1,5 @@
+SET translations = '{"en": "What\u2019s your most unexplainable fear or superstition?", "da": "Hvad er din mest uforklarlige frygt eller overtro?", "de": "Was ist deine unerkl\u00e4rlichste Angst oder Aberglaube?", "es": "\u00bfCu\u00e1l es tu miedo o superstici\u00f3n m\u00e1s inexplicable?", "pt": "Qual \u00e9 o teu medo ou supersti\u00e7\u00e3o mais inexplic\u00e1vel?", "ro": "Care este frica sau supersti\u021bia ta cea mai de neexplicat?", "fr": "Quelle est ta peur ou superstition la plus inexplicable ?", "it": "Qual \u00e8 la tua paura o superstizione pi\u00f9 inspiegabile?", "fi": "Mik\u00e4 on sinun selitt\u00e4m\u00e4tt\u00f6min pelkosi tai taikausko?", "nl": "Wat is jouw meest onverklaarbare angst of bijgeloof?", "no": "Hva er din mest uforst\u00e5elige frykt eller overtro?", "sv": "Vad \u00e4r din mest of\u00f6rklarliga r\u00e4dsla eller superstition?", "pl": "Jakie jest twoje najbardziej niewyt\u0142umaczalne l\u0119ki lub przes\u0105dy?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'What’s your most unexplainable fear or superstition?';
+UPDATE questions

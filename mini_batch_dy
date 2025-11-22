@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "What three emojis summarize your travel style?", "da": "Hvilke tre emojis opsummerer din rejse-stil?", "de": "Welche drei Emojis beschreiben deinen Reisestil?", "es": "\u00bfQu\u00e9 tres emojis resumen tu estilo de viaje?", "pt": "Quais tr\u00eas emojis resumem seu estilo de viagem?", "ro": "Care trei emoji \u00ee\u021bi rezum\u0103 stilul de c\u0103l\u0103torie?", "fr": "Quels trois emojis r\u00e9sument ton style de voyage ?", "it": "Quali tre emoji riassumono il tuo stile di viaggio?", "fi": "Mitk\u00e4 kolme emojia kuvaavat parhaiten matkustustyyli\u00e4si?", "nl": "Welke drie emoji\u2019s vatten jouw reisstijl samen?", "no": "Hvilke tre emojier oppsummerer reisestilen din?", "sv": "Vilka tre emojis sammanfattar din resestil?", "pl": "Jakie trzy emoji podsumowuj\u0105 tw\u00f3j styl podr\u00f3\u017cowania?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Car Talks'
+  AND translations->>'en' = 'What three emojis summarize your travel style?';

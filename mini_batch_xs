@@ -1,0 +1,5 @@
+SET translations = '{"en": "Who\u2019s the best at remembering the night after?", "da": "Hvem er bedst til at huske, hvad der skete aftenen f\u00f8r?", "de": "Wer erinnert sich am besten an die Nacht danach?", "es": "\u00bfQui\u00e9n es el mejor recordando la noche anterior?", "pt": "Quem \u00e9 o melhor a lembrar-se da noite anterior?", "ro": "Cine \u00ee\u0219i aminte\u0219te cel mai bine seara de dinainte?", "fr": "Qui se souvient le mieux de la soir\u00e9e d\u2019hier ?", "it": "Chi \u00e8 il migliore a ricordare la notte dopo?", "fi": "Kuka on paras muistamaan y\u00f6n j\u00e4lkeen?", "nl": "Wie is het beste in het onthouden van de nacht erna?", "no": "Hvem er best til \u00e5 huske natten etter?", "sv": "Vem \u00e4r b\u00e4st p\u00e5 att minnas natten efter?", "pl": "Kto najlepiej pami\u0119ta noc po?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'Who’s the best at remembering the night after?';
+UPDATE questions

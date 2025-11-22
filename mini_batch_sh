@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Languages Remix Talks'
+  AND translations->>'en' = 'What do I do that makes you feel like I’m really there with you?';
+UPDATE questions
+SET translations = '{"en": "What kind of date night feels most like \u201cus\u201d?", "da": "Hvilken slags dateaften f\u00f8les mest som \u201cos\u201d?", "de": "Welche Art von Date-Abend f\u00fchlt sich am meisten wie \u201ewir\u201c an?", "es": "\u00bfQu\u00e9 tipo de cita se siente m\u00e1s como \u201cnosotros\u201d?", "pt": "Que tipo de encontro se sente mais como \u201cn\u00f3s\u201d?", "ro": "Ce fel de \u00eent\u00e2lnire pare cel mai mult \u201enoi\u201d?", "fr": "Quel genre de soir\u00e9e en amoureux te semble le plus \u00ab nous \u00bb ?", "it": "Che tipo di serata romantica ci fa sentire pi\u00f9 \"noi\"?", "fi": "Mink\u00e4lainen treffi-ilta tuntuu eniten \"meilt\u00e4\"?", "nl": "Wat voor soort date night voelt het meest als \"wij\"?", "no": "Hva slags date night f\u00f8les mest som \"oss\"?", "sv": "Vilken typ av dejtkv\u00e4ll k\u00e4nns mest som \"vi\"?", "pl": "Jaki rodzaj randki najbardziej przypomina \u201enas\u201d?"}'::jsonb,

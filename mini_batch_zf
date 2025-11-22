@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'Who’s most likely to wake up with the weirdest story to tell?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s your personal definition of a 10/10 night?", "da": "Hvad er din personlige definition af en 10/10-aften?", "de": "Was ist deine pers\u00f6nliche Definition einer 10/10-Nacht?", "es": "\u00bfCu\u00e1l es tu definici\u00f3n personal de una noche 10/10?", "pt": "Qual \u00e9 a tua defini\u00e7\u00e3o pessoal de uma noite 10/10?", "ro": "Care este defini\u021bia ta personal\u0103 a unei nop\u021bi perfecte?", "fr": "Quelle est ta d\u00e9finition personnelle d\u2019une soir\u00e9e 10/10 ?", "it": "Qual \u00e8 la tua definizione personale di una notte da 10/10?", "fi": "Mik\u00e4 on sinun henkil\u00f6kohtainen m\u00e4\u00e4ritelm\u00e4si t\u00e4ydelliselle illalle?", "nl": "Wat is jouw persoonlijke definitie van een 10/10 avond?", "no": "Hva er din personlige definisjon av en 10/10 kveld?", "sv": "Vad \u00e4r din personliga definition av en 10/10-kv\u00e4ll?", "pl": "Jakie jest twoje osobiste zdefiniowanie idealnej nocy 10/10?"}'::jsonb,

@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What season matches your personality?';
+UPDATE questions
+SET translations = '{"en": "What song instantly gets you into a good mood?", "da": "Hvilken sang f\u00e5r dig \u00f8jeblikkeligt i godt hum\u00f8r?", "de": "Welches Lied bringt dich sofort in gute Stimmung?", "es": "\u00bfQu\u00e9 canci\u00f3n te pone instant\u00e1neamente de buen humor?", "pt": "Que m\u00fasica te coloca instantaneamente de bom humor?", "ro": "Ce melodie \u00ee\u021bi aduce instantaneu buna dispozi\u021bie?", "fr": "Quelle chanson te met instantan\u00e9ment de bonne humeur ?", "it": "Quale canzone ti mette subito di buon umore?", "fi": "Mik\u00e4 kappale saa sinut heti hyv\u00e4lle tuulelle?", "nl": "welk nummer brengt je meteen in een goede bui?", "no": "Hvilken sang f\u00e5r deg umiddelbart i godt hum\u00f8r?", "sv": "Vilken l\u00e5t f\u00e5r dig genast p\u00e5 gott hum\u00f6r?", "pl": "Jaka piosenka od razu wprawia ci\u0119 w dobry nastr\u00f3j?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

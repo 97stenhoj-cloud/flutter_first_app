@@ -1,0 +1,5 @@
+SET translations = '{"en": "What\u2019s a song that always gets you singing?", "da": "Hvilken sang f\u00e5r dig altid til at synge med?", "de": "Welches Lied bringt dich immer zum Mitsingen?", "es": "\u00bfQu\u00e9 canci\u00f3n siempre te hace cantar?", "pt": "Que m\u00fasica te faz sempre cantar?", "ro": "Ce melodie te face \u00eentotdeauna s\u0103 c\u00e2n\u021bi?", "fr": "Quelle chanson te fait toujours chanter ?", "it": "Qual \u00e8 una canzone che ti fa sempre cantare?", "fi": "Mik\u00e4 on laulu, joka saa sinut aina laulamaan?", "nl": "Wat is een nummer dat je altijd laat meezingen?", "no": "Hvilken sang f\u00e5r deg alltid til \u00e5 synge?", "sv": "Vilken l\u00e5t f\u00e5r dig alltid att sjunga?", "pl": "Jaka piosenka zawsze sprawia, \u017ce zaczynasz \u015bpiewa\u0107?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'What’s a song that always gets you singing?';
+UPDATE questions

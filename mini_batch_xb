@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'What memory of us would you put in a time capsule?';
+
+-- Category: Party Night Talks (75 questions)

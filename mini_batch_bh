@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "Which ancient myth feels strangely plausible?", "da": "Hvilken gammel myte f\u00f8les m\u00e6rkeligt plausibel?", "de": "Welcher alte Mythos f\u00fchlt sich seltsam plausibel an?", "es": "\u00bfQu\u00e9 mito antiguo te parece extra\u00f1amente plausible?", "pt": "Que mito antigo te parece estranhamente plaus\u00edvel?", "ro": "Ce mit antic \u021bi se pare ciudat de plauzibil?", "fr": "Quel mythe ancien te semble \u00e9trangement plausible ?", "it": "Quale mito antico ti sembra stranamente plausibile?", "fi": "Mik\u00e4 muinainen myytti tuntuu oudon uskottavalta?", "nl": "Welke oude mythe voelt vreemd genoeg geloofwaardig?", "no": "Hvilken gammel myte f\u00f8les merkelig plausibel?", "sv": "Vilken antik myt k\u00e4nns m\u00e4rkligt trov\u00e4rdig?", "pl": "Kt\u00f3ry staro\u017cytny mit wydaje ci si\u0119 dziwnie wiarygodny?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'After Dark Talks'
+  AND translations->>'en' = 'Which ancient myth feels strangely plausible?';

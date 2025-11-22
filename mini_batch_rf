@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who’s most likely to laugh so hard they can’t breathe?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s the most dramatic when things go wrong?", "da": "Hvem er mest dramatisk, n\u00e5r ting g\u00e5r galt?", "de": "Wer ist am dramatischsten, wenn etwas schiefl\u00e4uft?", "es": "\u00bfQui\u00e9n es el m\u00e1s dram\u00e1tico cuando algo sale mal?", "pt": "Quem \u00e9 o mais dram\u00e1tico quando as coisas d\u00e3o errado?", "ro": "Cine e cel mai dramatic c\u00e2nd lucrurile merg prost?", "fr": "Qui est le plus dramatique quand les choses tournent mal ?", "it": "Chi \u00e8 il pi\u00f9 drammatico quando le cose vanno male?", "fi": "Kuka on kaikkein dramaattisin, kun asiat menev\u00e4t pieleen?", "nl": "Wie is het meest dramatisch als er iets misgaat?", "no": "Hvem er den mest dramatiske n\u00e5r ting g\u00e5r galt?", "sv": "Vem \u00e4r mest dramatisk n\u00e4r saker g\u00e5r fel?", "pl": "Kto jest najbardziej dramatyczny, gdy co\u015b idzie nie tak?"}'::jsonb,
+    updated_at = NOW()

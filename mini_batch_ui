@@ -1,0 +1,5 @@
+SET translations = '{"en": "How would you describe our chemistry?", "da": "Hvordan vil du beskrive vores kemi?", "de": "Wie w\u00fcrdest du unsere Chemie beschreiben?", "es": "\u00bfC\u00f3mo describir\u00edas nuestra qu\u00edmica?", "pt": "Como descreverias a nossa qu\u00edmica?", "ro": "Cum ai descrie chimia dintre noi?", "fr": "Comment d\u00e9crirais-tu notre alchimie ?", "it": "Come descriveresti la nostra chimica?", "fi": "Miten kuvailisit kemiaamme?", "nl": "Hoe zou je onze chemie beschrijven?", "no": "Hvordan ville du beskrive kjemien v\u00e5r?", "sv": "Hur skulle du beskriva v\u00e5r kemi?", "pl": "Jak by\u015b opisa\u0142 nasz\u0105 chemi\u0119?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'How would you describe our chemistry?';
+UPDATE questions

@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who always ends up getting lost on road trips?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s the biggest over-packer in the family?", "da": "Hvem er den st\u00f8rste over-packer i familien?", "de": "Wer ist der gr\u00f6\u00dfte \u00dcberpacker in der Familie?", "es": "\u00bfQui\u00e9n es el que m\u00e1s empaca de m\u00e1s en la familia?", "pt": "Quem \u00e9 o maior exagerado a fazer as malas na fam\u00edlia?", "ro": "Cine \u00eempacheteaz\u0103 mereu prea multe lucruri \u00een familie?", "fr": "Qui est celui qui fait toujours trop de bagages dans la famille ?", "it": "Chi \u00e8 il pi\u00f9 grande esagerato nel fare le valigie della famiglia?", "fi": "Kuka on perheen suurin ylipakkaaja?", "nl": "Wie is de grootste overpakker in de familie?", "no": "Hvem er den st\u00f8rste overpakker i familien?", "sv": "Vem \u00e4r den st\u00f6rsta \u00f6verpackaren i familjen?", "pl": "Kto jest najwi\u0119kszym pakowaczem w rodzinie?"}'::jsonb,
+    updated_at = NOW()

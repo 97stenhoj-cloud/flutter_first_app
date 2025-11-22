@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'Describe your feelings for me using only 3 words.';
+UPDATE questions
+SET translations = '{"en": "What memory of us would you put in a time capsule?", "da": "Ce amintire a noastr\u0103 ai pune \u00eentr-o capsul\u0103 a timpului?", "de": "Welche Erinnerung von uns w\u00fcrdest du in eine Zeitkapsel legen?", "es": "\u00bfQu\u00e9 recuerdo nuestro pondr\u00edas en una c\u00e1psula del tiempo?", "pt": "Que mem\u00f3ria nossa colocarias numa c\u00e1psula do tempo?", "ro": "Ce amintire a noastr\u0103 ai pune \u00eentr-o capsul\u0103 a timpului?", "fr": "Quel souvenir de nous mettrais-tu dans une capsule temporelle ?", "it": "Quale ricordo di noi metteresti in una capsula del tempo?", "fi": "Mik\u00e4 muisto meist\u00e4 laittaisit aikakapseliin?", "nl": "Welke herinnering aan ons zou je in een tijdcapsule stoppen?", "no": "Hvilket minne om oss ville du lagt i en tidskapsel?", "sv": "Vilket minne av oss skulle du l\u00e4gga i en tidskapsel?", "pl": "Jakie wspomnienie o nas umie\u015bci\u0142by\u015b w kapsule czasu?"}'::jsonb,

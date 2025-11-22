@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "Window or aisle? Why? ", "da": "Vindues- eller gangplads? Hvorfor?", "de": "Fenster- oder Gangplatz? Warum?", "es": "\u00bfVentana o pasillo? \u00bfPor qu\u00e9?", "pt": "Janela ou corredor? Por qu\u00ea?", "ro": "Loc la geam sau la culoar? De ce?", "fr": "Hublot ou couloir ? Pourquoi ?", "it": "Finestrino o corridoio? Perch\u00e9?", "fi": "Ikkunapaikka vai k\u00e4yt\u00e4v\u00e4paikka? Miksi?", "nl": "Raam of gangpad? Waarom?", "no": "Vindusplass eller midtgang? Hvorfor?", "sv": "F\u00f6nsterplats eller g\u00e5ngplats? Varf\u00f6r?", "pl": "Miejsce przy oknie czy przy przej\u015bciu? Dlaczego?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Car Talks'
+  AND translations->>'en' = 'Window or aisle? Why? ';

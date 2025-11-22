@@ -1,0 +1,5 @@
+WHERE category_name = 'Do-you-dare Talks'
+  AND translations->>'en' = 'Stare into my eyes for thirty seconds without laughing or looking away.';
+UPDATE questions
+SET translations = '{"en": "What\u2019s one little thing that makes you jealous?", "da": "Hvad er en lille ting, der g\u00f8r dig jaloux?", "de": "Was ist eine kleine Sache, die dich eifers\u00fcchtig macht?", "es": "\u00bfQu\u00e9 peque\u00f1a cosa te pone celoso?", "pt": "Que pequena coisa te deixa com ci\u00fames?", "ro": "Ce lucru mic te face gelos?", "fr": "Quelle petite chose te rend jaloux ?", "it": "Qual \u00e8 una piccola cosa che ti fa sentire geloso?", "fi": "Mik\u00e4 on yksi pieni asia, joka saa sinut kateelliseksi?", "nl": "Wat is \u00e9\u00e9n klein dingetje dat je jaloers maakt?", "no": "Hva er en liten ting som gj\u00f8r deg sjalu?", "sv": "Vad \u00e4r en liten sak som g\u00f6r dig avundsjuk?", "pl": "Co to za ma\u0142a rzecz, kt\u00f3ra ci\u0119 zazdro\u015bci?"}'::jsonb,
+    updated_at = NOW()

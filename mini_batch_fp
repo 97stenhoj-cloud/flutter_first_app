@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "Mountains or beaches \u2014 and why?", "da": "Bjerge eller strande \u2013 og hvorfor?", "de": "Berge oder Str\u00e4nde \u2013 und warum?", "es": "\u00bfMonta\u00f1as o playas \u2014 y por qu\u00e9?", "pt": "Montanhas ou praias \u2014 e porqu\u00ea?", "ro": "Munte sau mare \u2014 \u0219i de ce?", "fr": "Montagnes ou plages \u2014 et pourquoi ?", "it": "Montagna o mare \u2013 e perch\u00e9?", "fi": "Vuoret vai rannat \u2013 ja miksi?", "nl": "Bergen of stranden \u2013 en waarom?", "no": "Fjell eller strender \u2013 og hvorfor?", "sv": "Berg eller str\u00e4nder \u2013 och varf\u00f6r?", "pl": "G\u00f3ry czy pla\u017ce \u2013 i dlaczego?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Car Talks'
+  AND translations->>'en' = 'Mountains or beaches — and why?';

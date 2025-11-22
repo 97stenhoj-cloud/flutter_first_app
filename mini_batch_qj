@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who’s the neat freak — and who’s the total mess?';
+UPDATE questions
+SET translations = '{"en": "Who always gets blamed when something breaks?", "da": "Hvem f\u00e5r altid skylden, n\u00e5r noget g\u00e5r i stykker?", "de": "Wer wird immer beschuldigt, wenn etwas kaputtgeht?", "es": "\u00bfQui\u00e9n siempre recibe la culpa cuando algo se rompe?", "pt": "Quem sempre leva a culpa quando algo quebra?", "ro": "Cine este mereu \u00eenvinuit c\u00e2nd se stric\u0103 ceva?", "fr": "Qui est toujours bl\u00e2m\u00e9 quand quelque chose se casse ?", "it": "Chi viene sempre incolpato quando qualcosa si rompe?", "fi": "Kuka saa aina syyt niskoilleen, kun jokin menee rikki?", "nl": "Wie krijgt er altijd de schuld als er iets kapot gaat?", "no": "Hvem f\u00e5r alltid skylden n\u00e5r noe g\u00e5r i stykker?", "sv": "Vem f\u00e5r alltid skulden n\u00e4r n\u00e5got g\u00e5r s\u00f6nder?", "pl": "Kto zawsze dostaje win\u0119, gdy co\u015b si\u0119 psuje?"}'::jsonb,
+    updated_at = NOW()

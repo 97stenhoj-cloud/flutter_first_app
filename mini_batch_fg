@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "Who in here tells the best stories?", "da": "Hvem her fort\u00e6ller de bedste historier?", "de": "Wer hier erz\u00e4hlt die besten Geschichten?", "es": "\u00bfQui\u00e9n de aqu\u00ed cuenta las mejores historias?", "pt": "Quem aqui conta as melhores hist\u00f3rias?", "ro": "Cine de aici spune cele mai bune pove\u0219ti?", "fr": "Qui ici raconte les meilleu", "it": "Chi qui dentro racconta le storie migliori?", "fi": "Kuka t\u00e4\u00e4ll\u00e4 kertoo parhaat tarinat?", "nl": "Wie hier binnen vertelt de beste verhalen?", "no": "Hvem her inne forteller de beste historiene?", "sv": "Vem h\u00e4r inne ber\u00e4ttar de b\u00e4sta historierna?", "pl": "Kto tutaj opowiada najlepsze historie?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Car Talks'
+  AND translations->>'en' = 'Who in here tells the best stories?';

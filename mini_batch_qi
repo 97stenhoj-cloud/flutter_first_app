@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'What’s our go-to meal when no one feels like cooking?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s the neat freak \u2014 and who\u2019s the total mess?", "da": "Hvem er ordensmennesket \u2014 og hvem er totalt rodet?", "de": "Wer ist der Ordnungsfanatiker \u2013 und wer das totale Chaos?", "es": "\u00bfQui\u00e9n es el mani\u00e1tico del orden \u2014 y qui\u00e9n el desastre total?", "pt": "Quem \u00e9 o arrumado \u2014 e quem \u00e9 a bagun\u00e7a total?", "ro": "Cine e obsedat de ordine \u2014 \u0219i cine e total dezordonat?", "fr": "Qui est le maniaque du rangement \u2014 et qui est le vrai bazar ?", "it": "Chi \u00e8 l''ossessionato dell''ordine \u2014 e chi \u00e8 il totale disordinato?", "fi": "Kuka on siisteysintoilija \u2014 ja kuka on totaalinen kaaos?", "nl": "Wie is de netheidfreak \u2014 en wie is de totale rommelmaker?", "no": "Hvem er den som er overdrevent ryddig \u2014 og hvem er rotet?", "sv": "Vem \u00e4r pedanten \u2014 och vem \u00e4r den totala r\u00f6ran?", "pl": "Kto jest pedantem, a kto totalnym ba\u0142aganiarzem?"}'::jsonb,
+    updated_at = NOW()

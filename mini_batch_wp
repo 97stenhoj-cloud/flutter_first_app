@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'Describe what you were like before we met. ';
+UPDATE questions
+SET translations = '{"en": "What do you think makes our relationship unique?", "da": "Hvad synes du g\u00f8r vores forhold unikt?", "de": "Was, glaubst du, macht unsere Beziehung einzigartig?", "es": "\u00bfQu\u00e9 crees que hace \u00fanica nuestra relaci\u00f3n?", "pt": "O que achas que torna a nossa rela\u00e7\u00e3o \u00fanica?", "ro": "Ce crezi c\u0103 face rela\u021bia noastr\u0103 unic\u0103?", "fr": "Qu\u2019est-ce qui, selon toi, rend notre relation unique ?", "it": "Cosa pensi renda unica la nostra relazione?", "fi": "Mit\u00e4 mielt\u00e4 olet, mik\u00e4 tekee suhteestamme ainutlaatuisen?", "nl": "Wat denk je dat onze relatie uniek maakt?", "no": "Hva tror du gj\u00f8r v\u00e5rt forhold unikt?", "sv": "Vad tycker du g\u00f6r v\u00e5r relation unik?", "pl": "Co my\u015blisz, co sprawia, \u017ce nasza relacja jest wyj\u0105tkowa?"}'::jsonb,

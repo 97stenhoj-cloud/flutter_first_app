@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who’s most likely to start a dance party in the kitchen?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s our most unforgettable vacation moment?", "da": "Hvad er vores mest uforglemmelige ferieminde?", "de": "Was ist unser unvergesslichster Urlaubsmoment?", "es": "\u00bfCu\u00e1l es nuestro momento de vacaciones m\u00e1s inolvidable?", "pt": "Qual \u00e9 o nosso momento de f\u00e9rias mais inesquec\u00edvel?", "ro": "Care este cel mai de neuitat moment al vacan\u021bei noastre?", "fr": "Quel est notre souvenir de vacances le plus inoubliable ?", "it": "Qual \u00e8 il nostro momento di vacanza pi\u00f9 indimenticabile?", "fi": "Mik\u00e4 on meid\u00e4n unohtumattomin lomamuistomme?", "nl": "Wat is ons meest onvergetelijke vakantie-moment?", "no": "Hva er v\u00e5rt mest uforglemmelige ferieminne?", "sv": "Vilket \u00e4r v\u00e5rt mest of\u00f6rgl\u00f6mliga semester\u00f6gonblick?", "pl": "Jaki jest nasz najbardziej niezapomniany moment z wakacji?"}'::jsonb,
+    updated_at = NOW()

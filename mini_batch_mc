@@ -1,0 +1,5 @@
+WHERE category_name = 'Do-you-dare Talks'
+  AND translations->>'en' = 'What topic do you think couples should talk about before committing long-term?';
+UPDATE questions
+SET translations = '{"en": "Have you ever loved two people at the same time?", "da": "Har du nogensinde elsket to personer p\u00e5 samme tid?", "de": "Hvad er din yndlingsm\u00e5de for mig at vise, at jeg higer efter dig?", "es": "Wie magst du es am liebsten, wenn ich dir zeige, dass ich dich begehre?", "pt": "J\u00e1 amaste duas pessoas ao mesmo tempo?", "ro": "Ai iubit vreodat\u0103 dou\u0103 persoane \u00een acela\u0219i timp?", "fr": "As-tu d\u00e9j\u00e0 aim\u00e9 deux personnes en m\u00eame temps ?", "it": "Hai mai amato due persone contemporaneamente?", "fi": "Oletko koskaan rakastanut kahta ihmist\u00e4 samaan aikaan?", "nl": "Heb je ooit twee mensen tegelijk liefgehad?", "no": "Har du noen gang elsket to personer samtidig?", "sv": "Har du n\u00e5gonsin \u00e4lskat tv\u00e5 personer samtidigt?", "pl": "Czy kiedykolwiek kocha\u0142e\u015b dwie osoby jednocze\u015bnie?"}'::jsonb,
+    updated_at = NOW()

@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What’s your favorite rainy‑day activity?';
+UPDATE questions
+SET translations = '{"en": "What makes a space feel cozy to you?", "da": "Hvad f\u00e5r et rum til at f\u00f8les hyggeligt for dig?", "de": "Was l\u00e4sst einen Raum f\u00fcr dich gem\u00fctlich wirken?", "es": "\u00bfQu\u00e9 hace que un espacio se sienta acogedor para ti?", "pt": "O que faz um ambiente parecer aconchegante para voc\u00ea?", "ro": "Ce face ca un spa\u021biu s\u0103 \u021bi se par\u0103 confortabil?", "fr": "Qu\u2019est-ce qui rend un espace douillet pour toi ?", "it": "Cosa rende uno spazio accogliente per te?", "fi": "Mik\u00e4 tekee tilasta mielest\u00e4si kodikkaan?", "nl": "Wat maakt een ruimte voor jou gezellig?", "no": "Hva f\u00e5r et rom til \u00e5 f\u00f8les koselig for deg?", "sv": "Vad f\u00e5r ett utrymme att k\u00e4nnas mysigt f\u00f6r dig?", "pl": "Co sprawia, \u017ce przestrze\u0144 wydaje si\u0119 dla Ciebie przytulna?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

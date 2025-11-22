@@ -1,0 +1,5 @@
+WHERE category_name = 'Love Languages Remix Talks'
+  AND translations->>'en' = 'What makes a gift feel shallow to you — and what makes it feel thoughtful and genuine?';
+UPDATE questions
+SET translations = '{"en": "Do you prefer gifts that are practical or sentimental?", "da": "Foretr\u00e6kker du gaver, der er praktiske eller sentimentale?", "de": "Bevorzugst du Geschenke, die praktisch oder sentimental sind?", "es": "\u00bfPrefieres regalos que sean pr\u00e1cticos o sentimentales?", "pt": "Preferes presentes pr\u00e1ticos ou sentimentais?", "ro": "Preferi cadouri practice sau sentimentale?", "fr": "Pr\u00e9f\u00e8res-tu les cadeaux pratiques ou sentimentaux ?", "it": "Preferisci regali che siano pratici o sentimentali?", "fi": "Pid\u00e4tk\u00f6 enemm\u00e4n k\u00e4yt\u00e4nn\u00f6llisist\u00e4 vai tunteellisista lahjoista?", "nl": "Geef je de voorkeur aan praktische of sentimentele cadeaus?", "no": "Foretrekker du gaver som er praktiske eller sentimentale?", "sv": "F\u00f6redrar du presenter som \u00e4r praktiska eller sentimentala?", "pl": "Czy wolisz prezenty praktyczne czy sentymentalne?"}'::jsonb,
+    updated_at = NOW()

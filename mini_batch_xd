@@ -1,0 +1,5 @@
+SET translations = '{"en": "What\u2019s your go-to party anthem?", "da": "Hvad er din go-to festhymne?", "de": "Was ist dein Go-to-Partyhit?", "es": "\u00bfCu\u00e1l es tu himno de fiesta favorito?", "pt": "Qual \u00e9 o teu hino de festa preferido?", "ro": "Care este imnul t\u0103u preferat de petrecere?", "fr": "Quelle est ta chanson de f\u00eate incontournable ?", "it": "Qual \u00e8 il tuo inno da festa preferito?", "fi": "Mik\u00e4 on sinun suosikkikappaleesi juhliin?", "nl": "Wat is jouw favoriete feestnummer?", "no": "Hva er din favoritt festl\u00e5t?", "sv": "Vad \u00e4r din favoritpartyl\u00e5t?", "pl": "Jaki jest tw\u00f3j ulubiony hymn imprezowy?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'What’s your go-to party anthem?';
+UPDATE questions

@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who’s most likely to forget where they put their phone — again?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s a family saying or phrase everyone knows?", "da": "Hvad er et familiebegreb, som alle kender?", "de": "Welcher Familienspruch ist bei allen bekannt?", "es": "\u00bfCu\u00e1l es una frase o dicho familiar que todos conocen?", "pt": "Qual \u00e9 uma frase ou ditado familiar que todos conhecem?", "ro": "Care este o expresie de familie pe care to\u021bi o \u0219tiu?", "fr": "Quelle est une expression de famille que tout le monde conna\u00eet ?", "it": "Qual \u00e8 un detto o una frase di famiglia che tutti conoscono?", "fi": "Mik\u00e4 on perhesanonta tai lause, jonka kaikki tuntevat?", "nl": "Wat is een gezegde of uitdrukking binnen de familie die iedereen kent?", "no": "Hva er et familieuttrykk eller en frase som alle kjenner?", "sv": "Vad \u00e4r ett familjespr\u00e5k eller en fras som alla k\u00e4nner till?", "pl": "Jakie jest znane powiedzenie lub fraza rodzinne, kt\u00f3re wszyscy znaj\u0105?"}'::jsonb,

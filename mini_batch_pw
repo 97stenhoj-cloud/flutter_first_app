@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who’s the biggest over-packer in the family?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s a smell that instantly reminds us of home?", "da": "Hvilken duft minder os straks om hjemmet?", "de": "Welcher Geruch erinnert uns sofort an Zuhause?", "es": "\u00bfQu\u00e9 olor nos recuerda instant\u00e1neamente a casa?", "pt": "Qual cheiro nos lembra instantaneamente de casa?", "ro": "Ce miros ne aminte\u0219te instant de acas\u0103?", "fr": "Quelle odeur nous rappelle imm\u00e9diatement la maison ?", "it": "Qual \u00e8 un odore che ci ricorda immediatamente casa?", "fi": "Mik\u00e4 tuoksu tuo heti mieleen kodin?", "nl": "Wat is een geur die ons meteen aan thuis herinnert?", "no": "Hva er en lukt som umiddelbart minner oss om hjemmet?", "sv": "Vilken doft p\u00e5minner oss om hemmet direkt?", "pl": "Jaki zapach od razu przypomina nam o domu?"}'::jsonb,
+    updated_at = NOW()

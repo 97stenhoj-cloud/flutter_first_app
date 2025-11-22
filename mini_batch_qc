@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'What’s the funniest pet story we’ve ever told?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s the best cook in our family?", "da": "Hvem er den bedste kok i vores familie?", "de": "Wer ist der beste Koch in unserer Familie?", "es": "\u00bfQui\u00e9n es el mejor cocinero de nuestra familia?", "pt": "Quem \u00e9 o melhor cozinheiro da nossa fam\u00edlia?", "ro": "Cine e cel mai bun buc\u0103tar din familia noastr\u0103?", "fr": "Qui est le meilleur cuisinier de notre famille ?", "it": "Chi \u00e8 il miglior cuoco della nostra famiglia?", "fi": "Kuka on paras kokki perheess\u00e4mme?", "nl": "Wie is de beste kok in onze familie?", "no": "Hvem er den beste kokken i familien v\u00e5r?", "sv": "Vem \u00e4r den b\u00e4sta kocken i v\u00e5r familj?", "pl": "Kto jest najlepszym kucharzem w naszej rodzinie?"}'::jsonb,
+    updated_at = NOW()

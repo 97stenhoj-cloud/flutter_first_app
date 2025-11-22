@@ -1,0 +1,5 @@
+
+-- Category: Cozy Talks (75 questions)UPDATE questions
+SET translations = '{"en": "What snack is pure nostalgia?", "da": "Hvilken snack er ren nostalgi?", "de": "Welcher Snack ist pure Nostalgie?", "es": "\u00bfQu\u00e9 bocadillo es pura nostalgia para ti?", "pt": "Qual lanche \u00e9 pura nostalgia?", "ro": "Ce gustare este pur\u0103 nostalgie pentru tine?", "fr": "Quel en-cas est pure nostalgie pour toi ?", "it": "Quale snack \u00e8 pura nostalgia?", "fi": "Mik\u00e4 v\u00e4lipala on puhdasta nostalgiaa?", "nl": "Welke snack roept pure nostalgie op?", "no": "Hvilken snack gir deg ren nostalgi?", "sv": "Vilken snack \u00e4r ren nostalgi?", "pl": "Jaki przek\u0105ska to czysta nostalgia?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

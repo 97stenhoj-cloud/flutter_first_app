@@ -1,0 +1,5 @@
+SET translations = '{"en": "What does a perfect day together look like for you?", "da": "Hvordan ser en perfekt dag sammen ud for dig?", "de": "Wie sieht f\u00fcr dich ein perfekter Tag zusammen aus?", "es": "\u00bfC\u00f3mo es para ti un d\u00eda perfecto juntos?", "pt": "Como \u00e9 para ti um dia perfeito juntos?", "ro": "Cum arat\u0103 pentru tine o zi perfect\u0103 petrecut\u0103 \u00eempreun\u0103?", "fr": "\u00c0 quoi ressemble pour toi une journ\u00e9e parfaite ensemble ?", "it": "Come sarebbe per te una giornata perfetta insieme?", "fi": "Millainen t\u00e4ydellinen p\u00e4iv\u00e4 yhdess\u00e4 n\u00e4ytt\u00e4\u00e4 sinun mielest\u00e4si?", "nl": "Hoe ziet een perfecte dag samen er voor jou uit?", "no": "Hvordan ser en perfekt dag sammen ut for deg?", "sv": "Hur ser en perfekt dag tillsammans ut f\u00f6r dig?", "pl": "Jak wygl\u0105da dla ciebie idealny dzie\u0144 razem?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'What does a perfect day together look like for you?';
+UPDATE questions

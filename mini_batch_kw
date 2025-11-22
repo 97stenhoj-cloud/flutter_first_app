@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What kind of intimacy makes you feel closest to me?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s a tiny practice that improves your mental health?", "da": "Hvilken lille vane forbedrer dit mentale helbred?", "de": "Welche kleine Gewohnheit verbessert deine psychische Gesundheit?", "es": "\u00bfQu\u00e9 peque\u00f1a pr\u00e1ctica mejora tu salud mental?", "pt": "Que pequeno h\u00e1bito melhora sua sa\u00fade mental?", "ro": "Ce mic obicei \u00ee\u021bi \u00eembun\u0103t\u0103\u021be\u0219te s\u0103n\u0103tatea mental\u0103?", "fr": "Quelle petite habitude am\u00e9liore ta sant\u00e9 mentale ?", "it": "Qual \u00e8 una piccola pratica che migliora la tua salute mentale?", "fi": "Mik\u00e4 on pieni k\u00e4yt\u00e4nt\u00f6, joka parantaa mielenterveytt\u00e4si?", "nl": "Wat is een kleine gewoonte die je mentale gezondheid verbetert?", "no": "Hva er en liten praksis som forbedrer din mentale helse?", "sv": "Vilken liten vana f\u00f6rb\u00e4ttrar din mentala h\u00e4lsa?", "pl": "Jaka ma\u0142a praktyka poprawia twoje zdrowie psychiczne?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

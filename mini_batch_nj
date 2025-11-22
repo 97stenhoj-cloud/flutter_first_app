@@ -1,0 +1,5 @@
+WHERE category_name = 'Do-you-dare Talks'
+  AND translations->>'en' = 'What’s one little thing that makes you jealous?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s your guiltiest pleasure?", "da": "Hvad er din skyldigste forn\u00f8jelse?", "de": "Was ist dein heimlichstes Vergn\u00fcgen?", "es": "\u00bfCu\u00e1l es tu placer m\u00e1s culpable?", "pt": "Qual \u00e9 o teu prazer mais culpado?", "ro": "Care este pl\u0103cerea ta vinovat\u0103?", "fr": "Quel est ton plaisir coupable ?", "it": "Qual \u00e8 il tuo piacere pi\u00f9 colpevole?", "fi": "Mik\u00e4 on suurin syyllisyyden aiheuttava nautintosi?", "nl": "Wat is jouw grootste schuldgevoel genot?", "no": "Hva er din st\u00f8rste skyldf\u00f8lelse glede?", "sv": "Vad \u00e4r din st\u00f6rsta skuldfria njutning?", "pl": "Jakie jest twoje najwi\u0119ksze guilty pleasure?"}'::jsonb,
+    updated_at = NOW()

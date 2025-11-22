@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Languages Remix Talks'
+  AND translations->>'en' = 'How do you like me to cheer you on when you’re nervous or unsure?';
+UPDATE questions
+SET translations = '{"en": "What kind of compliments feel most real to you?", "da": "Hvilke slags komplimenter f\u00f8les mest \u00e6gte for dig?", "de": "Welche Art von Komplimenten f\u00fchlt sich f\u00fcr dich am ehrlichsten an?", "es": "\u00bfQu\u00e9 tipo de cumplidos se sienten m\u00e1s reales para ti?", "pt": "Que tipo de elogios te parecem mais sinceros?", "ro": "Ce fel de complimente \u021bi se par cele mai autentice?", "fr": "Quels types de compliments te semblent les plus sinc\u00e8res ?", "it": "Quali tipi di complimenti ti sembrano pi\u00f9 autentici?", "fi": "Mink\u00e4laiset kohteliaisuudet tuntuvat sinusta kaikkein aidoimmilta?", "nl": "Welke soort complimenten voelen voor jou het meest oprecht?", "no": "Hvilke typer komplimenter f\u00f8les mest ekte for deg?", "sv": "Vilka typer av komplimanger k\u00e4nns mest \u00e4kta f\u00f6r dig?", "pl": "Jakie komplementy wydaj\u0105 ci si\u0119 najbardziej autentyczne?"}'::jsonb,

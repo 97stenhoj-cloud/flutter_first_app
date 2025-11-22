@@ -1,0 +1,5 @@
+WHERE category_name = 'Deep Talks'
+  AND translations->>'en' = 'What do you dream about accomplishing?';
+UPDATE questions
+SET translations = '{"en": "When was the last time you felt awe?", "da": "Hvorn\u00e5r var sidste gang, du f\u00f8lte \u00e6refrygt?", "de": "Wann hast du das letzte Mal Ehrfurcht empfunden?", "es": "\u00bfCu\u00e1ndo fue la \u00faltima vez que sentiste asombro?", "pt": "Quando foi a \u00faltima vez que voc\u00ea sentiu admira\u00e7\u00e3o?", "ro": "C\u00e2nd ai sim\u021bit ultima dat\u0103 uimire?", "fr": "Quand as-tu ressenti de l\u2019\u00e9merveillement pour la derni\u00e8re fois ?", "it": "Quando \u00e8 stata l''ultima volta che ti sei sentito in soggezione?", "fi": "Milloin viimeksi tunsit ihmetyst\u00e4?", "nl": "Wanneer was de laatste keer dat je verwondering voelde?", "no": "N\u00e5r var siste gang du f\u00f8lte undring?", "sv": "N\u00e4r var senaste g\u00e5ngen du k\u00e4nde f\u00f6rundran?", "pl": "Kiedy ostatni raz poczu\u0142e\u015b zachwyt?"}'::jsonb,
+    updated_at = NOW()

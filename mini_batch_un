@@ -1,0 +1,5 @@
+SET translations = '{"en": "What about our relationship are you most grateful for?", "da": "Hvad ved vores forhold er du mest taknemmelig for?", "de": "Wof\u00fcr in unserer Beziehung bist du am dankbarsten?", "es": "\u00bfDe qu\u00e9 est\u00e1s m\u00e1s agradecido/a en nuestra relaci\u00f3n?", "pt": "Do que \u00e9 que est\u00e1s mais grato/a na nossa rela\u00e7\u00e3o?", "ro": "Pentru ce e\u0219ti cel mai recunosc\u0103tor/recunosc\u0103toare \u00een rela\u021bia noastr\u0103?", "fr": "De quoi es-tu le plus reconnaissant(e) dans notre relation ?", "it": "Di cosa nella nostra relazione sei pi\u00f9 grato?", "fi": "Mist\u00e4 suhteessamme olet eniten kiitollinen?", "nl": "Waar ben je het meest dankbaar voor in onze relatie?", "no": "Hva er du mest takknemlig for i v\u00e5rt forhold?", "sv": "Vad \u00e4r du mest tacksam f\u00f6r i v\u00e5r relation?", "pl": "Za co w naszej relacji jeste\u015b najbardziej wdzi\u0119czny?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'What about our relationship are you most grateful for?';
+UPDATE questions

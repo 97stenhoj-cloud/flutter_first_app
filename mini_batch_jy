@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What did love look/feel like in your family growing up?';
+UPDATE questions
+SET translations = '{"en": "What do you need more of in your life, and why?", "da": "Hvad har du brug for mere af i dit liv \u2014 og hvorfor?", "de": "Wovon brauchst du mehr in deinem Leben \u2013 und warum?", "es": "\u00bfDe qu\u00e9 necesitas m\u00e1s en tu vida, y por qu\u00e9?", "pt": "Do que voc\u00ea precisa mais na sua vida \u2014 e por qu\u00ea?", "ro": "De ce ai nevoie mai mult \u00een via\u021ba ta \u2014 \u0219i de ce?", "fr": "De quoi as-tu besoin de plus dans ta vie \u2014 et pourquoi ?", "it": "Di cosa hai bisogno di pi\u00f9 nella tua vita, e perch\u00e9?", "fi": "Mit\u00e4 tarvitset enemm\u00e4n el\u00e4m\u00e4ss\u00e4si, ja miksi?", "nl": "Wat heb je meer nodig in je leven, en waarom?", "no": "Hva trenger du mer av i livet ditt, og hvorfor?", "sv": "Vad beh\u00f6ver du mer av i ditt liv, och varf\u00f6r?", "pl": "Czego potrzebujesz wi\u0119cej w swoim \u017cyciu i dlaczego?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

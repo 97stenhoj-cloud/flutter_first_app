@@ -1,0 +1,5 @@
+SET translations = '{"en": "Which of us has the harder time hiding feelings?", "da": "Hvem af os har sv\u00e6rest ved at skjule f\u00f8lelser?", "de": "Wer von uns hat es am schwersten, Gef\u00fchle zu verbergen?", "es": "\u00bfQui\u00e9n de los dos tiene m\u00e1s dificultad para ocultar sus sentimientos?", "pt": "Qual de n\u00f3s tem mais dificuldade em esconder os sentimentos?", "ro": "Cine dintre noi are mai greu s\u0103-\u0219i ascund\u0103 sentimentele?", "fr": "Lequel de nous a le plus de mal \u00e0 cacher ses \u00e9motions ?", "it": "Chi di noi ha pi\u00f9 difficolt\u00e0 a nascondere i propri sentimenti?", "fi": "Kumpi meist\u00e4 on vaikeammassa asemassa tunteiden piilottamisessa?", "nl": "Wie van ons heeft het moeilijker om gevoelens te verbergen?", "no": "Hvem av oss har vanskeligere for \u00e5 skjule f\u00f8lelser?", "sv": "Vilken av oss har sv\u00e5rare att d\u00f6lja k\u00e4nslor?", "pl": "Kto z nas ma trudniej z ukrywaniem uczu\u0107?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'Which of us has the harder time hiding feelings?';
+UPDATE questions

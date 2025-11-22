@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "Which landscape calms you the most on a drive?", "da": "Hvilket landskab beroliger dig mest under en k\u00f8retur?", "de": "Welche Landschaft beruhigt dich am meisten w\u00e4hrend einer Fahrt?", "es": "\u00bfQu\u00e9 paisaje te calma m\u00e1s durante un viaje?", "pt": "Que paisagem te acalma mais durante uma viagem?", "ro": "Ce peisaj te lini\u0219te\u0219te cel mai mult \u00een timpul unei c\u0103l\u0103torii?", "fr": "Quel paysage te calme le plus pendant un trajet ?", "it": "Quale paesaggio ti calma di pi\u00f9 quando sei in macchina?", "fi": "Millainen maisema rauhoittaa sinua eniten ajomatkalla?", "nl": "Welk landschap kalmeert je het meest tijdens het rijden?", "no": "Hvilket landskap roer deg mest n\u00e5r du er p\u00e5 kj\u00f8retur?", "sv": "Vilket landskap lugnar dig mest n\u00e4r du \u00e5ker bil?", "pl": "Jaki krajobraz najbardziej ci\u0119 uspokaja w czasie jazdy?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Car Talks'
+  AND translations->>'en' = 'Which landscape calms you the most on a drive?';

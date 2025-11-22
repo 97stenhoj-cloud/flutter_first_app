@@ -1,0 +1,5 @@
+SET translations = '{"en": "Which of us has a harder time saying no to the other?", "da": "Hvem af os har sv\u00e6rest ved at sige nej til den anden?", "de": "Wer von uns hat es schwerer, Nein zum anderen zu sagen?", "es": "\u00bfQui\u00e9n de los dos tiene m\u00e1s dificultad para decirle que no al otro?", "pt": "Qual de n\u00f3s tem mais dificuldade em dizer n\u00e3o ao outro?", "ro": "Cine dintre noi are mai greu s\u0103 \u00eei spun\u0103 nu celuilalt?", "fr": "Lequel de nous a le plus de mal \u00e0 dire non \u00e0 l\u2019autre ?", "it": "Chi di noi ha pi\u00f9 difficolt\u00e0 a dire di no all''altro?", "fi": "Kumpi meist\u00e4 on vaikeammassa asemassa sanoa ei toiselle?", "nl": "Wie van ons heeft het moeilijker om nee tegen de ander te zeggen?", "no": "Hvem av oss har vanskeligere for \u00e5 si nei til den andre?", "sv": "Vilken av oss har sv\u00e5rare att s\u00e4ga nej till den andra?", "pl": "Kto z nas ma trudniej powiedzie\u0107 \"nie\" drugiej osobie?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'Which of us has a harder time saying no to the other?';
+UPDATE questions

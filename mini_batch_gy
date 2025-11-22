@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'If you could recreate one cozy memory from childhood, what would it be?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s your ideal lazy Sunday?", "da": "Hvordan ser din ideelle dovne s\u00f8ndag ud?", "de": "Wie sieht dein idealer fauler Sonntag aus?", "es": "\u00bfC\u00f3mo es tu domingo perezoso ideal?", "pt": "Como \u00e9 o seu domingo pregui\u00e7oso ideal?", "ro": "Cum arat\u0103 duminica ta lene\u0219\u0103 ideal\u0103?", "fr": "\u00c0 quoi ressemble ton dimanche paresseux id\u00e9al ?", "it": "Qual \u00e8 il tuo ideale domenica pigra?", "fi": "Mik\u00e4 on sinun ihanteellinen laiskottelusunnuntai?", "nl": "Wat is jouw ideale luie zondag?", "no": "Hva er din ideelle late s\u00f8ndag?", "sv": "Vad \u00e4r din perfekta lata s\u00f6ndag?", "pl": "Jaki jest tw\u00f3j idealny leniwy niedzielny dzie\u0144?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

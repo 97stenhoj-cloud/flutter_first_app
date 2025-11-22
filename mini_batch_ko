@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What do you owe your future self?';
+UPDATE questions
+SET translations = '{"en": "When do you feel most attractive?", "da": "Hvorn\u00e5r f\u00f8ler du dig mest attraktiv?", "de": "Wann f\u00fchlst du dich am attraktivsten?", "es": "\u00bfCu\u00e1ndo te sientes m\u00e1s atractivo(a)?", "pt": "Quando voc\u00ea se sente mais atraente?", "ro": "C\u00e2nd te sim\u021bi cel mai atr\u0103g\u0103tor(are)?", "fr": "Quand te sens-tu le/la plus attirant(e) ?", "it": "Quando ti senti pi\u00f9 attraente?", "fi": "Milloin tunnet itsesi kaikkein vieh\u00e4tt\u00e4vimm\u00e4ksi?", "nl": "Wanneer voel je je het meest aantrekkelijk?", "no": "N\u00e5r f\u00f8ler du deg mest attraktiv?", "sv": "N\u00e4r k\u00e4nner du dig mest attraktiv?", "pl": "Kiedy czujesz si\u0119 najbardziej atrakcyjny?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

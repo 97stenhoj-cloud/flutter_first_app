@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who got in the most trouble as a kid?';
+UPDATE questions
+SET translations = '{"en": "Who has the funniest school stories?", "da": "Hvem har de sjoveste skolehistorier?", "de": "Wer hat die lustigsten Schulgeschichten?", "es": "\u00bfQui\u00e9n tiene las historias escolares m\u00e1s graciosas?", "pt": "Quem tem as hist\u00f3rias escolares mais engra\u00e7adas?", "ro": "Cine are cele mai amuzante pove\u0219ti din \u0219coal\u0103?", "fr": "Qui a les histoires d\u2019\u00e9cole les plus dr\u00f4les ?", "it": "Chi ha le storie scolastiche pi\u00f9 divertenti?", "fi": "Kell\u00e4 on hauskimmat koulutarinat?", "nl": "Wie heeft de grappigste schoolverhalen?", "no": "Hvem har de morsomste skolehistoriene?", "sv": "Vem har de roligaste skolhistorierna?", "pl": "Kto ma naj\u015bmieszniejsze historie ze szko\u0142y?"}'::jsonb,
+    updated_at = NOW()

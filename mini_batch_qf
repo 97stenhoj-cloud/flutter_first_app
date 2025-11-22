@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'What’s the most famous “disaster meal” we’ve ever had?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s the best at starting traditions in our family?", "da": "Hvem er bedst til at starte traditioner i familien?", "de": "Wer ist am besten darin, Familientraditionen zu starten?", "es": "\u00bfQui\u00e9n es el mejor para iniciar tradiciones familiares?", "pt": "Quem \u00e9 o melhor a come\u00e7ar tradi\u00e7\u00f5es na fam\u00edlia?", "ro": "Cine este cel mai bun la \u00eenceputul tradi\u021biilor \u00een familie?", "fr": "Qui est le meilleur pour lancer des traditions dans notre famille ?", "it": "Chi \u00e8 il migliore nel creare tradizioni nella nostra famiglia?", "fi": "Kuka on paras aloittamaan perinteit\u00e4 meid\u00e4n perheess\u00e4mme?", "nl": "Wie is het beste in het starten van tradities in onze familie?", "no": "Hvem er best til \u00e5 starte tradisjoner i familien v\u00e5r?", "sv": "Vem \u00e4r b\u00e4st p\u00e5 att starta traditioner i v\u00e5r familj?", "pl": "Kto jest najlepszy w rozpoczynaniu tradycji w naszej rodzinie?"}'::jsonb,
+    updated_at = NOW()

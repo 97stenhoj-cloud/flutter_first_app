@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "If we all started a band, what would we be called?", "da": "Hvis vi alle startede et band, hvad skulle vi s\u00e5 hedde?", "de": "Wenn wir alle eine Band gr\u00fcnden w\u00fcrden, wie w\u00fcrden wir hei\u00dfen?", "es": "Si todos form\u00e1ramos una banda, \u00bfc\u00f3mo nos llamar\u00edamos?", "pt": "Se todos n\u00f3s form\u00e1ssemos uma banda, qual seria o nome?", "ro": "Dac\u0103 am forma cu to\u021bii o trup\u0103, cum s-ar numi?", "fr": "Si nous formions tous un groupe, comment s\u2019appellerait-il ?", "it": "Se tutti noi iniziassimo una band, come ci chiameremmo?", "fi": "Jos me kaikki perustaisimme b\u00e4ndin, mik\u00e4 sen nimi olisi?", "nl": "Als we allemaal een band zouden beginnen, hoe zouden we dan heten?", "no": "Hvis vi alle startet et band, hva ville vi hete?", "sv": "Om vi alla startade ett band, vad skulle vi heta?", "pl": "Je\u015bli wszyscy za\u0142o\u017cyliby\u015bmy zesp\u00f3\u0142, jak by\u015bmy si\u0119 nazywali?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'
+  AND translations->>'en' = 'If we all started a band, what would we be called?';

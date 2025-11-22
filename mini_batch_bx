@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "What\u2019s the safest place on earth at midnight?", "da": "Hvad er det sikreste sted p\u00e5 jorden ved midnat?", "de": "Was ist der sicherste Ort auf der Erde um Mitternacht?", "es": "\u00bfCu\u00e1l es el lugar m\u00e1s seguro del mundo a medianoche?", "pt": "Qual \u00e9 o lugar mais seguro da Terra \u00e0 meia-noite?", "ro": "Care este cel mai sigur loc de pe P\u0103m\u00e2nt la miezul nop\u021bii?", "fr": "Quel est l\u2019endroit le plus s\u00fbr sur Terre \u00e0 minuit ?", "it": "Qual \u00e8 il posto pi\u00f9 sicuro sulla Terra a mezzanotte?", "fi": "Mik\u00e4 on maailman turvallisin paikka keskiy\u00f6ll\u00e4?", "nl": "Wat is de veiligste plek op aarde om middernacht?", "no": "Hva er det tryggeste stedet p\u00e5 jorden ved midnatt?", "sv": "Vilken \u00e4r den s\u00e4kraste platsen p\u00e5 jorden vid midnatt?", "pl": "Jakie miejsce na \u015bwiecie jest najbezpieczniejsze o p\u00f3\u0142nocy?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'After Dark Talks'
+  AND translations->>'en' = 'What’s the safest place on earth at midnight?';UPDATE questions

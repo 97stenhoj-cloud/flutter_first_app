@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who’s most likely to fall asleep five minutes into the drive?';
+UPDATE questions
+SET translations = '{"en": "Who always forgets their charger when we travel?", "da": "Hvem glemmer altid deres oplader, n\u00e5r vi rejser?", "de": "Wer vergisst immer sein Ladeger\u00e4t, wenn wir reisen?", "es": "\u00bfQui\u00e9n siempre olvida su cargador cuando viajamos?", "pt": "Quem sempre esquece o carregador quando viajamos?", "ro": "Cine uit\u0103 mereu \u00eenc\u0103rc\u0103torul c\u00e2nd c\u0103l\u0103torim?", "fr": "Qui oublie toujours son chargeur quand on voyage ?", "it": "Chi dimentica sempre il proprio caricabatterie quando viaggiamo?", "fi": "Kuka unohtaa aina laturinsa, kun matkustamme?", "nl": "Wie vergeet altijd zijn of haar oplader als we reizen?", "no": "Hvem glemmer alltid laderen sin n\u00e5r vi reiser?", "sv": "Vem gl\u00f6mmer alltid sin laddare n\u00e4r vi reser?", "pl": "Kto zawsze zapomina swojego \u0142adowarki, gdy podr\u00f3\u017cujemy?"}'::jsonb,
+    updated_at = NOW()

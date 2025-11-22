@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who’s the best at starting traditions in our family?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s most likely to spill something on the couch?", "da": "Hvem spilder mest sandsynligt noget p\u00e5 sofaen?", "de": "Wer versch\u00fcttet am ehesten etwas auf dem Sofa?", "es": "\u00bfQui\u00e9n es m\u00e1s probable que derrame algo en el sof\u00e1?", "pt": "Quem \u00e9 mais prov\u00e1vel de derramar algo no sof\u00e1?", "ro": "Cine e cel mai probabil s\u0103 verse ceva pe canapea?", "fr": "Qui est le plus susceptible de renverser quelque chose sur le canap\u00e9 ?", "it": "Chi \u00e8 pi\u00f9 probabile che versi qualcosa sul divano?", "fi": "Kuka todenn\u00e4k\u00f6isimmin kaataa jotain sohvalle?", "nl": "Wie is het meest waarschijnlijk om iets op de bank te morsen?", "no": "Hvem er mest sannsynlig til \u00e5 s\u00f8le noe p\u00e5 sofaen?", "sv": "Vem \u00e4r mest ben\u00e4gen att spilla n\u00e5got p\u00e5 soffan?", "pl": "Kto najprawdopodobniej rozleje co\u015b na kanapie?"}'::jsonb,
+    updated_at = NOW()

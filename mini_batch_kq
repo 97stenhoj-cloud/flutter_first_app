@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What’s a piece of advice you’re glad you ignored?';
+UPDATE questions
+SET translations = '{"en": "What part of getting older are you looking forward to?", "da": "Hvilken del af at blive \u00e6ldre ser du mest frem til?", "de": "Auf welchen Teil des \u00c4lterwerdens freust du dich am meisten?", "es": "\u00bfQu\u00e9 parte de envejecer esperas con m\u00e1s ilusi\u00f3n?", "pt": "De qual parte de envelhecer voc\u00ea mais espera?", "ro": "La ce parte a \u00eemb\u0103tr\u00e2nirii a\u0219tep\u021bi cu bucurie?", "fr": "Quelle partie du fait de vieillir attends-tu avec le plus d\u2019impatience ?", "it": "Quale aspetto dell''invecchiare non vedi l''ora di affrontare?", "fi": "Mist\u00e4 vanhenemisessa odotat eniten?", "nl": "Waar kijk je naar uit als het gaat om ouder worden?", "no": "Hvilken del av \u00e5 bli eldre ser du frem til?", "sv": "Vilken del av att bli \u00e4ldre ser du fram emot?", "pl": "Na kt\u00f3r\u0105 cz\u0119\u015b\u0107 starzenia si\u0119 czekasz z niecierpliwo\u015bci\u0105?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

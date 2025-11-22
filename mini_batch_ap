@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "What\u2019s your family\u2019s oddest good-luck ritual?", "da": "Hvad er din families m\u00e6rkeligste lykkebringende ritual?", "de": "Was ist das seltsamste Gl\u00fccksritual deiner Familie?", "es": "\u00bfCu\u00e1l es el ritual de buena suerte m\u00e1s extra\u00f1o de tu familia?", "pt": "Qual \u00e9 o ritual de sorte mais estranho da tua fam\u00edlia?", "ro": "Care este cel mai ciudat ritual de noroc al familiei tale?", "fr": "Quel est le rituel porte-bonheur le plus \u00e9trange de ta famille ?", "it": "Qual \u00e8 il rito portafortuna pi\u00f9 strano della tua famiglia?", "fi": "Mik\u00e4 on perheesi oudoin onnea tuova rituaali?", "nl": "Wat is het vreemdste geluksritueel van jouw familie?", "no": "Hva er familiens rareste lykkeritual?", "sv": "Vad \u00e4r din familjs konstigaste tur-ritual?", "pl": "Jaki jest najdziwniejszy rytua\u0142 na szcz\u0119\u015bcie w twojej rodzinie?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'After Dark Talks'
+  AND translations->>'en' = 'What’s your family’s oddest good-luck ritual?';

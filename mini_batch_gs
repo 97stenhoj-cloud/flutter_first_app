@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'Who in this group would survive longest in a zombie apocalypse — and why?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s a \u201cpopular\u201d song that drives you crazy?", "da": "Hvilken \u201cpopul\u00e6r\u201d sang driver dig til vanvid?", "de": "Welcher \u201epopul\u00e4re\u201c Song macht dich wahnsinnig?", "es": "\u00bfQu\u00e9 canci\u00f3n \u201cpopular\u201d te vuelve loco(a)?", "pt": "Que m\u00fasica \u201cpopular\u201d te enlouquece?", "ro": "Ce c\u00e2ntec \u201epopular\u201d te scoate din min\u021bi?", "fr": "Quelle chanson \u00ab populaire \u00bb te rend fou/folle ?", "it": "Qual \u00e8 una canzone \"popolare\" che ti fa impazzire?", "fi": "Mik\u00e4 on \"suosittu\" kappale, joka saa sinut hulluksi?", "nl": "Wat is een \"populaire\" song die je gek maakt?", "no": "Hva er en \"popul\u00e6r\" sang som gj\u00f8r deg gal?", "sv": "Vilken \"popul\u00e4r\" l\u00e5t g\u00f6r dig galen?", "pl": "Jaka \"popularna\" piosenka doprowadza ci\u0119 do sza\u0142u?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

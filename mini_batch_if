@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "What\u2019s one thing you think should be normalized?", "da": "Hvad er \u00e9n ting, du synes b\u00f8r blive normaliseret?", "de": "Was ist eine Sache, die deiner Meinung nach normalisiert werden sollte?", "es": "\u00bfQu\u00e9 cosa crees que deber\u00eda normalizarse?", "pt": "O que voc\u00ea acha que deveria ser normalizado?", "ro": "Ce crezi c\u0103 ar trebui normalizat?", "fr": "Quelle chose penses-tu qu\u2019on devrait normaliser ?", "it": "Qual \u00e8 una cosa che pensi dovrebbe essere normalizzata?", "fi": "Mik\u00e4 on yksi asia, jonka ajattelet pit\u00e4isi normalisoida?", "nl": "Wat is \u00e9\u00e9n ding dat volgens jou genormaliseerd zou moeten worden?", "no": "Hva er \u00e9n ting du mener burde bli normalisert?", "sv": "Vad \u00e4r en sak som du tycker borde normaliseras?", "pl": "Co\u015b, co twoim zdaniem powinno by\u0107 znormalizowane?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'
+  AND translations->>'en' = 'What’s one thing you think should be normalized?';

@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What makes you feel desired without words?';
+UPDATE questions
+SET translations = '{"en": "What kind of fun do you want more of together?", "da": "Hvilken slags sjov vil du gerne have mere af sammen?", "de": "Welche Art von Spa\u00df m\u00f6chtest du gerne mehr mit mir haben?", "es": "\u00bfQu\u00e9 tipo de diversi\u00f3n te gustar\u00eda tener m\u00e1s juntos?", "pt": "Que tipo de divers\u00e3o voc\u00ea gostaria de ter mais comigo?", "ro": "Ce fel de distrac\u021bie ai vrea s\u0103 avem mai des \u00eempreun\u0103?", "fr": "Quel type d\u2019amusement aimerais-tu que nous ayons plus souvent ensemble ?", "it": "Che tipo di divertimento vuoi di pi\u00f9 insieme?", "fi": "Millaista hauskuutta haluaisit lis\u00e4\u00e4 yhdess\u00e4?", "nl": "Wat voor soort plezier wil je meer samen hebben?", "no": "Hva slags moro \u00f8nsker du mer av sammen?", "sv": "Vilken typ av roligheter vill du ha mer av tillsammans?", "pl": "Jakiego rodzaju zabawy chcia\u0142by\u015b mie\u0107 wi\u0119cej razem?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

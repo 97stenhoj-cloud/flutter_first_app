@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What helps you feel confident and attractive in your own skin?';
+
+-- Category: History Talks (74 questions)
+UPDATE questions
+SET translations = '{"en": "Who had the weirdest haircut phase?", "da": "Hvem havde den m\u00e6rkeligste frisurefase?", "de": "Wer hatte die seltsamste Frisurenphase?", "es": "\u00bfQui\u00e9n tuvo la fase de peinado m\u00e1s rara?", "pt": "Quem teve a fase de corte de cabelo mais estranha?", "ro": "Cine a avut cea mai ciudat\u0103 faz\u0103 de coafur\u0103?", "fr": "Qui a eu la phase de coiffure la plus \u00e9trange ?", "it": "Chi ha avuto la fase di taglio di capelli pi\u00f9 strana?", "fi": "Kell\u00e4 oli oudoimmat hiustyyli-vaiheet?", "nl": "Wie had de vreemdste kapselperiode?", "no": "Hvem hadde den rareste frisyrefasen?", "sv": "Vem hade den konstigaste frisyrfasen?", "pl": "Kto mia\u0142 najdziwniejsz\u0105 faz\u0119 fryzury?"}'::jsonb,

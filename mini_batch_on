@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who’s most likely to take <5000 photos on vacation?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s most likely to get sunburned first?", "da": "Hvem bliver f\u00f8rst solskoldet?", "de": "Wer bekommt als Erster einen Sonnenbrand?", "es": "\u00bfQui\u00e9n es m\u00e1s probable que se queme con el sol primero?", "pt": "Quem \u00e9 mais prov\u00e1vel a ficar com queimadura de sol primeiro?", "ro": "Cine se arde primul de la soare?", "fr": "Qui est le plus susceptible d attraper un coup de soleil en premier ?", "it": "Chi \u00e8 pi\u00f9 probabile che si scotta per primo?", "fi": "Kuka todenn\u00e4k\u00f6isesti saa auringonpolttaman ensimm\u00e4isen\u00e4?", "nl": "Wie is het meest waarschijnlijk om als eerste verbrand te raken door de zon?", "no": "Hvem er mest sannsynlig til \u00e5 bli solbrent f\u00f8rst?", "sv": "Vem \u00e4r mest sannolikt att bli solbr\u00e4nd f\u00f6rst?", "pl": "Kto najprawdopodobniej pierwszy si\u0119 poparzy?"}'::jsonb,

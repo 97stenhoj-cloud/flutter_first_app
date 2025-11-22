@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'If your love life were a movie genre, what would it be?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s your favorite rainy\u2011day activity?", "da": "Hvad er din yndlingsaktivitet p\u00e5 en regnvejrsdag?", "de": "Was ist deine Lieblingsbesch\u00e4ftigung an einem Regentag?", "es": "\u00bfCu\u00e1l es tu actividad favorita en un d\u00eda lluvioso?", "pt": "Qual \u00e9 a sua atividade favorita em um dia chuvoso?", "ro": "Care este activitatea ta preferat\u0103 \u00eentr-o zi ploioas\u0103?", "fr": "Quelle est ton activit\u00e9 pr\u00e9f\u00e9r\u00e9e un jour de pluie ?", "it": "Qual \u00e8 la tua attivit\u00e0 preferita per una giornata di pioggia?", "fi": "Mik\u00e4 on lempitoimintasi sateisena p\u00e4iv\u00e4n\u00e4?", "nl": "Wat is jouw favoriete activiteit op een regenachtige dag?", "no": "Hva er din favorittaktivitet p\u00e5 en regnv\u00e6rsdag?", "sv": "Vad \u00e4r din favoritaktivitet en regnig dag?", "pl": "Jakie jest twoje ulubione zaj\u0119cie w deszczowy dzie\u0144?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

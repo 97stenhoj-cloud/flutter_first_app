@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'What’s a family recipe everyone loves?';
+UPDATE questions
+SET translations = '{"en": "Who cries first at movies \u2014 every single time?", "da": "Hvem gr\u00e6der f\u00f8rst til film \u2014 hver eneste gang?", "de": "Wer weint als Erster bei Filmen \u2013 jedes Mal?", "es": "\u00bfQui\u00e9n llora primero en las pel\u00edculas \u2014 cada vez?", "pt": "Quem chora primeiro nos filmes \u2014 todas as vezes?", "ro": "Cine pl\u00e2nge primul la filme \u2014 de fiecare dat\u0103?", "fr": "Qui pleure en premier devant les films \u2014 \u00e0 chaque fois ?", "it": "Chi piange per primo ai film \u2014 ogni singola volta?", "fi": "Kuka itkee ensimm\u00e4isen\u00e4 elokuvissa \u2014 joka kerta?", "nl": "Wie huilt er als eerste bij films \u2014 elke keer weer?", "no": "Hvem gr\u00e5ter f\u00f8rst p\u00e5 filmer \u2014 hver eneste gang?", "sv": "Vem gr\u00e5ter f\u00f6rst p\u00e5 filmer \u2014 varje g\u00e5ng?", "pl": "Kto zawsze p\u0142acze pierwszy na filmach?"}'::jsonb,

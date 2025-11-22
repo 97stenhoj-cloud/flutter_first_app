@@ -1,0 +1,5 @@
+SET translations = '{"en": "What\u2019s a pickup line that would actually work on you?", "da": "Hvilken scorereplik ville faktisk virke p\u00e5 dig?", "de": "Welche Anmachspruch w\u00fcrde bei dir tats\u00e4chlich funktionieren?", "es": "\u00bfQu\u00e9 frase de ligue realmente funcionar\u00eda contigo?", "pt": "Que cantada realmente resultaria contigo?", "ro": "Ce replic\u0103 de ag\u0103\u021bat ar func\u021biona de fapt la tine?", "fr": "Quelle phrase de drague fonctionnerait vraiment sur toi ?", "it": "Qual \u00e8 una frase di approccio che funzionerebbe davvero su di te?", "fi": "Mik\u00e4 olisi sellainen avausrepliikki, joka oikeasti toimisi sinuun?", "nl": "Wat is een versierzin die echt zou werken op jou?", "no": "Hva er en sjekkeremse som faktisk ville fungert p\u00e5 deg?", "sv": "Vilken raggningsreplik skulle faktiskt fungera p\u00e5 dig?", "pl": "Jaka linia podrywu mog\u0142aby na ciebie zadzia\u0142a\u0107?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'What’s a pickup line that would actually work on you?';
+UPDATE questions

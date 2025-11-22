@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'What does “home” mean to you when it comes to us?';
+UPDATE questions
+SET translations = '{"en": "What do you think we do better than most couples?", "da": "Hvad synes du, vi g\u00f8r bedre end de fleste par?", "de": "Was glaubst du, machen wir besser als die meisten Paare?", "es": "\u00bfQu\u00e9 crees que hacemos mejor que la mayor\u00eda de las parejas?", "pt": "O que achas que fazemos melhor do que a maioria dos casais?", "ro": "Ce crezi c\u0103 facem mai bine dec\u00e2t majoritatea cuplurilor?", "fr": "Que penses-tu que nous faisons mieux que la plupart des couples ?", "it": "Cosa pensi che facciamo meglio della maggior parte delle coppie?", "fi": "Mit\u00e4 mielt\u00e4 olet, mit\u00e4 me teemme paremmin kuin useimmat parit?", "nl": "Wat denk je dat we beter doen dan de meeste stellen?", "no": "Hva tror du vi gj\u00f8r bedre enn de fleste par?", "sv": "Vad tycker du att vi g\u00f6r b\u00e4ttre \u00e4n de flesta par?", "pl": "Co my\u015blisz, co robimy lepiej ni\u017c wi\u0119kszo\u015b\u0107 par?"}'::jsonb,

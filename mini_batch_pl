@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'What’s the funniest thing that’s ever happened during dinner?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s best at cheering people up?", "da": "Hvem er bedst til at opmuntre folk?", "de": "Wer kann am besten andere aufmuntern?", "es": "\u00bfQui\u00e9n es el mejor animando a los dem\u00e1s?", "pt": "Quem \u00e9 o melhor a animar as pessoas?", "ro": "Cine e cel mai bun la a \u00eenveseli oamenii?", "fr": "Qui est le meilleur pour remonter le moral des gens ?", "it": "Chi \u00e8 il migliore nel tirare su il morale alle persone?", "fi": "Kuka on paras pirist\u00e4m\u00e4\u00e4n ihmisi\u00e4?", "nl": "Wie is het beste in het opvrolijken van mensen?", "no": "Hvem er best til \u00e5 muntre folk opp?", "sv": "Vem \u00e4r b\u00e4st p\u00e5 att muntra upp folk?", "pl": "Kto jest najlepszy w pocieszaniu ludzi?"}'::jsonb,
+    updated_at = NOW()

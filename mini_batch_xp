@@ -1,0 +1,5 @@
+SET translations = '{"en": "What\u2019s your unspoken party superpower?", "da": "Hvad er din uudtalte fest-superkraft?", "de": "Was ist deine unausgesprochene Party-Superkraft?", "es": "\u00bfCu\u00e1l es tu superpoder de fiesta no declarado?", "pt": "Qual \u00e9 o teu superpoder secreto de festa?", "ro": "Care este superputerea ta secret\u0103 la petreceri?", "fr": "Quel est ton super-pouvoir secret de soir\u00e9e ?", "it": "Qual \u00e8 il tuo superpotere non detto alle feste?", "fi": "Mik\u00e4 on sanaton juhlakykysi?", "nl": "Wat is jouw onuitgesproken feestsuperkracht?", "no": "Hva er din usynlige fest-superkraft?", "sv": "Vad \u00e4r din osynliga festsuperkraft?", "pl": "Jaka jest twoja niewypowiedziana supermoc na imprezie?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'What’s your unspoken party superpower?';
+UPDATE questions

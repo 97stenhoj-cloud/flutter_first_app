@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What’s something you’ve learned to be more tolerant or open-minded about?';
+UPDATE questions
+SET translations = '{"en": "How do you define success for yourself now?", "da": "Hvordan definerer du succes for dig selv nu?", "de": "Wie definierst du heute Erfolg f\u00fcr dich selbst?", "es": "\u00bfC\u00f3mo defines el \u00e9xito para ti ahora?", "pt": "Como defines o sucesso para ti agora?", "ro": "Cum define\u0219ti succesul pentru tine acum?", "fr": "Comment d\u00e9finis-tu le succ\u00e8s pour toi aujourd\u2019hui ?", "it": "Come definisci il successo per te stesso adesso?", "fi": "Miten m\u00e4\u00e4rittelet menestyksen itsellesi nyt?", "nl": "Hoe definieer je nu succes voor jezelf?", "no": "Hvordan definerer du suksess for deg selv n\u00e5?", "sv": "Hur definierar du framg\u00e5ng f\u00f6r dig sj\u00e4lv nu?", "pl": "Jak definiujesz sukces dla siebie teraz?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Do-you-dare Talks'

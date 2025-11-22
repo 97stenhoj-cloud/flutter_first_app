@@ -1,0 +1,5 @@
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who’s best at making up songs or silly jingles?';
+UPDATE questions
+SET translations = '{"en": "Who got in the most trouble as a kid?", "da": "Hvem kom mest i problemer som barn?", "de": "Wer hatte als Kind am meisten \u00c4rger?", "es": "\u00bfQui\u00e9n se met\u00eda m\u00e1s en problemas de ni\u00f1o?", "pt": "Quem mais se metia em encrenca quando era crian\u00e7a?", "ro": "Cine se b\u0103ga cel mai des \u00een belele c\u00e2nd era copil?", "fr": "Qui avait le plus d\u2019ennuis quand il \u00e9tait enfant ?", "it": "Chi ha combinato pi\u00f9 guai da bambino?", "fi": "Kuka sai lapsena eniten ongelmia?", "nl": "Wie kreeg er als kind de meeste problemen?", "no": "Hvem kom i mest tr\u00f8bbel som barn?", "sv": "Vem hamnade i mest trubbel som barn?", "pl": "Kto mia\u0142 najwi\u0119cej k\u0142opot\u00f3w jako dziecko?"}'::jsonb,
+    updated_at = NOW()

@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'Is there a hobby you do just for the joy of it? Tell us about it';
+UPDATE questions
+SET translations = '{"en": "What\u2019s your favorite comfort food?", "da": "Hvad er din yndlingskomfortmad?", "de": "Was ist dein Lieblings-Komfortessen?", "es": "\u00bfCu\u00e1l es tu comida reconfortante favorita?", "pt": "Qual \u00e9 a sua comida de conforto favorita?", "ro": "Care este m\u00e2ncarea ta preferat\u0103 de confort?", "fr": "Quel est ton plat r\u00e9confortant pr\u00e9f\u00e9r\u00e9 ?", "it": "Qual \u00e8 il tuo cibo confortito preferito?", "fi": "Mik\u00e4 on lempiruokasi, joka tuo lohtua?", "nl": "Wat is jouw favoriete troosteten?", "no": "Hva er din favoritt komfortmat?", "sv": "Vad \u00e4r din favorittr\u00f6stmat?", "pl": "Jakie jest twoje ulubione jedzenie na pocieszenie?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

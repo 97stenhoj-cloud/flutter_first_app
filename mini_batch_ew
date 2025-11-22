@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "What\u2019s one destination that\u2019s still calling your name?", "da": "Hvilken destination kalder stadig p\u00e5 dit navn?", "de": "Welches Reiseziel ruft immer noch deinen Namen?", "es": "\u00bfQu\u00e9 destino a\u00fan te llama?", "pt": "Que destino ainda chama por ti?", "ro": "Ce destina\u021bie \u00eenc\u0103 \u00ee\u021bi strig\u0103 numele?", "fr": "Quelle destination t\u2019appelle encore ?", "it": "Qual \u00e8 una destinazione che continua ancora a chiamarti?", "fi": "Mik\u00e4 on sellainen kohde, joka kutsuu sinua yh\u00e4 uudestaan?", "nl": "Wat is \u00e9\u00e9n bestemming die jouw naam nog steeds roept?", "no": "Hva er ett reisem\u00e5l som fortsatt roper navnet ditt?", "sv": "Vilket resm\u00e5l k\u00e4nns fortfarande som att det ropar p\u00e5 dig?", "pl": "Jakie jedno miejsce na \u015bwiecie wci\u0105\u017c \u201ewo\u0142a ci\u0119\u201d po imieniu?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Car Talks'
+  AND translations->>'en' = 'What’s one destination that’s still calling your name?';

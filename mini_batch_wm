@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'What do you think we do better than most couples?';
+UPDATE questions
+SET translations = '{"en": "What do you want me to notice more often?", "da": "Hvad vil du gerne have, at jeg oftere l\u00e6gger m\u00e6rke til?", "de": "Was m\u00f6chtest du, dass ich \u00f6fter bemerke?", "es": "\u00bfQu\u00e9 te gustar\u00eda que notara m\u00e1s a menudo?", "pt": "O que gostarias que eu notasse com mais frequ\u00eancia?", "ro": "La ce ai vrea s\u0103 fiu mai atent(\u0103) mai des?", "fr": "\u00c0 quoi voudrais-tu que je fasse plus souvent attention ?", "it": "Cosa vuoi che noti pi\u00f9 spesso?", "fi": "Mit\u00e4 haluaisit minun huomaavan useammin?", "nl": "Wat wil je dat ik vaker opmerkte?", "no": "Hva vil du at jeg skal legge merke til oftere?", "sv": "Vad vill du att jag ska l\u00e4gga m\u00e4rke till oftare?", "pl": "Co chcesz, \u017cebym zauwa\u017ca\u0142 cz\u0119\u015bciej?"}'::jsonb,

@@ -1,0 +1,5 @@
+SET translations = '{"en": "Which of our differences makes us a better team?", "da": "Hvem af os siger f\u00f8rst undskyld efter et sk\u00e6nderi?", "de": "Wer von uns entschuldigt sich als Erstes nach einem Streit?", "es": "\u00bfQui\u00e9n de los dos pide perd\u00f3n primero despu\u00e9s de una pelea?", "pt": "Qual de n\u00f3s pede desculpa primeiro depois de uma discuss\u00e3o?", "ro": "Cine dintre noi \u00ee\u0219i cere primul scuze dup\u0103 o ceart\u0103?", "fr": "Lequel de nous s\u2019excuse en premier apr\u00e8s une dispute ?", "it": "Quale delle nostre differenze ci rende un team migliore?", "fi": "Mitk\u00e4 eromme tekev\u00e4t meist\u00e4 paremman tiimin?", "nl": "Welke van onze verschillen maakt ons een beter team?", "no": "Hvilke av v\u00e5re forskjeller gj\u00f8r oss til et bedre team?", "sv": "Vilka av v\u00e5ra olikheter g\u00f6r oss till ett b\u00e4ttre team?", "pl": "Kt\u00f3ra z naszych r\u00f3\u017cnic sprawia, \u017ce jeste\u015bmy lepszym zespo\u0142em?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'Which of our differences makes us a better team?';
+UPDATE questions

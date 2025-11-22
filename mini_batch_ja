@@ -1,0 +1,5 @@
+WHERE category_name = 'Deep Talks'
+  AND translations->>'en' = 'What are three qualities you''d want to instill in your children?';
+UPDATE questions
+SET translations = '{"en": "What do you think healthy compromise looks like for us?", "da": "Hvordan ser et sundt kompromis ud for os?", "de": "Wie sieht ein gesunder Kompromiss f\u00fcr uns aus?", "es": "\u00bfC\u00f3mo crees que se ve un compromiso saludable para nosotros?", "pt": "Como voc\u00ea acha que \u00e9 um compromisso saud\u00e1vel para n\u00f3s?", "ro": "Cum arat\u0103 un compromis s\u0103n\u0103tos pentru noi?", "fr": "\u00c0 quoi ressemble un compromis sain pour nous ?", "it": "Cosa pensi che sembri un compromesso sano per noi?", "fi": "Milt\u00e4 terve kompromissi n\u00e4ytt\u00e4\u00e4 mielest\u00e4si meille?", "nl": "Wat denk je dat een gezonde compromis voor ons eruitziet?", "no": "Hva tror du et sunt kompromiss ser ut for oss?", "sv": "Vad tycker du att en h\u00e4lsosam kompromiss ser ut f\u00f6r oss?", "pl": "Jak wed\u0142ug ciebie wygl\u0105da zdrowy kompromis dla nas?"}'::jsonb,
+    updated_at = NOW()

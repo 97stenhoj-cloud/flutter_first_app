@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Is there a dish only one person in the family can make perfectly?';
+UPDATE questions
+SET translations = '{"en": "Who in our ancestry would you love to interview?", "da": "Hvem fra vores aner ville du elske at interviewe?", "de": "Wen aus unserer Ahnenreihe w\u00fcrdest du gern interviewen?", "es": "\u00bfA qui\u00e9n de nuestros antepasados te gustar\u00eda entrevistar?", "pt": "Quem dos nossos antepassados gostarias de entrevistar?", "ro": "Pe cine din str\u0103mo\u0219ii no\u0219tri ai vrea s\u0103 intervievezi?", "fr": "Quel anc\u00eatre aimerais-tu interviewer ?", "it": "Chi nella nostra genealogia ti piacerebbe intervistare?", "fi": "Kuka esi-isist\u00e4mme haluaisit haastatella?", "nl": "Wie in onze voorouders zou je graag willen interviewen?", "no": "Hvem i v\u00e5r forfedre ville du elsket \u00e5 intervjue?", "sv": "Vem i v\u00e5r sl\u00e4kt skulle du vilja intervjua?", "pl": "Kogo z naszej przesz\u0142o\u015bci chcia\u0142by\u015b przes\u0142ucha\u0107?"}'::jsonb,

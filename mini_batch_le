@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'When do you feel most emotionally safe with me—and what helps create that?';
+UPDATE questions
+SET translations = '{"en": "What makes you feel desired without words?", "da": "Hvad f\u00e5r dig til at f\u00f8le dig \u00f8nsket uden ord?", "de": "Was l\u00e4sst dich dich begehrt f\u00fchlen, ohne Worte?", "es": "\u00bfQu\u00e9 te hace sentir deseado(a) sin palabras?", "pt": "O que faz voc\u00ea se sentir desejado(a) sem palavras?", "ro": "Ce te face s\u0103 te sim\u021bi dorit(\u0103) f\u0103r\u0103 cuvinte?", "fr": "Qu\u2019est-ce qui te fait te sentir d\u00e9sir\u00e9(e) sans mots ?", "it": "Cosa ti fa sentire desiderato senza parole?", "fi": "Mik\u00e4 saa sinut tuntemaan itsesi halutuksi ilman sanoja?", "nl": "Wat laat je je gewenst voelen zonder woorden?", "no": "Hva f\u00e5r deg til \u00e5 f\u00f8le deg \u00f8nsket uten ord?", "sv": "Vad f\u00e5r dig att k\u00e4nna dig \u00e5tr\u00e5dd utan ord?", "pl": "Co sprawia, \u017ce czujesz si\u0119 po\u017c\u0105dany bez s\u0142\u00f3w?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

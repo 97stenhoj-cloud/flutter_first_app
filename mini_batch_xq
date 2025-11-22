@@ -1,0 +1,5 @@
+SET translations = '{"en": "What\u2019s your go-to drunk snack?", "da": "Hvad er din foretrukne drunk-snack?", "de": "Was ist dein Lieblings-Betrunkensnack?", "es": "\u00bfCu\u00e1l es tu snack favorito cuando est\u00e1s borracho?", "pt": "Qual \u00e9 o teu snack preferido quando est\u00e1s b\u00eabedo?", "ro": "Care este gustarea ta preferat\u0103 c\u00e2nd e\u0219ti beat?", "fr": "Quel est ton en-cas pr\u00e9f\u00e9r\u00e9 quand tu es ivre ?", "it": "Qual \u00e8 il tuo spuntino preferito quando sei ubriaco?", "fi": "Mik\u00e4 on sinun suosikkinaksusi humalassa?", "nl": "Wat is jouw favoriete snack als je dronken bent?", "no": "Hva er din favorittlektyr n\u00e5r du er full?", "sv": "Vad \u00e4r ditt favorit-snack n\u00e4r du \u00e4r full?", "pl": "Jakie jest twoje ulubione jedzenie na kaca?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'What’s your go-to drunk snack?';
+UPDATE questions

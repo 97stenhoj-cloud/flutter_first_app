@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What’s your ideal lazy Sunday?';
+UPDATE questions
+SET translations = '{"en": "What kind of weather makes you happiest?", "da": "Hvilket vejr g\u00f8r dig mest glad?", "de": "Welches Wetter macht dich am gl\u00fccklichsten?", "es": "\u00bfQu\u00e9 tipo de clima te hace m\u00e1s feliz?", "pt": "Que tipo de clima te deixa mais feliz?", "ro": "Ce tip de vreme te face cel mai fericit(\u0103)?", "fr": "Quel type de m\u00e9t\u00e9o te rend le plus heureux(se) ?", "it": "Che tipo di tempo ti rende pi\u00f9 felice?", "fi": "Mink\u00e4lainen s\u00e4\u00e4 tekee sinut onnelliseksi?", "nl": "Wat voor soort weer maakt jou het gelukkigst?", "no": "Hvilken type v\u00e6r gj\u00f8r deg lykkeligst?", "sv": "Vilken typ av v\u00e4der g\u00f6r dig lyckligast?", "pl": "Jaka pogoda sprawia, \u017ce jeste\u015b najszcz\u0119\u015bliwszy?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

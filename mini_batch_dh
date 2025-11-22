@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'Ever slept somewhere totally unusual? Where?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s your gas-station snack hall-of-fame pick?", "da": "Hvad er din \u201ctankstation-snack\u201d favorit gennem tiderne?", "de": "Was ist dein ultimativer Tankstellen-Snack-Favorit?", "es": "\u00bfCu\u00e1l es tu snack favorito de gasolinera de todos los tiempos?", "pt": "Qual \u00e9 o seu lanche de posto de gasolina preferido de todos os tempos?", "ro": "Care este gustarea ta preferat\u0103 de benzin\u0103rie din toate timpurile?", "fr": "Quelle est ta collation d\u2019autoroute pr\u00e9f\u00e9r\u00e9e de tous les temps ?", "it": "Qual \u00e8 lo snack da autogrill che entra nella tua personale \u201cHall of Fame\u201d?", "fi": "Mik\u00e4 on huoltoaseman ev\u00e4iden Hall of Fame -valintasi?", "nl": "Wat is jouw tankstation-snack voor in de Hall of Fame?", "no": "Hva er din bensinstasjons-snack i Hall of Fame?", "sv": "Vilket mack-snack hamnar i din egen Hall of Fame?", "pl": "Jaka przek\u0105ska ze stacji benzynowej trafia do twojej \u201egalerii s\u0142aw\u201d?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Car Talks'

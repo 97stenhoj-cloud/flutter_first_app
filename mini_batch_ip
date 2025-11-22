@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "Who here do you think flirts without even realizing it?", "da": "Hvem her tror du flirter uden at vide det?", "de": "Wer hier flirtet, ohne es zu merken?", "es": "\u00bfQui\u00e9n aqu\u00ed crees que coquetea sin darse cuenta?", "pt": "Quem aqui voc\u00ea acha que flerta sem perceber?", "ro": "Cine de aici flirteaz\u0103 f\u0103r\u0103 s\u0103-\u0219i dea seama?", "fr": "Qui ici flirte sans m\u00eame s\u2019en rendre compte ?", "it": "Chi pensi qui flirta senza nemmeno rendersene conto?", "fi": "Kuka t\u00e4\u00e4ll\u00e4 mielest\u00e4si flirttailee ilman, ett\u00e4 edes huomaa sit\u00e4?", "nl": "Wie denk je dat hier flirt zonder het zelfs maar te beseffen?", "no": "Hvem her tror du fl\u00f8rter uten engang \u00e5 innse det?", "sv": "Vem h\u00e4r tror du fl\u00f6rtar utan att ens inse det?", "pl": "Kto tutaj, twoim zdaniem, flirtuje, nawet tego nie zauwa\u017caj\u0105c?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'
+  AND translations->>'en' = 'Who here do you think flirts without even realizing it?';

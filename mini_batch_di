@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What’s your gas-station snack hall-of-fame pick?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s the longest journey you\u2019ve ever taken?", "da": "Hvad er den l\u00e6ngste rejse, du nogensinde har taget?", "de": "Was ist die l\u00e4ngste Reise, die du je gemacht hast?", "es": "\u00bfCu\u00e1l es el viaje m\u00e1s largo que has hecho?", "pt": "Qual \u00e9 a viagem mais longa que voc\u00ea j\u00e1 fez?", "ro": "Care este cea mai lung\u0103 c\u0103l\u0103torie pe care ai f\u0103cut-o?", "fr": "Quel est le plus long voyage que tu aies jamais fait ?", "it": "Qual \u00e8 il viaggio pi\u00f9 lungo che tu abbia mai fatto?", "fi": "Mik\u00e4 on pisin matka, jonka olet koskaan tehnyt?", "nl": "Wat is de langste reis die je ooit hebt gemaakt?", "no": "Hva er den lengste reisen du noen gang har tatt?", "sv": "Vilken \u00e4r den l\u00e4ngsta resa du n\u00e5gonsin har gjort?", "pl": "Jaka jest najd\u0142u\u017csza podr\u00f3\u017c, jak\u0105 kiedykolwiek odby\u0142e\u015b/odby\u0142a\u015b?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Car Talks'

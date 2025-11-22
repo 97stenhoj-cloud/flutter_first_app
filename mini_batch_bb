@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "Most unsettling piece of trivia you know?", "da": "Hvilken foruroligende fakta ved du?", "de": "Welches beunruhigende Wissen kennst du?", "es": "\u00bfQu\u00e9 dato inquietante conoces?", "pt": "Qual \u00e9 o facto mais perturbador que conheces?", "ro": "Care este cea mai tulbur\u0103toare informa\u021bie pe care o \u0219tii?", "fr": "Quelle information troublante connais-tu ?", "it": "Qual \u00e8 il fatto curioso pi\u00f9 inquietante che conosci?", "fi": "Mik\u00e4 on ahdistavin nippelitieto, jonka tied\u00e4t?", "nl": "Wat is het meest verontrustende weetje dat je kent?", "no": "Hva er den mest urovekkende fun facten du kjenner til?", "sv": "Vilken \u00e4r den mest obehagliga fakta du k\u00e4nner till?", "pl": "Jaka jest najbardziej niepokoj\u0105ca ciekawostka, jak\u0105 znasz?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'After Dark Talks'
+  AND translations->>'en' = 'Most unsettling piece of trivia you know?';

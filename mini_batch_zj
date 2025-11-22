@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'Who in this group would win “most likely to start a conga line”?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s the biggest over-sharer after a few drinks?", "da": "Hvem deler for meget efter et par drinks?", "de": "Wer ist der gr\u00f6\u00dfte Oversharer nach ein paar Drinks?", "es": "\u00bfQui\u00e9n cuenta demasiado despu\u00e9s de unas copas?", "pt": "Quem partilha demais depois de algumas bebidas?", "ro": "Cine poveste\u0219te prea mult dup\u0103 c\u00e2teva pahare?", "fr": "Qui en dit trop apr\u00e8s quelques verres ?", "it": "Chi \u00e8 il pi\u00f9 grande chiacchierone dopo qualche drink?", "fi": "Kuka on suurin liiallinen jakaja muutaman juoman j\u00e4lkeen?", "nl": "Wie is de grootste over-sharer na een paar drankjes?", "no": "Hvem er den st\u00f8rste som deler for mye etter noen drinker?", "sv": "Vem \u00e4r den st\u00f6rsta \u00f6verdelaren efter n\u00e5gra drinkar?", "pl": "Kto jest najwi\u0119kszym nadmiernym dziel\u0105cym si\u0119 po kilku drinkach?"}'::jsonb,

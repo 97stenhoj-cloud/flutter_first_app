@@ -1,0 +1,5 @@
+WHERE category_name = 'Love Languages Remix Talks'
+  AND translations->>'en' = 'How do you want me to show affection when words don’t come easily?';
+
+-- Category: Love Talks (75 questions)
+UPDATE questions

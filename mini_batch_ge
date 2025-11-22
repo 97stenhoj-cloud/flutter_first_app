@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What’s a silly white lie you told that you’ll never regret?';
+UPDATE questions
+SET translations = '{"en": "What makes someone instantly likable to you?", "da": "Hvad g\u00f8r nogen \u00f8jeblikkeligt sympatisk for dig?", "de": "Was macht jemanden f\u00fcr dich sofort sympathisch?", "es": "\u00bfQu\u00e9 hace que alguien te caiga bien al instante?", "pt": "O que faz algu\u00e9m ser instantaneamente simp\u00e1tico para voc\u00ea?", "ro": "Ce face pe cineva instantaneu pl\u0103cut pentru tine?", "fr": "Qu\u2019est-ce qui rend quelqu\u2019un imm\u00e9diatement sympathique \u00e0 tes yeux ?", "it": "Cosa rende qualcuno immediatamente simpatico per te?", "fi": "Mik\u00e4 tekee jostakin heti miellytt\u00e4v\u00e4n sinulle?", "nl": "Wat maakt iemand voor jou meteen sympathiek?", "no": "Hva gj\u00f8r at noen umiddelbart blir likt av deg?", "sv": "Vad g\u00f6r att n\u00e5gon genast blir omtyckt av dig?", "pl": "Co sprawia, \u017ce kto\u015b od razu staje si\u0119 dla Ciebie sympatyczny?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Cozy Talks'

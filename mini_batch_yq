@@ -1,0 +1,5 @@
+SET translations = '{"en": "What\u2019s you favorite drinking game (or alt\u2011game)?", "da": "Hvad er dit yndlingsdrikkespil (eller alternativt spil)?", "de": "Was ist dein Lieblings-Trinkspiel (oder Alternativspiel)?", "es": "\u00bfCu\u00e1l es tu juego de beber favorito (o juego alternativo)?", "pt": "Qual \u00e9 o teu jogo de beber favorito (ou jogo alternativo)?", "ro": "Care este jocul t\u0103u preferat de b\u0103ut (sau alternativ)?", "fr": "Quel est ton jeu \u00e0 boire pr\u00e9f\u00e9r\u00e9 (ou jeu alternatif) ?", "it": "Qual \u00e8 il tuo gioco da bere (o gioco alternativo) preferito?", "fi": "Mik\u00e4 on suosikkijuomapeli (tai vaihtoehtopeli)si?", "nl": "Wat is je favoriete drinkspel (of alternatief spel)?", "no": "Hva er ditt favorittdrikkelek (eller alternativspill)?", "sv": "Vilket \u00e4r ditt favoritdryckespel (eller alternativspel)?", "pl": "Jaka jest twoja ulubiona gra pijacka (lub alternatywna gra)?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Party Night Talks'
+  AND translations->>'en' = 'What’s you favorite drinking game (or alt‑game)?';
+UPDATE questions

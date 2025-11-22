@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'What’s one way we can protect our time from distractions?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s something that always reminds you of me?", "da": "Hvad er noget, der altid f\u00e5r dig til at t\u00e6nke p\u00e5 mig?", "de": "Was erinnert dich immer an mich?", "es": "\u00bfQu\u00e9 cosa siempre te recuerda a m\u00ed?", "pt": "O que \u00e9 algo que sempre faz voc\u00ea lembrar de mim?", "ro": "Ce lucru te face \u00eentotdeauna s\u0103 te g\u00e2nde\u0219ti la mine?", "fr": "Qu\u2019est-ce qui te fait toujours penser \u00e0 moi ?", "it": "Qualcosa che ti ricorda sempre di me?", "fi": "Mik\u00e4 on jotain, mik\u00e4 aina muistuttaa sinua minusta?", "nl": "Wat is iets dat je altijd aan mij doet denken?", "no": "Hva er noe som alltid minner deg om meg?", "sv": "Vad \u00e4r n\u00e5got som alltid p\u00e5minner dig om mig?", "pl": "Co\u015b, co zawsze przypomina mi o tobie?"}'::jsonb,

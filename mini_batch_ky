@@ -1,0 +1,5 @@
+  AND translations->>'en' = 'What is your relationship to jealousy – and why do you think it is so?';
+UPDATE questions
+SET translations = '{"en": "When do you feel time slow down?", "da": "Hvorn\u00e5r f\u00f8ler du, at tiden g\u00e5r langsommere?", "de": "Wann hast du das Gef\u00fchl, dass die Zeit langsamer vergeht?", "es": "\u00bfCu\u00e1ndo sientes que el tiempo se desacelera?", "pt": "Quando voc\u00ea sente que o tempo desacelera?", "ro": "C\u00e2nd sim\u021bi c\u0103 timpul \u00eencetine\u0219te?", "fr": "Quand as-tu l\u2019impression que le temps ralentit ?", "it": "Quando senti che il tempo rallenta?", "fi": "Milloin tunnet ajan hidastuvan?", "nl": "Wanneer voel je dat de tijd langzamer gaat?", "no": "N\u00e5r f\u00f8ler du at tiden g\u00e5r saktere?", "sv": "N\u00e4r k\u00e4nner du att tiden saktar ner?", "pl": "Kiedy czujesz, \u017ce czas zwalnia?"}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'Deep Talks'

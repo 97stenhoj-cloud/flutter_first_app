@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who do we all take after the most — personality-wise?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s a family recipe everyone loves?", "da": "Hvad er en familieopskrift, som alle elsker?", "de": "Was ist ein Familienrezept, das jeder liebt?", "es": "\u00bfCu\u00e1l es una receta familiar que todos aman?", "pt": "Qual \u00e9 uma receita de fam\u00edlia que todos amam?", "ro": "Care este o re\u021bet\u0103 de familie iubit\u0103 de to\u021bi?", "fr": "Quelle est une recette familiale que tout le monde aime ?", "it": "Qual \u00e8 una ricetta di famiglia che tutti amano?", "fi": "Mik\u00e4 on perheresepti, josta kaikki pit\u00e4v\u00e4t?", "nl": "Wat is een familierecept waar iedereen dol op is?", "no": "Hva er en familieresept som alle elsker?", "sv": "Vilket \u00e4r ett familjerecept som alla \u00e4lskar?", "pl": "Jaka jest rodzinna receptura, kt\u00f3r\u0105 wszyscy uwielbiaj\u0105?"}'::jsonb,

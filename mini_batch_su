@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Languages Remix Talks'
+  AND translations->>'en' = 'What’s a small gesture that always feels big to you?';
+UPDATE questions
+SET translations = '{"en": "When you\u2019re exhausted, how do you like me to step in?", "da": "N\u00e5r du er udmattet, hvordan vil du have, jeg tr\u00e6der til?", "de": "Wenn du ersch\u00f6pft bist, wie m\u00f6chtest du, dass ich einspringe?", "es": "Cuando est\u00e1s agotado/a, \u00bfc\u00f3mo te gusta que intervenga?", "pt": "Quando est\u00e1s exausto(a), como gostas que eu intervenha?", "ro": "C\u00e2nd e\u0219ti epuizat(\u0103), cum ai vrea s\u0103 intervin?", "fr": "Quand tu es \u00e9puis\u00e9(e), comment veux-tu que j\u2019intervienne ?", "it": "Quando sei esausto, come ti piace che io intervenga?", "fi": "Kun olet uupunut, miten haluaisit minun astuvan mukaan?", "nl": "Wanneer je uitgeput bent, hoe wil je dat ik inspring?", "no": "N\u00e5r du er utslitt, hvordan liker du at jeg tr\u00e5r til?", "sv": "N\u00e4r du \u00e4r utmattad, hur vill du att jag ska hj\u00e4lpa till?", "pl": "Kiedy jeste\u015b wyczerpany, jak chcia\u0142by\u015b, \u017cebym ci pom\u00f3g\u0142?"}'::jsonb,

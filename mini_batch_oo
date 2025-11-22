@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'History Talks'
+  AND translations->>'en' = 'Who’s most likely to get sunburned first?';
+UPDATE questions
+SET translations = '{"en": "Who\u2019s the loudest when telling a story?", "da": "Hvem r\u00e5ber h\u00f8jest, n\u00e5r de fort\u00e6ller en historie?", "de": "Wer ist am lautesten, wenn er eine Geschichte erz\u00e4hlt?", "es": "\u00bfQui\u00e9n es el m\u00e1s ruidoso al contar una historia?", "pt": "Quem fala mais alto quando conta uma hist\u00f3ria?", "ro": "Cine vorbe\u0219te cel mai tare c\u00e2nd spune o poveste?", "fr": "Qui parle le plus fort en racontant une histoire ?", "it": "Chi \u00e8 il pi\u00f9 rumoroso quando racconta una storia?", "fi": "Kuka on \u00e4\u00e4nekk\u00e4in kertoessaan tarinaa?", "nl": "Wie is de luidste als hij of zij een verhaal vertelt?", "no": "Hvem er den h\u00f8yeste n\u00e5r de forteller en historie?", "sv": "Vem \u00e4r den h\u00f6gsta n\u00e4r de ber\u00e4ttar en historia?", "pl": "Kto jest najg\u0142o\u015bniejszy, opowiadaj\u0105c histori\u0119?"}'::jsonb,

@@ -1,0 +1,5 @@
+WHERE category_name = 'Love Languages Remix Talks'
+  AND translations->>'en' = 'When do you crave closeness with me the most?';
+UPDATE questions
+SET translations = '{"en": "How do you like me to initiate affection?", "da": "Hvordan vil du have, jeg tager initiativ til hengivenhed?", "de": "Wie m\u00f6chtest du, dass ich Zuneigung initiiere?", "es": "\u00bfC\u00f3mo te gusta que inicie el afecto contigo?", "pt": "Como gostas que eu inicie o carinho?", "ro": "Cum \u00ee\u021bi place s\u0103 ini\u021biez afec\u021biunea?", "fr": "Comment veux-tu que je prenne l\u2019initiative de l\u2019affection ?", "it": "Come ti piace che io inizi a mostrare affetto?", "fi": "Miten haluaisit, ett\u00e4 aloitan hellyyden?", "nl": "Hoe wil je dat ik genegenheid initieer?", "no": "Hvordan liker du at jeg viser omtanke?", "sv": "Hur vill du att jag ska visa min tillgivenhet?", "pl": "Jak lubisz, \u017cebym okazywa\u0142 uczucia?"}'::jsonb,
+    updated_at = NOW()

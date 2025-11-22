@@ -1,0 +1,5 @@
+UPDATE questions
+SET translations = '{"en": "Worst way to die.", "da": "V\u00e6rste m\u00e5de at d\u00f8 p\u00e5.", "de": "Schlimmste Art zu sterben.", "es": "La peor forma de morir.", "pt": "Pior maneira de morrer.", "ro": "Cel mai groaznic mod de a muri.", "fr": "La pire fa\u00e7on de mourir.", "it": "Peggior modo di morire.", "fi": "Pahin tapa kuolla.", "nl": "Ergste manier om te sterven.", "no": "Verste m\u00e5te \u00e5 d\u00f8 p\u00e5.", "sv": "V\u00e4rsta s\u00e4ttet att d\u00f6.", "pl": "Najgorszy spos\u00f3b na \u015bmier\u0107."}'::jsonb,
+    updated_at = NOW()
+WHERE category_name = 'After Dark Talks'
+  AND translations->>'en' = 'Worst way to die.';

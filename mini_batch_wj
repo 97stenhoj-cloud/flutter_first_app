@@ -1,0 +1,5 @@
+    updated_at = NOW()
+WHERE category_name = 'Love Talks'
+  AND translations->>'en' = 'What’s a guilty pleasure you’re shy to admit?';
+UPDATE questions
+SET translations = '{"en": "What\u2019s a challenge we handled well\u2014and why?", "da": "Hvilken udfordring h\u00e5ndterede vi godt\u2014og hvorfor?", "de": "Welche Herausforderung haben wir gut gemeistert \u2013 und warum?", "es": "\u00bfQu\u00e9 desaf\u00edo manejamos bien\u2014y por qu\u00e9?", "pt": "Que desafio gerimos bem \u2014 e porqu\u00ea?", "ro": "Ce provocare am gestionat bine \u2014 \u0219i de ce?", "fr": "Quel d\u00e9fi avons-nous bien g\u00e9r\u00e9 \u2014 et pourquoi ?", "it": "Qual \u00e8 stata una sfida che abbiamo gestito bene\u2014e perch\u00e9?", "fi": "Mik\u00e4 on haaste, jonka k\u00e4sittelimme hyvin\u2014ja miksi?", "nl": "Wat is een uitdaging die we goed hebben aangepakt\u2014en waarom?", "no": "Hva er en utfordring vi h\u00e5ndterte godt\u2014og hvorfor?", "sv": "Vilken utmaning hanterade vi bra \u2013 och varf\u00f6r?", "pl": "Jaki by\u0142 problem, kt\u00f3ry dobrze rozwi\u0105zali\u015bmy \u2013 i dlaczego?"}'::jsonb,

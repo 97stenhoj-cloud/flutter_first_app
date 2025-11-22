@@ -1,0 +1,5 @@
+WHERE category_name = 'Deep Talks'
+  AND translations->>'en' = 'How do you think your parent''s relationship affected what you look for in a partner?';
+UPDATE questions
+SET translations = '{"en": "When do you feel most like your true self?", "da": "Hvorn\u00e5r f\u00f8ler du dig mest som dit sande jeg?", "de": "Wann f\u00fchlst du dich am meisten wie dein wahres Selbst?", "es": "\u00bfCu\u00e1ndo te sientes m\u00e1s como tu verdadero yo?", "pt": "Quando voc\u00ea se sente mais como seu verdadeiro eu?", "ro": "C\u00e2nd te sim\u021bi cel mai mult ca tine \u00eensu\u021bi(\u0103\u021bi)?", "fr": "Quand te sens-tu le plus comme ton vrai toi ?", "it": "Quando ti senti pi\u00f9 te stesso?", "fi": "Milloin tunnet itsesi eniten omaksi itseksesi?", "nl": "Wanneer voel je je het meest zoals je ware zelf?", "no": "N\u00e5r f\u00f8ler du deg mest som ditt sanne jeg?", "sv": "N\u00e4r k\u00e4nner du dig mest som ditt sanna jag?", "pl": "Kiedy czujesz si\u0119 najbardziej sob\u0105?"}'::jsonb,
+    updated_at = NOW()
