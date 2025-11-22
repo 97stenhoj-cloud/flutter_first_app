@@ -10,6 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/providers/unlock_provider.dart';
 import '../../../subscription/presentation/pages/subscription_page_new.dart';
+import '../../../../core/constants/app_constants.dart';
 
 class PandoraQuestionSubmissionPage extends ConsumerStatefulWidget {
   final String sessionId;
@@ -910,26 +911,45 @@ showDialog(
                         
                         const SizedBox(height: 12),
                         
-                        TextField(
-                          controller: questionController,
-                          maxLines: 4,
-                          style: GoogleFonts.poppins(
-                            color: widget.isDarkMode ? Colors.white70 : Colors.black87,
-                          ),
-                          decoration: InputDecoration(
-                            hintText: l10n.typeQuestionHere,
-                            hintStyle: GoogleFonts.poppins(
-                              color: Colors.grey,
-                            ),
-                            filled: true,
-                            fillColor: widget.isDarkMode
-                                ? Colors.white.withValues(alpha: 0.1)
-                                : Colors.black.withValues(alpha: 0.05),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
+                        StatefulBuilder(
+                          builder: (context, setTextFieldState) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                TextField(
+                                  controller: questionController,
+                                  maxLines: 4,
+                                  maxLength: AppConstants.pandoraQuestionMaxLength,
+                                  style: GoogleFonts.poppins(
+                                    color: widget.isDarkMode ? Colors.white70 : Colors.black87,
+                                  ),
+                                  decoration: InputDecoration(
+                                    hintText: l10n.typeQuestionHere,
+                                    hintStyle: GoogleFonts.poppins(
+                                      color: Colors.grey,
+                                    ),
+                                    filled: true,
+                                    fillColor: widget.isDarkMode
+                                        ? Colors.white.withValues(alpha: 0.1)
+                                        : Colors.black.withValues(alpha: 0.05),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    counterStyle: GoogleFonts.poppins(
+                                      color: questionController.text.length > AppConstants.pandoraQuestionMaxLength * 0.9
+                                          ? Colors.orange
+                                          : (widget.isDarkMode ? Colors.white54 : Colors.black54),
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  onChanged: (value) {
+                                    setTextFieldState(() {}); // Update counter color
+                                  },
+                                ),
+                              ],
+                            );
+                          },
                         ),
                         
                         const SizedBox(height: 20),

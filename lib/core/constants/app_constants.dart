@@ -13,6 +13,10 @@ class AppConstants {
   static const double buttonWidth = 200.0;
   static const double largButtonWidth = 250.0;
   static const double largButtonHeight = 80.0;
+
+  // Question Character Limits
+  static const int pandoraQuestionMaxLength = 150;
+  static const int personalDeckQuestionMaxLength = 200;
   
   // Default Questions (fallback)
   static const Map<String, List<String>> defaultQuestions = {

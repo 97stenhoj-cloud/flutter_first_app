@@ -1,0 +1,141 @@
+{
+  "identifier" : "F7AC78E9",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21445693",
+      "localizations" : [
+
+      ],
+      "name" : "Connect Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "6.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6470041766",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Basic tier subscription - Access to all game modes and categories",
+              "displayName" : "Basic",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "basic_monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Basic Monthly",
+          "subscriptionGroupID" : "21445693",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "11.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "6470041767",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Premium tier subscription - Basic features + 150 AI questions per month",
+              "displayName" : "Premium",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "premium_monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Premium Monthly",
+          "subscriptionGroupID" : "21445693",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "19.99",
+          "familyShareable" : false,
+          "groupNumber" : 3,
+          "internalID" : "6470041768",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Premium+ tier subscription - Premium features + 400 AI questions per month",
+              "displayName" : "Premium+",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "premium_plus_monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Premium+ Monthly",
+          "subscriptionGroupID" : "21445693",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

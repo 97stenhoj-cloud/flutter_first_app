@@ -110,6 +110,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
         title: l10n.addQuestion,
         contentWidget: TextField(
           controller: controller,
+          maxLength: AppConstants.personalDeckQuestionMaxLength,
           decoration: InputDecoration(
             hintText: l10n.enterYourQuestion,
             filled: true,
@@ -119,6 +120,10 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
+            ),
+            counterStyle: GoogleFonts.poppins(
+              color: widget.isDarkMode ? Colors.white54 : Colors.black54,
+              fontSize: 12,
             ),
           ),
           style: GoogleFonts.poppins(
@@ -183,6 +188,7 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
         title: l10n.editQuestion,
         contentWidget: TextField(
           controller: controller,
+          maxLength: AppConstants.personalDeckQuestionMaxLength,
           decoration: InputDecoration(
             hintText: l10n.enterYourQuestion,
             filled: true,
@@ -192,6 +198,10 @@ class _QuestionEditorPageState extends State<QuestionEditorPage> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
+            ),
+            counterStyle: GoogleFonts.poppins(
+              color: widget.isDarkMode ? Colors.white54 : Colors.black54,
+              fontSize: 12,
             ),
           ),
           style: GoogleFonts.poppins(
