@@ -219,25 +219,21 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     if (user == null) return;
 
     try {
-      // Update the user's subscription status in Supabase
+      // Cancel auto-renewal but keep subscription active until expiration
       await Supabase.instance.client
           .from('user_subscriptions')
           .update({
-            'is_premium': false,
-            'subscription_tier': null,
+            'will_renew': false,
             'updated_at': DateTime.now().toIso8601String(),
           })
           .eq('user_id', user.id);
 
-      // Clear all cached content (premium feature only)
-      await supabaseService.clearCache();
+      // Refresh the unlock provider to get updated status
+      await ref.read(unlockProvider.notifier).initialize();
 
-      // Update UnlockManager state
-      await ref.read(unlockProvider.notifier).lockPremium();
-
-      debugPrint('✅ Successfully unsubscribed user and cleared cache');
+      debugPrint('✅ Successfully cancelled subscription renewal');
     } catch (e) {
-      debugPrint('❌ Error unsubscribing: $e');
+      debugPrint('❌ Error cancelling subscription: $e');
       rethrow;
     }
   }
@@ -599,7 +595,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                                       ),
                                                       const SizedBox(width: 12),
                                                       Text(
-                                                        tierText,
+                                                        unlockState.isCancelled ? '$tierText (Cancelled)' : tierText,
                                                         style: GoogleFonts.poppins(
                                                           fontSize: 20,
                                                           fontWeight: FontWeight.bold,
@@ -610,6 +606,54 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                                   ),
                                                 ),
                                                 const SizedBox(height: 24),
+                                                // Expiration date for cancelled subscriptions
+                                                if (unlockState.isCancelled && unlockState.expirationDate != null) ...[
+                                                  Container(
+                                                    padding: const EdgeInsets.all(16),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.orange.withValues(alpha: 0.2),
+                                                      borderRadius: BorderRadius.circular(12),
+                                                      border: Border.all(
+                                                        color: Colors.orange.withValues(alpha: 0.5),
+                                                        width: 2,
+                                                      ),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.schedule,
+                                                          color: Colors.orange,
+                                                          size: 24,
+                                                        ),
+                                                        const SizedBox(width: 12),
+                                                        Expanded(
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text(
+                                                                'Subscription Status',
+                                                                style: GoogleFonts.poppins(
+                                                                  fontSize: 13,
+                                                                  fontWeight: FontWeight.w600,
+                                                                  color: const Color(0xFF2D2D3A),
+                                                                ),
+                                                              ),
+                                                              const SizedBox(height: 4),
+                                                              Text(
+                                                                'Active until ${_formatDate(unlockState.expirationDate!)}',
+                                                                style: GoogleFonts.poppins(
+                                                                  fontSize: 12,
+                                                                  color: const Color(0xFF6B6B7B),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 16),
+                                                ],
                                                 // Benefits List
                                                 ...benefits.map((benefit) => _buildBenefitItem(benefit)),
                                                 // Spark Usage (for Premium and Premium+)
@@ -819,12 +863,26 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
                               _buildSectionDivider('ACCOUNT'),
 
-                              // Unsubscribe Button - Full Width
-                              _buildFullWidthButton(
-                                text: l10n.unsubscribe,
-                                icon: Icons.cancel_outlined,
-                                isPrimary: false,
-                                onPressed: () async {
+                              // Unsubscribe or Resubscribe Button - Full Width
+                              Builder(
+                                builder: (context) {
+                                  final unlockState = ref.watch(unlockProvider);
+                                  return _buildFullWidthButton(
+                                    text: unlockState.isCancelled ? 'Resubscribe' : l10n.unsubscribe,
+                                    icon: unlockState.isCancelled ? Icons.restart_alt : Icons.cancel_outlined,
+                                    isPrimary: unlockState.isCancelled ? true : false,
+                                    onPressed: () async {
+                                      if (unlockState.isCancelled) {
+                                    // Resubscribe - navigate to subscription page
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SubscriptionPageNew(isDarkMode: widget.isDarkMode),
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                  // Otherwise show unsubscribe confirmation
                                       final confirmed = await showDialog<bool>(
                                         context: context,
                                         builder: (context) => CustomDialog(
@@ -887,6 +945,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                         }
                                       }
                                     },
+                                  );
+                                },
                               ),
                               const SizedBox(height: 16),
 
@@ -1009,5 +1069,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         ? null
         : const AdBannerWidget(),
     );
+  }
+
+  String _formatDate(DateTime date) {
+    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
 }

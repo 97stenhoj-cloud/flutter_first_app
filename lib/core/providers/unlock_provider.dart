@@ -52,6 +52,8 @@ class UnlockState {
   final int backButtonCount;
   final int sparkQuestionsRemaining;
   final String? lastCheckedUserId;
+  final DateTime? expirationDate;
+  final bool willRenew;
 
   UnlockState({
     required this.isPremium,
@@ -60,7 +62,11 @@ class UnlockState {
     required this.backButtonCount,
     required this.sparkQuestionsRemaining,
     this.lastCheckedUserId,
+    this.expirationDate,
+    this.willRenew = true,
   });
+
+  bool get isCancelled => !willRenew && expirationDate != null && expirationDate!.isAfter(DateTime.now());
 
   UnlockState copyWith({
     bool? isPremium,
@@ -69,6 +75,8 @@ class UnlockState {
     int? backButtonCount,
     int? sparkQuestionsRemaining,
     String? lastCheckedUserId,
+    DateTime? expirationDate,
+    bool? willRenew,
   }) {
     return UnlockState(
       isPremium: isPremium ?? this.isPremium,
@@ -77,6 +85,8 @@ class UnlockState {
       backButtonCount: backButtonCount ?? this.backButtonCount,
       sparkQuestionsRemaining: sparkQuestionsRemaining ?? this.sparkQuestionsRemaining,
       lastCheckedUserId: lastCheckedUserId ?? this.lastCheckedUserId,
+      expirationDate: expirationDate ?? this.expirationDate,
+      willRenew: willRenew ?? this.willRenew,
     );
   }
 }
@@ -92,6 +102,7 @@ class UnlockNotifier extends StateNotifier<UnlockState> {
           questionCount: 0,
           backButtonCount: 0,
           sparkQuestionsRemaining: 0,
+          willRenew: true,
         )) {
     initialize();
     _subscribeToAuthChanges();
@@ -145,14 +156,17 @@ class UnlockNotifier extends StateNotifier<UnlockState> {
       debugPrint('📡 Fetching subscription status from database for user: ${user.id}');
       final response = await Supabase.instance.client
           .from('user_subscriptions')
-          .select('is_premium, subscription_tier')
+          .select('is_premium, subscription_tier, expiration_date, will_renew')
           .eq('user_id', user.id)
           .maybeSingle();
 
       final isPremium = response?['is_premium'] ?? false;
       final tierString = response?['subscription_tier'] ?? 'free';
       final subscriptionTier = SubscriptionTier.fromString(tierString);
-      debugPrint('✅ Subscription status loaded: tier=$tierString, isPremium=$isPremium');
+      final expirationDateString = response?['expiration_date'] as String?;
+      final expirationDate = expirationDateString != null ? DateTime.tryParse(expirationDateString) : null;
+      final willRenew = response?['will_renew'] ?? true;
+      debugPrint('✅ Subscription status loaded: tier=$tierString, isPremium=$isPremium, willRenew=$willRenew, expires=$expirationDate');
 
       // Fetch Spark usage for current period
       int sparkRemaining = 0;
@@ -175,6 +189,8 @@ class UnlockNotifier extends StateNotifier<UnlockState> {
         subscriptionTier: subscriptionTier,
         sparkQuestionsRemaining: sparkRemaining,
         lastCheckedUserId: user.id,
+        expirationDate: expirationDate,
+        willRenew: willRenew,
       );
     } catch (e) {
       debugPrint('⚠️ Could not fetch subscription status from database (offline?): $e');
