@@ -2428,7 +2428,13 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{kept}/{max}'**
-  String questionsInDeck(int kept, int max);
+  String questionsInDeck(
+    int kept,
+    int max,
+    Object behalten,
+    Object beholdt,
+    Object maks,
+  );
 
   /// No description provided for @questionProgress.
   ///

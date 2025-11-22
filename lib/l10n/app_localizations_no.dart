@@ -1297,7 +1297,13 @@ class AppLocalizationsNo extends AppLocalizations {
   }
 
   @override
-  String questionsInDeck(int kept, int max) {
+  String questionsInDeck(
+    int kept,
+    int max,
+    Object behalten,
+    Object beholdt,
+    Object maks,
+  ) {
     return '$kept/$max';
   }
 

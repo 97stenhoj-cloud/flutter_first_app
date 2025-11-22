@@ -1,0 +1,516 @@
+{
+  "@@locale": "pl",
+  "appTitle": "Connect",
+  "start": "Start",
+  "settings": "Ustawienia",
+  "howToPlay": "Jak grać",
+  "chooseGameMode": "Wybierz tryb gry",
+  "family": "Rodzina",
+  "couple": "Para",
+  "friends": "Przyjaciele",
+  "chooseCategory": "Wybierz kategorię",
+  "locked": "Kategoria Premium",
+  "lockedMessage": "To jest kategoria premium. Przejdź na Premium, aby odblokować wszystkie kategorie i usunąć reklamy!",
+  "previewAvailable": "Podgląd: dostępnych pierwszych 5 pytań",
+  "upgradeNow": "Ulepsz teraz",
+  "ok": "OK",
+  "mayBeLater": "Może później",
+  
+  "getPremium": "Uzyskaj Premium",
+  "premiumTitle": "Odblokuj wszystko",
+  "premiumDescription": "Uzyskaj nielimitowany dostęp do wszystkich kategorii we wszystkich trybach, usuń reklamy i ciesz się nieograniczonymi sesjami Pandora.",
+  "premiumPriceMonthly": "€6,99/miesiąc",
+  "premiumPriceYearly": "€59,99/rok",
+  "saveWithYearly": "Zaoszczędzisz €23,89 z planem rocznym!",
+  "monthly": "Miesięcznie",
+  "yearly": "Rocznie",
+  "billedMonthly": "Rozliczane miesięcznie",
+  "billedYearly": "Rozliczane rocznie",
+  "premiumFeature1": "✓ Wszystkie 21 kategorii premium odblokowane",
+  "premiumFeature2": "✓ Bez reklam na zawsze",
+  "premiumFeature3": "✓ Nielimitowana liczba pytań we wszystkich kategoriach",
+  "premiumFeature4": "✓ Pandora: nielimitowana liczba graczy i pytań",
+  "premiumFeature5": "✓ Wspierasz dalszy rozwój",
+  "subscribePremium": "Subskrybuj Premium",
+  "subscribe": "Subskrybuj",
+  "cancel": "Anuluj",
+  "subscriptionActivated": "Premium aktywne! Wszystkie kategorie zostały odblokowane.",
+  "premiumActivated": "Premium aktywowane!",
+  "demoNote": "Demo: subskrypcja zostanie zresetowana po ponownym uruchomieniu aplikacji",
+  
+  "freeTier": "Wersja darmowa",
+  "freeTierDesc": "3 kategorie na tryb (30 pytań każda)\nPodgląd 5 pytań kategorii premium\nReklamy co 7 pytań",
+  "currentPlan": "Obecny plan",
+  
+  "limitReached": "Osiągnięto limit",
+  "freeCategoryLimit": "Osiągnąłeś limit 30 pytań w darmowych kategoriach. Ulepsz do Premium, aby uzyskać nielimitowany dostęp!",
+  "previewLimit": "Zobaczyłeś wszystkie 5 pytań podglądu. Ulepsz do Premium, aby kontynuować!",
+  
+  "pandoraFreeLimit": "Limit darmowy",
+  "pandoraFreeLimitMessage": "Darmowi gospodarze mogą mieć maksymalnie 6 graczy i 12 pytań. Ulepsz do Premium, aby usunąć limity!",
+  "pandoraUpgradeMessage": "Osiągnąłeś 12 pytań. Ulepsz do Premium, aby kontynuować grę!",
+  "pandoraMaxPlayers": "Osiągnięto maksymalną liczbę 6 graczy (limit darmowy). Ulepsz do Premium, aby mieć nielimitowaną liczbę graczy!",
+  
+  "swipeOrTap": "Przesuń lub stuknij strzałki",
+  "previous": "Poprzednie",
+  "next": "Następne",
+  "advertisement": "Reklama",
+  "watchAdMessage": "Obejrzyj krótką reklamę, aby kontynuować, albo graj bez reklam z Premium!",
+  "watchAd": "Obejrzyj reklamę",
+  "goAdFree": "Graj bez reklam z Premium",
+  "removeAdsForever": "Usuń reklamy na zawsze",
+  "adNotReady": "Reklama nie jest gotowa. Kontynuujemy bez reklamy.",
+  "adLoadingContinue": "Ładowanie reklamy... Kontynuuj",
+  "pricePerMonth": "€6,99/miesiąc lub €59,99/rok",
+  "noQuestionsFoundMessage": "Nie znaleziono pytań dla kategorii {category} w trybie {mode}",
+  "errorLoadingQuestions": "Błąd podczas ładowania pytań. Sprawdź swoje połączenie.",
+  "failedToLoadQuestions": "Nie udało się załadować pytań: {error}",
+  
+  "howManyPlayers": "Ilu graczy?",
+  "players": "Gracze",
+  "continueButton": "Kontynuuj",
+  
+  "language": "Język",
+  "languageChanged": "Język został zmieniony na {language}",
+  
+  "profile": "Profil",
+  "signOut": "Wyloguj się",
+  "notSignedIn": "Nie zalogowano",
+  "signInSignUp": "Zaloguj się / Załóż konto",
+  "signInToSync": "Zaloguj się, aby zsynchronizować subskrypcję na wszystkich urządzeniach i odblokować treści premium",
+  "signOutConfirm": "Na pewno chcesz się wylogować?",
+  "signedOutSuccess": "Pomyślnie wylogowano",
+  "accountInformation": "Informacje o koncie",
+  "email": "E-mail",
+  "memberSince": "Użytkownik od",
+  "notAvailable": "Niedostępne",
+  "unknown": "Nieznane",
+  "subscriptionStatus": "Status subskrypcji",
+  "premiumMember": "Użytkownik Premium",
+  "freeAccount": "Konto darmowe",
+  
+  "welcomeToConnect": "Witamy w Connect!",
+  "continueWithApple": "Kontynuuj z Apple",
+  "continueWithGoogle": "Kontynuuj z Google",
+  "skipForNow": "Pomiń na razie",
+  "byContining": "Kontynuując, akceptujesz nasze Warunki korzystania i Politykę prywatności",
+  "googleSignInFailed": "Logowanie przez Google nie powiodło się. Spróbuj ponownie.",
+  "appleSignInFailed": "Logowanie przez Apple nie powiodło się. Spróbuj ponownie.",
+  
+  "noCategoriesFound": "Nie znaleziono kategorii",
+  
+  "welcomeBack": "Witaj ponownie!",
+  "createAccount": "Utwórz konto",
+  "displayName": "Nazwa wyświetlana",
+  "password": "Hasło",
+  "signIn": "Zaloguj się",
+  "signUp": "Zarejestruj się",
+  "dontHaveAccount": "Nie masz konta? Zarejestruj się",
+  "alreadyHaveAccount": "Masz już konto? Zaloguj się",
+  
+  "chooseYourMode": "1. Wybierz tryb",
+  "chooseYourModeDesc": "Wybierz jedno z pięciu wyjątkowych doświadczeń rozmowy:\n\n• Para – intymne pytania, które pogłębiają waszą relację\n• Przyjaciele – zabawne, angażujące tematy idealne dla twojej paczki\n• Rodzina – ciepłe, bezpieczne rozmowy dla wszystkich pokoleń\n• Osobisty – twórz własne, niestandardowe talie pytań (Premium)\n• Pandora – kooperacyjna gra wieloosobowa z pytaniami w czasie rzeczywistym",
+  "pickCategory": "2. Wybierz kategorię",
+  "pickCategoryDesc": "Każdy tryb oferuje wiele kategorii ze starannie dobranymi taliami pytań:\n\n• Darmowe: 3 kategorie na tryb (30 pytań każda)\n• Podgląd Premium: pierwsze 5 pytań kategorii premium\n• Premium: ponad 24 kategorie (75 pytań każda)\n• Osobisty: twórz nieograniczoną liczbę własnych talii z pytaniami",
+  "startTalking": "3. Zacznij grać",
+  "startTalkingDesc": "Pytania wyświetlane są na pełnym ekranie, aby ułatwić skupioną rozmowę. Na zmianę czytajcie i odpowiadajcie szczerze – nie ma złych odpowiedzi! Celem jest prawdziwe połączenie i dobra zabawa.\n\nW trybie Pandora: wszyscy gracze wysyłają pytania anonimowo, a potem wszyscy odpowiadają razem w czasie rzeczywistym.",
+  "navigateQuestions": "4. Nawigacja po pytaniach",
+  "navigateQuestionsDesc": "• Przesuń w dowolnym kierunku lub stuknij strzałki, aby zmienić pytanie\n• Stuknij ikonę serca ❤️, aby zapisać ulubione\n• Premium: stuknij ikonę listy pytań (w prawym górnym rogu), aby przeskoczyć do dowolnego pytania\n• Stuknij przycisk strony głównej, aby w każdej chwili wrócić do głównego menu",
+  "premiumFeatures": "5. Funkcje Premium",
+  "premiumFeaturesDesc": "Odblokuj pełne doświadczenie Connect:\n\n• Miesięcznie: €6,99/miesiąc\n• Rocznie: €59,99/rok (oszczędzasz 29%!)\n\n✓ Wszystkie 24+ kategorie premium we wszystkich trybach\n✓ 75 pytań na kategorię (zamiast 30 w wersji darmowej)\n✓ Bez reklam na zawsze\n✓ Pandora: nielimitowana liczba graczy i pytań\n✓ Osobisty: twórz nieograniczoną liczbę własnych talii\n✓ Nawigacja po pytaniach – przeskakuj do dowolnego pytania\n✓ Wspierasz dalszy rozwój aplikacji",
+  "proTips": "Wskazówki",
+  "proTipsDesc": "• Stwórz komfortowe miejsce bez rozpraszaczy\n• Słuchaj aktywnie i bądź obecny\n• Dziel się szczerze i zachęcaj innych do tego samego\n• Szanuj granice – można pomijać pytania\n• Używaj serca ❤️, aby zapisywać ulubione pytania\n• Testuj różne tryby na różne okazje\n• Pandora idealnie nadaje się na imprezy i wieczory w grupie\n• Baw się dobrze i ciesz się rozmową!",
+  "aboutCredits": "O aplikacji / Autorzy",
+  "developedBy": "Stworzono przez TechyKoala",
+  "learnMore": "Dowiedz się więcej o nas i nadchodzących aplikacjach",
+  "visitWebsite": "Odwiedź techykoala.com",
+  "madeWithLove": "Stworzone z ❤️ dla wartościowych rozmów",
+  
+  "personal": "Osobisty",
+  "personalDesc": "Twórz własne, niestandardowe talie pytań",
+  "gameComplete": "Gra zakończona!",
+  "noMoreQuestions": "Przeszedłeś przez wszystkie pytania w tej talii!",
+  "playAgain": "Zagraj ponownie",
+  "mainMenu": "Menu główne",
+  "thanksForPlaying": "Dziękujemy za grę!",
+  "hopeYouHadFun": "Mamy nadzieję, że dobrze się bawiłeś! 🎉",
+  "backToMenu": "Wróć do menu",
+  "leaveGame": "Opuścić grę?",
+  "leaveGameMessage": "Na pewno chcesz wyjść? Gra będzie kontynuowana dla pozostałych graczy.",
+  "leave": "Opuść",
+  "noQuestionsAvailable": "Brak dostępnych pytań",
+  
+  "showLess": "Pokaż mniej",
+  "readMore": "Pokaż więcej",
+  "tapToPlay": "Stuknij, aby zagrać",
+  "favorites": "Ulubione",
+  
+  "pandoraHostCreatePin": "Gospodarz tworzy sesję i udostępnia PIN",
+  "pandoraPlayersJoinMax": "Gracze dołączają (maks. 6 w wersji darmowej, nielimitowani w Premium)",
+  "pandoraHostSetsTimer": "Gospodarz ustawia czas na pytanie (1–15 min)",
+  "pandoraEveryoneSubmits": "Wszyscy wysyłają pytania (maks. 12 w wersji darmowej)",
+  "pandoraHostControls": "Gospodarz kontroluje przebieg gry",
+  "pandoraQuestionsDeleted": "Pytania są usuwane po zakończeniu gry",
+  "pandoraHost": "Gospodarz",
+  "pandoraJoinGame": "Dołącz do gry",
+  "pandoraPandoraBox": "Puszka Pandory",
+  
+  "pleaseEnterName": "Wpisz swoje imię",
+  "hostSuffix": "(Gospodarz)",
+  "playersJoinWithNames": "Gracze dołączają, używając swoich imion",
+  "everyoneSubmitsMin5": "Wszyscy wysyłają pytania (min. 5, maks. 12 w wersji darmowej)",
+  "createSession": "Utwórz sesję",
+  "creating": "Tworzenie...",
+  "yourName": "Twoje imię",
+  "enterDisplayName": "Wpisz nazwę wyświetlaną",
+  "howItWorks": "Jak to działa",
+  
+  "pinCopied": "PIN skopiowany do schowka!",
+  "endSession": "Zakończyć sesję?",
+  "endSessionConfirm": "Na pewno chcesz zakończyć tę sesję Pandora?",
+  
+  "createCustomDeck": "Utwórz własną talię",
+  "deckName": "Nazwa talii",
+  "enterDeckName": "Wpisz nazwę talii",
+  "create": "Utwórz",
+  "deckCreated": "Talia utworzona!",
+  "failedToCreateDeck": "Nie udało się utworzyć talii",
+  "deleteDeck": "Usunąć talię?",
+  "deleteDeckConfirm": "To usunie wszystkie pytania w tej talii.",
+  "delete": "Usuń",
+  "deckDeleted": "Talia usunięta",
+  "failedToDeleteDeck": "Nie udało się usunąć talii",
+  "myDecks": "Moje talie",
+  "noDecksYet": "Brak talii",
+  "createFirstDeck": "Utwórz swoją pierwszą własną talię!",
+  "questionsCount": "{count} pytań",
+  
+  "questionAdded": "Pytanie dodane!",
+  "failedToAddQuestion": "Nie udało się dodać pytania",
+  "editQuestion": "Edytuj pytanie",
+  "enterYourQuestion": "Wpisz swoje pytanie",
+  "save": "Zapisz",
+  "questionUpdated": "Pytanie zaktualizowane!",
+  "failedToUpdateQuestion": "Nie udało się zaktualizować pytania",
+  "deleteQuestion": "Usuń pytanie",
+  "deleteQuestionConfirm": "Na pewno chcesz usunąć to pytanie?",
+  "questionDeleted": "Pytanie usunięte",
+  "failedToDeleteQuestion": "Nie udało się usunąć pytania",
+  "addQuestion": "Dodaj pytanie",
+  "typeQuestionHere": "Wpisz tutaj swoje pytanie...",
+  "add": "Dodaj",
+  "noQuestionsYet": "Nie ma jeszcze pytań",
+  "addFirstQuestion": "Dodaj swoje pierwsze pytanie!",
+  
+  "deckDescLoveTalks": "Odkrywaj romantyzm, chemię i bliskość dzięki pytaniom, które celebrują waszą relację. Od momentów „jak się poznaliśmy” po to, co sprawia, że czujesz się najbardziej kochany – te karty pogłębiają intymność emocjonalną.",
+  "deckDescDeepTalks": "Te karty zagłębiają się w wartości, wrażliwość i to, co znaczy wspólnie się rozwijać. Pomagają partnerom zastanowić się nad niezależnością, komunikacją i wspólnym celem.",
+  "deckDescSpicyTalks": "Zadziorne, odważne i intymne — te karty zapraszają pary do wspólnego odkrywania pragnień, fantazji i namiętności. Każde pytanie zaprojektowano tak, by rozpalało szczere, ekscytujące rozmowy o tym, co was kręci i zbliża.",
+  "deckDescDoYouDareTalks": "Bezkompromisowa talia, która łączy emocjonalną szczerość z trudnymi tematami, takimi jak zaufanie, religia, pieniądze czy osobiste granice — wszystko po to, by odkryć, co naprawdę jest dla was ważne. *Uwaga:* niektóre pytania są surowe i nieocenzurowane — grajcie z otwartością, empatią i szacunkiem.",
+  "deckDescLoveLanguagesTalks": "Zainspirowana pięcioma językami miłości talia pomaga partnerom wyrażać uczucia w sposób, który naprawdę trafia do drugiej osoby. Odkryjcie, jak słowa, działania i gesty mogą wzmocnić waszą więź.",
+  "deckDescSillyTalks": "Czysta zabawa i mnóstwo śmiechu! Te lekkie, zakręcone pytania wyciągają na wierzch wasze najdziwniejsze nawyki i najśmieszniejsze myśli. Idealne dla przyjaciół, rodziny lub par, które nie traktują życia zbyt poważnie.",
+  "deckDescCarTalks": "Idealne na podróże samochodem — te karty zamieniają czas za kierownicą w świetne rozmowy. Spodziewaj się zabawnych, kreatywnych i nostalgicznych pytań o podróże, przygody i dziwactwa.",
+  "deckDescCozyTalks": "Ciepłe, spokojne rozmowy idealne na przytulne wieczory. Te pytania tworzą komfortowe, pełne serca chwile bliskości.",
+  "deckDescPartyNight": "Pełne energii pytania zaprojektowane z myślą o grupach. Idealne na imprezy i spotkania ze znajomymi.",
+  "deckDescUnpopularOpinions": "Talia, która zachęca cię, by powiedzieć na głos to, co wszyscy myślą, ale nikt nie mówi. Od kultury influencerów po normy społeczne — te pytania wywołują szczere dyskusje i zaskakujące perspektywy. Idealne dla przyjaciół z mocnymi opiniami.",
+  "deckDescPlotTwists": "Ta talia wrzuca was w najśmieszniejsze i najtrudniejsze sytuacje z serii „co byś zrobił, gdyby...?”. Szybkie decyzje, intuicja i mnóstwo śmiechu gwarantowane! Idealna na grupowe wieczory pełne niespodzianek.",
+  "deckDescAfterDark": "Wejdź w mroczniejszą stronę rozmów z pytaniami, które wywołują dreszcze. Od niepokojących zbiegów okoliczności po scenariusze przetrwania — idealne na późne wieczory z nutą grozy.",
+  "deckDescHistoryTalks": "Nostalgiczna mieszanka osobistych wspomnień i rodzinnych chwil. Te pytania inspirują do opowieści, śmiechu i odkrywania swoich korzeni. Idealne na rodzinne spotkania lub spokojne wieczory.",
+  "deckDescTinyTalks": "Stworzone dla rodziców i najmłodszych! Proste, zabawne pytania pomagają dzieciom wyrażać siebie, a rodzicom lepiej zrozumieć ich sposób myślenia. Idealne dla wieku 3–9 lat.",
+  "deckDescGoodOldDays": "Wybierz się w podróż do przeszłości z pytaniami o cenne wspomnienia, dawne doświadczenia i to, jak „kiedyś to było”. Odpowiednie dla wszystkich pokoleń.",
+  "deckDescWouldYouRather": "Klasyczne dylematy typu „wolałbyś...?”, które rozkręcają dyskusje i pokazują preferencje. Wybierz między dwiema opcjami i odkryj, co jest dla was ważniejsze.",
+  
+  "createNewDeck": "Utwórz nową talię",
+  "sessionPin": "PIN sesji",
+  "joinSession": "Dołącz do sesji",
+  "questionSubmitted": "Pytanie wysłane",
+  "sessionCancelled": "Sesja anulowana",
+  "yourQuestion": "Twoje pytanie",
+  "reactionBreakdown": "Podsumowanie reakcji",
+  
+  "deckNameHint": "Nazwa talii",
+  "deckCreatedSuccess": "Talia utworzona!",
+  "deleteDeckConfirm": "Na pewno chcesz usunąć „{deckName}”? To usunie wszystkie pytania w tej talii.",
+  "cancelSession": "Anulować sesję?",
+  "cancelSessionConfirm": "To anuluje sesję dla wszystkich graczy. Na pewno?",
+  "no": "Nie",
+  "yesCancel": "Tak, anuluj",
+  "hostQuestionCollection": "Gospodarz – zbieranie pytań",
+  "questionCollection": "Zbieranie pytań",
+  "endSessionButton": "Zakończ sesję",
+  "noActiveSubscription": "Brak aktywnej subskrypcji",
+  "premium": "PREMIUM",
+  "notEnoughQuestions": "Za mało pytań. Wymagane co najmniej 5. (Obecnie: {count})",
+  "premiumFeatureTitle": "Funkcja Premium",
+  "questionNavigationPremium": "Nawigacja po pytaniach jest funkcją Premium. Zasubskrybuj, aby odblokować możliwość przeskakiwania do dowolnego pytania!",
+  "customDecks": "Własne talie",
+  "noDecksYetMessage": "Brak talii",
+  "createFirstDeckMessage": "Stuknij +, aby utworzyć swoją pierwszą talię",
+  "signInRequired": "Wymagane logowanie",
+  "signInToUsePersonal": "Zaloguj się, aby używać trybu Osobistego i tworzyć własne talie pytań.",
+  "collaborativeQuestionGame": "Kooperacyjna gra w pytania",
+  "hostPandoraSession": "Gospodarz: sesja Pandora",
+  "joinPandoraGame": "Dołącz do gry",
+  "yourDisplayName": "Twoja nazwa wyświetlana",
+  "enterYourName": "Wpisz swoje imię",
+  "selectQuestion": "Wybierz pytanie",
+  "joinTime": "Czas na dołączenie",
+  "participants": "Uczestnicy",
+  "loading": "Ładowanie...",
+  
+  "needAtLeastPlayers": "Potrzebnych jest co najmniej 2 graczy ({current}/2)",
+  "@needAtLeastPlayers": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "continueToTimerSetup": "Przejdź do ustawień timera",
+  "setQuestionTimer": "Ustaw czas na pytanie",
+  "questionCollectionTime": "Czas na zbieranie pytań",
+  "minutes": "minuty",
+  "sessionWillEnd": "Sesja zakończy się automatycznie, jeśli nie będziesz kontynuować w ciągu 5 minut",
+  "startQuestionCollection": "Rozpocznij zbieranie pytań",
+  "questionsSubmitted": "Wysłano {count} pytań",
+  "@questionsSubmitted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "writeQuestionHere": "Wpisz tutaj swoje pytanie...",
+  "whoIsThisFor": "Dla kogo jest to pytanie?",
+  "everyone": "Dla wszystkich",
+  "specific": "Dla konkretnej osoby",
+  "submitQuestion": "Wyślij pytanie",
+  
+  "needMoreQuestions": "Potrzeba jeszcze {count} pytań",
+  "@needMoreQuestions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "startGame": "Rozpocznij grę",
+  "selectPlayer": "Wybierz gracza",
+  "unsubscribe": "Anuluj subskrypcję",
+  "unsubscribeConfirm": "Anulować subskrypcję Premium?",
+  "unsubscribeWarning": "Stracisz dostęp do wszystkich funkcji Premium, w tym nielimitowanych pytań, wszystkich kategorii, braku reklam i nielimitowanej liczby graczy w trybie Pandora. Zawsze możesz ponownie zasubskrybować.",
+  "yesUnsubscribe": "Tak, anuluj",
+  "unsubscribeSuccess": "Subskrypcja anulowana. Funkcje Premium zostały wyłączone.",
+  "unsubscribeError": "Nie udało się anulować subskrypcji",
+  "questions": "pytania",
+  "preview": "podgląd",
+  
+  "userId": "ID użytkownika",
+  "subscription": "Subskrypcja",
+  "questionsCount75": "75 pytań",
+  "questionsCount30": "30 pytań",
+  "questionsCount5Preview": "Podgląd 5 pytań",
+  "unlockFullDeck": "Odblokuj 75 pytań",
+  "renameDeck": "Zmień nazwę talii",
+  "deckRenamed": "Zmieniono nazwę talii",
+  "failedToRenameDeck": "Nie udało się zmienić nazwy talii",
+  "shuffleQuestions": "Wymieszaj pytania",
+  "resetOrder": "Zresetuj kolejność",
+  "questionsShuffled": "Pytania wymieszane!",
+  "orderReset": "Kolejność przywrócona do oryginalnej",
+  "readyToPlay": "Gotowy do gry",
+  "longPressReorder": "Przytrzymaj i przeciągnij, aby zmienić kolejność pytań",
+  "noFavoritesYet": "Brak ulubionych",
+  "heartQuestionsDuringGameplay": "Stuknij serce ❤️ na kartach z pytaniami podczas gry, aby zapisać je tutaj!",
+  "addAtLeastQuestions": "Dodaj co najmniej {count} pytań, aby rozpocząć grę!",
+  "heartQuestionsInfo": "Oznaczaj pytania sercem podczas gry, aby dodać je do Ulubionych!",
+  "addAtLeastQuestionsToPlay": "Dodaj co najmniej {count} pytań, aby zagrać tę talię",
+  "removeFromFavorites": "Usuń z ulubionych",
+  "unlockEverything": "Odblokuj wszystko",
+  "premiumSubtitle": "Uzyskaj nielimitowany dostęp do wszystkich kategorii, usuń reklamy na zawsze i odblokuj funkcje Premium",
+  "save32Percent": "OSZCZĘDŹ 29%",
+  "priceMonthly": "€6,99/miesiąc",
+  "priceYearly": "€59,99/rok",
+  "billedAnnually": "Rozliczane rocznie",
+  "equivalentMonthly": "Tylko 5 €/miesiąc",
+  
+  "feature24Categories": "Ponad 24 kategorie premium odblokowane we wszystkich trybach",
+  "feature75Questions": "75 pytań na kategorię (zamiast 30 w wersji darmowej)",
+  "featureNoAds": "Brak reklam na zawsze – nieprzerwana rozgrywka",
+  "featureUnlimitedPlayers": "Tryb Pandora: nielimitowana liczba graczy i pytań",
+  "featureQuestionNavigation": "Nawigacja i przeskakiwanie do dowolnego pytania podczas gry",
+  "featureSupportDevelopment": "Wspierasz dalszy rozwój i nowe funkcje",
+  
+  "error": "Błąd",
+  "premiumActivatedMessage": "Premium aktywowane! Wszystkie kategorie zostały odblokowane.",
+  "featurePersonalDecks": "Tryb Osobisty: twórz nieograniczoną liczbę własnych talii z pytaniami",
+  "premiumPersonal": "Tryb Osobisty z własnymi taliami jest funkcją Premium. Ulepsz do Premium, aby tworzyć i grać w swoje własne talie pytań!",
+  
+  "deleteDeckConfirmation": "Na pewno chcesz usunąć „{deckName}”? To usunie wszystkie pytania w tej talii.",
+  "@deleteDeckConfirmation": {
+    "placeholders": {
+      "deckName": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "needMore": "Potrzeba jeszcze {count}",
+  "@needMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "editQuestions": "Edytuj pytania",
+  "questionCount": "{count, plural, =0{0 pytań} =1{1 pytanie} other{{count} pytań}}",
+  "@questionCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "addMore": "Dodaj więcej",
+  "useMyConnectEmail": "Użyj mojego e-maila Connect: {email}",
+  "@useMyConnectEmail": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "freemiumPlayerLimit": "Darmowi użytkownicy mogą mieć maksymalnie 6 graczy. Ulepsz do Premium, aby mieć nielimitowaną liczbę graczy!",
+  "freemiumQuestionLimit": "Darmowi użytkownicy mogą wysłać maksymalnie 12 pytań. Ulepsz do Premium, aby mieć nielimitowaną liczbę pytań!",
+  "yourQuestions": "Twoje pytania",
+  "waitingForHost": "Oczekiwanie na gospodarza... ({count} graczy)",
+  "@waitingForHost": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "upgradeForUnlimitedPlayers": "Ulepsz do Premium, aby mieć nielimitowaną liczbę graczy",
+  "kickPlayer": "Usuń gracza",
+  "kickPlayerConfirm": "Na pewno chcesz usunąć „{playerName}” z sesji?",
+  "@kickPlayerConfirm": {
+    "placeholders": {
+      "playerName": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "kick": "Usuń",
+  "playerKicked": "{playerName} został usunięty z sesji",
+  "@playerKicked": {
+    "placeholders": {
+      "playerName": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "failedToKickPlayer": "Nie udało się usunąć gracza",
+  "cancelSessionForAll": "To anuluje sesję dla wszystkich graczy. Na pewno?",
+  "youWereKicked": "Zostałeś usunięty z sesji",
+  "you": "Ty",
+  "loginRequiredForPandora": "Logowanie jest wymagane, aby zagrać w trybie Pandora",
+  "login": "Zaloguj się",
+  "loginRequiredNote": "Logowanie jest wymagane, aby grać w trybie Pandora (aby poprawnie śledzić graczy)",
+  "timeIsUp": "Czas minął!",
+  
+  "notEnoughQuestionsSubmitted": "Nie wysłano wystarczającej liczby pytań ({current}/{minimum} minimum).",
+  "@notEnoughQuestionsSubmitted": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "minimum": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "sessionQuestionLimit": "Osiągnięto limit pytań sesji",
+  "sessionQuestionLimitMessage": "Ta sesja osiągnęła limit 12 pytań (darmowy gospodarz). Ulepsz do Premium, aby mieć nielimitowaną liczbę pytań!",
+  "sessionQuestionCount": "Sesja: {current}/12 pytań",
+  "@sessionQuestionCount": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "pleaseEnterQuestion": "Wpisz pytanie",
+  "rateThisDeck": "Oceń tę talię",
+  "yourRating": "Twoja ocena",
+  "skip": "Pomiń",
+  "submit": "Wyślij",
+  "thankYouForFeedback": "Dziękujemy za opinię!",
+  "failedToSubmitRating": "Nie udało się wysłać oceny",
+  "tapStarsToRate": "Stuknij gwiazdki, aby ocenić",
+
+  "downloadForOffline": "Pobierz do użytku offline",
+  "downloading": "Pobieranie...",
+  "downloadedLanguages": "Pobrane języki",
+  "languageNotDownloaded": "Język nie został pobrany",
+  "languageNotDownloadedMessage": "Nie pobrałeś języka {languageName} do użytku offline.\n\nPrzejdź do Ustawienia > Profil > \"Pobierz do użytku offline\" będąc połączonym z internetem.",
+  "@languageNotDownloadedMessage": {
+    "placeholders": {
+      "languageName": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineLanguageError": "Ten język nie został pobrany do użytku offline. Przejdź do Ustawienia > Profil > \"Pobierz do użytku offline\" będąc połączonym z internetem.",
+  "downloadComplete": "Pobieranie zakończone!",
+  "downloadCompleteMessage": "Cała zawartość została pobrana do użytku offline.",
+
+  "addedToFavorites": "Dodano do ulubionych",
+  "removedFromFavorites": "Usunięto z ulubionych",
+  "errorSavingFavorite": "Błąd podczas zapisywania ulubionego",
+  "internetRequired": "Wymagane połączenie z internetem",
+  "internetRequiredMessage": "Niektóre funkcje wymagają połączenia z internetem. Użytkownicy Premium mogą pobierać treści do użytku offline w Ustawieniach.",
+  "goPremium": "Przejdź na Premium",
+  "pleaseEnterPin": "Wpisz 6-cyfrowy PIN",
+  "errorOccurred": "Błąd: {error}",
+  "@errorOccurred": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "errorCreatingSession": "Błąd podczas tworzenia sesji",
+  "sessionTimedOut": "Sesja wygasła - gospodarz nie ustawił timera",
+  "errorStarting": "Błąd podczas uruchamiania",
+  "errorLoadingParticipants": "Błąd podczas ładowania uczestników",
+  "sessionCancelledByHost": "Sesja anulowana przez gospodarza",
+  "needAtLeast5Questions": "Potrzeba co najmniej 5 pytań, aby rozpocząć! (Obecnie: {count})",
+  "@needAtLeast5Questions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "errorStartingGame": "Błąd podczas uruchamiania gry",
+  "questionsAsked": "Zadane pytania",
+  "totalReactions": "Łączna liczba reakcji",
+  "mostLovedQuestion": "Najbardziej lubiane pytanie",
+  "mostFunQuestion": "Najzabawniejsze pytanie",
+  "mostShockingQuestion": "Najbardziej szokujące pytanie",
+  "mostLitQuestion": "Najbardziej ogień pytanie",
+  "hotSeatAward": "Nagroda Hot Seat",
+  "errorCouldNotIdentifyPlayer": "Błąd: nie można zidentyfikować gracza. Dołącz ponownie do sesji."
+}

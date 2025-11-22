@@ -1,0 +1,496 @@
+{
+  "@@locale": "nl",
+  "appTitle": "Connect",
+  "start": "Start",
+  "settings": "Instellingen",
+  "howToPlay": "Hoe speel je",
+  "chooseGameMode": "Kies je spelmodus",
+  "family": "Familie",
+  "couple": "Stel",
+  "friends": "Vrienden",
+  "chooseCategory": "Kies een categorie",
+  "locked": "Premiumcategorie",
+  "lockedMessage": "Dit is een premiumcategorie. Upgrade om alle categorieën te ontgrendelen en advertenties te verwijderen!",
+  "previewAvailable": "Voorbeeld: eerste 5 vragen beschikbaar",
+  "upgradeNow": "Nu upgraden",
+  "ok": "OK",
+  "mayBeLater": "Misschien later",
+  
+  "getPremium": "Neem Premium",
+  "premiumTitle": "Ontgrendel alles",
+  "premiumDescription": "Krijg onbeperkte toegang tot alle categorieën in alle modi, verwijder advertenties en geniet van onbeperkte Pandora-sessies.",
+  "premiumPriceMonthly": "€6,99/maand",
+  "premiumPriceYearly": "€59,99/jaar",
+  "saveWithYearly": "Bespaar €23,89 met een jaarabonnement!",
+  "monthly": "Maandelijks",
+  "yearly": "Jaarlijks",
+  "billedMonthly": "Maandelijks gefactureerd",
+  "billedYearly": "Jaarlijks gefactureerd",
+  "premiumFeature1": "✓ Alle 21 premiumcategorieën ontgrendeld",
+  "premiumFeature2": "✓ Geen advertenties, voor altijd",
+  "premiumFeature3": "✓ 75 vragen in alle categorieën",
+  "premiumFeature4": "✓ Pandora: onbeperkt aantal spelers en vragen",
+  "premiumFeature5": "✓ Steun de verdere ontwikkeling",
+  "subscribePremium": "Abonneer op Premium",
+  "subscribe": "Abonneren",
+  "cancel": "Annuleren",
+  "subscriptionActivated": "Premium geactiveerd! Alle categorieën zijn ontgrendeld.",
+  "premiumActivated": "Premium geactiveerd!",
+  "demoNote": "Demo: abonnement wordt teruggezet wanneer de app opnieuw wordt gestart",
+  
+  "freeTier": "Gratis versie",
+  "freeTierDesc": "3 categorieën per modus (30 vragen per categorie)\nVoorbeeld van 5 vragen uit premiumcategorieën\nAdvertenties om de 7 vragen",
+  "currentPlan": "Huidig abonnement",
+  
+  "limitReached": "Limiet bereikt",
+  "freeCategoryLimit": "Je hebt de limiet van 30 vragen voor gratis categorieën bereikt. Upgrade naar Premium voor onbeperkte toegang!",
+  "previewLimit": "Je hebt alle 5 voorbeeldvragen gezien. Upgrade naar Premium om door te gaan!",
+  
+  "pandoraFreeLimit": "Gratis limiet",
+  "pandoraFreeLimitMessage": "Gratis hosts kunnen maximaal 6 spelers en 12 vragen hebben. Upgrade naar Premium voor onbeperkt!",
+  "pandoraUpgradeMessage": "Je hebt 12 vragen bereikt. Upgrade naar Premium om verder te spelen!",
+  "pandoraMaxPlayers": "Maximum van 6 spelers bereikt (gratis limiet). Upgrade naar Premium voor onbeperkte spelers!",
+  
+  "swipeOrTap": "Veeg of tik op de pijlen",
+  "previous": "Vorige",
+  "next": "Volgende",
+  "advertisement": "Advertentie",
+  "watchAdMessage": "Bekijk een korte advertentie om door te gaan, of speel advertentievrij met Premium!",
+  "watchAd": "Advertentie bekijken",
+  "goAdFree": "Advertentievrij met Premium",
+  "removeAdsForever": "Advertenties voor altijd verwijderen",
+  "adNotReady": "Advertentie is nog niet klaar. We gaan door zonder advertentie.",
+  "adLoadingContinue": "Advertentie wordt geladen... Doorgaan",
+  "pricePerMonth": "€6,99/maand of €59,99/jaar",
+  "noQuestionsFoundMessage": "Geen vragen gevonden voor {category} in modus {mode}",
+  "errorLoadingQuestions": "Fout bij het laden van vragen. Controleer je verbinding.",
+  "failedToLoadQuestions": "Vragen laden mislukt: {error}",
+  
+  "howManyPlayers": "Hoeveel spelers?",
+  "players": "Spelers",
+  "continueButton": "Doorgaan",
+  
+  "language": "Taal",
+  "languageChanged": "Taal gewijzigd naar {language}",
+  
+  "profile": "Profiel",
+  "signOut": "Uitloggen",
+  "notSignedIn": "Niet ingelogd",
+  "signInSignUp": "Inloggen / Registreren",
+  "signInToSync": "Log in om je abonnement tussen apparaten te synchroniseren en premiumcontent te ontgrendelen",
+  "signOutConfirm": "Weet je zeker dat je wilt uitloggen?",
+  "signedOutSuccess": "Succesvol uitgelogd",
+  "accountInformation": "Accountinformatie",
+  "email": "E-mail",
+  "memberSince": "Lid sinds",
+  "notAvailable": "Niet beschikbaar",
+  "unknown": "Onbekend",
+  "subscriptionStatus": "Abonnementsstatus",
+  "premiumMember": "Premiumlid",
+  "freeAccount": "Gratis account",
+  
+  "welcomeToConnect": "Welkom bij Connect!",
+  "continueWithApple": "Doorgaan met Apple",
+  "continueWithGoogle": "Doorgaan met Google",
+  "skipForNow": "Voor nu overslaan",
+  "byContining": "Door door te gaan ga je akkoord met onze servicevoorwaarden en privacyverklaring",
+  "googleSignInFailed": "Inloggen met Google is mislukt. Probeer het opnieuw.",
+  "appleSignInFailed": "Inloggen met Apple is mislukt. Probeer het opnieuw.",
+  
+  "noCategoriesFound": "Geen categorieën gevonden",
+  
+  "welcomeBack": "Welkom terug!",
+  "createAccount": "Account aanmaken",
+  "displayName": "Schermnaam",
+  "password": "Wachtwoord",
+  "signIn": "Inloggen",
+  "signUp": "Registreren",
+  "dontHaveAccount": "Nog geen account? Registreren",
+  "alreadyHaveAccount": "Heb je al een account? Inloggen",
+  
+  "chooseYourMode": "1. Kies je modus",
+  "chooseYourModeDesc": "Kies uit vijf unieke gespreksbelevingen:\n\n• Stel – Intieme vragen om jullie relatie te verdiepen\n• Vrienden – Leuke, interactieve topics voor jouw vriendengroep\n• Familie – Warme, veilige gesprekken voor alle leeftijden\n• Persoonlijk – Maak je eigen aangepaste vragendecks (Premium)\n• Pandora – Samenwerkings-multiplayergame met vragen in realtime",
+  "pickCategory": "2. Kies een categorie",
+  "pickCategoryDesc": "Elke modus heeft meerdere categorieën met zorgvuldig samengestelde vragenpakketten:\n\n• Gratis: 3 categorieën per modus (30 vragen per categorie)\n• Premiumvoorbeeld: eerste 5 vragen van premiumcategorieën\n• Premium: 24+ categorieën (75 vragen per categorie)\n• Persoonlijk: maak onbeperkt eigen decks met je eigen vragen",
+  "startTalking": "3. Start met spelen",
+  "startTalkingDesc": "Vragen worden op volledig scherm getoond voor een meeslepende ervaring. Neem om de beurt een vraag en antwoord eerlijk – er zijn geen foute antwoorden! Het doel is verbinding en plezier.\n\nIn de Pandora-modus: alle spelers dienen anoniem vragen in en beantwoorden ze daarna samen in realtime.",
+  "navigateQuestions": "4. Navigeer tussen vragen",
+  "navigateQuestionsDesc": "• Veeg in een willekeurige richting of tik op de pijlen om te wisselen van vraag\n• Tik op het hart-icoon ❤️ om favorieten op te slaan\n• Premium: tik op het vragenlijst-icoon (rechtsboven) om naar een willekeurige vraag te springen\n• Tik op de homeknop om op elk moment terug te keren naar het hoofdmenu",
+  "premiumFeatures": "5. Premiumfuncties",
+  "premiumFeaturesDesc": "Ontgrendel de volledige Connect-ervaring:\n\n• Maandelijks: €6,99/maand\n• Jaarlijks: €59,99/jaar (bespaar 29%!)\n\n✓ Alle 24+ premiumcategorieën in alle modi\n✓ 75 vragen per categorie (vs 30 in de gratis versie)\n✓ Geen advertenties, voor altijd\n✓ Pandora: onbeperkt aantal spelers en vragen\n✓ Persoonlijk: maak onbeperkt eigen decks\n✓ Vragennavigatie – spring naar elke vraag\n✓ Steun de verdere ontwikkeling",
+  "proTips": "Tips",
+  "proTipsDesc": "• Zorg voor een comfortabele, rustige omgeving\n• Luister actief en wees aanwezig\n• Deel eerlijk en moedig anderen aan hetzelfde te doen\n• Respecteer grenzen – een vraag overslaan is oké\n• Gebruik favorieten ❤️ om vragen te bewaren die je mooi vindt\n• Probeer verschillende modi voor verschillende gelegenheden\n• Pandora is perfect voor feestjes en groepsavonden\n• Heb plezier en geniet van de verbinding!",
+  "aboutCredits": "Over / Credits",
+  "developedBy": "Ontwikkeld door TechyKoala",
+  "learnMore": "Lees meer over ons en komende apps",
+  "visitWebsite": "Bezoek techykoala.com",
+  "madeWithLove": "Gemaakt met ❤️ voor betekenisvolle gesprekken",
+  
+  "personal": "Persoonlijk",
+  "personalDesc": "Maak je eigen aangepaste vragendecks",
+  "gameComplete": "Spel voltooid!",
+  "noMoreQuestions": "Je hebt alle vragen in dit deck doorlopen!",
+  "playAgain": "Opnieuw spelen",
+  "mainMenu": "Hoofdmenu",
+  "thanksForPlaying": "Bedankt voor het spelen!",
+  "hopeYouHadFun": "Hopelijk heb je genoten! 🎉",
+  "backToMenu": "Terug naar menu",
+  "leaveGame": "Spel verlaten?",
+  "leaveGameMessage": "Weet je zeker dat je wilt verlaten? Het spel gaat verder voor de andere spelers.",
+  "leave": "Verlaten",
+  "noQuestionsAvailable": "Geen vragen beschikbaar",
+  
+  "showLess": "Minder weergeven",
+  "readMore": "Meer weergeven",
+  "tapToPlay": "Tik om te spelen",
+  "favorites": "Favorieten",
+  
+  "pandoraHostCreatePin": "Host maakt een sessie en deelt de pincode",
+  "pandoraPlayersJoinMax": "Spelers doen mee (max. 6 gratis, onbeperkt met Premium)",
+  "pandoraHostSetsTimer": "Host stelt een vraag-timer in (1–15 min)",
+  "pandoraEveryoneSubmits": "Iedereen dient vragen in (max. 12 gratis)",
+  "pandoraHostControls": "Host bestuurt het verloop van het spel",
+  "pandoraQuestionsDeleted": "Vragen worden na het spel verwijderd",
+  "pandoraHost": "Host",
+  "pandoraJoinGame": "Meedoen met spel",
+  "pandoraPandoraBox": "Pandora-box",
+  
+  "pleaseEnterName": "Vul je naam in",
+  "hostSuffix": "(Host)",
+  "playersJoinWithNames": "Spelers doen mee met hun naam",
+  "everyoneSubmitsMin5": "Iedereen stuurt vragen in (min. 5, max. 12 gratis)",
+  "createSession": "Sessie aanmaken",
+  "creating": "Bezig met aanmaken...",
+  "yourName": "Jouw naam",
+  "enterDisplayName": "Vul je schermnaam in",
+  "howItWorks": "Hoe het werkt",
+  
+  "pinCopied": "PIN gekopieerd naar klembord!",
+  "endSession": "Sessie beëindigen?",
+  "endSessionConfirm": "Weet je zeker dat je deze Pandora-sessie wilt beëindigen?",
+  
+  "createCustomDeck": "Eigen deck maken",
+  "deckName": "Decknaam",
+  "enterDeckName": "Vul een decknaam in",
+  "create": "Maken",
+  "deckCreated": "Deck gemaakt!",
+  "failedToCreateDeck": "Deck maken mislukt",
+  "deleteDeck": "Deck verwijderen?",
+  "deleteDeckConfirm": "Weet je zeker dat je \"{deckName}\" wilt verwijderen? Dit verwijdert alle vragen in dit deck.",
+  "delete": "Verwijderen",
+  "deckDeleted": "Deck verwijderd",
+  "failedToDeleteDeck": "Deck verwijderen mislukt",
+  "myDecks": "Mijn decks",
+  "noDecksYet": "Nog geen decks",
+  "createFirstDeck": "Maak je eerste eigen deck!",
+  "questionsCount": "{count} vragen",
+  "questionCount": "{count} vragen",
+  
+  "questionAdded": "Vraag toegevoegd!",
+  "failedToAddQuestion": "Vraag toevoegen mislukt",
+  "editQuestion": "Vraag bewerken",
+  "enterYourQuestion": "Vul je vraag in",
+  "save": "Opslaan",
+  "questionUpdated": "Vraag bijgewerkt!",
+  "failedToUpdateQuestion": "Vraag bijwerken mislukt",
+  "deleteQuestion": "Vraag verwijderen",
+  "deleteQuestionConfirm": "Weet je zeker dat je deze vraag wilt verwijderen?",
+  "questionDeleted": "Vraag verwijderd",
+  "failedToDeleteQuestion": "Vraag verwijderen mislukt",
+  "addQuestion": "Vraag toevoegen",
+  "typeQuestionHere": "Typ hier je vraag...",
+  "add": "Toevoegen",
+  "noQuestionsYet": "Nog geen vragen",
+  "addFirstQuestion": "Voeg je eerste vraag toe!",
+  
+  "deckDescLoveTalks": "Ontdek romantiek, chemie en verbinding met vragen die jullie relatie vieren. Van \"hoe we elkaar hebben ontmoet\" tot wat jou het meest geliefd laat voelen – deze kaarten verdiepen de emotionele intimiteit.",
+  "deckDescDeepTalks": "Deze kaarten duiken in waarden, kwetsbaarheid en wat het betekent om samen te groeien. Ze helpen partners nadenken over onafhankelijkheid, communicatie en een gedeelde richting.",
+  "deckDescSpicyTalks": "Flirterig, gedurfd en intiem — deze kaarten nodigen stellen uit om verlangens, fantasieën en passie samen te verkennen. Elke vraag is gemaakt om eerlijke, spannende gesprekken aan te wakkeren over wat jullie aantrekt en dichter bij elkaar brengt.",
+  "deckDescDoYouDareTalks": "Een onverschrokken deck dat emotionele eerlijkheid combineert met gevoelige onderwerpen zoals vertrouwen, religie, geld en persoonlijke grenzen — allemaal ontworpen om te onthullen wat echt belangrijk is voor jullie beiden. *Let op:* sommige vragen zijn rauw en ongefilterd — speel met openheid, empathie en respect.",
+  "deckDescLoveLanguagesTalks": "Geïnspireerd door de vijf liefdestalen helpt dit deck partners om affectie te uiten op manieren die echt binnenkomen. Ontdek hoe woorden, daden en kleine gebaren jullie band kunnen versterken.",
+  "deckDescSillyTalks": "Pure lol en veel gelach! Deze luchtige, maffe vragen halen jullie gekste gewoontes en grappigste gedachten naar boven. Perfect voor vrienden, familie of stellen die het leven niet te serieus nemen.",
+  "deckDescCarTalks": "Perfect voor autoritten – deze kaarten veranderen reistijd in goede gesprekken. Verwacht grappige, creatieve en nostalgische vragen over reizen, avonturen en eigenaardigheden.",
+  "deckDescCozyTalks": "Warme, ontspannen gesprekken, perfect voor knusse avonden. Deze vragen creëren comfortabele, hartelijke momenten van verbinding.",
+  "deckDescPartyNight": "Energieke vragen, gemaakt voor groepen. Ideaal voor feestjes en sociale avonden met vrienden.",
+  "deckDescUnpopularOpinions": "Het deck dat je uitdaagt om te zeggen wat iedereen denkt maar niemand hardop zegt. Van influencer-cultuur tot sociale normen — deze kaarten zorgen voor eerlijke discussies en verrassende standpunten. Perfect voor vrienden met sterke meningen.",
+  "deckDescPlotTwists": "Dit deck gooit jullie midden in de grappigste en lastigste 'wat zou jij doen als...?'-situaties. Snelle keuzes, onderbuikgevoel en veel gelach gegarandeerd! Perfect voor groepsavonden vol verrassingen.",
+  "deckDescAfterDark": "Stap in de donkere kant van gesprekken met vragen die je kippenvel bezorgen. Van creepy toevalligheden tot survival-scenario’s — perfect voor late avonden met een vleugje spanning.",
+  "deckDescHistoryTalks": "Een nostalgische mix van persoonlijke herinneringen en familieverhalen. Deze vragen inspireren tot anekdotes, gelach en het herontdekken van je roots. Perfect voor familiebijeenkomsten of rustige avonden.",
+  "deckDescTinyTalks": "Gemaakt voor ouders en kleintjes! Eenvoudige, speelse vragen helpen kinderen zichzelf uit te drukken, terwijl ouders leren hoe ze denken. Perfect voor leeftijden 3–9 jaar.",
+  "deckDescGoodOldDays": "Reis terug in de tijd met vragen over dierbare herinneringen, vroegere ervaringen en hoe dingen vroeger waren. Geschikt voor alle leeftijden.",
+  "deckDescWouldYouRather": "Klassieke dilemma-vragen die discussies starten en voorkeuren onthullen. Kies tussen twee opties en ontdek wat écht belangrijk is.",
+  
+  "createNewDeck": "Nieuw deck maken",
+  "sessionPin": "Sessiepincode",
+  "joinSession": "Aan sessie deelnemen",
+  "questionSubmitted": "Vraag verstuurd",
+  "sessionCancelled": "Sessie geannuleerd",
+  "yourQuestion": "Jouw vraag",
+  "reactionBreakdown": "Overzicht van reacties",
+  "deckNameHint": "Decknaam",
+  "deckCreatedSuccess": "Deck gemaakt!",
+  "cancelSession": "Sessie annuleren?",
+  "cancelSessionConfirm": "Dit annuleert de sessie voor alle spelers. Weet je het zeker?",
+  "no": "Nee",
+  "yesCancel": "Ja, annuleren",
+  "hostQuestionCollection": "Host – vragen verzamelen",
+  "questionCollection": "Vragenverzameling",
+  "endSessionButton": "Sessie beëindigen",
+  "noActiveSubscription": "Geen actief abonnement",
+  "premium": "PREMIUM",
+  "notEnoughQuestions": "Niet genoeg vragen. Minimaal 5 vereist. (Nu: {count})",
+  "premiumFeatureTitle": "Premiumfunctie",
+  "questionNavigationPremium": "Vragennavigatie is een premiumfunctie. Abonneer om de mogelijkheid te ontgrendelen om naar elke vraag te springen!",
+  "customDecks": "Aangepaste decks",
+  "noDecksYetMessage": "Nog geen decks",
+  "createFirstDeckMessage": "Tik op + om je eerste deck te maken",
+  "signInRequired": "Inloggen vereist",
+  "signInToUsePersonal": "Log in om de modus Persoonlijk te gebruiken en je eigen vragendecks te maken.",
+  "collaborativeQuestionGame": "Samenwerkings-vragenspel",
+  "hostPandoraSession": "Pandora-sessie hosten",
+  "joinPandoraGame": "Meedoen aan een spel",
+  "yourDisplayName": "Je schermnaam",
+  "enterYourName": "Vul je naam in",
+  "selectQuestion": "Selecteer een vraag",
+  "joinTime": "Tijd om mee te doen",
+  "participants": "Deelnemers",
+  "loading": "Laden...",
+  "needAtLeastPlayers": "Minstens 2 spelers nodig ({current}/2)",
+  "@needAtLeastPlayers": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "continueToTimerSetup": "Doorgaan naar timerinstellingen",
+  "setQuestionTimer": "Vraag-timer instellen",
+  "questionCollectionTime": "Tijd om vragen te verzamelen",
+  "minutes": "minuten",
+  "sessionWillEnd": "De sessie wordt automatisch beëindigd als je niet binnen 5 minuten doorgaat",
+  "startQuestionCollection": "Start vragenverzameling",
+  "questionsSubmitted": "{count} vragen verstuurd",
+  "@questionsSubmitted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "writeQuestionHere": "Schrijf je vraag hier...",
+  "whoIsThisFor": "Voor wie is deze vraag?",
+  "everyone": "Iedereen",
+  "specific": "Specifiek",
+  "submitQuestion": "Vraag versturen",
+  "needMoreQuestions": "Er zijn nog {count} vragen nodig",
+  "@needMoreQuestions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "startGame": "Spel starten",
+  "selectPlayer": "Selecteer een speler",
+  "unsubscribe": "Abonnement opzeggen",
+  "unsubscribeConfirm": "Premium-abonnement opzeggen?",
+  "unsubscribeWarning": "Je verliest toegang tot alle premiumfuncties, waaronder onbeperkte vragen, alle categorieën, een advertentievrije ervaring en onbeperkt aantal Pandora-spelers. Je kunt op elk moment opnieuw abonneren.",
+  "yesUnsubscribe": "Ja, opzeggen",
+  "unsubscribeSuccess": "Abonnement succesvol opgezegd. Premiumfuncties zijn uitgeschakeld.",
+  "unsubscribeError": "Opzeggen van abonnement mislukt",
+  "questions": "vragen",
+  "preview": "voorbeeld",
+  "userId": "Gebruikers-ID",
+  "subscription": "Abonnement",
+  "questionsCount75": "75 vragen",
+  "questionsCount30": "30 vragen",
+  "questionsCount5Preview": "Voorbeeld van 5 vragen",
+  "unlockFullDeck": "75 vragen ontgrendelen",
+  "renameDeck": "Deck hernoemen",
+  "deckRenamed": "Deck hernoemd",
+  "failedToRenameDeck": "Deck hernoemen mislukt",
+  "shuffleQuestions": "Vragen schudden",
+  "resetOrder": "Volgorde herstellen",
+  "questionsShuffled": "Vragen geschud!",
+  "orderReset": "Volgorde teruggezet naar origineel",
+  "readyToPlay": "Klaar om te spelen",
+  "longPressReorder": "Houd ingedrukt en sleep om de volgorde van vragen te wijzigen",
+  "noFavoritesYet": "Nog geen favorieten",
+  "heartQuestionsDuringGameplay": "Tik op het hart ❤️ op vraagkaarten tijdens het spelen om ze hier op te slaan!",
+  "addAtLeastQuestions": "Voeg minstens {count} vragen toe om te beginnen met spelen!",
+  "heartQuestionsInfo": "Markeer vragen met een hartje tijdens het spelen om ze aan je favorieten toe te voegen!",
+  "addAtLeastQuestionsToPlay": "Voeg minstens {count} vragen toe om dit deck te spelen",
+  "removeFromFavorites": "Uit favorieten verwijderen",
+  "unlockEverything": "Alles ontgrendelen",
+  "premiumSubtitle": "Krijg onbeperkte toegang tot alle categorieën, verwijder advertenties voorgoed en ontgrendel premiumfuncties",
+  "save32Percent": "BESPAAR 29%",
+  "priceMonthly": "€6,99/maand",
+  "priceYearly": "€59,99/jaar",
+  "billedAnnually": "Jaarlijks gefactureerd",
+  "equivalentMonthly": "Slechts €5/maand",
+  "feature24Categories": "24+ premiumcategorieën ontgrendeld in alle modi",
+  "feature75Questions": "75 vragen per categorie (vs 30 in de gratis versie)",
+  "featureNoAds": "Geen advertenties meer – ononderbroken spel",
+  "featureUnlimitedPlayers": "Pandora-modus: onbeperkt aantal spelers en vragen",
+  "featureQuestionNavigation": "Navigeer en spring naar elke vraag tijdens het spel",
+  "featureSupportDevelopment": "Steun de verdere ontwikkeling en nieuwe functies",
+  "error": "Fout",
+  "premiumActivatedMessage": "Premium geactiveerd! Alle categorieën zijn ontgrendeld.",
+  "featurePersonalDecks": "Persoonlijk-modus: maak onbeperkt eigen decks met je eigen vragen",
+  "premiumPersonal": "De modus Persoonlijk met eigen decks is een premiumfunctie. Upgrade naar Premium om je eigen vragendecks te maken en te spelen!",
+  "deleteDeckConfirmation": "Weet je zeker dat je \"{deckName}\" wilt verwijderen? Dit verwijdert alle vragen in dit deck.",
+  "@deleteDeckConfirmation": {
+    "placeholders": {
+      "deckName": {
+        "type": "String"
+      }
+    }
+  },
+  "needMore": "Nog {count} nodig",
+  "@needMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "editQuestions": "Vragen bewerken",
+  "questionCount": "{count, plural, =0{0 vragen} =1{1 vraag} other{{count} vragen}}",
+  "@questionCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "addMore": "Meer toevoegen",
+  "useMyConnectEmail": "Gebruik mijn Connect-e-mailadres: {email}",
+  "@useMyConnectEmail": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "freemiumPlayerLimit": "Gratis gebruikers kunnen maximaal 6 spelers hebben. Upgrade naar Premium voor onbeperkt aantal spelers!",
+  "freemiumQuestionLimit": "Gratis gebruikers kunnen maximaal 12 vragen insturen. Upgrade naar Premium voor onbeperkt aantal vragen!",
+  "yourQuestions": "Jouw vragen",
+  "waitingForHost": "Wachten op host... ({count} spelers)",
+  "@waitingForHost": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "upgradeForUnlimitedPlayers": "Upgrade naar Premium voor onbeperkt aantal spelers",
+  "kickPlayer": "Speler verwijderen",
+  "kickPlayerConfirm": "Weet je zeker dat je \"{playerName}\" uit de sessie wilt verwijderen?",
+  "@kickPlayerConfirm": {
+    "placeholders": {
+      "playerName": {
+        "type": "String"
+      }
+    }
+  },
+  "kick": "Verwijderen",
+  "playerKicked": "{playerName} is verwijderd",
+  "@playerKicked": {
+    "placeholders": {
+      "playerName": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToKickPlayer": "Speler verwijderen mislukt",
+  "cancelSessionForAll": "Dit annuleert de sessie voor alle spelers. Weet je het zeker?",
+  "youWereKicked": "Je bent verwijderd uit de sessie",
+  "you": "Jij",
+  "loginRequiredForPandora": "Inloggen vereist om Pandora te spelen",
+  "login": "Inloggen",
+  "loginRequiredNote": "Inloggen is vereist om Pandora te spelen (zodat spelers correct kunnen worden bijgehouden)",
+  "timeIsUp": "Tijd is om!",
+  "notEnoughQuestionsSubmitted": "Er zijn niet genoeg vragen ingestuurd ({current}/{minimum} minimum).",
+  "@notEnoughQuestionsSubmitted": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "minimum": {
+        "type": "int"
+      }
+    }
+  },
+  "sessionQuestionLimit": "Vragenlimiet van sessie bereikt",
+  "sessionQuestionLimitMessage": "Deze sessie heeft de limiet van 12 vragen bereikt (gratis host). Upgrade naar Premium voor onbeperkt aantal vragen!",
+  "sessionQuestionCount": "Sessie: {current}/12 vragen",
+  "@sessionQuestionCount": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "pleaseEnterQuestion": "Vul een vraag in",
+  "rateThisDeck": "Beoordeel dit deck",
+  "yourRating": "Jouw beoordeling",
+  "skip": "Overslaan",
+  "submit": "Verzenden",
+  "thankYouForFeedback": "Bedankt voor je feedback!",
+  "failedToSubmitRating": "Beoordeling verzenden mislukt",
+  "tapStarsToRate": "Tik op de sterren om te beoordelen",
+
+  "downloadForOffline": "Download voor offline gebruik",
+  "downloading": "Downloaden...",
+  "downloadedLanguages": "Gedownloade talen",
+  "languageNotDownloaded": "Taal niet gedownload",
+  "languageNotDownloadedMessage": "Je hebt {languageName} niet gedownload voor offline gebruik.\n\nGa naar Instellingen > Profiel > \"Download voor offline gebruik\" terwijl je verbonden bent met internet.",
+  "@languageNotDownloadedMessage": {
+    "placeholders": {
+      "languageName": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineLanguageError": "Deze taal is niet gedownload voor offline gebruik. Ga naar Instellingen > Profiel > \"Download voor offline gebruik\" terwijl je verbonden bent met internet.",
+  "downloadComplete": "Download voltooid!",
+  "downloadCompleteMessage": "Alle inhoud is gedownload voor offline gebruik.",
+
+  "addedToFavorites": "Toegevoegd aan favorieten",
+  "removedFromFavorites": "Verwijderd uit favorieten",
+  "errorSavingFavorite": "Fout bij opslaan van favoriet",
+  "internetRequired": "Internet vereist",
+  "internetRequiredMessage": "Sommige functies vereisen een internetverbinding. Premium-gebruikers kunnen inhoud downloaden voor offline gebruik in Instellingen.",
+  "goPremium": "Ga naar Premium",
+  "pleaseEnterPin": "Voer een 6-cijferige PIN in",
+  "errorOccurred": "Fout: {error}",
+  "@errorOccurred": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "errorCreatingSession": "Fout bij aanmaken van sessie",
+  "sessionTimedOut": "Sessie verlopen - host heeft geen timer ingesteld",
+  "errorStarting": "Fout bij starten",
+  "errorLoadingParticipants": "Fout bij laden van deelnemers",
+  "sessionCancelledByHost": "Sessie geannuleerd door host",
+  "needAtLeast5Questions": "Minstens 5 vragen nodig om te starten! (Nu: {count})",
+  "@needAtLeast5Questions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "errorStartingGame": "Fout bij starten van spel",
+  "questionsAsked": "Gestelde vragen",
+  "totalReactions": "Totaal aantal reacties",
+  "mostLovedQuestion": "Meest geliefde vraag",
+  "mostFunQuestion": "Leukste vraag",
+  "mostShockingQuestion": "Meest schokkende vraag",
+  "mostLitQuestion": "Meest vette vraag",
+  "hotSeatAward": "Hot Seat Award",
+  "errorCouldNotIdentifyPlayer": "Fout: kon speler niet identificeren. Sluit opnieuw aan bij de sessie."
+}

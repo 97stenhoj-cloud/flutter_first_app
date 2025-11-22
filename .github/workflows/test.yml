@@ -1,0 +1,69 @@
+name: Flutter Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.9.2'
+          channel: 'stable'
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+        continue-on-error: true  # Don't fail build on formatting issues
+
+      - name: Analyze code
+        run: flutter analyze
+        continue-on-error: true  # Don't fail build on analysis warnings
+
+      - name: Run all tests
+        run: flutter test --coverage
+
+      - name: Check test coverage
+        run: |
+          echo "📊 Test Coverage Report:"
+          if [ -f coverage/lcov.info ]; then
+            # Count lines with coverage data
+            COVERED=$(grep -c "^DA:" coverage/lcov.info || echo "0")
+            echo "Lines with coverage data: $COVERED"
+
+            # Simple coverage percentage calculation (approximation)
+            LINES=$(grep -c "^DA:" coverage/lcov.info | awk '{print $1}')
+            if [ "$LINES" -gt "0" ]; then
+              echo "✅ Coverage file generated successfully"
+            else
+              echo "⚠️  No coverage data found"
+            fi
+          else
+            echo "❌ Coverage file not found"
+          fi
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage/lcov.info
+          fail_ci_if_error: false  # Don't fail if codecov upload fails
+        continue-on-error: true
+
+      - name: Test Summary
+        if: always()
+        run: |
+          echo "🎉 Test run complete!"
+          echo "Check the test results above for details."
