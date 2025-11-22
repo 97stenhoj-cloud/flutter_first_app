@@ -1294,7 +1294,10 @@ class AppLocalizationsEn extends AppLocalizations {
     int max,
     Object behalten,
     Object beholdt,
+    Object behouden,
+    Object bevarad,
     Object maks,
+    Object pidetty,
   ) {
     return '$kept/$max';
   }

@@ -13,6 +13,7 @@ import '../../../auth/presentation/pages/social_auth_page.dart';
 import '../../../subscription/presentation/pages/subscription_page_new.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/widgets/custom_dialog.dart';
+import '../../../../core/widgets/ad_banner_widget.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   final bool isDarkMode;
@@ -223,6 +224,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           .from('user_subscriptions')
           .update({
             'is_premium': false,
+            'subscription_tier': null,
             'updated_at': DateTime.now().toIso8601String(),
           })
           .eq('user_id', user.id);
@@ -1003,6 +1005,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           ),
         ),
       ),
+      bottomNavigationBar: ref.watch(unlockProvider).isPremium
+        ? null
+        : const AdBannerWidget(),
     );
   }
 }

@@ -20,6 +20,7 @@ import '../../../../core/services/feedback_service.dart';
 import '../widgets/question_card.dart';
 import '../widgets/reaction_buttons.dart';
 import '../widgets/question_picker.dart';
+import '../../../../core/widgets/ad_banner_widget.dart';
 
 
 
@@ -1375,6 +1376,9 @@ void _showPremiumCategoryDialog() {
           ),
         ),
       ),
+      bottomNavigationBar: ref.watch(unlockProvider).isPremium
+        ? null
+        : const AdBannerWidget(),
     );
   }
 

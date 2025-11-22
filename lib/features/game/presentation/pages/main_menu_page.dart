@@ -15,6 +15,8 @@ import 'package:connect/core/utils/page_transitions.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../auth/presentation/pages/social_auth_page.dart';
 import '../../../../core/widgets/custom_dialog.dart';
+import '../../../../core/widgets/ad_banner_widget.dart';
+import '../../../../core/providers/unlock_provider.dart';
 
 class MainMenuPage extends ConsumerStatefulWidget {
   const MainMenuPage({super.key});
@@ -264,6 +266,9 @@ class _MainMenuPageState extends ConsumerState<MainMenuPage> {
           ),
         ),
       ),
+      bottomNavigationBar: ref.watch(unlockProvider).isPremium
+        ? null
+        : const AdBannerWidget(),
     );
   }
 }

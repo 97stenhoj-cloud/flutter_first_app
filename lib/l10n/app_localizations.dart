@@ -2433,7 +2433,10 @@ abstract class AppLocalizations {
     int max,
     Object behalten,
     Object beholdt,
+    Object behouden,
+    Object bevarad,
     Object maks,
+    Object pidetty,
   );
 
   /// No description provided for @questionProgress.

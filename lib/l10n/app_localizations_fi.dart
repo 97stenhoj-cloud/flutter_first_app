@@ -1225,78 +1225,79 @@ class AppLocalizationsFi extends AppLocalizations {
       'Virhe: Pelaajaa ei voitu tunnistaa. Liity istuntoon uudelleen.';
 
   @override
-  String get createAiDeck => 'Create AI Deck';
+  String get createAiDeck => 'Luo AI-paketti';
 
   @override
-  String get whatIsTheOccasion => 'What is the occasion?';
+  String get whatIsTheOccasion => 'Mikä on tilaisuus?';
 
   @override
-  String get occasionHint => 'e.g., Birthday party, Team building, Date night';
+  String get occasionHint =>
+      'esim. Syntymäpäiväjuhlat, Tiimihengen rakentaminen, Treffiyö';
 
   @override
-  String get whatIsTheMood => 'What\'s the mood?';
+  String get whatIsTheMood => 'Mikä on tunnelma?';
 
   @override
-  String get lighthearted => 'Lighthearted';
+  String get lighthearted => 'Keveäntuulinen';
 
   @override
-  String get serious => 'Serious';
+  String get serious => 'Vakava';
 
   @override
-  String get mixed => 'Mixed';
+  String get mixed => 'Sekoitettu';
 
   @override
-  String get depthOfQuestions => 'Depth of questions?';
+  String get depthOfQuestions => 'Kysymysten syvyys?';
 
   @override
-  String get surfaceLevel => 'Surface level';
+  String get surfaceLevel => 'Pintataso';
 
   @override
-  String get deep => 'Deep';
+  String get deep => 'Syvä';
 
   @override
-  String get level => 'Level';
+  String get level => 'Taso';
 
   @override
-  String get sizeOfGroup => 'Size of group?';
+  String get sizeOfGroup => 'Ryhmän koko?';
 
   @override
-  String get people => 'people';
+  String get people => 'ihmiset';
 
   @override
-  String get anyOtherRemarks => 'Any other remarks? (optional)';
+  String get anyOtherRemarks => 'Muita huomautuksia? (valinnainen)';
 
   @override
   String get remarksHint =>
-      'e.g., Family friendly, include some funny questions';
+      'esim. Perheystävällinen, sisällytä mukaan joitakin hauskoja kysymyksiä';
 
   @override
-  String get generateQuestions => 'Generate Questions';
+  String get generateQuestions => 'Luo kysymyksiä';
 
   @override
   String get aiDeckPremiumMessage =>
-      'AI deck generation is a premium feature. Upgrade to create unlimited AI-powered conversation decks!';
+      'AI-dekkien luonti on premium-ominaisuus. Päivitä luodaksesi rajattomasti AI-pohjaisia keskusteludekkejä!';
 
   @override
-  String get pleaseEnterOccasion => 'Please enter the occasion';
+  String get pleaseEnterOccasion => 'Ole hyvä ja syötä tilaisuus';
 
   @override
   String errorGeneratingQuestions(String error) {
-    return 'Error generating questions: $error';
+    return 'Virhe kysymysten luomisessa: $error';
   }
 
   @override
-  String get generatingAiQuestions => 'Generating AI questions...';
+  String get generatingAiQuestions => 'Generoidaan AI-kysymyksiä...';
 
   @override
-  String get generatingMoreQuestions => 'Generating more questions...';
+  String get generatingMoreQuestions => 'Luodaan lisää kysymyksiä...';
 
   @override
-  String get batchComplete => 'Batch Complete!';
+  String get batchComplete => 'Erä valmis!';
 
   @override
   String questionsInDeckMessage(int count) {
-    return 'You have $count questions in your deck. Generate 10 more?';
+    return 'Sinulla on $count kysymystä pakassasi. Generoidaanko 10 lisää?';
   }
 
   @override
@@ -1305,9 +1306,12 @@ class AppLocalizationsFi extends AppLocalizations {
     int max,
     Object behalten,
     Object beholdt,
+    Object behouden,
+    Object bevarad,
     Object maks,
+    Object pidetty,
   ) {
-    return '$kept/$max';
+    return '$pidetty/$max';
   }
 
   @override
@@ -1317,110 +1321,112 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String batchNumber(int number) {
-    return 'Batch #$number';
+    return 'Erä #$number';
   }
 
   @override
-  String get imDone => 'I\'m Done';
+  String get imDone => 'Olen valmis';
 
   @override
-  String get generateMore => 'Generate More';
+  String get generateMore => 'Tuota lisää';
 
   @override
-  String get maxQuestionsReached => 'Max Questions (50)';
+  String get maxQuestionsReached => 'Maksimi kysymykset (50)';
 
   @override
-  String get namYourDeck => 'Name Your Deck';
+  String get namYourDeck => 'Nimeä pakkaasi';
 
   @override
-  String get goBack => 'Go Back';
+  String get goBack => 'Palaa takaisin';
 
   @override
-  String get swipeInstructions => 'Swipe right to keep • Swipe left to discard';
+  String get swipeInstructions =>
+      'Pyyhkäise oikealle pitääksesi • Pyyhkäise vasemmalle hylätäksesi';
 
   @override
-  String get discussionPoint => 'Discussion Point';
+  String get discussionPoint => 'Keskustelupiste';
 
   @override
-  String get sparkMode => 'Spark Mode';
+  String get sparkMode => 'Spark-tila';
 
   @override
-  String get sparkModeSubtitle => 'AI-Powered Conversation Starters';
+  String get sparkModeSubtitle => 'AI-Voimaiset Keskustelun Aloittajat';
 
   @override
-  String get sparkPremiumRequired => 'Spark Mode - Premium Feature';
+  String get sparkPremiumRequired => 'Spark Mode - Premium-ominaisuus';
 
   @override
   String get sparkPremiumMessage =>
-      'Spark Mode is available for Premium and Premium+ subscribers. Generate AI-powered conversation starters tailored to your occasion!';
+      'Spark Mode on saatavilla Premium- ja Premium+-tilaajille. Luo AI-pohjaisia keskustelunaloituksia, jotka on räätälöity tilaisuuteesi!';
 
   @override
   String sparkQuestionsRemaining(int remaining, int limit) {
-    return '$remaining of $limit questions remaining';
+    return '$remaining kysymystä jäljellä $limit kysymyksestä';
   }
 
   @override
-  String get howManyQuestions => 'How many questions?';
+  String get howManyQuestions => 'Kuinka monta kysymystä?';
 
   @override
   String sparkQuestions(int count) {
-    return '$count Questions';
+    return '$count Kysymystä';
   }
 
   @override
   String generateSparkQuestions(int count) {
-    return 'Generate $count Questions';
+    return 'Luo $count kysymystä';
   }
 
   @override
-  String get sparkLimitReached => 'Monthly Limit Reached';
+  String get sparkLimitReached => 'Kuukausiraja saavutettu';
 
   @override
   String sparkLimitMessage(int remaining, int requested) {
-    return 'You only have $remaining Spark questions remaining this month. You\'re trying to generate $requested questions.\n\nUpgrade to Premium+ for 400 questions per month!';
+    return 'Sinulla on vain $remaining Spark-kysymystä jäljellä tänä kuukautena. Yrität luoda $requested kysymystä.\n\nPäivitä Premium+:aan saadaksesi 400 kysymystä kuukaudessa!';
   }
 
   @override
-  String get expiresIn24Hours => 'Expires in 24 hours';
+  String get expiresIn24Hours => 'Vanhenee 24 tunnin kuluttua';
 
   @override
-  String get alreadyInFavorites => 'Already in Favorites';
+  String get alreadyInFavorites => 'Jo suosikeissa';
 
   @override
   String addedToDeck(String deckName) {
-    return 'Added to $deckName!';
+    return 'Lisätty $deckName!';
   }
 
   @override
-  String get questionAlreadyInDeck => 'Question already in this deck';
+  String get questionAlreadyInDeck => 'Kysymys on jo tässä pakassa';
 
   @override
-  String get addToDeck => 'Add to Deck';
+  String get addToDeck => 'Lisää pakkaan';
 
   @override
-  String get favorite => 'Favorite';
+  String get favorite => 'Suosikki';
 
   @override
-  String get chooseDeck => 'Choose a deck to add this question to:';
+  String get chooseDeck =>
+      'Valitse pakka, johon haluat lisätä tämän kysymyksen:';
 
   @override
-  String get noDecksFound => 'No Decks Found';
+  String get noDecksFound => 'Ei pakkoja löytynyt';
 
   @override
   String get noDecksMessage =>
-      'You don\'t have any custom decks yet. Would you like to create one?';
+      'Sinulla ei ole vielä mitään mukautettuja pakkoja. Haluaisitko luoda yhden?';
 
   @override
-  String get createDeck => 'Create Deck';
+  String get createDeck => 'Luo pakka';
 
   @override
-  String get createAndAdd => 'Create & Add';
+  String get createAndAdd => 'Luo & Lisää';
 
   @override
-  String get pleaseEnterDeckName => 'Please enter a deck name';
+  String get pleaseEnterDeckName => 'Ole hyvä ja syötä pakka nimi';
 
   @override
-  String get tierBasic => 'Basic';
+  String get tierBasic => 'Perus';
 
   @override
   String get tierPremium => 'Premium';
@@ -1429,59 +1435,60 @@ class AppLocalizationsFi extends AppLocalizations {
   String get tierPremiumPlus => 'Premium+';
 
   @override
-  String get tierFree => 'Free';
+  String get tierFree => 'Ilmainen';
 
   @override
-  String get choosePlan => 'Choose Your Plan';
+  String get choosePlan => 'Valitse suunnitelmasi';
 
   @override
   String get choosePlanSubtitle =>
-      'Unlock premium features and AI-powered conversations';
+      'Avaa premium-ominaisuudet ja AI-pohjaiset keskustelut';
 
   @override
-  String get mostPopular => 'MOST POPULAR';
+  String get mostPopular => 'SUOSITUIN';
 
   @override
-  String get perMonth => 'per month';
+  String get perMonth => 'kuukaudessa';
 
   @override
-  String get forever => 'Forever';
+  String get forever => 'Ikuisesti';
 
   @override
-  String get continueWithBasic => 'Continue with Basic (Free)';
+  String get continueWithBasic => 'Jatka Basic (Ilmainen) kanssa';
 
   @override
   String subscribeTo(String tier) {
-    return 'Subscribe to $tier';
+    return 'Tilaa $tier';
   }
 
   @override
-  String get cancelAnytime => 'Cancel anytime. No hidden fees.';
+  String get cancelAnytime => 'Peru milloin tahansa. Ei piilomaksuja.';
 
   @override
-  String get basicTierTitle => 'Basic';
+  String get basicTierTitle => 'Perus';
 
   @override
   String get basicTierPrice => '€6.99';
 
   @override
-  String get basicTierDescription => 'Access all game modes except Spark';
+  String get basicTierDescription =>
+      'Pääsy kaikkiin pelitiloihin lukuun ottamatta Sparkia';
 
   @override
   String get basicFeature1 =>
-      'All game modes (Couple, Friends, Family, Personal, Pandora)';
+      'Kaikki pelitilat (Pariskunta, Ystävät, Perhe, Henkilökohtainen, Pandora)';
 
   @override
-  String get basicFeature2 => 'Access to all 24+ categories';
+  String get basicFeature2 => 'Pääsy kaikkiin 24+ kategoriaan';
 
   @override
-  String get basicFeature3 => 'Custom personal decks';
+  String get basicFeature3 => 'Mukautetut henkilökohtaiset pakat';
 
   @override
-  String get basicFeature4 => 'No ads';
+  String get basicFeature4 => 'Ei mainoksia';
 
   @override
-  String get basicFeature5 => 'Question navigation';
+  String get basicFeature5 => 'Kysymysnavigointi';
 
   @override
   String get premiumTierTitle => 'Premium';
@@ -1490,10 +1497,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get premiumTierPrice => '€11.99';
 
   @override
-  String get premiumTierDescription => 'Everything in Basic + Spark AI';
+  String get premiumTierDescription => 'Kaikki perusversiossa + Spark AI';
 
   @override
-  String get premiumFeature6 => 'Save favorites to personal decks';
+  String get premiumFeature6 => 'Tallenna suosikit henkilökohtaisiin pakkoihin';
 
   @override
   String get premiumPlusTierTitle => 'Premium+';
@@ -1502,20 +1509,20 @@ class AppLocalizationsFi extends AppLocalizations {
   String get premiumPlusTierPrice => '€19.99';
 
   @override
-  String get premiumPlusTierDescription => 'Maximum AI power';
+  String get premiumPlusTierDescription => 'Maksimaalinen AI-teho';
 
   @override
-  String get premiumPlusFeature1 => 'Everything in Premium';
+  String get premiumPlusFeature1 => 'Kaikki Premiumissa';
 
   @override
-  String get premiumPlusFeature2 => '🚀 400 AI questions per month';
+  String get premiumPlusFeature2 => '🚀 400 AI-kysymystä kuukaudessa';
 
   @override
-  String get premiumPlusFeature3 => '2.5x more Spark questions';
+  String get premiumPlusFeature3 => '2,5x enemmän Spark-kysymyksiä';
 
   @override
-  String get premiumPlusFeature4 => 'Perfect for frequent use';
+  String get premiumPlusFeature4 => 'Täydellinen usein käyttöön';
 
   @override
-  String get premiumPlusFeature5 => 'Priority support';
+  String get premiumPlusFeature5 => 'Prioriteettituki';
 }

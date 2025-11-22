@@ -1220,78 +1220,79 @@ class AppLocalizationsNl extends AppLocalizations {
       'Fout: kon speler niet identificeren. Sluit opnieuw aan bij de sessie.';
 
   @override
-  String get createAiDeck => 'Create AI Deck';
+  String get createAiDeck => 'Maak AI Deck';
 
   @override
-  String get whatIsTheOccasion => 'What is the occasion?';
+  String get whatIsTheOccasion => 'Wat is de gelegenheid?';
 
   @override
-  String get occasionHint => 'e.g., Birthday party, Team building, Date night';
+  String get occasionHint =>
+      'bijv., Verjaardagsfeest, Teambuilding, Date night';
 
   @override
-  String get whatIsTheMood => 'What\'s the mood?';
+  String get whatIsTheMood => 'Wat is de stemming?';
 
   @override
-  String get lighthearted => 'Lighthearted';
+  String get lighthearted => 'Luchtig';
 
   @override
-  String get serious => 'Serious';
+  String get serious => 'Serieus';
 
   @override
-  String get mixed => 'Mixed';
+  String get mixed => 'Gemengd';
 
   @override
-  String get depthOfQuestions => 'Depth of questions?';
+  String get depthOfQuestions => 'Diepte van vragen?';
 
   @override
-  String get surfaceLevel => 'Surface level';
+  String get surfaceLevel => 'Oppervlakte niveau';
 
   @override
-  String get deep => 'Deep';
+  String get deep => 'Diep';
 
   @override
-  String get level => 'Level';
+  String get level => 'Niveau';
 
   @override
-  String get sizeOfGroup => 'Size of group?';
+  String get sizeOfGroup => 'Grootte van de groep?';
 
   @override
-  String get people => 'people';
+  String get people => 'mensen';
 
   @override
-  String get anyOtherRemarks => 'Any other remarks? (optional)';
+  String get anyOtherRemarks => 'Andere opmerkingen? (optioneel)';
 
   @override
   String get remarksHint =>
-      'e.g., Family friendly, include some funny questions';
+      'bijv., Gezinsvriendelijk, voeg enkele grappige vragen toe';
 
   @override
-  String get generateQuestions => 'Generate Questions';
+  String get generateQuestions => 'Genereer Vragen';
 
   @override
   String get aiDeckPremiumMessage =>
-      'AI deck generation is a premium feature. Upgrade to create unlimited AI-powered conversation decks!';
+      'AI deck generatie is een premium functie. Upgrade om onbeperkte AI-gestuurde gesprek decks te maken!';
 
   @override
-  String get pleaseEnterOccasion => 'Please enter the occasion';
+  String get pleaseEnterOccasion => 'Voer de gelegenheid in';
 
   @override
   String errorGeneratingQuestions(String error) {
-    return 'Error generating questions: $error';
+    return 'Fout bij het genereren van vragen: $error';
   }
 
   @override
-  String get generatingAiQuestions => 'Generating AI questions...';
+  String get generatingAiQuestions => 'AI-vragen genereren...';
 
   @override
-  String get generatingMoreQuestions => 'Generating more questions...';
+  String get generatingMoreQuestions => 'Meer vragen genereren...';
 
   @override
-  String get batchComplete => 'Batch Complete!';
+  String get batchComplete => 'Batch Voltooid!';
 
   @override
   String questionsInDeckMessage(int count) {
-    return 'You have $count questions in your deck. Generate 10 more?';
+    return 'Je hebt $count vragen in je deck. 10 meer genereren?';
   }
 
   @override
@@ -1300,9 +1301,12 @@ class AppLocalizationsNl extends AppLocalizations {
     int max,
     Object behalten,
     Object beholdt,
+    Object behouden,
+    Object bevarad,
     Object maks,
+    Object pidetty,
   ) {
-    return '$kept/$max';
+    return '$behouden/$max';
   }
 
   @override
@@ -1316,106 +1320,107 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get imDone => 'I\'m Done';
+  String get imDone => 'Ik ben klaar';
 
   @override
-  String get generateMore => 'Generate More';
+  String get generateMore => 'Genereer Meer';
 
   @override
-  String get maxQuestionsReached => 'Max Questions (50)';
+  String get maxQuestionsReached => 'Max Vragen (50)';
 
   @override
-  String get namYourDeck => 'Name Your Deck';
+  String get namYourDeck => 'Geef je Deck een naam';
 
   @override
-  String get goBack => 'Go Back';
+  String get goBack => 'Teruggaan';
 
   @override
-  String get swipeInstructions => 'Swipe right to keep • Swipe left to discard';
+  String get swipeInstructions =>
+      'Veeg naar rechts om te behouden • Veeg naar links om te verwijderen';
 
   @override
-  String get discussionPoint => 'Discussion Point';
+  String get discussionPoint => 'Discussiepunt';
 
   @override
-  String get sparkMode => 'Spark Mode';
+  String get sparkMode => 'Spark Modus';
 
   @override
-  String get sparkModeSubtitle => 'AI-Powered Conversation Starters';
+  String get sparkModeSubtitle => 'AI-Aangedreven Gesprekstarters';
 
   @override
-  String get sparkPremiumRequired => 'Spark Mode - Premium Feature';
+  String get sparkPremiumRequired => 'Spark Mode - Premium Functie';
 
   @override
   String get sparkPremiumMessage =>
-      'Spark Mode is available for Premium and Premium+ subscribers. Generate AI-powered conversation starters tailored to your occasion!';
+      'Spark Mode is beschikbaar voor Premium en Premium+ abonnees. Genereer AI-gestuurde gespreksstarters afgestemd op jouw gelegenheid!';
 
   @override
   String sparkQuestionsRemaining(int remaining, int limit) {
-    return '$remaining of $limit questions remaining';
+    return '$remaining van $limit vragen over';
   }
 
   @override
-  String get howManyQuestions => 'How many questions?';
+  String get howManyQuestions => 'Hoeveel vragen?';
 
   @override
   String sparkQuestions(int count) {
-    return '$count Questions';
+    return '$count Vragen';
   }
 
   @override
   String generateSparkQuestions(int count) {
-    return 'Generate $count Questions';
+    return 'Genereer $count Vragen';
   }
 
   @override
-  String get sparkLimitReached => 'Monthly Limit Reached';
+  String get sparkLimitReached => 'Maandlimiet Bereikt';
 
   @override
   String sparkLimitMessage(int remaining, int requested) {
-    return 'You only have $remaining Spark questions remaining this month. You\'re trying to generate $requested questions.\n\nUpgrade to Premium+ for 400 questions per month!';
+    return 'Je hebt deze maand nog maar $remaining Spark-vragen over. Je probeert $requested vragen te genereren.\n\nUpgrade naar Premium+ voor 400 vragen per maand!';
   }
 
   @override
-  String get expiresIn24Hours => 'Expires in 24 hours';
+  String get expiresIn24Hours => 'Verloopt over 24 uur';
 
   @override
-  String get alreadyInFavorites => 'Already in Favorites';
+  String get alreadyInFavorites => 'Al in Favorieten';
 
   @override
   String addedToDeck(String deckName) {
-    return 'Added to $deckName!';
+    return 'Toegevoegd aan $deckName!';
   }
 
   @override
-  String get questionAlreadyInDeck => 'Question already in this deck';
+  String get questionAlreadyInDeck => 'Vraag al in deze stapel';
 
   @override
-  String get addToDeck => 'Add to Deck';
+  String get addToDeck => 'Aan Deck Toevoegen';
 
   @override
-  String get favorite => 'Favorite';
+  String get favorite => 'Favoriet';
 
   @override
-  String get chooseDeck => 'Choose a deck to add this question to:';
+  String get chooseDeck => 'Kies een deck om deze vraag aan toe te voegen:';
 
   @override
-  String get noDecksFound => 'No Decks Found';
+  String get noDecksFound => 'Geen decks gevonden';
 
   @override
   String get noDecksMessage =>
-      'You don\'t have any custom decks yet. Would you like to create one?';
+      'Je hebt nog geen aangepaste decks. Wil je er een maken?';
 
   @override
-  String get createDeck => 'Create Deck';
+  String get createDeck => 'Maak Deck';
 
   @override
-  String get createAndAdd => 'Create & Add';
+  String get createAndAdd => 'Maak & Voeg toe';
 
   @override
-  String get pleaseEnterDeckName => 'Please enter a deck name';
+  String get pleaseEnterDeckName => 'Voer een decknaam in';
 
   @override
-  String get tierBasic => 'Basic';
+  String get tierBasic => 'Basis';
 
   @override
   String get tierPremium => 'Premium';
@@ -1424,93 +1429,93 @@ class AppLocalizationsNl extends AppLocalizations {
   String get tierPremiumPlus => 'Premium+';
 
   @override
-  String get tierFree => 'Free';
+  String get tierFree => 'Gratis';
 
   @override
-  String get choosePlan => 'Choose Your Plan';
+  String get choosePlan => 'Kies uw Plan';
 
   @override
   String get choosePlanSubtitle =>
-      'Unlock premium features and AI-powered conversations';
+      'Ontgrendel premium functies en AI-gestuurde gesprekken';
 
   @override
-  String get mostPopular => 'MOST POPULAR';
+  String get mostPopular => 'MEEST POPULAIR';
 
   @override
-  String get perMonth => 'per month';
+  String get perMonth => 'per maand';
 
   @override
-  String get forever => 'Forever';
+  String get forever => 'Voor altijd';
 
   @override
-  String get continueWithBasic => 'Continue with Basic (Free)';
+  String get continueWithBasic => 'Ga verder met Basis (Gratis)';
 
   @override
   String subscribeTo(String tier) {
-    return 'Subscribe to $tier';
+    return 'Abonneer je op $tier';
   }
 
   @override
-  String get cancelAnytime => 'Cancel anytime. No hidden fees.';
+  String get cancelAnytime => 'Annuleer op elk moment. Geen verborgen kosten.';
 
   @override
-  String get basicTierTitle => 'Basic';
+  String get basicTierTitle => 'Basis';
 
   @override
-  String get basicTierPrice => '€6.99';
+  String get basicTierPrice => '€6,99';
 
   @override
-  String get basicTierDescription => 'Access all game modes except Spark';
+  String get basicTierDescription => 'Toegang tot alle spelmodi behalve Spark';
 
   @override
   String get basicFeature1 =>
-      'All game modes (Couple, Friends, Family, Personal, Pandora)';
+      'Alle spelmodi (Koppel, Vrienden, Familie, Persoonlijk, Pandora)';
 
   @override
-  String get basicFeature2 => 'Access to all 24+ categories';
+  String get basicFeature2 => 'Toegang tot alle 24+ categorieën';
 
   @override
-  String get basicFeature3 => 'Custom personal decks';
+  String get basicFeature3 => 'Aangepaste persoonlijke decks';
 
   @override
-  String get basicFeature4 => 'No ads';
+  String get basicFeature4 => 'Geen advertenties';
 
   @override
-  String get basicFeature5 => 'Question navigation';
+  String get basicFeature5 => 'Vraagnavigatie';
 
   @override
   String get premiumTierTitle => 'Premium';
 
   @override
-  String get premiumTierPrice => '€11.99';
+  String get premiumTierPrice => '€11,99';
 
   @override
-  String get premiumTierDescription => 'Everything in Basic + Spark AI';
+  String get premiumTierDescription => 'Alles in Basis + Spark AI';
 
   @override
-  String get premiumFeature6 => 'Save favorites to personal decks';
+  String get premiumFeature6 => 'Sla favorieten op in persoonlijke decks';
 
   @override
   String get premiumPlusTierTitle => 'Premium+';
 
   @override
-  String get premiumPlusTierPrice => '€19.99';
+  String get premiumPlusTierPrice => '€19,99';
 
   @override
-  String get premiumPlusTierDescription => 'Maximum AI power';
+  String get premiumPlusTierDescription => 'Maximale AI-kracht';
 
   @override
-  String get premiumPlusFeature1 => 'Everything in Premium';
+  String get premiumPlusFeature1 => 'Alles in Premium';
 
   @override
-  String get premiumPlusFeature2 => '🚀 400 AI questions per month';
+  String get premiumPlusFeature2 => '🚀 400 AI vragen per maand';
 
   @override
-  String get premiumPlusFeature3 => '2.5x more Spark questions';
+  String get premiumPlusFeature3 => '2,5x meer Spark-vragen';
 
   @override
-  String get premiumPlusFeature4 => 'Perfect for frequent use';
+  String get premiumPlusFeature4 => 'Perfect voor frequent gebruik';
 
   @override
-  String get premiumPlusFeature5 => 'Priority support';
+  String get premiumPlusFeature5 => 'Prioritaire ondersteuning';
 }
