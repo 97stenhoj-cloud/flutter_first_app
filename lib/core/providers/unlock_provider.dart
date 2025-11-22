@@ -234,10 +234,9 @@ class UnlockNotifier extends StateNotifier<UnlockState> {
         await prefs.setBool('is_premium_${user.id}', true);
         await prefs.setString('subscription_tier_${user.id}', 'premium');
 
-        state = state.copyWith(
-          isPremium: true,
-          subscriptionTier: SubscriptionTier.premium,
-        );
+        // Refresh full state including Spark counter
+        await initialize();
+
         debugPrint('✅ Premium unlocked successfully with Spark access');
         return; // Success - exit retry loop
       } catch (e) {
@@ -262,8 +261,12 @@ class UnlockNotifier extends StateNotifier<UnlockState> {
     if (user != null) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('is_premium_${user.id}', false);
+      await prefs.setString('subscription_tier_${user.id}', 'free');
+      await prefs.setInt('spark_remaining_${user.id}', 0);
     }
-    state = state.copyWith(isPremium: false);
+
+    // Refresh full state to ensure ads show and Spark is 0
+    await initialize();
   }
 
   Future<void> updateSubscriptionTier(String tierString) async {
@@ -298,10 +301,9 @@ class UnlockNotifier extends StateNotifier<UnlockState> {
         await prefs.setBool('is_premium_${user.id}', isPremium);
         await prefs.setString('subscription_tier_${user.id}', tierString);
 
-        state = state.copyWith(
-          isPremium: isPremium,
-          subscriptionTier: tier,
-        );
+        // Refresh full state including Spark counter
+        await initialize();
+
         debugPrint('✅ Subscription tier updated to $tierString (isPremium: $isPremium)');
         return; // Success - exit retry loop
       } catch (e) {
