@@ -16,6 +16,7 @@ import '../../../custom/presentation/pages/custom_deck_list_page.dart';
 import '../../../subscription/presentation/pages/subscription_page_new.dart';
 import '../../../../core/widgets/custom_dialog.dart';
 import '../../../../core/widgets/rating_dialog.dart';
+import '../../../../core/widgets/ad_banner_widget.dart';
 
 // Category image URLs - keyed by "gameMode_categoryName"
 const Map<String, String> categoryImages = {
@@ -441,6 +442,9 @@ Future<void> _reloadCategoriesSilently() async {
           ),
         ),
       ),
+      bottomNavigationBar: ref.watch(unlockProvider).isPremium
+        ? null
+        : const AdBannerWidget(),
     );
   }
 

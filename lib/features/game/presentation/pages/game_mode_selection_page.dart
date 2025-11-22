@@ -14,6 +14,7 @@ import 'category_selection_page.dart';
 import '../../../pandora/presentation/pages/pandora_entry_page.dart';
 import '../../../../core/widgets/custom_dialog.dart';
 import '../../../spark/presentation/pages/spark_creator_screen.dart';
+import '../../../../core/widgets/ad_banner_widget.dart';
 
 class GameModeSelectionPage extends ConsumerStatefulWidget {
   final bool isDarkMode;
@@ -410,6 +411,9 @@ class _GameModeSelectionPageState extends ConsumerState<GameModeSelectionPage> {
           ),
         ),
       ),
+      bottomNavigationBar: ref.watch(unlockProvider).isPremium
+        ? null
+        : const AdBannerWidget(),
     );
   }
 
